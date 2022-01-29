@@ -54,9 +54,9 @@ lang: en-US
 
 ### Linear, Binary and Fibonacci Search, Hashing and Hash Tables with Perpect Hashing
 
-Download [DOC](ce205-week-2-linkedlist.md_doc.pdf), [SLIDE](ce205-week-2-linkedlist.md_slide.pdf), [PPTX](ce205-week-2-linkedlist.md_slide.pptx)
+Download [DOC](ce205-week-7-search-hashing.md_doc.pdf), [SLIDE](ce205-week-7-search-hashing.md_slide.pdf), [PPTX](ce205-week-7-search-hashing.md_slide.pptx)
 
-<iframe width=700, height=500 frameBorder=0 src="../ce205-week-2-linkedlist.md_slide.html"></iframe>
+<iframe width=700, height=500 frameBorder=0 src="../ce205-week-7-search-hashing.md_slide.html"></iframe>
 
 ---
 

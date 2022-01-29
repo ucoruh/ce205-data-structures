@@ -54,9 +54,9 @@ lang: en-US
 
 ### Direct File Organization Indexes Binary and B Tree Structures for File
 
-Download [DOC](ce205-week-2-linkedlist.md_doc.pdf), [SLIDE](ce205-week-2-linkedlist.md_slide.pdf), [PPTX](ce205-week-2-linkedlist.md_slide.pptx)
+Download [DOC](ce205-week-14-direct-file-b-tree.md_doc.pdf), [SLIDE](ce205-week-14-direct-file-b-tree.md_slide.pdf), [PPTX](ce205-week-14-direct-file-b-tree.md_slide.pptx)
 
-<iframe width=700, height=500 frameBorder=0 src="../ce205-week-2-linkedlist.md_slide.html"></iframe>
+<iframe width=700, height=500 frameBorder=0 src="../ce205-week-14-direct-file-b-tree.md_slide.html"></iframe>
 
 ---
 

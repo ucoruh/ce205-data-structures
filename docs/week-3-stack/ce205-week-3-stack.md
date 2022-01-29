@@ -58,7 +58,9 @@ lang: en-US
 
 ## Stacks, Queue Structures, and Related Algorithms and Problems.
 
+Download [DOC](ce205-week-3-stack.md_doc.pdf), [SLIDE](ce205-week-3-stack.md_slide.pdf), [PPTX](ce205-week-3-stack.md_slide.pptx)
 
+<iframe width=700, height=500 frameBorder=0 src="../ce205-week-3-stack.md_slide.html"></iframe>
 
 ---
 

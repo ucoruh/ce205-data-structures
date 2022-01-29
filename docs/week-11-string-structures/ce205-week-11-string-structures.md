@@ -54,9 +54,9 @@ lang: en-US
 
 ### Advaced Tree Data Structures (Binary Search Tree, AVL Tree, B Trees and derivations,Red-Black trees, Splay Trees and Augmented Data Structures, van Emde Boas Trees, Binomial and Minimax Trees ) and Comparisons.
 
-Download [DOC](ce205-week-2-linkedlist.md_doc.pdf), [SLIDE](ce205-week-2-linkedlist.md_slide.pdf), [PPTX](ce205-week-2-linkedlist.md_slide.pptx)
+Download [DOC](ce205-week-11-string-structures.md_doc.pdf), [SLIDE](ce205-week-11-string-structures.md_slide.pdf), [PPTX](ce205-week-11-string-structures.md_slide.pptx)
 
-<iframe width=700, height=500 frameBorder=0 src="../ce205-week-2-linkedlist.md_slide.html"></iframe>
+<iframe width=700, height=500 frameBorder=0 src="../ce205-week-11-string-structures.md_slide.html"></iframe>
 
 ---
 

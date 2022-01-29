@@ -57,9 +57,9 @@ lang: en-US
 ### Graph Cuts
 
 
-Download [DOC](ce205-week-2-linkedlist.md_doc.pdf), [SLIDE](ce205-week-2-linkedlist.md_slide.pdf), [PPTX](ce205-week-2-linkedlist.md_slide.pptx)
+Download [DOC](ce205-week-6-graph-algorithms.md_doc.pdf), [SLIDE](ce205-week-6-graph-algorithms.md_slide.pdf), [PPTX](ce205-week-6-graph-algorithms.md_slide.pptx)
 
-<iframe width=700, height=500 frameBorder=0 src="../ce205-week-2-linkedlist.md_slide.html"></iframe>
+<iframe width=700, height=500 frameBorder=0 src="../ce205-week-6-graph-algorithms.md_slide.html"></iframe>
 
 ---
 
