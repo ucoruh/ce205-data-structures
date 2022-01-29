@@ -62,14 +62,14 @@ theme:
     
   palette:
     - scheme: default
-      primary: indigo
-      accent: indigo
+      primary: green
+      accent: green
       toggle:
         icon: material/toggle-switch
         name: Switch to dark mode
     - scheme: slate
-      primary: red
-      accent: red
+      primary: brown
+      accent: brown
       toggle:
         icon: material/toggle-switch-off-outline
         name: Switch to light mode
