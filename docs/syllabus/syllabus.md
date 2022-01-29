@@ -1,6 +1,11 @@
 ---
 marp: true
 theme: default
+style: |
+    img[alt~="center"] {
+      display: block;
+      margin: 0 auto;
+    }
 _class: lead
 paginate: true
 backgroundColor: #fff
@@ -35,6 +40,7 @@ footer-center: "License: WTFPL"
 footer-right:
 subparagraph: true
 lang: en-US 
+math: katex
 ---
 
 <!-- _backgroundColor: aquq -->
@@ -163,7 +169,7 @@ to:
 
 ---
 
-- Stacks (Array and Linked List) and FILO (First in Last Out)
+- Stacks (Array and Linked List) and FILO (First in Last Out)
 
 - Expressions (Infix, Postfix and Prefix) and Infix to Postfix Conversions and Postfix Evaluation
 

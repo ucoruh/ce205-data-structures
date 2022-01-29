@@ -1,6 +1,11 @@
 ---
 marp: true
 theme: default
+style: |
+    img[alt~="center"] {
+      display: block;
+      margin: 0 auto;
+    }
 _class: lead
 paginate: true
 backgroundColor: #fff

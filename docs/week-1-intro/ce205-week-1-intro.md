@@ -1,6 +1,11 @@
 ---
 marp: true
 theme: default
+style: |
+    img[alt~="center"] {
+      display: block;
+      margin: 0 auto;
+    }
 _class: lead
 paginate: true
 backgroundColor: #fff
@@ -34,7 +39,9 @@ footer-left: "© Dr. Uğur CORUH"
 footer-center: "License: WTFPL"
 footer-right:
 subparagraph: true
-lang: en-US 
+lang: en-US
+
+math: katex
 ---
 
 <!-- _backgroundColor: aquq -->
@@ -63,25 +70,25 @@ Download [DOC](ce205-week-1-intro.md_doc.pdf), [SLIDE](ce205-week-1-intro.md_sli
 
 Data-in-use
 
-- [Data in use - Wikipedia](https://en.wikipedia.org/wiki/Data_in_use) 
+- [Data in use - Wikipedia](https://en.wikipedia.org/wiki/Data_in_use) 
 
 Data-in-transit
 
-- [Data in transit - Wikipedia](https://en.wikipedia.org/wiki/Data_in_transit) 
+- [Data in transit - Wikipedia](https://en.wikipedia.org/wiki/Data_in_transit) 
 
 Data-at-rest
 
-- [Data at rest - Wikipedia](https://en.wikipedia.org/wiki/Data_at_rest) 
+- [Data at rest - Wikipedia](https://en.wikipedia.org/wiki/Data_at_rest) 
 
 ---
 
 Performance Analysis
 
-- [Data Structures Tutorials - Performance Analysis with examples](http://www.btechsmartclass.com/data_structures/performance-analysis.html) 
+- [Data Structures Tutorials - Performance Analysis with examples](http://www.btechsmartclass.com/data_structures/performance-analysis.html) 
 
 Space Complexity
 
-- [Data Structures Tutorials - Space Complexity with examples](http://www.btechsmartclass.com/data_structures/space-complexity.html) 
+- [Data Structures Tutorials - Space Complexity with examples](http://www.btechsmartclass.com/data_structures/space-complexity.html) 
 
 Time Complexity
 
@@ -99,7 +106,7 @@ Linear & Non-Linear Data Structures
 
 - [Data Structures Tutorials - Linear and Non-linear types](http://www.btechsmartclass.com/data_structures/linear-non-linear-data-structures.html)
 
-- [Data Structure and Types](https://www.programiz.com/dsa/data-structure-types) 
+- [Data Structure and Types](https://www.programiz.com/dsa/data-structure-types) 
 
 ---
 

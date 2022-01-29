@@ -11,7 +11,7 @@ repo_url: 'https://github.com/ucoruh/ce205-data-structures'
 edit_uri: ""
 
 # Copyright
-copyright: Copyleft &copy; 2019 - 2021 Uğur CORUH
+copyright: Copyleft &copy; 2019 - 2022 Uğur CORUH
 
 #theme:
 #    name: material
@@ -98,7 +98,7 @@ theme:
 extra:
   analytics:
     provider: google
-    property: !ENV GOOGLE_ANALYTICS_KEY
+    property: !ENV GOOGLE_ANALYTICS_KEY_CE205
     feedback:
       title: Was this page helpful?
       ratings:

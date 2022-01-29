@@ -1,6 +1,11 @@
 ---
 marp: true
 theme: default
+style: |
+    img[alt~="center"] {
+      display: block;
+      margin: 0 auto;
+    }
 _class: lead
 paginate: true
 backgroundColor: #fff
@@ -35,6 +40,7 @@ footer-center: "License: WTFPL"
 footer-right:
 subparagraph: true
 lang: en-US 
+math: katex
 ---
 
 <!-- _backgroundColor: aquq -->
@@ -155,7 +161,7 @@ Searching and Sorting
 
 ---
 
-Optimization Problems  
+Optimization Problems 
 
 ---
 

@@ -1,6 +1,11 @@
 ---
 marp: true
 theme: default
+style: |
+    img[alt~="center"] {
+      display: block;
+      margin: 0 auto;
+    }
 _class: lead
 paginate: true
 backgroundColor: #fff
@@ -129,15 +134,15 @@ Calculate the total number of moves required i.e.
 
 3. for i = 1 to total number of moves:
 
-  if i%3 == 1:
+  if i%3 == 1:
 
 legal movement of top disk between source pole and destination pole
 
-  if i%3 == 2:
+  if i%3 == 2:
 
 legal movement top disk between source pole and auxiliary pol
 
-  if i%3 == 0:
+  if i%3 == 0:
 
   legal movement top disk between auxiliary pole and destination pole
 
