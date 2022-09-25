@@ -215,4 +215,6 @@ Implementing Pointer and Objects
 
 ---
 
-$$End-of-Week-1$$
+$$
+End-Of-Week-1
+$$

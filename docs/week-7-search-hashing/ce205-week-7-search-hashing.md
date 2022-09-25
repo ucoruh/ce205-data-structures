@@ -40,6 +40,7 @@ footer-center: "License: WTFPL"
 footer-right:
 subparagraph: true
 lang: en-US 
+math: mathjax
 ---
 
 <!-- _backgroundColor: aquq -->
@@ -61,3 +62,106 @@ Download [DOC](ce205-week-7-search-hashing.md_doc.pdf), [SLIDE](ce205-week-7-sea
 ---
 
 <!-- paginate: true -->
+
+### Outline-1
+
+- Linear Search
+- Binary Search
+- Binary Search vs Linear Search
+- Interpolation Search
+- Interpolation search vs Binary search
+- Fibonacci Search
+
+---
+
+### Outline-2
+
+- Hashing and Hash Tables
+- Direct-Address Tables
+  - Hash Tables
+  - Hash Functions
+  - Open Adressing
+  - Perfect Hashing
+
+---
+
+### Linear Search
+
+- http://www.btechsmartclass.com/data_structures/linear-search.html 
+- https://www.geeksforgeeks.org/linear-search/ 
+
+---
+
+### Binary Search
+
+- http://www.btechsmartclass.com/data_structures/binary-search.html 
+- https://www.geeksforgeeks.org/binary-search/ 
+- https://visualgo.net/en/bst 
+
+---
+
+### Binary Search vs Linear Search
+
+- https://www.geeksforgeeks.org/linear-search-vs-binary-search/?ref=rp 
+
+---
+
+### Interpolation Search
+
+- https://www.geeksforgeeks.org/interpolation-search/ 
+
+---
+
+### Interpolation search vs Binary search
+
+- https://www.geeksforgeeks.org/g-fact-84/?ref=rp 
+
+---
+
+### Fibonacci Search
+- https://www.geeksforgeeks.org/fibonacci-search/ 
+
+---
+
+### Hashing and Hash Tables
+
+- https://www.hackerearth.com/practice/data-structures/hash-tables/basics-of-hash-tables/tutorial/ 
+- http://www.btechsmartclass.com/data_structures/hashing.html
+
+---
+
+#### Direct-Address Tables
+
+- https://www.geeksforgeeks.org/direct-address-table/ 
+
+---
+
+#### Hash Tables
+
+- https://www.tutorialspoint.com/data_structures_algorithms/hash_data_structure.htm 
+
+---
+
+#### Hash Functions
+
+- https://www.geeksforgeeks.org/what-are-hash-functions-and-how-to-choose-a-good-hash-function/ 
+- https://www.tutorialspoint.com/cryptography/cryptography_hash_functions.htm 
+- https://www.cs.hmc.edu/~geoff/classes/hmc.cs070.200101/homework10/hashfuncs.html 
+
+---
+
+#### Open Adressing
+
+- https://www.geeksforgeeks.org/hashing-set-3-open-addressing/ 
+
+---
+
+#### Perfect Hashing
+
+- https://en.wikipedia.org/wiki/Perfect_hash_function#:~:text=In%20computer%20science%2C%20a%20perfect,constant%20worst%2Dcase%20access%20time.
+
+---
+
+$$
+End-Of-Week-6
+$$

@@ -61,3 +61,5 @@ Download [DOC](ce205-week-8-midterm.md_doc.pdf), [SLIDE](ce205-week-8-midterm.md
 ---
 
 <!-- paginate: true -->
+
+*No Content*

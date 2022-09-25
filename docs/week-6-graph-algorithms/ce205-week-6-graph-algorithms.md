@@ -270,7 +270,9 @@ Download [DOC](ce205-week-6-graph-algorithms.md_doc.pdf), [SLIDE](ce205-week-6-g
 
 --- 
 
-$$End-Of-Week-6$$
+$$
+End-Of-Week-6
+$$
 
 
 

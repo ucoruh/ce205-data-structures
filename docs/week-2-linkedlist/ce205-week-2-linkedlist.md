@@ -215,4 +215,6 @@ Download [DOC](ce205-week-2-linkedlist.md_doc.pdf), [SLIDE](ce205-week-2-linkedl
 
 --- 
 
-  $$End-Of-Week-2$$
+$$
+End-Of-Week-2
+$$

@@ -199,4 +199,6 @@ Download [DOC](ce205-week-5-graph-structures.md_doc.pdf), [SLIDE](ce205-week-5-g
   
 ---
 
-$$End-Of-Week-5$$
+$$
+End-Of-Week-5
+$$

@@ -40,6 +40,7 @@ footer-center: "License: WTFPL"
 footer-right:
 subparagraph: true
 lang: en-US 
+math: mathjax
 ---
 
 <!-- _backgroundColor: aquq -->
@@ -61,3 +62,193 @@ Download [DOC](ce205-week-9-sorting.md_doc.pdf), [SLIDE](ce205-week-9-sorting.md
 ---
 
 <!-- paginate: true -->
+
+### Outline
+
+- Resources
+- Sortings
+
+---
+
+### Outline
+
+- Insertion Sort
+- Selection Sort
+- Radix Sort 
+- Quick Sort 
+- Heap Sort
+- Permutation Sort
+- Gnome Sort
+- Comb Sort
+
+---
+
+### Outline
+
+- Flash Sort
+- Stooge Sort
+- Bees Algorithm
+- Lucky Sort
+- Indirect Sort (Pointer Sort)
+- External Sort (Segmented Sort)
+- Shaker Sort / Bidirectional Bubble Sort
+- Shell Sort
+- Comparison of Sorting Methods
+
+---
+
+### Resources 
+
+- https://www.cs.usfca.edu/~galles/visualization/Algorithms.html 
+- https://www.geeksforgeeks.org/sorting-algorithms/ 
+- https://sorting.at/ 
+- https://xlinux.nist.gov/dads/HTML/sort.html
+- https://xlinux.nist.gov/dads/
+
+---
+
+### Insertion Sort
+
+- https://www.programiz.com/dsa/insertion-sort
+- https://visualgo.net/en/sorting (select INS)
+- http://www.btechsmartclass.com/data_structures/insertion-sort.html 
+- https://rosettacode.org/wiki/Sorting_algorithms/Insertion_sort
+- https://xlinux.nist.gov/dads/HTML/insertionSort.html
+
+---
+
+### Selection Sort
+
+- https://www.programiz.com/dsa/selection-sort
+- https://visualgo.net/en/sorting (select SEL)
+- http://www.btechsmartclass.com/data_structures/selection-sort.html 
+- https://www.geeksforgeeks.org/selection-sort/ 
+- https://rosettacode.org/wiki/Sorting_algorithms/Selection_sort
+- https://xlinux.nist.gov/dads/HTML/selectionSort.html
+
+---
+
+### Radix Sort
+
+- https://www.programiz.com/dsa/radix-sort
+- https://visualgo.net/en/sorting (select RAD)
+- http://www.btechsmartclass.com/data_structures/radix-sort.html 
+- https://www.geeksforgeeks.org/radix-sort/
+- https://rosettacode.org/wiki/Sorting_algorithms/Radix_sort
+- https://xlinux.nist.gov/dads/HTML/radixsort.html
+
+
+---
+
+### Quick Sort
+
+- https://www.programiz.com/dsa/quick-sort
+- https://visualgo.net/en/sorting (select QUI)
+- http://www.btechsmartclass.com/data_structures/quick-sort.html 
+- https://www.geeksforgeeks.org/quick-sort/ 
+- https://rosettacode.org/wiki/Sorting_algorithms/Quicksort
+- https://xlinux.nist.gov/dads/HTML/quicksort.html
+- https://xlinux.nist.gov/dads/HTML/multikeyQuicksort.html
+
+---
+
+### Heap Sort
+
+- https://www.programiz.com/dsa/heap-sort
+- http://www.btechsmartclass.com/data_structures/heap-sort.html 
+- https://visualgo.net/en/heap
+- https://www.geeksforgeeks.org/heap-sort/
+- https://rosettacode.org/wiki/Sorting_algorithms/Heapsort
+- https://xlinux.nist.gov/dads/HTML/heapSort.html
+
+
+---
+
+### Permutation Sort
+
+- https://www.geeksforgeeks.org/bogosort-permutation-sort/ 
+- https://rosettacode.org/wiki/Sorting_algorithms/Permutation_sort
+
+---
+
+### Gnome Sort
+
+- https://www.geeksforgeeks.org/gnome-sort-a-stupid-one/?ref=lbp
+- https://rosettacode.org/wiki/Sorting_algorithms/Gnome_sort
+
+
+---
+
+### Comb Sort
+
+- https://www.geeksforgeeks.org/comb-sort/ 
+- https://rosettacode.org/wiki/Sorting_algorithms/Comb_sort
+
+---
+
+### Flash Sort
+
+- https://en.wikipedia.org/wiki/Flashsort
+- https://www.drdobbs.com/database/the-flashsort1-algorithm/184410496
+
+---
+
+### Stooge Sort
+
+- https://xlinux.nist.gov/dads/HTML/stoogesort.html
+- https://en.wikipedia.org/wiki/Stooge_sort
+- https://courses.cs.washington.edu/courses/cse373/13wi/lectures/02-22/18-sorting1-bogo-stooge-bubble.pdf
+
+---
+
+### Bees Algorithm
+
+- https://en.wikipedia.org/wiki/Bees_algorithm
+- http://beesalgorithmsite.altervista.org/Downloads.htm
+
+---
+
+### Lucky Sort
+
+- https://xlinux.nist.gov/dads/HTML/luckySort.html
+
+---
+
+### Indirect Sort (Pointer Sort)
+
+- https://xlinux.nist.gov/dads/HTML/internalsort.html
+
+---
+
+### External Sort (Segmented Sort)
+
+- https://xlinux.nist.gov/dads/HTML/externalsort.html
+- https://xlinux.nist.gov/dads/HTML/externalMemoryAlgo.html
+
+---
+
+### Shaker Sort / Bidirectional Bubble Sort
+
+- https://xlinux.nist.gov/dads/HTML/bidirectionalBubbleSort.html
+
+---
+
+### Shell Sort
+
+- https://www.programiz.com/dsa/shell-sort
+- https://rosettacode.org/wiki/Sorting_algorithms/Shell_sort
+
+---
+
+### Comparison of Sorting Methods
+
+- http://www.btechsmartclass.com/data_structures/comparison-of-sorting-methods.html 
+
+---
+
+$$
+End-Of-Week-9
+$$
+
+
+

@@ -221,6 +221,8 @@ $pow(2, n)- 1$ here n is number of disks.
 
 ---
 
-$$End-Of-Week-3$$
+$$
+End-Of-Week-3
+$$
 
 

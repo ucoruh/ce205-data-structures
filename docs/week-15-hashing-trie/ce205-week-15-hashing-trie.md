@@ -40,6 +40,7 @@ footer-center: "License: WTFPL"
 footer-right:
 subparagraph: true
 lang: en-US 
+math: mathjax
 ---
 
 <!-- _backgroundColor: aquq -->
@@ -61,3 +62,49 @@ Download [DOC](ce205-week-15-hashing-trie.md_doc.pdf), [SLIDE](ce205-week-15-has
 ---
 
 <!-- paginate: true -->
+
+### Outline
+
+- Hashing Techniques for Expandable Files
+  - Extendible Hashing
+  - Dynamic Hashing
+  - Linear Hashing
+
+---
+
+### Outline
+
+- Other Tree Structures
+  - Tries
+  - Approximate String Matching
+  - Trie Hashing
+  - PATRICIA Trees
+  - Digital Search Trees
+
+
+---
+
+### Outline
+
+- Seconday Key Retrieval (2)
+  - K-d trees
+  - Grid Files
+
+
+---
+
+### Outline
+
+- File Sorting
+  - Insertion Sort
+  - Quicksort
+  - Heapsort
+  - External Sorting
+  - Sorting by Merging
+  - Disk Sort
+
+---
+
+$$
+End-Of-Week-15
+$$

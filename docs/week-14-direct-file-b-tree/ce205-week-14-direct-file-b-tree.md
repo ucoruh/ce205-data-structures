@@ -40,6 +40,7 @@ footer-center: "License: WTFPL"
 footer-right:
 subparagraph: true
 lang: en-US 
+math: mathjax
 ---
 
 <!-- _backgroundColor: aquq -->
@@ -61,3 +62,91 @@ Download [DOC](ce205-week-14-direct-file-b-tree.md_doc.pdf), [SLIDE](ce205-week-
 ---
 
 <!-- paginate: true -->
+
+### Outline
+
+- Indexed Sequential File Organization
+- Bits of Information
+- Secondary Key Retrieval
+  - Multilist File Organization
+  - Inverted Files
+  - Partial Match Retrieval with Signature Trees
+  - Partial Match Retrieval with Page Signatures
+
+---
+
+### Outline
+
+- Bits and Hashing
+  - Signature Hashing
+  - Bloom Filters
+  - Classification Hashing
+  - Check Hashing
+
+---
+
+### Outline
+
+- Binary Tree Structures
+  - Binary Search Trees
+  - AVL Trees
+  - Internal Path Reduction Trees
+
+---
+
+### Outline
+
+- B-Trees and Derivatives
+  - B-Trees
+  - B#-Trees
+  - B+ -Trees
+
+---
+
+### Indexed Sequential File Organization
+- Bits of Information
+- Secondary Key Retrieval
+  - Multilist File Organization
+  - Inverted Files
+  - Partial Match Retrieval with Signature Trees
+  - Partial Match Retrieval with Page Signatures
+
+- https://www.amirajcollege.in/wp-content/uploads/2020/06/3130702-chapter-4-hashing-and-file-structure.pdf
+
+---
+
+### Bits and Hashing
+
+- Signature Hashing
+  - Unique File Hashing
+- Bloom Filters
+  - https://www.geeksforgeeks.org/bloom-filters-introduction-and-python-implementation/
+- Classification Hashing
+  - https://en.wikipedia.org/wiki/Feature_hashing
+- Check Hashing
+
+---
+
+### Binary Tree Structures
+
+- Binary Search Trees
+- AVL Trees
+- Internal Path Reduction Trees
+
+---
+
+### B-Trees and Derivatives
+
+- B-Trees
+  - https://www.geeksforgeeks.org/introduction-of-b-tree-2/
+  - https://web.itu.edu.tr/~bkurt/Courses/blg341/lecture11.pdf
+- B#-Trees
+  - .
+- B+ -Trees
+  - https://www.geeksforgeeks.org/introduction-of-b-tree/?ref=gcse
+
+---
+
+$$
+End-Of-Week-14
+$$
