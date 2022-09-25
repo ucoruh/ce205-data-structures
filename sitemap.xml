@@ -11,6 +11,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://ucoruh.github.io/ce205-data-structures/tags/</loc>
+         <lastmod>2022-09-25</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://ucoruh.github.io/ce205-data-structures/changelog/</loc>
          <lastmod>2022-09-25</lastmod>
          <changefreq>daily</changefreq>
@@ -97,6 +102,11 @@
     </url>
     <url>
          <loc>https://ucoruh.github.io/ce205-data-structures/week-9-sorting/ce205-week-9-sorting/</loc>
+         <lastmod>2022-09-25</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ucoruh.github.io/ce205-data-structures/tags/</loc>
          <lastmod>2022-09-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
