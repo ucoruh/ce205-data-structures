@@ -41,6 +41,9 @@ footer-right:
 subparagraph: true
 lang: en-US 
 math: katex
+tags:
+  - syllabus
+ref_link: na
 ---
 
 <!-- _backgroundColor: aquq -->

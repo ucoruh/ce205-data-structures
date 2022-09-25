@@ -10,6 +10,9 @@ repo_name: 'GitHub'
 repo_url: 'https://github.com/ucoruh/ce205-data-structures'
 edit_uri: ""
 
+# Very Nice Configuration
+# https://github.com/e-maxx-eng/e-maxx-eng
+
 # Copyright
 copyright: Copyleft &copy; 2019 - 2022 Uğur CORUH
 
@@ -193,9 +196,13 @@ plugins:
       hooks:
           on_env: "hooks:on_env"
   - search
+  - tags:
+      tags_file: tags.md
+  # - literate-nav:
+      # nav_file: navigation.md
   - git-revision-date-localized:
       enable_creation_date: true
-      enabled: !ENV [MKDOCS_ENABLE_GIT_REVISION_DATE, True]
+      # enabled: !ENV [MKDOCS_ENABLE_GIT_REVISION_DATE, True]
   - minify:
       minify_html: false
   - git-authors
@@ -205,8 +212,8 @@ plugins:
       branch: main
       #token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
       token: !ENV MKDOCS_GIT_COMMITTERS_APIKEY
-      enabled: !ENV [MKDOCS_ENABLE_GIT_COMMITTERS, True]
-      
+      # enabled: !ENV [MKDOCS_ENABLE_GIT_COMMITTERS, True]
+  - macros
 extra_javascript:
   - javascript/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
@@ -235,6 +242,4 @@ nav:
     - Week-16 (Final): week-16-final/ce205-week-16-final.md
   - License: license.md
   - Changelog: changelog/index.md
-
-
 

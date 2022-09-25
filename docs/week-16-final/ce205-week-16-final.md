@@ -39,7 +39,11 @@ footer-left: "© Dr. Uğur CORUH"
 footer-center: "License: WTFPL"
 footer-right:
 subparagraph: true
-lang: en-US 
+lang: en-US
+math: mathjax
+tags:
+  - ce205
+ref_link: na
 ---
 
 <!-- _backgroundColor: aquq -->

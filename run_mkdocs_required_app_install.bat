@@ -28,7 +28,8 @@ pip install mkdocs-static-i18n
 pip install mkdocs-with-pdf
 pip install qrcode
 pip install mkdocs-awesome-pages-plugin
-pip install mkdocs-git-committers-plugin
+rem pip install mkdocs-git-committers-plugin
+pip install mkdocs-git-committers-plugin-2
 
 pip install pptx2md
 pause

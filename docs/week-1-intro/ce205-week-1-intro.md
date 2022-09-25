@@ -40,8 +40,10 @@ footer-center: "License: WTFPL"
 footer-right:
 subparagraph: true
 lang: en-US
-
 math: katex
+tags:
+  - ce205
+ref_link: na
 ---
 
 <!-- _backgroundColor: aquq -->

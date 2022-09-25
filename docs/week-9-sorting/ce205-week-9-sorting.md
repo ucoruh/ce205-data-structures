@@ -41,6 +41,9 @@ footer-right:
 subparagraph: true
 lang: en-US 
 math: mathjax
+tags:
+  - ce205
+ref_link: na
 ---
 
 <!-- _backgroundColor: aquq -->

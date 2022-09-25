@@ -17,15 +17,21 @@ Powershell.exe scoop install marp
 Powershell.exe scoop update marp
 
 
-pip install mkdocs
-pip install --upgrade --force-reinstal pymdown-extensions
-pip install --upgrade --force-reinstal mkdocs-material
-pip install --upgrade --force-reinstal mkdocs-git-revision-date-localized-plugin
-pip install --upgrade --force-reinstal mkdocs-minify-plugin
-pip install --upgrade --force-reinstal mkdocs-static-i18n
-pip install --upgrade --force-reinstal mkdocs-with-pdf
-pip install --upgrade --force-reinstal qrcode
-pip install --upgrade --force-reinstal mkdocs-awesome-pages-plugin
+pip install  --upgrade --force-reinstal mkdocs
+pip install  --upgrade --force-reinstal mkdocs-macros-plugin
+pip install  --upgrade --force-reinstal mkdocs-literate-nav
+pip install  --upgrade --force-reinstal mkdocs-git-authors-plugin
+pip install  --upgrade --force-reinstal mkdocs-simple-hooks
+pip install  --upgrade --force-reinstal pymdown-extensions
+pip install  --upgrade --force-reinstal mkdocs-material
+pip install  --upgrade --force-reinstal mkdocs-git-revision-date-localized-plugin
+pip install  --upgrade --force-reinstal mkdocs-minify-plugin
+pip install  --upgrade --force-reinstal mkdocs-static-i18n
+pip install  --upgrade --force-reinstal mkdocs-with-pdf
+pip install  --upgrade --force-reinstal qrcode
+pip install  --upgrade --force-reinstal mkdocs-awesome-pages-plugin
+rem pip install  --upgrade --force-reinstal mkdocs-git-committers-plugin
+pip install  --upgrade --force-reinstal mkdocs-git-committers-plugin-2
 
 pip install --upgrade pptx2md
 pause
