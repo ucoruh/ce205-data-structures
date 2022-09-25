@@ -40,6 +40,7 @@ footer-center: "License: WTFPL"
 footer-right:
 subparagraph: true
 lang: en-US 
+math: mathjax
 ---
 
 <!-- _backgroundColor: aquq -->
@@ -61,3 +62,141 @@ Download [DOC](ce205-week-5-graph-structures.md_doc.pdf), [SLIDE](ce205-week-5-g
 ---
 
 <!-- paginate: true -->
+
+### Outline
+
+- Introduction to Graphs
+- Graph Representations
+- Graph Traversal
+- Water Jug Problem
+
+---
+
+### Introduction to Graphs
+
+- Vertex
+- Edge
+
+---
+
+### Introduction to Graphs
+
+- Undirected Graph
+- Directed Graph
+- Mixed Graph
+
+---
+
+### Introduction to Graphs
+
+- End Vertices or Endpoints
+- Origin
+- Destination
+
+---
+
+### Introduction to Graphs
+
+- Adjacent
+- Incident
+
+---
+
+### Introduction to Graphs
+
+- Outgoing Edge
+- Incoming Edge
+
+---
+
+### Introduction to Graphs
+
+- Degree
+- Indegree
+- Outdegree
+
+---
+
+### Introduction to Graphs
+
+- Parallel edges or Multiple edges
+- Self-loop
+- Simple Graph
+- Path
+
+---
+
+### Introduction to Graphs
+
+- Btech Smart Class
+  - http://www.btechsmartclass.com/data_structures/introduction-to-graphs.html
+
+---
+
+### Graph Representations
+
+1. Adjacency Matrix
+2. Incidence Matrix
+3. Adjacency List
+
+- Btech Smart Class
+  - http://www.btechsmartclass.com/data_structures/graph-representations.html
+
+--- 
+
+### Graph Traversal - DFS
+
+1. Depth-First Search (DFS)
+2. Iterative Deepening Search(IDS) or Iterative Deepening Depth First Search(IDDFS)
+
+- Btech Smart Class
+  - http://www.btechsmartclass.com/data_structures/graph-traversal-dfs.html
+
+--- 
+
+### Graph Traversal - BFS
+
+- Breadth-First Search (BFS)
+  - Btech Smart Class
+    - http://www.btechsmartclass.com/data_structures/graph-traversal-bfs.html
+
+--- 
+
+### Graph Traversal - DLS
+
+- Depth-limited Search
+  - Educba
+    - https://www.educba.com/depth-limited-search/ 
+
+---
+
+### Graph Traversal
+
+- Uniform Cost Search
+  - Geeks for Geeks
+    - https://www.geeksforgeeks.org/uniform-cost-search-dijkstra-for-large-graphs/
+
+---
+
+### Graph Traversal
+
+- Bidirectional Search
+  - Geeks for Geeks
+    - https://www.geeksforgeeks.org/bidirectional-search/
+
+
+---
+
+### Graph Traversal
+
+- Water Jug Problem
+  - Geeks for Geeks
+    - https://www.geeksforgeeks.org/water-jug-problem-using-bfs/ 
+  - Tamu Edu
+    - https://www.math.tamu.edu/~dallen/hollywood/diehard/diehard.htm
+  - Udel Edu
+    - https://www.eecis.udel.edu/~mccoy/courses/cisc4-681.10f/lec-materials/handouts/search-water-jug-handout.pdf
+  
+---
+
+$$End-Of-Week-5$$

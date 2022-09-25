@@ -65,7 +65,7 @@ math: katex
 
 Download [DOC](syllabus.md_doc.pdf), [SLIDE](syllabus.md_slide.pdf), [PPTX](syllabus.md_slide.pptx)
 
-Download [WORD](2021-2022 Fall CE205-Data Structures (Comp. Eng.).docx), [PDF](2021-2022 Fall CE205-Data Structures (Comp. Eng.).pdf)
+Download [WORD](2022-2023-fall-ce205-data-structures-comp-eng.docx), [PDF](2022-2023-fall-ce205-data-structures-comp-eng.pdf)
 
 <iframe width=700, height=500 frameBorder=0 src="../syllabus.md_slide.html"></iframe>
 
@@ -73,12 +73,12 @@ Download [WORD](2021-2022 Fall CE205-Data Structures (Comp. Eng.).docx), [PDF](2
 
 <!-- paginate: true -->
 
-| Instructor                 | Asst. Prof. Dr. Uğur CORUH                                      |
-| -------------------------- | --------------------------------------------------------------- |
-| **Contact Information**    | ugur.coruh@erdogan.edu.tr                                       |
-| **Office No**              | F-301                                                           |
-| **Google Classroom Code**  | y3qryym                                                         |
-| **Lecture Hours and Days** | Wednesday 09:00 - 11:30 (Theory) / Thursday 13:00 - 14:30 (Lab) |
+| Instructor                 | Asst. Prof. Dr. Uğur CORUH                                                                                                    |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| **Contact Information**    | ugur.coruh@erdogan.edu.tr                                                                                                     |
+| **Office No**              | F-301                                                                                                                         |
+| **Google Classroom Code**  | d5yg4hi                                                                                                                       |
+| **Lecture Hours and Days** | **Tuesday** 15:00/15:45 - 16:00-16:45 (2 hours)) (Theory) / **Friday** (09:00-09:45) (Theory)  10:00/10:45-11:00/11:45  (Lab) |
 
 ---
 
@@ -374,9 +374,7 @@ The basic teaching method of this course will be planned to be face-to-face in t
 
 ## G. Late Homework
 
-Throughout the semester, assignments must be submitted as specified by the announced deadline. Your grade will be reduced by 10% of the full points for each calendar day for overdue assignments.
-
-Overdue assignments will not be accepted after three (3) days.
+Throughout the semester, assignments must be submitted as specified by the announced deadline. Overdue assignments will not be accepted.
 
 Unexpected situations must be reported to the instructor for late homeworks by students.
 
@@ -464,42 +462,42 @@ If deemed necessary, changes in the lecture content or course schedule can be ma
 
 | Weeks  | Dates                 | Subjects                                                                                                                                                                                               | Other Tasks |
 |:------ |:--------------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |:----------- |
-| Week 1 | 06.10.2021 07.10.2021 | Course Plan and Communication,Introduction to Linear & Non-Linear Data Structure and Performance Analysis, Implementing Pointer and Objects for Data and Variables, Basic of ASN.1 / BER TLV / PER TLV | TBD         |
-| Week 2 | 13.10.2021 14.10.2021 | Linked Lists and Related Algorithms, Arrays and Matrices                                                                                                                                               | TBD         |
+| Week 1 | 20.09.2022 23.09.2022 | Course Plan and Communication,Introduction to Linear & Non-Linear Data Structure and Performance Analysis, Implementing Pointer and Objects for Data and Variables, Basic of ASN.1 / BER TLV / PER TLV | TBD         |
+| Week 2 | 27.09.2022 30.09.2022 | Linked Lists and Related Algorithms, Arrays and Matrices                                                                                                                                               | TBD         |
 
 ---
 
-| Week 3 | 20.10.2021 21.10.2021 | Stacks, Queue Structures and Related Algorithms and Problems.                    | TBD |
+| Week 3 | 04.10.2022 07.10.2022 | Stacks, Queue Structures and Related Algorithms and Problems.                    | TBD |
 |:------ |:--------------------- |:-------------------------------------------------------------------------------- |:--- |
-| Week 4 | 27.10.2021 28.10.2021 | Tree Data Structure Types and Applications (Binary Tree, Tree Traversals, Heaps) | TBD |
-| Week 5 | 03.11.2021 04.11.2021 | Graph Data Structure and Traversals                                              |     |
+| Week 4 | 11.10.2022 14.10.2022 | Tree Data Structure Types and Applications (Binary Tree, Tree Traversals, Heaps) | TBD |
+| Week 5 | 18.10.2022 21.10.2022 | Graph Data Structure and Traversals                                              |     |
 
 ---
 
-| Week-6 | 10.11.2021 11.11.2021 | Graph MST, Backtracking, Topological Sorting, Shortest Paths, Connectivity,Max Flow and Cycle Detection Algorithms. Graph Isomorphism and canonization Graph Cuts | TBD |
+| Week-6 | 25.10.2022 28.10.2022 | Graph MST, Backtracking, Topological Sorting, Shortest Paths, Connectivity,Max Flow and Cycle Detection Algorithms. Graph Isomorphism and canonization Graph Cuts | TBD |
 |:------ |:--------------------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------- |:--- |
-| Week-7 | 17.11.2021 18.11.2021 | Linear, Binary and Fibonacci Search Hashing and Hash Tables with Perpect Hashing                                                                                  | TBD |
-| Week-8 | 20.11.2021 28.11.2021 | **Midterm**                                                                                                                                                       | TBD |
+| Week-7 | 01.11.2022 04.11.2022 | Linear, Binary and Fibonacci Search Hashing and Hash Tables with Perpect Hashing                                                                                  | TBD |
+| Week-8 | 08.11.2022 11.11.2022 | **Midterm**                                                                                                                                                       | TBD |
 
 ---
 
-| Week-9  | 01.12.2021 02.12.2021 | Sorting Algorithms, Taxonomy and Comparisons                                                                                                                                                                       | TBD |
+| Week-9  | 15.11.2022 18.11.2022 | Sorting Algorithms, Taxonomy and Comparisons                                                                                                                                                                       | TBD |
 |:------- |:--------------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |:--- |
-| Week-10 | 08.12.2021 09.12.2021 | Advaced Tree Data Structures (Binary Search Tree, AVL Tree, B Trees and derivations,Red-Black trees, Splay Trees and Augmented Data Structures, van Emde Boas Trees, Binomial and Minimax Trees ) and Comparisons. | TBD |
-| Week-11 | 15.12.2021 16.12.2021 | String Data Structure, Subsequence Search, Alignment and Comparison Algorithms.                                                                                                                                    | TBD |
+| Week-10 | 22.11.2022 25.11.2022 | Advaced Tree Data Structures (Binary Search Tree, AVL Tree, B Trees and derivations,Red-Black trees, Splay Trees and Augmented Data Structures, van Emde Boas Trees, Binomial and Minimax Trees ) and Comparisons. | TBD |
+| Week-11 | 29.11.2022 02.12.2022 | String Data Structure, Subsequence Search, Alignment and Comparison Algorithms.                                                                                                                                    | TBD |
 
 ---
 
-| Week-12 | 22.12.2021 23.12.2021 | String Search Algorithms, Tries, Data Structures for Disjoint Sets.                                                 | TBD |
+| Week-12 | 06.12.2022 09.12.2022 | String Search Algorithms, Tries, Data Structures for Disjoint Sets.                                                 | TBD |
 |:------- |:--------------------- |:------------------------------------------------------------------------------------------------------------------- |:--- |
-| Week-13 | 29.12.2021 30.12.2021 | Introduction to File Organization and Processing Sequential File Organization,Direct File Organization Hash Methods | TBD |
-| Week-14 | 05.01.2022 06.01.2022 | Direct File Organization Indexes Binary and B Tree Structures for File.                                             | TBD |
+| Week-13 | 13.12.2022 16.12.2022 | Introduction to File Organization and Processing Sequential File Organization,Direct File Organization Hash Methods | TBD |
+| Week-14 | 20.12.2022 23.12.2022 | Direct File Organization Indexes Binary and B Tree Structures for File.                                             | TBD |
 
 ---
 
-| Week-15 | 12.01.2022 13.01.2022 | Hashing Techniques for Expandable Files,Tries Approximate String Matching Trie Hashing Seconday Key Retrieval (2) File Sorting | TBD |
+| Week-15 | 27.12.2022 30.12.2022 | Hashing Techniques for Expandable Files,Tries Approximate String Matching Trie Hashing Seconday Key Retrieval (2) File Sorting | TBD |
 |:------- |:--------------------- |:------------------------------------------------------------------------------------------------------------------------------ |:--- |
-| Week-16 | 17.01.2022 30.01.2022 | **Final**                                                                                                                      | TBD |
+| Week-16 | 03.01.2023 06.01.2023 | **Final**                                                                                                                      | TBD |
 
 ---
 

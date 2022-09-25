@@ -40,6 +40,7 @@ footer-center: "License: WTFPL"
 footer-right:
 subparagraph: true
 lang: en-US 
+math: mathjax
 ---
 
 <!-- _backgroundColor: aquq -->
@@ -49,14 +50,8 @@ lang: en-US
 <!-- paginate: false -->
 
 # CE205 Data Structures
-
-# Week-3
-
----
-
-<!-- paginate: true -->
-
-## Stacks, Queue Structures, and Related Algorithms and Problems.
+### Week-3
+#### Stacks, Queue Structures, and Related Algorithms and Problems.
 
 Download [DOC](ce205-week-3-stack.md_doc.pdf), [SLIDE](ce205-week-3-stack.md_slide.pdf), [PPTX](ce205-week-3-stack.md_slide.pptx)
 
@@ -64,91 +59,141 @@ Download [DOC](ce205-week-3-stack.md_doc.pdf), [SLIDE](ce205-week-3-stack.md_sli
 
 ---
 
+<!-- paginate: true -->
 
+### Outline-1
 
-1. Stack ADT
-
-2. Stack Using Array
-
-3. Stack Using Linked List
-
----
-
-
-
-1. Expressions
-
-a. Infix
-
-b. Postfix
-
-c. Prefix
-
-5. Infix to Postfix Conversion
-
-6. Postfix Expression Evaluation
-   
-   ---
-   
-   
-
-7. Queue ADT
-
-a. First Come First Serve, FCFS, FIFO
-
-8. Queue Data structure Using Array
-
-9. Queue Using Linked List
-
-10. Circular Queue Data structure
-
-11. Double Ended Queue Data structure
+- Stack ADT
+  - Stack Using Array
+  - Stack Using Linked List
+- Expressions
+  - Infix
+  - Postfix
+  - Prefix
+  - Infix to Postfix Conversion
+  - Postfix Expression Evaluation
 
 ---
 
+### Outline-2
 
-
-1. Hanoi Tower
-
-2. Multilevel Queue (MLQ)
-
-Hanoi Tower
-
-Recursive Version
-
-[Program for Tower of Hanoi - GeeksforGeeks](https://www.geeksforgeeks.org/c-program-for-tower-of-hanoi/)
-
-Iterative Version
-
-[Iterative Tower of Hanoi - GeeksforGeeks](https://www.geeksforgeeks.org/iterative-tower-of-hanoi/)
+- Queue ADT
+  - First Come First Serve, FCFS, FIFO
+  - Queue Data structure Using Array
+  - Queue Using Linked List
+  - Circular Queue Data structure
+  - Double Ended Queue Data structure
+  - Multilevel Queue (MLQ)
+- Hanoi Tower
 
 ---
 
-Iterative Algorithm: 
+### Stack ADT
 
-Calculate the total number of moves required i.e.
+- BTech Smart Class
+  - http://www.btechsmartclass.com/data_structures/stack-adt.html
 
-"pow(2, n)- 1" here n is number of disks.
+---
 
-2. If number of disks (i.e. n) is even then interchange destination
+### Stack Using Array
+
+- BTech Smart Class
+  - http://www.btechsmartclass.com/data_structures/stack-using-array.html
+
+---
+
+### Stack Using Linked List
+
+- BTech Smart Class
+  - http://www.btechsmartclass.com/data_structures/stack-using-linked-list.html
+
+
+---
+
+### Expressions
+
+- BTech Smart Class
+  - http://www.btechsmartclass.com/data_structures/expressions.html
+    - Infix
+    - Postfix
+    - Prefix
+
+---
+
+### Infix to Postfix Conversion
+
+- BTech Smart Class
+  - http://www.btechsmartclass.com/data_structures/infix-to-postfix.html
+
+---
+
+### Postfix Expression Evaluation
+
+- BTech Smart Class
+  - http://www.btechsmartclass.com/data_structures/postfix-evaluation.html
+
+---
    
-   pole and auxiliary pole.
+### Queue ADT
 
-3. for i = 1 to total number of moves:
-
-  if i%3 == 1:
-
-legal movement of top disk between source pole and destination pole
-
-  if i%3 == 2:
-
-legal movement top disk between source pole and auxiliary pol
-
-  if i%3 == 0:
-
-  legal movement top disk between auxiliary pole and destination pole
+- BTech Smart Class
+  - http://www.btechsmartclass.com/data_structures/queue-adt.html
 
 ---
+
+### First Come First Serve, FCFS, FIFO
+
+- BTech Smart Class
+  - http://www.btechsmartclass.com/downloads/lab-manuals/Operating-System-Lab-Manual-R18-JNTUH.pdf
+
+---
+
+### Queue Data structure Using Array
+
+- BTech Smart Class
+  - http://www.btechsmartclass.com/data_structures/queue-using-array.html
+
+---
+
+### Queue Using Linked List
+
+- BTech Smart Class
+  - http://www.btechsmartclass.com/data_structures/queue-using-linked-list.html
+
+---
+
+### Circular Queue Data structure
+
+- BTech Smart Class
+  - http://www.btechsmartclass.com/data_structures/circular-queue.html
+
+---
+
+### Double Ended Queue Data structure
+
+- BTech Smart Class
+  - http://www.btechsmartclass.com/data_structures/double-ended-queue.html
+
+---
+
+### Multilevel Queue (MLQ)
+
+- Geeks for Geeks
+  - https://www.geeksforgeeks.org/multilevel-queue-mlq-cpu-scheduling/
+
+---
+
+### Hanoi Tower
+
+- Geeks for Geeks
+  - Recursive Version
+    - [Program for Tower of Hanoi - GeeksforGeeks](https://www.geeksforgeeks.org/c-program-for-tower-of-hanoi/)
+  - Iterative Version
+    - [Iterative Tower of Hanoi - GeeksforGeeks](https://www.geeksforgeeks.org/iterative-tower-of-hanoi/)
+
+---
+
+### Hanoi Tower Iterative Algorithm: 
 
 S = Source
 
@@ -156,10 +201,26 @@ A = Aux
 
 D = Dest
 
+Calculate the total number of moves required i.e.
+
+$pow(2, n)- 1$ here n is number of disks.
+
 ---
 
-Multi Level Queue
+### Hanoi Tower Iterative Algorithm:
 
-[Multilevel Queue (MLQ) CPU Scheduling - GeeksforGeeks](https://www.geeksforgeeks.org/multilevel-queue-mlq-cpu-scheduling/)
+- If number of disks (i.e. n) is even then interchange destination 
+  pole and auxiliary pole.
+- for i = 1 to total number of moves:
+  - if i%3 == 1:
+    - legal movement of top disk between source pole and destination pole
+  - if i%3 == 2:
+    - legal movement top disk between source pole and auxiliary pole
+  - if i%3 == 0:
+    - legal movement top disk between auxiliary pole and destination pole
+
+---
+
+$$End-Of-Week-3$$
 
 
