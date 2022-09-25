@@ -187,12 +187,26 @@ markdown_extensions:
       custom_checkbox: true
   - pymdownx.tilde
 
+# for github personal access token open - https://github.com/settings/tokens
 plugins:
+  - mkdocs-simple-hooks:
+      hooks:
+          on_env: "hooks:on_env"
   - search
-  - git-revision-date-localized
+  - git-revision-date-localized:
+      enable_creation_date: true
+      enabled: !ENV [MKDOCS_ENABLE_GIT_REVISION_DATE, True]
   - minify:
       minify_html: false
-
+  - git-authors
+  - git-committers:
+      repository: ucoruh/ce205-data-structures
+      docs_path: docs/
+      branch: main
+      #token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
+      token: !ENV MKDOCS_GIT_COMMITTERS_APIKEY
+      enabled: !ENV [MKDOCS_ENABLE_GIT_COMMITTERS, True]
+      
 extra_javascript:
   - javascript/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
