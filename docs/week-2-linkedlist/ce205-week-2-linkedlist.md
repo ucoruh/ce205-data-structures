@@ -107,7 +107,90 @@ Download [DOC](ce205-week-2-linkedlist.md_doc.pdf), [SLIDE](ce205-week-2-linkedl
 ---
 
 ### Workshop 
+Follow the link below and complete steps.
 - https://github.com/ucoruh/asn1c-wsl-sample 
+
+There are quick start and reference guides
+- http://lionet.info/asn1c/asn1c-quick.pdf
+- http://lionet.info/asn1c/asn1c-usage.pdf
+- https://www.itu.int/ITU-T/studygroups/com17/languages/
+---
+
+### Workshop 
+Visit TÜBİTAK KAMU SM MA3API Web Page
+- https://yazilim.kamusm.gov.tr/?q=tr/node/19&language=en
+- https://yazilim.kamusm.gov.tr/?q=/node/14
+
+---
+
+### Workshop 
+
+Check out ASN.1 encoded standards. 
+
+  - ETSI TS 101 733 CADES digital signature (ASN data structure)
+    - https://www.etsi.org/deliver/etsi_ts/101700_101799/101733/02.02.01_60/ts_101733v020201p.pdf
+  - ETSI TS 102 778 PADES digital signature (PDF data structure)
+    - https://www.etsi.org/deliver/etsi_ts/102700_102799/10277803/01.02.01_60/ts_10277803v010201p.pdf
+  - ETSI TS 101 903 XADES digital signature (XML data structure)
+    - https://www.etsi.org/deliver/etsi_ts/101900_101999/101903/01.04.02_60/ts_101903v010402p.pdf
+  - ETSI TS 102 918 ASiC digital signature
+    - https://www.etsi.org/deliver/etsi_ts/102900_102999/102918/01.03.01_60/ts_102918v010301p.pdf
+
+---
+
+### Workshop 
+
+Check out ASN.1 encoded standards. 
+
+- Also there is An Implementation of CAdES, XAdES, PAdES and ASiC for Windows in C++
+  - https://github.com/WindowsNT/AdES
+
+---
+
+## Workshop
+
+Telecom Standard Example for ASN.1 
+
+- https://www.etsi.org/deliver/etsi_ts/125400_125499/125413/04.09.00_60/ts_125413v040900p.pdf
+
+---
+
+## Workshop
+
+### Industrial Data Standards - Payment
+
+- TLV Utilities
+  - https://paymentcardtools.com/
+  - https://emvlab.org/dumpasn1/
+- Sample EMV ASN.1 
+  - https://github.com/mmattice/emv-asn1
+  
+---
+
+## Workshop
+### Industrial Data Standards - Telco
+#### ASN.1 Standartları
+- ETSI
+  - https://portal.etsi.org/Services/Centre-for-Testing-Interoperability/ETSI-Approach/Specification-Languages/ASN1
+- ITU-T
+  - https://www.itu.int/ITU-T/recommendations/fl.aspx?lang=1
+- ASN.1 Book
+  - https://www.oss.com/asn1/resources/books-whitepapers-pubs/dubuisson-asn1-book.PDF
+
+---
+
+## Workshop
+
+### Network Measurement Results Data
+
+- NMR   
+  - https://www.etsi.org/deliver/etsi_ts/101500_101599/101503/08.27.00_60/ts_101503v082700p.pdf
+- GSM API
+  - https://www.etsi.org/deliver/etsi_ts/101400_101499/101476/08.04.01_60/ts_101476v080401p.pdf
+- UTRAN
+  - https://www.etsi.org/deliver/etsi_ts/125300_125399/125331/13.01.00_60/ts_125331v130100p.pdf
+- E-UTRAN
+  - https://www.etsi.org/deliver/etsi_ts/136300_136399/136331/15.03.00_60/ts_136331v150300p.pdf
 
 ---
 
