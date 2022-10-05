@@ -371,7 +371,7 @@ class LinkedList {
 
 ### Representation of Linked Lists -C# Language
 
-```csharp
+``` csharp
 class LinkedList {
 	// The first node(head) of the linked list
 	// Will be an object of type Node (null by default)
@@ -430,7 +430,7 @@ We can use the following steps to insert a new node after a node in the single l
 
 ### Construction of a simple linked list with 3 nodes - In C Language
 
-```c
+``` c
 // C program to implement a
 // linked list
 #include <stdio.h>
@@ -533,7 +533,7 @@ anything yet */
 
 #### Construction of a simple linked list with 3 nodes - In C++
 
-```cpp
+``` cpp
 // C++ program to implement a
 // linked list
 #include <bits/stdc++.h>
@@ -639,7 +639,7 @@ anything yet */
 
 #### Construction of a simple linked list with 3 nodes in Java
 
-```java
+``` java
 // A simple Java program to introduce a linked list
 class LinkedList {
 	Node head; // head of list
@@ -712,7 +712,7 @@ class LinkedList {
 
 #### Construction of a simple linked list with 3 nodes in C#
 
-```csharp
+``` csharp
 // A simple C# program to introduce a linked list
 using System;
 
@@ -821,8 +821,6 @@ We can use the following steps to delete a node from end of the single linked li
 - Step 6 - If it is **FALSE**. Then, set '**temp2 = temp1** ' and move **temp1** to its next node. Repeat the same until it reaches to the last node in the list. (until **temp1 → next** == **NULL**)
 - Step 7 - Finally, Set **temp2 → next** = **NULL** and delete **temp1**.
 
-
-
 ---
 
 #### Deleting a Specific Node from the list
@@ -842,8 +840,6 @@ We can use the following steps to delete a specific node from the single linked 
 - Step 11 - If **temp1** is last node then set **temp2 → next** = **NULL** and delete **temp1** (**free(temp1)**).
 - Step 12 - If **temp1** is not first node and not last node then set **temp2 → next** = **temp1 → next** and delete **temp1** (**free(temp1)**).
 
-
-
 ---
 
 #### Displaying a Single Linked List
@@ -856,8 +852,6 @@ We can use the following steps to display the elements of a single linked list..
 - Step 4 - Keep displaying **temp → data** with an arrow (**--->**) until **temp** reaches to the last node
 - Step 5 - Finally display **temp → data** with arrow pointing to **NULL** (**temp → data ---> NULL**).
 
-
-
 ---
 
 ## **Traversal of a Linked List**
@@ -868,7 +862,7 @@ In the previous program, we created a simple linked list with three nodes. Let u
 
 #### Traversal of a Linked List - C
 
-```c
+``` c
 // A simple C program for
 // traversal of a linked list
 
@@ -923,7 +917,7 @@ int main()
 
 #### Traversal of a Linked List - C++
 
-```cpp
+``` cpp
 // A simple C++ program for
 // traversal of a linked list
 
@@ -981,7 +975,7 @@ int main()
 
 #### Traversal of a Linked List - Java
 
-```java
+``` java
 // A simple Java program for traversal of a linked list
 
 class LinkedList {
@@ -1038,7 +1032,7 @@ class LinkedList {
 
 #### Traversal of a Linked List - C#
 
-```csharp
+``` csharp
 // C# program for traversal of a linked list
 
 using System;
@@ -1099,7 +1093,7 @@ public class LinkedList {
 
 #### Output
 
-```bash
+``` bash
  1  2  3 
 ```
 
@@ -1121,7 +1115,7 @@ public class LinkedList {
 
 #### Complete C Example of Single Linked List
 
-```c
+``` c
 // SingleLinkedList.c : This file contains the 'main' function. Program execution begins and ends there.
 //
 
@@ -1378,7 +1372,6 @@ void display()
 [What is Linked List - GeeksforGeeks](https://www.geeksforgeeks.org/what-is-linked-list/?ref=lbp)
 
 
-
 ---
 
 ### Circular Linked List
@@ -1434,7 +1427,7 @@ Initial circular linked list
 
 Here, the single node is represented as
 
-```
+``` c
 struct Node {
     int data;
     struct Node * next;
@@ -1445,7 +1438,7 @@ Each struct node has a data item and a pointer to the next struct node.
 
 Now we will create a simple circular linked list with three items to understand how this works.
 
-```
+``` c
 /* Initialize nodes */
 struct node *last;
 struct node *one = NULL;
@@ -1591,7 +1584,7 @@ Delete a specific node
 
 ## Circular Linked List Code in  Java, C, and C++
 
-```c
+``` c
 // C code to perform circular linked list operations
 
 #include <stdio.h>
@@ -1778,7 +1771,7 @@ int main() {
 
 ## Circular Linked List Code in C++
 
-```cpp
+``` cpp
 // C++ code to perform circular linked list operations
 
 #include <iostream>
@@ -1965,7 +1958,7 @@ int main() {
 
 ### Circular Linked List Code in Java
 
-```java
+``` java
 // Java code to perform circular linked list operations
 
 class CircularLinkedList {
@@ -2224,7 +2217,7 @@ Newly created doubly linked list
 
 Here, the single node is represented as
 
-```
+``` c
 struct node {
     int data;
     struct node *next;
@@ -2236,7 +2229,7 @@ Each struct node has a data item, a pointer to the previous struct node, and a p
 
 Now we will create a simple doubly linked list with three items to understand how this works.
 
-```
+``` c
 /* Initialize nodes */
 struct node *head;
 struct node *one = NULL;
@@ -2328,7 +2321,7 @@ Reorganize the pointers
 
 ### Code for Insertion at the Beginning
 
-```
+``` c
 // insert node at the front
 void insertFront(struct Node** head, int data) {
 
@@ -2394,7 +2387,7 @@ Final list
 
 ### Code for Insertion in between two Nodes
 
-```
+``` c
 // insert a node after a specific node
 void insertAfter(struct Node* prev_node, int data) {
 
@@ -2453,7 +2446,7 @@ The final list
 
 ### Code for Insertion at the End
 
-```
+``` c
 // insert a newNode at the end of the list
 void insertEnd(struct Node** head, int data) {
     // allocate memory for node
@@ -2521,7 +2514,7 @@ Final list
 
 **Code for Deletion of the First Node**
 
-```
+``` c
 if (*head == del_node)
     *head = del_node->next;
 
@@ -2555,7 +2548,7 @@ Final list
 
 **Code for Deletion of the Inner Node**
 
-```
+``` c
 if (del_node->next != NULL)
     del_node->next->prev = del_node->prev;
 
@@ -2581,7 +2574,7 @@ Final list
 
 **Code for Deletion of the Last Node**
 
-```c
+``` c
 if (del_node->prev != NULL)
     del_node->prev->next = del_node->next;
 ```
@@ -2598,7 +2591,7 @@ Here, `del_node ->next` is `NULL` so `del_node->prev->next = NULL`.
 
 ## Doubly Linked List Code in Python, Java, C, and C++
 
-```c
+``` c
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -2756,7 +2749,7 @@ int main() {
 
 ## Doubly Linked List Code in Python, Java, C, and C++
 
-```cpp
+``` cpp
 #include <iostream>
 using namespace std;
 
@@ -2914,7 +2907,7 @@ int main() {
 
 
 
-```java
+``` java
 public class DoublyLinkedList {
 
   // node creation
@@ -3123,40 +3116,55 @@ public class DoublyLinkedList {
 
 An ordinary doubly linked list stores addresses of the previous and next list items in each list node, requiring two address fields:
 
+``` bash
  ...  A       B         C         D         E  ...
           –>  next –>  next  –>  next  –>
           <–  prev <–  prev  <–  prev  <–
+```
 
 An XOR linked list compresses the same information into *one* address field by storing the bitwise XOR (here denoted by ⊕) of the address for *previous* and the address for *next* in one field:
 
+``` bash
  ...  A        B         C         D         E  ...
           ⇌   A⊕C   ⇌   B⊕D   ⇌   C⊕E   ⇌
 
+```
+
 More formally:
 
+```bash
   link(B) = addr(A)⊕addr(C), link(C) = addr(B)⊕addr(D), ...
+```
 
 When traversing the list from left to right: supposing the cursor is at C, the previous item, B, may be XORed with the value in the link field (B⊕D). The address for D will then be obtained and list traversal may resume. The same pattern applies in the other direction.
 
+``` bash
 i.e. `addr(D) = link(C) ⊕ addr(B)` where
 
       link(C) = addr(B)⊕addr(D)
+```
 
 so
 
+``` bash
       addr(D) = addr(B)⊕addr(D) ⊕ addr(B)           
     
       addr(D) = addr(B)⊕addr(B) ⊕ addr(D) 
+```
 
 since
 
+```bash
        X⊕X = 0                 
        => addr(D) = 0 ⊕ addr(D)
+```
 
 since
 
+``` bash
        X⊕0 = X
        => addr(D) = addr(D)
+```
 
 The XOR operation cancels `addr(B)` appearing twice in the equation and all we are left with is the `addr(D)`.
 
@@ -3166,10 +3174,12 @@ To start traversing the list in either direction from some point, the address of
 
 The key is the first operation, and the properties of XOR:
 
+``` bash
 - X⊕X = 0
 - X⊕0 = X
 - X⊕Y = Y⊕X
 - (X⊕Y)⊕Z = X⊕(Y⊕Z)
+```
 
 The R2 register always contains the XOR of the address of current item C with the address of the predecessor item P: C⊕P. The Link fields in the records contain the XOR of the left and right successor addresses, say L⊕R. XOR of R2 (C⊕P) with the current link field (L⊕R) yields C⊕P⊕L⊕R.
 
@@ -3301,9 +3311,7 @@ int main()
 **Can we search in a sorted linked list better than O(n) time?** The worst-case search time for a sorted linked list is O(n) as we can only linearly traverse the list and cannot skip nodes while searching. For a Balanced Binary Search Tree, we skip almost half of the nodes after one comparison with the root. For a sorted array, we have random access and we can apply Binary Search on arrays. Can we augment sorted linked lists to search faster? The answer is [Skip List](http://en.wikipedia.org/wiki/Skip_list). The idea is simple, we create multiple layers so that we can skip some nodes. See the following example list with 16 nodes and two layers. The upper layer works as an “express lane” that connects only the main outer stations, and the lower layer works as a “normal lane” that connects every station. Suppose we want to search for 50, we start from the first node of the “express lane” and keep moving on the “express lane” till we find a node whose next is greater than 50. Once we find such a node (30 is the node in the following example) on “express lane”, we move to “normal lane” using a pointer from this node, and linearly search for 50 on “normal lane”. In the following example, we start from 30 on the “normal lane” and with linear search, we find 50. 
 
 
-
 ![](assets/2022-10-05-03-10-57-image.png)
-
 
 
 What is the time complexity with two layers? 
@@ -3354,12 +3362,11 @@ We will start from the highest level in the list and compare the key of the next
 1. Key of next node is less than key to be inserted then we keep on moving forward on the same level
 2. Key of next node is greater than the key to be inserted then we store the pointer to current node **i** at **update[i]** and move one level down and continue our search.
 
-
-
 ---
 
 At the level 0, we will definitely find a position to insert the given key. Following is the pseudo-code for the insertion algorithm –
 
+``` c
 **Insert(list, searchKey)**
 local update[0...MaxLevel+1]
 x := list -> header
@@ -3376,6 +3383,7 @@ x := makeNode(lvl, searchKey, value)
 for i := 0 to level do
     x -> forward[i] := update[i] -> forward[i]
     update[i] -> forward[i] := x
+```
 
 Here update[i] holds the pointer to node at level **i** from which we moved down to level **i-1** and pointer of node left to insertion position at level 0. Consider this example where we want to insert key 17 – 
 
@@ -3385,7 +3393,7 @@ Here update[i] holds the pointer to node at level **i** from which we moved do
 
 Following is the code for insertion of key in Skip list
 
-```cpp
+``` cpp
 // C++ code for inserting element in skip list
 
 #include <bits/stdc++.h>
@@ -3573,7 +3581,7 @@ int main()
 
 ---
 
-```java
+``` java
 // Java code for inserting element in skip list
 
 class GFG {
@@ -3745,6 +3753,7 @@ class GFG {
 
 **Output**
 
+``` bash
 Successfully Inserted key 3
 Successfully Inserted key 6
 Successfully Inserted key 7
@@ -3760,6 +3769,7 @@ Level 0: 3 6 7 9 12 17 19 21 25 26
 Level 1: 3 6 12 17 25 26 
 Level 2: 3 6 12 25 
 Level 3: 3 25 
+```
 
 **Note:** The level of nodes is decided randomly, so output may differ.
 
@@ -3783,6 +3793,7 @@ Searching an element is very similar to approach for searching a spot for insert
 
 At the lowest level (0), if the element next to the rightmost element (update[0]) has key equal to the search key, then we have found key otherwise failure. Following is the pseudo code for searching element –
 
+```c
 **Search(list, searchKey)**
 x := list -> header
 -- loop invariant: x -> key  level downto 0 do
@@ -3790,6 +3801,7 @@ x := list -> header
 x := x -> forward[0]
 if x -> key = searchKey then return x -> value
 else return failure
+```
 
 Consider this example where we want to search for key 17- 
 
@@ -3799,6 +3811,7 @@ Consider this example where we want to search for key 17- 
 
 Deletion of an element k is preceded by locating element in the Skip list using above mentioned search algorithm. Once the element is located, rearrangement of pointers is done to remove element form list just like we do in singly linked list. We start from lowest level and do rearrangement until element next to update[i] is not k. After deletion of element there could be levels with no elements, so we will remove these levels as well by decrementing the level of Skip list. Following is the pseudo code for deletion –
 
+``` c
 **Delete(list, searchKey)**
 local update[0..MaxLevel+1]
 x := list -> header
@@ -3813,6 +3826,7 @@ if x -> key = searchKey then
     free(x)
     while list -> level > 0 and list -> header -> forward[list -> level] = NIL do
         list -> level := list -> level – 1
+```
 
 Consider this example where we want to delete element 6 – 
 
@@ -3822,7 +3836,7 @@ Here at level 3, there is no element (arrow in red) after deleting element 6. So
 
 **Implementation**
 
-```cpp
+``` cpp
 // C++ code for searching and deleting element in skip list
 
 #include <bits/stdc++.h>
@@ -4102,6 +4116,7 @@ int main()
 
 **Output**
 
+```bash
 Successfully Inserted key 3
 Successfully Inserted key 6
 Successfully Inserted key 7
@@ -4121,6 +4136,7 @@ Successfully deleted key 19
 *****Skip List*****
 Level 0: 3 6 7 9 12 17 21 25 26 
 Level 1: 6 9 26 
+```
 
 ---
 
@@ -4131,8 +4147,6 @@ Time complexity of both searching and deletion is same – **Time complexity Wo
 - **Insert – O(n)**
 - **Space – O(nlogn)**
 - **Delete – O(n)**
-
-
 
 ---
 
@@ -4196,7 +4210,7 @@ Given a list of items, sort them in increasing order. 
 
 #### C++ Implementation
 
-```cpp
+``` cpp
 // CPP program to implement Strand Sort
 #include <bits/stdc++.h>
 using namespace std;
@@ -4271,7 +4285,7 @@ int main(void)
 
 [Sorting algorithms/Strand sort - Rosetta Code](https://rosettacode.org/wiki/Sorting_algorithms/Strand_sort#C)
 
-```c
+``` c
 #include <stdio.h>
 
 typedef struct node_t *node, node_t;
@@ -4432,7 +4446,7 @@ datatype arrayName [ size ] ;
 
 # Example Code
 
-```
+``` c
 int rollNumbers [60] ;
 ```
 
@@ -4446,7 +4460,7 @@ datatype arrayName [ size ] = {value1, value2, ...} ;
 
 # Example Code
 
-```
+``` c
 int marks [6] = { 89, 90, 76, 78, 98, 86 } ;
 ```
 
@@ -4460,7 +4474,7 @@ The array must be initialized if it is created without specifying any size. In t
 
 # Example Code
 
-```
+``` c
 int marks [] = { 89, 90, 76, 78, 98, 86 } ;
 
 char studentName [] = "btechsmartclass" ;
@@ -4478,7 +4492,7 @@ arrayName [ indexValue ]
 
 # Example Code
 
-```
+``` c
 marks [2] = 99 ;
 ```
 
@@ -4498,7 +4512,7 @@ datatype arrayName [ rowSize ] [ columnSize ] ;
 
 # Example Code
 
-```
+``` c
 int matrix_A [2][3] ;
 ```
 
@@ -4508,11 +4522,13 @@ Initialization of Two Dimensional Array
 
 We use the following general syntax for declaring and initializing a two dimensional array with specific number of rows and coloumns with initial values.
 
+``` c
 datatype arrayName [rows][colmns] = {{r1c1value, r1c2value, ...},{r2c1, r2c2,...}...} ;
+```
 
 # Example Code
 
-```
+``` c
 int matrix_A [2][3] = { {1, 2, 3},{4, 5, 6} } ;
 ```
 
@@ -4522,7 +4538,7 @@ We can also initialize as follows...
 
 # Example Code
 
-```
+``` c
 int matrix_A [2][3] = {
                         {1, 2, 3},
                         {4, 5, 6} 
@@ -4539,7 +4555,7 @@ arrayName [ rowIndex ] [ columnIndex ]
 
 # Example Code
 
-```
+``` c
 matrix_A [0][1] = 10 ;
 ```
 
@@ -4553,13 +4569,15 @@ An [array](https://www.geeksforgeeks.org/array-data-structure/) is called circ
 **An example problem :**   
 Suppose n people are sitting at a circular table with names A, B, C, D, … Given a name, we need to print all n people (in order) starting from the given name.   
                                       
-
 ![](https://media.geeksforgeeks.org/wp-content/uploads/20201107185952/circulararrayrepresentation.PNG)
 
- For example, consider 6 people A B C D E F and given name as ‘D’. People sitting in a circular manner starting from D are D E F A B C.  
+---
+
+- For example, consider 6 people A B C D E F and given name as ‘D’. People sitting in a circular manner starting from D are D E F A B C.  
 A **simple solution** is to create an auxiliary array of size 2*n and store it in another array. For example for 6 people, we create below the auxiliary array.   
 A B C D E F A B C D E F   
-Now for any given index, we simply print n elements starting from it. For example, we print the following 6.   
+Now for any given index, we simply print n elements starting from it. For example, we print the following 6.
+
 A B C **D E F A B C** D E F 
 
 Below is the implementation of the above approach.
@@ -4568,7 +4586,7 @@ Below is the implementation of the above approach.
 
 #### C++ Implementation
 
-```cpp
+``` cpp
 // CPP program to demonstrate use of circular
 // array using extra memory space
 #include <bits/stdc++.h>
@@ -4602,7 +4620,7 @@ int main()
 
 #### Java Implementation
 
-```java
+``` java
 // Java program to demonstrate use of circular
 // array using extra memory space
 import java.util.*;
@@ -4644,7 +4662,7 @@ public class GfG{
 
 #### C# Implementation
 
-```csharp
+``` csharp
 // C# program to demonstrate use of circular
 // array using extra memory space
 using System;
@@ -4738,7 +4756,7 @@ Follow the steps below to solve the given problem. 
 
 #### C++ Implementation
 
-```cpp
+``` cpp
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -5023,7 +5041,7 @@ int main()
 
 #### C++ Implementation
 
-```cpp
+``` cpp
 // C++ program for above approach
 #include <iostream>
 using namespace std;
@@ -5085,7 +5103,7 @@ int main()
 
 #### Java Implementation
 
-```java
+``` java
 // Java program for above approach
 class GFG{
 	
@@ -5152,7 +5170,7 @@ public static void main(String[] args)
 
 #### C#  Implementation
 
-```csharp
+``` csharp
 // C# program for above approach
 using System;
 class GFG {
@@ -5282,7 +5300,7 @@ Repeat above steps for inner ring while there is an inner ring.
 
 #### C++ Implementation
 
-```cpp
+``` cpp
 // C++ program to rotate a matrix
 
 #include <bits/stdc++.h>
@@ -5391,7 +5409,7 @@ int main()
 
 #### Java Implementation
 
-```java
+``` java
 // Java program to rotate a matrix
 import java.lang.*;
 import java.util.*;
@@ -5511,7 +5529,7 @@ class GFG
 
 #### C# Implementation
 
-```csharp
+``` csharp
 // C# program to rotate a matrix
 using System;
 
@@ -5664,7 +5682,7 @@ In above example matrix, there are only 6 non-zero elements ( those are 9, 8, 4,
 
 # Implementation of Array Representation of Sparse Matrix using C++
 
-```cpp
+``` cpp
 #include<iostream>
 
 using namespace std;
