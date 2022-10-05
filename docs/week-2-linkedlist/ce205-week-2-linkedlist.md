@@ -4444,7 +4444,7 @@ We use the following general syntax for declaring a single dimensional array...
 
 datatype arrayName [ size ] ;
 
-# Example Code
+#### Example Code
 
 ``` c
 int rollNumbers [60] ;
@@ -4456,9 +4456,11 @@ Initialization of Single Dimensional Array
 
 We use the following general syntax for declaring and initializing a single dimensional array with size and initial values.
 
+``` c
 datatype arrayName [ size ] = {value1, value2, ...} ;
+```
 
-# Example Code
+#### Example Code
 
 ``` c
 int marks [6] = { 89, 90, 76, 78, 98, 86 } ;
@@ -4466,31 +4468,34 @@ int marks [6] = { 89, 90, 76, 78, 98, 86 } ;
 
 The above declaration of single dimensional array reserves 6 contiguous memory locations of 2 bytes each with the name **marks** and initializes with value 89 in first memory location, 90 in second memory location, 76 in third memory location, 78 in fourth memory location, 98 in fifth memory location and 86 in sixth memory location.
 
-We can also use the following general syntax to intialize a single dimensional array without specifying size and with initial values...
+We can also use the following general syntax to intialize a single dimensional array without specifying size and with initial values.
 
+``` c
 datatype arrayName [ ] = {value1, value2, ...} ;
+```
 
-The array must be initialized if it is created without specifying any size. In this case, the size of the array is decided based on the number of values initialized.
+The array must be initialized if it is created without specifying any size. In this case, the size of the array is decided based on the number of values initialized
 
-# Example Code
+#### Example Code
 
 ``` c
 int marks [] = { 89, 90, 76, 78, 98, 86 } ;
-
-char studentName [] = "btechsmartclass" ;
+char studentName [] = "btechsmartclass";
 ```
 
-In the above example declaration, size of the array **'marks'** is **6** and the size of the array **'studentName'** is **16**. This is because in case of character array, compiler stores one exttra character called **\0** (NULL) at the end.
+In the above example declaration, size of the array `marks` is `6` and the size of the array `studentName` is `16`. This is because in case of character array, compiler stores one exttra character called `\0` `(NULL)` at the end.
 
 Accessing Elements of Single Dimensional Array
 
-In c programming language, to access the elements of single dimensional array we use array name followed by index value of the element that to be accessed. Here the index value must be enclosed in square braces. **Index** value of an element in an array is the reference number given to each element at the time of memory allocation. The index value of single dimensional array starts with zero (0) for first element and incremented by one for each element. The index value in an array is also called as **subscript** or **indices**.  
+In c programming language, to access the elements of single dimensional array we use array name followed by index value of the element that to be accessed. Here the index value must be enclosed in square braces. `Index` value of an element in an array is the reference number given to each element at the time of memory allocation. The index value of single dimensional array starts with zero (0) for first element and incremented by one for each element. The index value in an array is also called as `subscript` or `indices`.  
 
 We use the following general syntax to access individual elements of single dimensional array...
 
+``` c
 arrayName [ indexValue ]
+```
 
-# Example Code
+#### Example Code
 
 ``` c
 marks [2] = 99 ;
@@ -4498,17 +4503,20 @@ marks [2] = 99 ;
 
 In the above statement, the third element of **'marks'** array is assinged with value **'99'**.
 
-# Multi Dimensional Array
+#### Multi Dimensional Array
 
-An array of arrays is called as multi dimensional array. In simple words, an array created with more than one dimension (size) is called as multi dimensional array. Multi dimensional array can be of **two dimensional array** or **three dimensional array** or **four dimensional array** or more...  
+An array of arrays is called as multi dimensional array. In simple words, an array created with more than one dimension (size) is called as multi dimensional array. Multi dimensional array can be of **two dimensional array** or **three dimensional array** or **four dimensional array** or more
 
 Most popular and commonly used multi dimensional array is **two dimensional array**. The 2-D arrays are used to store data in the form of table. We also use 2-D arrays to create mathematical **matrices**.
 
 Declaration of Two Dimensional Array
 
-We use the following general syntax for declaring a two dimensional array...
+We use the following general syntax for declaring a two dimensional array
 
+``` c
 datatype arrayName [ rowSize ] [ columnSize ] ;
+```
+
 
 # Example Code
 
@@ -4520,10 +4528,15 @@ The above declaration of two dimensional array reserves 6 continuous memory loca
 
 Initialization of Two Dimensional Array
 
-We use the following general syntax for declaring and initializing a two dimensional array with specific number of rows and coloumns with initial values.
+We use the following general syntax for declaring and initializing a two dimensional array with specific number of rows and coloumns with initial values
 
-``` c
-datatype arrayName [rows][colmns] = {{r1c1value, r1c2value, ...},{r2c1, r2c2,...}...} ;
+``` cpp
+
+datatype arrayName [rows][colmns] = {
+                                     {r1c1value, r1c2value, ...},
+                                     {r2c1,r2c2,...}
+                                     ...} ;
+
 ```
 
 # Example Code
@@ -4551,8 +4564,9 @@ In a c programming language, to access elements of a two-dimensional array we us
 
 We use the following general syntax to access the individual elements of a two-dimensional array...
 
+``` c
 arrayName [ rowIndex ] [ columnIndex ]
-
+```
 # Example Code
 
 ``` c
@@ -4573,14 +4587,14 @@ Suppose n people are sitting at a circular table with names A, B, C, D, … Give
 
 ---
 
-- For example, consider 6 people A B C D E F and given name as ‘D’. People sitting in a circular manner starting from D are D E F A B C.  
-A **simple solution** is to create an auxiliary array of size 2*n and store it in another array. For example for 6 people, we create below the auxiliary array.   
-A B C D E F A B C D E F   
-Now for any given index, we simply print n elements starting from it. For example, we print the following 6.
+- For example, consider 6 people A B C D E F and given name as D. People sitting in a circular manner starting from D are D E F A B C.  
+- A **simple solution** is to create an auxiliary array of size 2*n and store it in another array. For example for 6 people, we create below the auxiliary array.   
+- A B C D E F A B C D E F   
+- Now for any given index, we simply print n elements starting from it. For example, we print the following 6.
 
-A B C **D E F A B C** D E F 
+- A B C **D E F A B C** D E F 
 
-Below is the implementation of the above approach.
+- Below is the implementation of the above approach.
 
 ---
 
@@ -5389,17 +5403,23 @@ void rotatematrix(int m, int n, int mat[R][C])
 int main()
 {
 	// Test Case 1
-	int a[R][C] = { {1, 2, 3, 4},
-		{5, 6, 7, 8},
-		{9, 10, 11, 12},
-		{13, 14, 15, 16} };
+	int a[R][C] = { 
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 15, 16} 
+                };
 
 	// Test Case 2
-	/* int a[R][C] = {{1, 2, 3},
-					{4, 5, 6},
-					{7, 8, 9}
-					};
-	*/ rotatematrix(R, C, a);
+	/* int a[R][C] = {
+                    {1, 2, 3},
+                    {4, 5, 6},
+                    {7, 8, 9}
+                    };
+	*/ 
+  
+  rotatematrix(R, C, a);
+
 	return 0;
 }
 
@@ -5506,16 +5526,19 @@ class GFG
 	public static void main(String[] args)
 	{
 	// Test Case 1
-	int a[][] = { {1, 2, 3, 4},
-				{5, 6, 7, 8},
-				{9, 10, 11, 12},
-				{13, 14, 15, 16} };
+	int a[][] = { 
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 15, 16} 
+                };
 
 	// Test Case 2
-	/* int a[][] = new int {{1, 2, 3},
-							{4, 5, 6},
-							{7, 8, 9}
-						};*/
+	/* int a[][] = new int {
+                          {1, 2, 3},
+                          {4, 5, 6},
+                          {7, 8, 9}
+                        };*/
 	rotatematrix(R, C, a);
 	
 	}
@@ -5625,16 +5648,19 @@ class GFG {
 	public static void Main()
 	{
 		// Test Case 1
-		int [,]a = { {1, 2, 3, 4},
-					{5, 6, 7, 8},
-					{9, 10, 11, 12},
-					{13, 14, 15, 16} };
+		int [,]a = { 
+                {1, 2, 3, 4},
+                {5, 6, 7, 8},
+                {9, 10, 11, 12},
+                {13, 14, 15, 16} 
+                };
 	
 		// Test Case 2
-		/* int a[][] = new int {{1, 2, 3},
-								{4, 5, 6},
-								{7, 8, 9}
-							};*/
+		/* int a[][] = new int {
+                            {1, 2, 3},
+                            {4, 5, 6},
+                            {7, 8, 9}
+                          };*/
 		rotatematrix(R, C, a);
 		
 	}
