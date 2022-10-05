@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#ce205-data-structures" class="md-skip">
+        <a href="#macro-syntax-error" class="md-skip">
           Skip to content
         </a>
       
@@ -1053,7 +1053,7 @@ Describe the issue of this article in detail.
 <ul class="metadata page-metadata" data-bi-name="page info" lang="en-us" dir="ltr">
 
   Last update:
-  <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 27, 2022</span>&emsp;
+  <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 5, 2022</span>&emsp;
 
 <!-- Tags -->
 
@@ -1079,245 +1079,10 @@ Describe the issue of this article in detail.
 </ul>
 
 
-<!-- _backgroundColor: aquq -->
-
-<!-- _color: orange -->
-
-<!-- paginate: false -->
-
-<h1 id="ce205-data-structures">CE205 Data Structures<a class="headerlink" href="#ce205-data-structures" title="Permanent link">&para;</a></h1>
-<h1 id="week-2">Week-2<a class="headerlink" href="#week-2" title="Permanent link">&para;</a></h1>
-<h3 id="linked-lists-and-related-algorithms-arrays-and-matrices">Linked Lists and Related Algorithms Arrays and Matrices<a class="headerlink" href="#linked-lists-and-related-algorithms-arrays-and-matrices" title="Permanent link">&para;</a></h3>
-<p>Download <a href="../ce205-week-2-linkedlist.md_doc.pdf">DOC</a>, <a href="../ce205-week-2-linkedlist.md_slide.pdf">SLIDE</a>, <a href="../ce205-week-2-linkedlist.md_slide.pptx">PPTX</a></p>
-<iframe width=700, height=500 frameBorder=0 src="../ce205-week-2-linkedlist.md_slide.html"></iframe>
-
-<hr />
-<!-- paginate: true -->
-
-<h3 id="outline-1">Outline-1<a class="headerlink" href="#outline-1" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Resources </li>
-<li>ASN.1 C Workshop</li>
-<li>Single Linked List</li>
-<li>Circular Linked List</li>
-<li>Double Linked List</li>
-<li>XOR Linked List</li>
-<li>Skip List</li>
-<li>Strand Sort</li>
-</ul>
-<hr />
-<h3 id="outline-2">Outline-2<a class="headerlink" href="#outline-2" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Arrays</li>
-<li>Array Rotations</li>
-<li>Arrangement Rearrangement</li>
-<li>Array Searching and Sorting</li>
-<li>Matrix</li>
-<li>Sparse Matrix</li>
-</ul>
-<hr />
-<h3 id="resources">Resources<a class="headerlink" href="#resources" title="Permanent link">&para;</a></h3>
-<ul>
-<li>WilliamFiset </li>
-<li><a href="https://www.youtube.com/c/WilliamFiset-videos/playlists">WilliamFiset - YouTube</a></li>
-<li><a href="https://github.com/williamfiset/Algorithms">GitHub - williamfiset/Algorithms: A collection of algorithms and data structures</a></li>
-<li>Btech Smart Class</li>
-<li><a href="http://www.btechsmartclass.com/data_structures/introduction-to-algorithms.html">Data Structures Tutorials - Introduction to Algorithms</a></li>
-<li>Programiz</li>
-<li><a href="https://www.programiz.com/dsa/data-structure-types">Data Structure and Types</a></li>
-<li>GeeksforGeeks</li>
-<li><a href="https://www.geeksforgeeks.org/array-data-structure/?ref=ghm">Array Data Structure - GeeksforGeeks</a></li>
-<li>Visual Algo</li>
-<li><a href="https://visualgo.net/en">https://visualgo.net/en</a></li>
-</ul>
-<hr />
-<h3 id="workshop">Workshop<a class="headerlink" href="#workshop" title="Permanent link">&para;</a></h3>
-<p>Follow the link below and complete steps.
-- <a href="https://github.com/ucoruh/asn1c-wsl-sample">https://github.com/ucoruh/asn1c-wsl-sample</a> </p>
-<p>There are quick start and reference guides
-- <a href="http://lionet.info/asn1c/asn1c-quick.pdf">http://lionet.info/asn1c/asn1c-quick.pdf</a>
-- <a href="http://lionet.info/asn1c/asn1c-usage.pdf">http://lionet.info/asn1c/asn1c-usage.pdf</a>
-- <a href="https://www.itu.int/ITU-T/studygroups/com17/languages/">https://www.itu.int/ITU-T/studygroups/com17/languages/</a></p>
-<hr />
-<h3 id="workshop_1">Workshop<a class="headerlink" href="#workshop_1" title="Permanent link">&para;</a></h3>
-<p>Visit TÜBİTAK KAMU SM MA3API Web Page
-- <a href="https://yazilim.kamusm.gov.tr/?q=tr/node/19&amp;language=en">https://yazilim.kamusm.gov.tr/?q=tr/node/19&amp;language=en</a>
-- <a href="https://yazilim.kamusm.gov.tr/?q=/node/14">https://yazilim.kamusm.gov.tr/?q=/node/14</a></p>
-<hr />
-<h3 id="workshop_2">Workshop<a class="headerlink" href="#workshop_2" title="Permanent link">&para;</a></h3>
-<p>Check out ASN.1 encoded standards. </p>
-<ul>
-<li>ETSI TS 101 733 CADES digital signature (ASN data structure)<ul>
-<li><a href="https://www.etsi.org/deliver/etsi_ts/101700_101799/101733/02.02.01_60/ts_101733v020201p.pdf">https://www.etsi.org/deliver/etsi_ts/101700_101799/101733/02.02.01_60/ts_101733v020201p.pdf</a></li>
-</ul>
-</li>
-<li>ETSI TS 102 778 PADES digital signature (PDF data structure)<ul>
-<li><a href="https://www.etsi.org/deliver/etsi_ts/102700_102799/10277803/01.02.01_60/ts_10277803v010201p.pdf">https://www.etsi.org/deliver/etsi_ts/102700_102799/10277803/01.02.01_60/ts_10277803v010201p.pdf</a></li>
-</ul>
-</li>
-<li>ETSI TS 101 903 XADES digital signature (XML data structure)<ul>
-<li><a href="https://www.etsi.org/deliver/etsi_ts/101900_101999/101903/01.04.02_60/ts_101903v010402p.pdf">https://www.etsi.org/deliver/etsi_ts/101900_101999/101903/01.04.02_60/ts_101903v010402p.pdf</a></li>
-</ul>
-</li>
-<li>ETSI TS 102 918 ASiC digital signature<ul>
-<li><a href="https://www.etsi.org/deliver/etsi_ts/102900_102999/102918/01.03.01_60/ts_102918v010301p.pdf">https://www.etsi.org/deliver/etsi_ts/102900_102999/102918/01.03.01_60/ts_102918v010301p.pdf</a></li>
-</ul>
-</li>
-</ul>
-<hr />
-<h3 id="workshop_3">Workshop<a class="headerlink" href="#workshop_3" title="Permanent link">&para;</a></h3>
-<p>Check out ASN.1 encoded standards. </p>
-<ul>
-<li>Also there is An Implementation of CAdES, XAdES, PAdES and ASiC for Windows in C++</li>
-<li><a href="https://github.com/WindowsNT/AdES">https://github.com/WindowsNT/AdES</a></li>
-</ul>
-<hr />
-<h2 id="workshop_4">Workshop<a class="headerlink" href="#workshop_4" title="Permanent link">&para;</a></h2>
-<p>Telecom Standard Example for ASN.1 </p>
-<ul>
-<li><a href="https://www.etsi.org/deliver/etsi_ts/125400_125499/125413/04.09.00_60/ts_125413v040900p.pdf">https://www.etsi.org/deliver/etsi_ts/125400_125499/125413/04.09.00_60/ts_125413v040900p.pdf</a></li>
-</ul>
-<hr />
-<h2 id="workshop_5">Workshop<a class="headerlink" href="#workshop_5" title="Permanent link">&para;</a></h2>
-<h3 id="industrial-data-standards-payment">Industrial Data Standards - Payment<a class="headerlink" href="#industrial-data-standards-payment" title="Permanent link">&para;</a></h3>
-<ul>
-<li>TLV Utilities</li>
-<li><a href="https://paymentcardtools.com/">https://paymentcardtools.com/</a></li>
-<li><a href="https://emvlab.org/dumpasn1/">https://emvlab.org/dumpasn1/</a></li>
-<li>Sample EMV ASN.1 </li>
-<li><a href="https://github.com/mmattice/emv-asn1">https://github.com/mmattice/emv-asn1</a></li>
-</ul>
-<hr />
-<h2 id="workshop_6">Workshop<a class="headerlink" href="#workshop_6" title="Permanent link">&para;</a></h2>
-<h3 id="industrial-data-standards-telco">Industrial Data Standards - Telco<a class="headerlink" href="#industrial-data-standards-telco" title="Permanent link">&para;</a></h3>
-<h4 id="asn1-standartlar">ASN.1 Standartları<a class="headerlink" href="#asn1-standartlar" title="Permanent link">&para;</a></h4>
-<ul>
-<li>ETSI</li>
-<li><a href="https://portal.etsi.org/Services/Centre-for-Testing-Interoperability/ETSI-Approach/Specification-Languages/ASN1">https://portal.etsi.org/Services/Centre-for-Testing-Interoperability/ETSI-Approach/Specification-Languages/ASN1</a></li>
-<li>ITU-T</li>
-<li><a href="https://www.itu.int/ITU-T/recommendations/fl.aspx?lang=1">https://www.itu.int/ITU-T/recommendations/fl.aspx?lang=1</a></li>
-<li>ASN.1 Book</li>
-<li><a href="https://www.oss.com/asn1/resources/books-whitepapers-pubs/dubuisson-asn1-book.PDF">https://www.oss.com/asn1/resources/books-whitepapers-pubs/dubuisson-asn1-book.PDF</a></li>
-</ul>
-<hr />
-<h2 id="workshop_7">Workshop<a class="headerlink" href="#workshop_7" title="Permanent link">&para;</a></h2>
-<h3 id="network-measurement-results-data">Network Measurement Results Data<a class="headerlink" href="#network-measurement-results-data" title="Permanent link">&para;</a></h3>
-<ul>
-<li>NMR   </li>
-<li><a href="https://www.etsi.org/deliver/etsi_ts/101500_101599/101503/08.27.00_60/ts_101503v082700p.pdf">https://www.etsi.org/deliver/etsi_ts/101500_101599/101503/08.27.00_60/ts_101503v082700p.pdf</a></li>
-<li>GSM API</li>
-<li><a href="https://www.etsi.org/deliver/etsi_ts/101400_101499/101476/08.04.01_60/ts_101476v080401p.pdf">https://www.etsi.org/deliver/etsi_ts/101400_101499/101476/08.04.01_60/ts_101476v080401p.pdf</a></li>
-<li>UTRAN</li>
-<li><a href="https://www.etsi.org/deliver/etsi_ts/125300_125399/125331/13.01.00_60/ts_125331v130100p.pdf">https://www.etsi.org/deliver/etsi_ts/125300_125399/125331/13.01.00_60/ts_125331v130100p.pdf</a></li>
-<li>E-UTRAN</li>
-<li><a href="https://www.etsi.org/deliver/etsi_ts/136300_136399/136331/15.03.00_60/ts_136331v150300p.pdf">https://www.etsi.org/deliver/etsi_ts/136300_136399/136331/15.03.00_60/ts_136331v150300p.pdf</a></li>
-</ul>
-<hr />
-<h3 id="single-linked-list">Single Linked List<a class="headerlink" href="#single-linked-list" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Btech Smart Class</li>
-<li><a href="http://www.btechsmartclass.com/data_structures/single-linked-list.html">Data Structures Tutorials - Single Linked List with an example</a></li>
-<li>Visual Algo</li>
-<li><a href="https://visualgo.net/en/list">https://visualgo.net/en/list</a></li>
-</ul>
-<hr />
-<h3 id="circular-linked-list">Circular Linked List<a class="headerlink" href="#circular-linked-list" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Btech Smart Class</li>
-<li><a href="http://www.btechsmartclass.com/data_structures/circular-linked-list.html">Data Structures Tutorials - Circular Linked List with an example | Implementation</a></li>
-<li>Geeks for Geeks</li>
-<li><a href="https://www.geeksforgeeks.org/circular-linked-list/">Circular Linked List | Set 1 (Introduction and Applications) - GeeksforGeeks</a></li>
-<li>Geeks for Geeks</li>
-<li><a href="https://www.geeksforgeeks.org/circular-linked-list-set-2-traversal/">Circular Linked List | Set 2 (Traversal) - GeeksforGeeks</a></li>
-</ul>
-<hr />
-<h3 id="double-linked-list">Double Linked List<a class="headerlink" href="#double-linked-list" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Btech Smart Class</li>
-<li><a href="http://www.btechsmartclass.com/data_structures/double-linked-list.html">Data Structures Tutorials - Double Linked List with an example program</a></li>
-<li>Geeks for Geeks</li>
-<li><a href="https://www.geeksforgeeks.org/doubly-linked-list/">Doubly Linked List | Set 1 (Introduction and Insertion) - GeeksforGeeks</a></li>
-<li>Visual Algo</li>
-<li><a href="https://visualgo.net/en/list">Linked List (Single, Doubly), Stack, Queue, Deque - VisuAlgo</a></li>
-</ul>
-<hr />
-<h3 id="xor-linked-list">XOR Linked List<a class="headerlink" href="#xor-linked-list" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Wikipedia</li>
-<li><a href="https://en.wikipedia.org/wiki/XOR_linked_list">XOR linked list - Wikipedia</a></li>
-<li>Geeks for Geeks</li>
-<li><a href="https://www.geeksforgeeks.org/xor-linked-list-a-memory-efficient-doubly-linked-list-set-1/">XOR Linked List - A Memory Efficient Doubly Linked List | Set 1 - GeeksforGeeks</a></li>
-<li>Geeks for Geeks</li>
-<li><a href="https://www.geeksforgeeks.org/xor-linked-list-a-memory-efficient-doubly-linked-list-set-2/">XOR Linked List – A Memory Efficient Doubly Linked List | Set 2 - GeeksforGeeks</a></li>
-</ul>
-<hr />
-<h3 id="skip-list">Skip List<a class="headerlink" href="#skip-list" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Wikipedia</li>
-<li>
-<p><a href="https://en.wikipedia.org/wiki/Skip_list">Skip list - Wikipedia</a></p>
-</li>
-<li>
-<p>Geeks for Geeks </p>
-</li>
-<li>
-<p><a href="https://www.geeksforgeeks.org/skip-list/">Skip List | Set 1 (Introduction) - GeeksforGeeks</a></p>
-</li>
-<li>
-<p><a href="https://www.geeksforgeeks.org/skip-list-set-2-insertion/">Skip List | Set 2 (Insertion) - GeeksforGeeks</a></p>
-</li>
-<li>
-<p><a href="https://www.geeksforgeeks.org/skip-list-set-3-searching-deletion/">Skip List | Set 3 (Searching and Deletion) - GeeksforGeeks</a></p>
-</li>
-</ul>
-<hr />
-<h3 id="strand-sort">Strand Sort<a class="headerlink" href="#strand-sort" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Geeks for Geeks</li>
-<li><a href="https://www.geeksforgeeks.org/strand-sort/">Strand Sort - GeeksforGeeks</a></li>
-</ul>
-<hr />
-<h3 id="arrays">Arrays<a class="headerlink" href="#arrays" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Geeks for Geeks </li>
-<li><a href="https://www.geeksforgeeks.org/array-data-structure/">Array Data Structure - GeeksforGeeks</a></li>
-<li><a href="http://www.btechsmartclass.com/data_structures/arrays.html">Data structures Tutorials - Arrays</a></li>
-<li><a href="https://www.geeksforgeeks.org/circular-array/">Circular array - GeeksforGeeks</a></li>
-</ul>
-<hr />
-<h4 id="array-rotations">Array Rotations<a class="headerlink" href="#array-rotations" title="Permanent link">&para;</a></h4>
-<ul>
-<li>Geeks for Geeks</li>
-<li><a href="https://www.geeksforgeeks.org/array-rotation/">Program for array rotation - GeeksforGeeks</a></li>
-</ul>
-<hr />
-<h4 id="arrangement-rearrangement">Arrangement Rearrangement<a class="headerlink" href="#arrangement-rearrangement" title="Permanent link">&para;</a></h4>
-<ul>
-<li>Geeks for Geeks</li>
-<li><a href="https://www.geeksforgeeks.org/array-data-structure/array-rearrangement/">Array Rearrangement - GeeksforGeeks</a></li>
-</ul>
-<hr />
-<h4 id="array-searching-and-sorting">Array Searching and Sorting<a class="headerlink" href="#array-searching-and-sorting" title="Permanent link">&para;</a></h4>
-<ul>
-<li>Geeks for Geeks </li>
-<li><a href="https://www.geeksforgeeks.org/difference-between-searching-and-sorting-algorithms/">Difference between Searching and Sorting Algorithms - GeeksforGeeks</a></li>
-</ul>
-<hr />
-<h3 id="matrix">Matrix<a class="headerlink" href="#matrix" title="Permanent link">&para;</a></h3>
-<ul>
-<li>Geeks for Geeks</li>
-<li><a href="https://www.geeksforgeeks.org/matrix/?ref=ghm">Matrix Archives - GeeksforGeeks</a></li>
-</ul>
-<hr />
-<h4 id="sparse-matrix">Sparse Matrix<a class="headerlink" href="#sparse-matrix" title="Permanent link">&para;</a></h4>
-<ul>
-<li>Geeks for Geeks</li>
-<li><a href="http://www.btechsmartclass.com/data_structures/sparse-matrix.html">Data Structures Tutorials - Sparse Matrix with an example</a></li>
-</ul>
-<hr />
-<div class="arithmatex">\[
-End-Of-Week-2
-\]</div>
+<h1 id="macro-syntax-error"><em>Macro Syntax Error</em><a class="headerlink" href="#macro-syntax-error" title="Permanent link">&para;</a></h1>
+<p><em>Line 4463 in Markdown file:</em> <strong>unexpected '.'</strong> 
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">datatype</span> <span class="n">arrayName</span> <span class="p">[</span><span class="n">rows</span><span class="p">][</span><span class="n">colmns</span><span class="p">]</span> <span class="o">=</span> <span class="p">{{</span><span class="n">r1c1value</span><span class="p">,</span> <span class="n">r1c2value</span><span class="p">,</span> <span class="o">...</span><span class="p">},{</span><span class="n">r2c1</span><span class="p">,</span> <span class="n">r2c2</span><span class="p">,</span><span class="o">...</span><span class="p">}</span><span class="o">...</span><span class="p">}</span> <span class="p">;</span>
+</code></pre></div></p>
 
 
   <hr>
@@ -1325,7 +1090,7 @@ End-Of-Week-2
   <small>
     
       Last update:
-      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">September 27, 2022</span>
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date">October 5, 2022</span>
       
         <br>
         Created:
