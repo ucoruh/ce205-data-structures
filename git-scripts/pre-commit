@@ -1,0 +1,87 @@
+#!/bin/bash
+# Installation:
+#   Copy this script as pre-commit to .git/hooks folder
+
+OPTIONS="--options=astyle-options.txt"
+
+# Check if .gitignore file exists
+#if [ ! -f astyle-options.txt ]; then
+#    echo "[!] astyle-options.txt file not found. Please make sure the astyle-options.txt file is present." >&2
+#    exit 1
+#fi
+
+RETURN=0
+#ASTYLE=$(command -v astyle)
+#if [ $? -ne 0 ]; then
+#    echo "[!] AStyle is not installed. Unable to check source file format policy." >&2
+#    exit 1
+#fi
+
+# Check if .gitignore file exists
+if [ ! -f .gitignore ]; then
+    echo "[!] .gitignore file not found. Please make sure the .gitignore file is present." >&2
+    exit 1
+fi
+
+# Check if README.md file exists
+if [ ! -f README.md ]; then
+    echo "[!] README.md file not found. Please make sure the README.md file is present." >&2
+    exit 1
+fi
+
+# Check if .gitignore file exists
+#if [ ! -f Doxyfile ]; then
+#    echo "[!] Doxyfile file not found. Please make sure the Doxyfile file is present." >&2
+#    exit 1
+#fi
+
+#FILES=$(git diff --cached --name-only --diff-filter=ACMRTUXB | grep -E "\.(cs|java|c|cpp|h)$")
+#for FILE in $FILES; do
+#    FORMATTED=$( "$ASTYLE" $OPTIONS < "$FILE" 2>&1 )
+#    if [ $? -ne 0 ]; then
+#        echo "[!] Error formatting $FILE:" >&2
+#        echo "$FORMATTED" >&2
+#        RETURN=1
+#    elif [ -n "$FORMATTED" ]; then
+#        echo "Formatted $FILE"
+#        echo "$FORMATTED"
+#        echo ""
+#        echo "$FORMATTED" > "$FILE"
+#        git add "$FILE"
+#    fi
+#done
+
+#if [ $RETURN -eq 1 ]; then
+#    echo "" >&2
+#    echo "Make sure you have run AStyle with the following options:" >&2
+#    echo $OPTIONS >&2
+#fi
+#
+#exit $RETURN
+
+
+# Delete desktop.ini files and remove from git cache
+# find . -name 'desktop.ini' -exec git rm --cached --force {} \; -exec rm {} \;
+
+echo ":::: DELETE desktop.ini FILES FROM PROJECT AND .GIT FOLDERS ::::"
+
+# Save the current directory
+currentDir=$(pwd)
+
+# Change to the root directory of the Git repository
+cd "$(git rev-parse --show-toplevel)"
+
+# Deleting desktop.ini files from the project directory and removing them from the Git index
+find . -name 'desktop.ini' -print0 | while IFS= read -r -d '' file; do
+    if [ -f "$file" ]; then
+        git rm --cached --force "$file"
+        rm "$file"
+    fi
+done
+
+# Return to the original directory
+cd "$currentDir"
+
+echo ":::: DELETE OPERATION COMPLETED ::::"
+
+exit 0

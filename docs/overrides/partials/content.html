@@ -1,3 +1,5 @@
+
+{% if i18n_page_locale == "en" %}
 <script type="text/javascript">
 window.onload = function() {
 	const newIssueURL = "https://github.com/ucoruh/ce205-data-structures/issues/new";
@@ -14,6 +16,28 @@ Describe the issue of this article in detail.
   issue_a.href = `${newIssueURL}?` + `title=${encodeURIComponent(issueTitle)}&` + `body=${encodeURIComponent(issueBody)}`;
 }
 </script>
+{% endif %}
+
+{% if i18n_page_locale == "tr" %}
+<script type="text/javascript">
+window.onload = function() {
+	const newIssueURL = "https://github.com/ucoruh/ce205-data-structures/issues/new";
+  const issueTitle = `Yazıdaki Sorun Hakkında:  "{{page.title}}"`;
+	const issueBody = `
+ **Yazı:** [{{page.title}}](${window.location.href})
+
+**Sorun:**
+<!--
+Sorunu Detaylıca Açıklayınız.
+-->
+`;
+  var issue_a = document.getElementById("report_issue_a");
+  issue_a.href = `${newIssueURL}?` + `title=${encodeURIComponent(issueTitle)}&` + `body=${encodeURIComponent(issueBody)}`;
+}
+</script>
+{% endif %}
+
+
 {% if page.edit_url %}
 <a href="{{ page.edit_url }}" title="{{ lang.t('edit.link.title') }}" class="md-content__button md-icon">
   {% include ".icons/material/pencil.svg" %}

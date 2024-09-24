@@ -1,0 +1,24 @@
+#!/bin/sh
+
+echo ":::: DELETE desktop.ini FILES FROM PROJECT AND .GIT FOLDERS ::::"
+
+# Save the current directory
+currentDir=$(pwd)
+
+# Change to the root directory of the Git repository
+cd "$(git rev-parse --show-toplevel)"
+
+# Deleting desktop.ini files from the project directory and removing them from the Git index
+find . -name 'desktop.ini' -print0 | while IFS= read -r -d '' file; do
+    if [ -f "$file" ]; then
+        git rm --cached --force "$file"
+        rm "$file"
+    fi
+done
+
+# Return to the original directory
+cd "$currentDir"
+
+echo ":::: DELETE OPERATION COMPLETED ::::"
+
+exit 0

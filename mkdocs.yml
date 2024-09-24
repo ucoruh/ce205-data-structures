@@ -1,58 +1,45 @@
 # Project information
 site_name: "RTEU CE205 Data Structures Course Notes"
+docs_dir: docs  # Where to find the markdown files
+site_dir: site  # Where to output the HTML files
 site_author: 'Asst. Prof. Dr. Uğur CORUH'
 site_url: 'https://ucoruh.github.io/ce205-data-structures/'
-site_description: >-
-    Course Notes for Software Developers
+site_description: 'Course Notes for Software Developers'
 
 # Repository
 repo_name: 'GitHub'
 repo_url: 'https://github.com/ucoruh/ce205-data-structures'
-edit_uri: ""
-
-# Very Nice Configuration
-# https://github.com/e-maxx-eng/e-maxx-eng
+edit_uri: 'https://github.com/ucoruh/ce205-data-structures/edit/main/docs/'
 
 # Copyright
-copyright: Copyleft &copy; 2019 - 2022 Uğur CORUH
+copyright: Copyright &copy; 2006 - 2024 Recep Tayyip Erdoğan University
 
-#theme:
-#    name: material
-#   logo: assets/images/favicon.png
-#   favicon: images/favicon.png
-#   palette:
-#       primary: teal
-#       accent: pink
-#   language: en
-#   feature:
-#       tabs: true
-#   font:
-#       text: Roboto
-        
 # Configuration
 theme:
   name: material
-  custom_dir: docs/overrides/
-  #name: null
-  #custom_dir: !ENV [THEME_DIR, "material"]
+  custom_dir: docs/overrides
+
+  favicon: images/favicon.png
+
+  icon:
+    previous: fontawesome/solid/angle-left
+    next: fontawesome/solid/angle-right
+    logo: logo  # Adjust the file name if necessary
   
   # Don't include MkDocs' JavaScript
   include_search_page: false
   search_index_only: true
   
-  # Static files
+  # Static files  
   static_templates:
-    - 404.html
+   - 404.html
     
   # Default values, taken from mkdocs_theme.yml
   language: en
   features:
     - content.code.annotate
     - content.tabs.link
-    # - header.autohide
-    # - navigation.expand
     - navigation.indexes
-    # - navigation.instant
     - navigation.sections
     - navigation.tabs
     - navigation.tabs.sticky
@@ -61,47 +48,32 @@ theme:
     - search.highlight
     - search.share
     - search.suggest
-    # - toc.integrate
-    
+
   palette:
     - scheme: default
       primary: green
       accent: green
       toggle:
-        icon: material/toggle-switch
+        icon: material/brightness-7
         name: Switch to dark mode
     - scheme: slate
       primary: brown
       accent: brown
       toggle:
-        icon: material/toggle-switch-off-outline
+        icon: material/brightness-4
         name: Switch to light mode
-  
-#  palette:
-#   - media: "(prefers-color-scheme: light)"
-#     scheme: default
-#     toggle:
-#       icon: material/toggle-switch-off-outline
-#       name: Switch to dark mode
-#   - media: "(prefers-color-scheme: dark)"
-#     scheme: slate
-#     toggle:
-#       icon: material/toggle-switch
-#       name: Switch to light mode
 
   font:
     text: Roboto
     code: Roboto Mono
-  favicon: images/favicon.png
-  icon:
-    logo: logo
-    #logo: assets/images/favicon.png
-    
+
 # Customization
 extra:
+  annotate:
+    json: [.s2]
   analytics:
     provider: google
-    property: !ENV GOOGLE_ANALYTICS_KEY_CE205
+    property: !ENV GOOGLE_ANALYTICS_RTEU_CE205
     feedback:
       title: Was this page helpful?
       ratings:
@@ -118,7 +90,7 @@ extra:
             using our <a href="..." target=_blank>feedback form</a>.
   consent:
     title: Cookie consent
-    description: >- 
+    description: >-
       We use cookies to recognize your repeated visits and preferences, as well
       as to measure the effectiveness of our documentation and whether users
       find what they're searching for. With your consent, you're helping us to
@@ -128,27 +100,17 @@ extra:
   social:
     - icon: fontawesome/brands/github
       link: https://github.com/ucoruh
-    - icon: fontawesome/brands/bitbucket
-      link: https://bitbucket.org/ucoruh/
-    - icon: fontawesome/regular/compass
-      link: https://www.scopus.com/authid/detail.uri?authorId=57218950743
-    - icon: fontawesome/regular/id-card
-      link: https://dblp.org/pid/230/0394.html
-    - icon: fontawesome/brands/docker
-      link: https://hub.docker.com/u/ucoruh/
-    - icon: fontawesome/brands/orcid
-      link: https://orcid.org/my-orcid?orcid=0000-0003-4193-8401
     - icon: fontawesome/brands/linkedin
       link: https://www.linkedin.com/in/ugurcoruh/
-    - icon: fontawesome/regular/moon
-      link: https://publons.com/researcher/1540204/ugur-coruh/
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/u/ucoruh/
+    - icon: fontawesome/regular/id-card
+      link: https://dblp.org/pid/230/0394.html
+    - icon: fontawesome/brands/orcid
+      link: https://orcid.org/my-orcid?orcid=0000-0003-4193-8401
     - icon: fontawesome/brands/google
       link: https://scholar.google.com/citations?user=KIU4ltMAAAAJ&hl=tr
-    - icon: fontawesome/regular/clipboard
-      link: https://avesis.erdogan.edu.tr/ugur.coruh
-    - icon: fontawesome/regular/user-circle
-      link: https://www.ugurcoruh.com/
-      
+
 # Extensions
 markdown_extensions:
   - admonition
@@ -167,16 +129,16 @@ markdown_extensions:
   - pymdownx.caret
   - pymdownx.details
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - pymdownx.highlight:
       anchor_linenums: true
   - pymdownx.inlinehilite
   - pymdownx.keys
   - pymdownx.magiclink:
       repo_url_shorthand: true
-      user: squidfunk
-      repo: mkdocs-material
+      user: ucoruh
+      repo: ce100-algorithms-and-programming-II
   - pymdownx.mark
   - pymdownx.smartsymbols
   - pymdownx.superfences:
@@ -189,37 +151,79 @@ markdown_extensions:
   - pymdownx.tasklist:
       custom_checkbox: true
   - pymdownx.tilde
+  - codehilite:
+      guess_lang: true
 
-# for github personal access token open - https://github.com/settings/tokens
+# Plugins
 plugins:
   - mkdocs-simple-hooks:
       hooks:
-          on_env: "hooks:on_env"
-  - search
+        on_env: "hooks:on_env"
+  - external-markdown
+  - mkdocs-video
+  - search:
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+  - i18n:
+      docs_structure: suffix
+      reconfigure_material: true
+      reconfigure_search: true
+      fallback_to_default: true
+      languages:
+        - locale: en
+          name: "English"
+          build: true
+          default: true
+          site_name: "RTEU CE100 Algorithms and Programming-II Course Notes"
+        - locale: tr
+          name: "Türkçe"
+          build: true
+          site_name: "RTEU CE100 Algoritmalar ve Programlama-II Ders Notları"
+          nav_translations:
+              Home: "Anasayfa"
+              Syllabus: "Ders Programı"
+              Course Modules: "Ders Modülleri"
+              Week-1 (Introduction to Data Structures): "Hafta-1 (Veri Yapılarına Giriş)"
+              Week-2 (Linked Lists): "Hafta-2 (Bağlı Listeler)"
+              Week-3 (Stacks and Queues): "Hafta-3 (Yığınlar ve Kuyruklar)"
+              Week-4 (Tree Data Structures): "Hafta-4 (Ağaç Veri Yapıları)"
+              Week-5 (Graph Data Structures): "Hafta-5 (Graf Veri Yapıları)"
+              Week-6 (Graph Algorithms): "Hafta-6 (Graf Algoritmaları)"
+              Week-7 (Search and Hashing): "Hafta-7 (Arama ve Hashleme)"
+              Week-8 (Midterm): "Hafta-8 (Ara Sınav)"
+              Week-9 (Sorting): "Hafta-9 (Sıralama)"
+              Week-10 (Advanced Tree Structures): "Hafta-10 (İleri Ağaç Yapıları)"
+              Week-11 (String Data Structures): "Hafta-11 (Dize Veri Yapıları)"
+              Week-12 (String Algorithms): "Hafta-12 (Dize Algoritmaları)"
+              Week-13 (Sequential and Direct File Organization): "Hafta-13 (Sıralı ve Doğrudan Dosya Düzeni)"
+              Week-14 (Direct File Organization and B Tree Structures for File): "Hafta-14 (Dosya için Doğrudan Dosya ve B Ağaç Yapıları)"
+              Week-15 (Hashing Techniques, String Matching, Trie, Secondary Key Retrieval, File Sorting): "Hafta-15 (Hashleme Teknikleri, Dize Eşleştirme, Trie, İkincil Anahtar Erişimi, Dosya Sıralama)"
+              Week-16 (Final): "Hafta-16 (Final)"
+              License: "Lisans"
+              Resume: "Özgeçmiş"
+              Changelog: "Revizyonlar"
   - tags:
       tags_file: tags.md
-  # - literate-nav:
-      # nav_file: navigation.md
-  - git-revision-date-localized:
-      enable_creation_date: true
-      # enabled: !ENV [MKDOCS_ENABLE_GIT_REVISION_DATE, True]
   - minify:
-      minify_html: false
-  - git-authors
+      minify_html: true
+      htmlmin_opts:
+        remove_comments: true
+  - git-revision-date-localized:
+      fallback_to_build_date: true
+      type: timeago
+  - git-authors:
+      sort_authors_by: contribution
   - git-committers:
       repository: ucoruh/ce205-data-structures
       docs_path: docs/
       branch: main
-      #token: !!python/object/apply:os.getenv ["MKDOCS_GIT_COMMITTERS_APIKEY"]
       token: !ENV MKDOCS_GIT_COMMITTERS_APIKEY
-      # enabled: !ENV [MKDOCS_ENABLE_GIT_COMMITTERS, True]
   - macros
+
 extra_javascript:
-  - javascript/mathjax.js
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
-  
-# Page tree
+
+# Page tree (for navigation)
 nav:
   - Home: index.md
   - Syllabus: syllabus/syllabus.md
@@ -241,5 +245,5 @@ nav:
     - Week-15 (Hashing Techniques, String Matching, Trie, Secondary Key Retrival, File Sorting): week-15-hashing-trie/ce205-week-15-hashing-trie.md
     - Week-16 (Final): week-16-final/ce205-week-16-final.md
   - License: license.md
+  - Resume: resume/index.md
   - Changelog: changelog/index.md
-
