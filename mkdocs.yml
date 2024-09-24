@@ -138,7 +138,7 @@ markdown_extensions:
   - pymdownx.magiclink:
       repo_url_shorthand: true
       user: ucoruh
-      repo: ce100-algorithms-and-programming-II
+      repo: cce205-data-structures
   - pymdownx.mark
   - pymdownx.smartsymbols
   - pymdownx.superfences:
@@ -173,11 +173,11 @@ plugins:
           name: "English"
           build: true
           default: true
-          site_name: "RTEU CE100 Algorithms and Programming-II Course Notes"
+          site_name: "RTEU CE205 Data Structures Course Notes"
         - locale: tr
           name: "Türkçe"
           build: true
-          site_name: "RTEU CE100 Algoritmalar ve Programlama-II Ders Notları"
+          site_name: "RTEU CE205 Veri Yapıları Ders Notları"
           nav_translations:
               Home: "Anasayfa"
               Syllabus: "Ders Programı"
