@@ -198,6 +198,7 @@ plugins:
               Week-14 (Direct File Organization and B Tree Structures for File): "Hafta-14 (Dosya için Doğrudan Dosya ve B Ağaç Yapıları)"
               Week-15 (Hashing Techniques, String Matching, Trie, Secondary Key Retrieval, File Sorting): "Hafta-15 (Hashleme Teknikleri, Dize Eşleştirme, Trie, İkincil Anahtar Erişimi, Dosya Sıralama)"
               Week-16 (Final): "Hafta-16 (Final)"
+              Project Guide: "Proje Rehberi"
               License: "Lisans"
               Resume: "Özgeçmiş"
               Changelog: "Revizyonlar"
@@ -244,6 +245,7 @@ nav:
     - Week-14 (Direct File Organization and B Tree Structures for File): week-14-direct-file-b-tree/ce205-week-14-direct-file-b-tree.md
     - Week-15 (Hashing Techniques, String Matching, Trie, Secondary Key Retrival, File Sorting): week-15-hashing-trie/ce205-week-15-hashing-trie.md
     - Week-16 (Final): week-16-final/ce205-week-16-final.md
+  - Project Guide: project-guide/index.md
   - License: license.md
   - Resume: resume/index.md
   - Changelog: changelog/index.md
