@@ -67,16 +67,18 @@ ref_link: na
 
 #### Ders İçeriği
 
-#### Güz Dönemi, 2021-2022
+#### Güz Dönemi, 2024-2025
 
 ---
 
 Download 
+
 - [PDF](pandoc_syllabus.pdf)
 - [DOCX](pandoc_syllabus.docx)
 - [SLIDE](syllabus.pdf)
 
 Download Legacy 
+
 - [WORD](2022-2023-fall-ce205-data-structures-comp-eng.docx)
 - [PDF](2022-2023-fall-ce205-data-structures-comp-eng.pdf)
 
@@ -88,28 +90,28 @@ Download Legacy
 
 <!-- paginate: true -->
 
-| Öğretim Üyesi                | Dr. Öğr. Üyesi Uğur CORUH                                                                                          |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| **İletişim Bilgileri**       | ugur.coruh@erdogan.edu.tr                                                                                          |
-| **Ofis Numarası**            | F-301                                                                                                              |
-| **Teams Kodu**               | h3cl51i                                                                                                            |
-| **Ders Saatleri ve Günleri** | **Salı** 15:00/15:45 - 16:00-16:45 (2 saat) (Teori) / **Cuma** (09:00-09:45) (Teori) 10:00/10:45-11:00/11:45 (Lab) |
+| Öğretim Üyesi                | Dr. Öğr. Üyesi Uğur CORUH        |
+| ---------------------------- | -------------------------------- |
+| **İletişim Bilgileri**       | ugur.coruh@erdogan.edu.tr        |
+| **Ofis Numarası**            | F-301                            |
+| **Teams Kodu**               | h3cl51i                          |
+| **Ders Saatleri ve Günleri** | Cuma  09:00-12:00 İİBF 402 Kat-4 |
 
 ---
 
-| **Ders Sınıfı**   | İBBF 402 Düzey-4                                                                                                                                                                             |
+|                   |                                                                                                                                                                                              |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Ofis Saatleri** | Toplantılar Google Meet üzerinden üniversite hesabınızla ve email ile planlanacaktır. Hızlı cevap için lütfen e-postanın başlığını [CE205] etiketi ile gönderin ve resmi, net ve kısa yazın. |
 
 ---
 
-| **Ders ve İletişim Dili**                 | Türkçe                                                                      |
-| ----------------------------------------- | --------------------------------------------------------------------------- |
-| **Teori/Laboratuvar Haftalık Ders Saati** | 3/2 Saat                                                                    |
-| **Kredi**                                 | 4                                                                           |
-| **Ön Koşul**                              | CE103- Algoritmalar ve Programlama I, CE100- Algoritmalar ve Programlama II |
-| **Yan Koşul**                             | Tanımlanacak                                                                |
-| **Zorunluluk**                            | Tanımlanacak                                                                |
+| **Ders ve İletişim Dili**     | İngilizce                                                                   |
+| ----------------------------- | --------------------------------------------------------------------------- |
+| **Teori Haftalık Ders Saati** | 3 Saat                                                                      |
+| **Kredi**                     | 4                                                                           |
+| **Ön Koşul**                  | CE103- Algoritmalar ve Programlama I, CE100- Algoritmalar ve Programlama II |
+| **Yan Koşul**                 | Tanımlanacak                                                                |
+| **Zorunluluk**                | Tanımlanacak                                                                |
 
 *Tanımlanacak (TBD).
 
@@ -498,11 +500,7 @@ Gerekirse, ders içeriği veya ders programında değişiklikler yapılabilir. B
 | -------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------- | --- |
 | Hafta-16 | 10.01.2025 | **Proje İncelemesi ve Sunumu**                                                                                                               | TBD |
 
-
-
 ----
-
-
 
 ## Ders Programı Genel Bakış
 

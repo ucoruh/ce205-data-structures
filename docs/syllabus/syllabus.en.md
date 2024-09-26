@@ -67,16 +67,18 @@ ref_link: na
 
 #### Syllabus
 
-#### Fall Semester, 2021-2022
+#### Fall Semester, 2024-2025
 
 ---
 
 Download 
+
 - [PDF](pandoc_syllabus.pdf)
 - [DOCX](pandoc_syllabus.docx)
 - [SLIDE](syllabus.pdf)
 
 Download Legacy 
+
 - [WORD](2022-2023-fall-ce205-data-structures-comp-eng.docx)
 - [PDF](2022-2023-fall-ce205-data-structures-comp-eng.pdf)
 
@@ -88,28 +90,28 @@ Download Legacy
 
 <!-- paginate: true -->
 
-| Instructor                 | Asst. Prof. Dr. Uğur CORUH                                                                                                    |
-| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| **Contact Information**    | ugur.coruh@erdogan.edu.tr                                                                                                     |
-| **Office No**              | F-301                                                                                                                         |
-| **Teams Code**             | d5yg4hi                                                                                                                       |
-| **Lecture Hours and Days** | **Tuesday** 15:00/15:45 - 16:00-16:45 (2 hours)) (Theory) / **Friday** (09:00-09:45) (Theory)  10:00/10:45-11:00/11:45  (Lab) |
+| Instructor                 | Asst. Prof. Dr. Uğur CORUH          |
+| -------------------------- | ----------------------------------- |
+| **Contact Information**    | ugur.coruh@erdogan.edu.tr           |
+| **Office No**              | F-301                               |
+| **Teams Code**             | h3cl51i                             |
+| **Lecture Hours and Days** | Friday 09:00-12:00 İİBF 402 Floor-4 |
 
 ---
 
-| **Lecture Classroom** | İBBF 402 Level-4                                                                                                                                                                                                                                  |
-| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Office Hours**      | Meetings will be scheduled over Google Meet with your university account and email and performed via demand emails. Please send emails with the subject starting with [CE205] tag for the fast response and write formal, clear, and short emails |
+|                  |                                                                                                                                                                                                                                                   |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Office Hours** | Meetings will be scheduled over Google Meet with your university account and email and performed via demand emails. Please send emails with the subject starting with [CE205] tag for the fast response and write formal, clear, and short emails |
 
 ---
 
-| **Lecture and Communication Language**     | English                                                                  |
-| ------------------------------------------ | ------------------------------------------------------------------------ |
-| **Theory/Laboratory Course Hour Per Week** | 3/2 Hours                                                                |
-| **Credit**                                 | 4                                                                        |
-| **Prerequisite**                           | CE103- Algorithms and Programming I CE100- Algorithms and Programming II |
-| **Corequisite**                            | TBD                                                                      |
-| **Requirement**                            | TBD                                                                      |
+| **Lecture and Communication Language** | English                                                                  |
+| -------------------------------------- | ------------------------------------------------------------------------ |
+| **Theory Course Hour Per Week**        | 3 Hours                                                                  |
+| **Credit**                             | 4                                                                        |
+| **Prerequisite**                       | CE103- Algorithms and Programming I CE100- Algorithms and Programming II |
+| **Corequisite**                        | TBD                                                                      |
+| **Requirement**                        | TBD                                                                      |
 
 *TBD: To Be Defined.
 
