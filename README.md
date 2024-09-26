@@ -16,8 +16,8 @@ ce204 object-oriented programming course notes
 
 Website : [Home - RTEU CE204 Object-Oriented Programming Course Notes](https://ucoruh.github.io/ce204-object-oriented-programming/)
 
-ce407 secure programming course notes
+cen429 secure programming course notes
 
-Website : [Home - RTEU CE407 Secure Programming Course Notes](https://ucoruh.github.io/ce407-secure-programming/)
+Website : [Home - RTEU CEN429 Secure Programming Course Notes](https://ucoruh.github.io/cen429-secure-programming/)
 
 

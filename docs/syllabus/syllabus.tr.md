@@ -69,38 +69,47 @@ ref_link: na
 
 #### Güz Dönemi, 2021-2022
 
-İndir [PDF](pandoc_syllabus.tr_doc.pdf), [DOCX](pandoc_syllabus.tr_word.docx), [SLIDE](syllabus.tr_slide.pdf)
+---
 
-İndir Legacy [WORD](2022-2023-fall-ce205-data-structures-comp-eng.docx), [PDF](2022-2023-fall-ce205-data-structures-comp-eng.pdf)
+Download 
+- [PDF](pandoc_syllabus.pdf)
+- [DOCX](pandoc_syllabus.docx)
+- [SLIDE](syllabus.pdf)
 
-<iframe width=700, height=500 frameBorder=0 src="../syllabus.tr_slide.html"></iframe>
+Download Legacy 
+- [WORD](2022-2023-fall-ce205-data-structures-comp-eng.docx)
+- [PDF](2022-2023-fall-ce205-data-structures-comp-eng.pdf)
+
+--- 
+
+<iframe width=700, height=500 frameBorder=0 src="../syllabus.html"></iframe>
 
 ---
 
 <!-- paginate: true -->
 
-| Öğretim Üyesi               | Dr. Öğr. Üyesi Uğur CORUH                                                                                                      |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| **İletişim Bilgileri**       | ugur.coruh@erdogan.edu.tr                                                                                                      |
-| **Ofis Numarası**            | F-301                                                                                                                          |
-| **Google Classroom Kodu**    | d5yg4hi                                                                                                                        |
+| Öğretim Üyesi                | Dr. Öğr. Üyesi Uğur CORUH                                                                                          |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| **İletişim Bilgileri**       | ugur.coruh@erdogan.edu.tr                                                                                          |
+| **Ofis Numarası**            | F-301                                                                                                              |
+| **Teams Kodu**               | h3cl51i                                                                                                            |
 | **Ders Saatleri ve Günleri** | **Salı** 15:00/15:45 - 16:00-16:45 (2 saat) (Teori) / **Cuma** (09:00-09:45) (Teori) 10:00/10:45-11:00/11:45 (Lab) |
 
 ---
 
-| **Ders Sınıfı** | İBBF 402 Düzey-4                                                                                                                                                                                                                                      |
-| ---------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Ders Sınıfı**   | İBBF 402 Düzey-4                                                                                                                                                                             |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **Ofis Saatleri** | Toplantılar Google Meet üzerinden üniversite hesabınızla ve email ile planlanacaktır. Hızlı cevap için lütfen e-postanın başlığını [CE205] etiketi ile gönderin ve resmi, net ve kısa yazın. |
 
 ---
 
-| **Ders ve İletişim Dili**   | Türkçe                                                             |
-| --------------------------- | ------------------------------------------------------------------ |
-| **Teori/Laboratuvar Haftalık Ders Saati** | 3/2 Saat                                                     |
-| **Kredi**                    | 4                                                                |
-| **Ön Koşul**                 | CE103- Algoritmalar ve Programlama I, CE100- Algoritmalar ve Programlama II |
-| **Yan Koşul**                | Tanımlanacak                                                      |
-| **Zorunluluk**               | Tanımlanacak                                                      |
+| **Ders ve İletişim Dili**                 | Türkçe                                                                      |
+| ----------------------------------------- | --------------------------------------------------------------------------- |
+| **Teori/Laboratuvar Haftalık Ders Saati** | 3/2 Saat                                                                    |
+| **Kredi**                                 | 4                                                                           |
+| **Ön Koşul**                              | CE103- Algoritmalar ve Programlama I, CE100- Algoritmalar ve Programlama II |
+| **Yan Koşul**                             | Tanımlanacak                                                                |
+| **Zorunluluk**                            | Tanımlanacak                                                                |
 
 *Tanımlanacak (TBD).
 
@@ -117,7 +126,7 @@ Bu ders, veri yapılarının ve dosya organizasyonunun temellerini kapsamaktadı
 Bu dersi başarıyla tamamlayan bir öğrenci:
 
 - Diziler, matrisler, bağlantılı yapılar, kuyruklar, yığınlar, ağaçlar ve grafikler gibi yaygın lineer ve non-lineer veri yapılarını tanımlayabilecek.
-  
+
 - Dinamik ve statik veri yapılarını karşılaştırıp faydalarını analiz edebilecek.
 
 ---
@@ -335,35 +344,29 @@ Gerekirse, aşağıdaki kitaplar ve açık kaynaklı çevrimiçi kaynaklar kulla
 
 ---
 
-## E.    Değerlendirme Sistemi
+## E.Değerlendirme
 
-Ara sınav ve final notları, proje veya ödev tabanlı sınavların ağırlıklı ortalaması ile hesaplanacaktır. Ara sınav notları dönem başından ara sınav haftasına kadar, final notları ise ara sınav ve final haftası arasında yapılan ödev veya projelerle hesaplanacaktır.
-
-$$
-\operatorname{a_n}  = \text{Ödev veya Proje Ağırlığı}
-$$
-
-$$
-\operatorname{HW_n} = \text{Ödev veya Proje Puanları}
-$$
-
-$$
-\operatorname{n} = \text{Ödev veya Proje Sayısı}
-$$
+Dönem boyunca 1 adet Proje ve 2 adet yazılı Quiz olacaksınız. Vize zamanı Proje Ara Raporu Teslim Etmeniz ve Projenizin İlermesini İspatlayıcı Şekilde Çıktılar Oluşturmanız ve Projenizin Proje Planına Sadık Kalmanız Gerekiyor. 15. Hafta Projenizin Sonuç Raporunu ve Sunumunu Yapacaksınız. 8. Hafta 1 Adet Yazılı Quiz Olacaksınız ve 14. Hafta da 1 adet Yazılı Quiz Olacaksınız. 
 
 ---
 
-$$
-Not = (a_1HW_1+a_2HW_2+...+a_nHW_n)/n
-$$
-
-| Ödev  | Ağırlık |
-| ------| ------- |
-| Ara Sınav | %40   |
-| Final | %60     |
+| Değerlendirme            | Kısaltma | Oran | Kapsam |
+| ------------------------ | -------- | ---- | ------ |
+| Proje Ara Raporu Teslimi | RAP1     | %60  | Vize   |
+| Quiz-1                   | QUIZ1    | %40  | Vize   |
+| Proje Final Raporu       | RAP2     | %70  | Final  |
+| Quiz-2                   | QUIZ2    | %30  | Final  |
 
 $$
-\text{Geçme Notu} = (40*AraSınav_{Not}+60*Final_{Not})/100
+Not_{Vize} = 0.6RAP1 + 0.4QUIZ1
+$$
+
+$$
+Not_{Final}=0.7RAP2 + 0.3QUIZ2
+$$
+
+$$
+\text{Geçme Notu}=(40*Not{Vize}+60*Not_{Final})/100
 $$
 
 ---
@@ -411,7 +414,7 @@ Mühendislik ve Mimarlık Fakültesi öğrencileri için akademik dürüstlük f
 ---
 
 - İnternette veya başka bir yerde bulduğunuz fikirler, alıntılar, paragraflar, küçük kod parçalarını (snippet) ödevinize eklemek, ancak
-
+  
   - bunlar ödevin tüm çözümü değilse,
   
   - kaynakları doğru bir şekilde belirtirseniz
@@ -454,51 +457,96 @@ Gerekirse, ders içeriği veya ders programında değişiklikler yapılabilir. B
 
 ---
 
+## Ders Planı Genel Görünümü
+
+| Haftalar | Tarihler   | Konular                                                                                                                                                                                 | Diğer Görevler |
+| -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
+| Hafta 1  | 27.09.2024 | Ders Planı ve İletişim, Doğrusal ve Doğrusal Olmayan Veri Yapıları ve Performans Analizi, Veri ve Değişkenler için Gösterici ve Nesne Uygulamaları, ASN.1 / BER TLV / PER TLV Temelleri | TBD            |
+| Hafta 2  | 04.10.2024 | Bağlı Listeler ve İlgili Algoritmalar, Diziler ve Matrisler                                                                                                                             | TBD            |
+
+---
+
+| Hafta 3 | 11.10.2024 | Yığınlar, Kuyruk Yapıları ve İlgili Algoritmalar ve Problemler                    | TBD |
+| ------- | ---------- | --------------------------------------------------------------------------------- | --- |
+| Hafta 4 | 18.10.2024 | Ağaç Veri Yapısı Türleri ve Uygulamaları (İkili Ağaç, Ağaç Dolaşmaları, Yığınlar) | TBD |
+| Hafta 5 | 25.10.2024 | Grafik Veri Yapıları ve Dolaşmalar                                                |     |
+
+---
+
+| Hafta-6 | 01.11.2024 | Grafik MST, Geri İzleme, Topolojik Sıralama, En Kısa Yollar, Bağlantı, Maksimum Akış ve Döngü Algılama Algoritmaları. Grafik İzomorfizmi ve Kanonizasyon, Grafik Kesitleri | TBD |
+| ------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| Hafta-7 | 08.11.2024 | Doğrusal, İkili ve Fibonacci Arama, Hashing ve Hash Tabloları ile Mükemmel Hashing                                                                                         | TBD |
+| Hafta-8 | 15.11.2024 | **Quiz-1 + Ara Proje Raporu Teslimi**                                                                                                                                      | TBD |
+
+---
+
+| Hafta-9  | 22.11.2024 | Sıralama Algoritmaları, Sınıflandırma ve Karşılaştırmalar                                                                                                                                                                | TBD |
+| -------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --- |
+| Hafta-10 | 29.11.2024 | İleri Ağaç Veri Yapıları (İkili Arama Ağacı, AVL Ağacı, B Ağaçları ve türevleri, Kırmızı-Siyah Ağaçlar, Splay Ağaçları ve Gelişmiş Veri Yapıları, van Emde Boas Ağaçları, Binom ve Minimax Ağaçlar) ve Karşılaştırmalar. | TBD |
+| Hafta-11 | 06.12.2024 | Dize Veri Yapısı, Alt Dizi Arama, Hizalama ve Karşılaştırma Algoritmaları                                                                                                                                                | TBD |
+
+---
+
+| Hafta-12 | 13.12.2024 | Dize Arama Algoritmaları, Tries, Bağımsız Kümeler için Veri Yapıları                                                                                                              | TBD |
+| -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| Hafta-13 | 20.12.2024 | Dosya Organizasyonu ve İşleme Giriş, Sıralı Dosya Organizasyonu, Doğrudan Dosya Organizasyonu Hash Yöntemleri + Doğrudan Dosya Organizasyonu İndeksleri, İkili ve B Ağaç Yapıları | TBD |
+| Hafta-14 | 27.12.2024 | **Quiz-2**                                                                                                                                                                        | TBD |
+
+---
+
+| Hafta-15 | 03.01.2025 | Genişletilebilir Dosyalar için Hashing Teknikleri, Tries, Yaklaşık Dize Eşleştirme, Trie Hashing, İkincil Anahtar Getirme (2) Dosya Sıralama | TBD |
+| -------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| Hafta-16 | 10.01.2025 | **Proje İncelemesi ve Sunumu**                                                                                                               | TBD |
+
+
+
+----
+
+
+
 ## Ders Programı Genel Bakış
 
-| Haftalar | Tarihler              | Konular                                                                                                                                                                                              | Diğer Görevler |
-|:-------- |:--------------------- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:------------- |
-| Hafta 1  | 20.09.2022 23.09.2022 | Ders Planı ve İletişim, Lineer & Non-Lineer Veri Yapıları ve Performans Analizi, Veri ve Değişkenler için Nesnelerin ve Göstericilerin Uygulanması, ASN.1 / BER TLV / PER TLV Temelleri              | Tanımlanacak  |
-| Hafta 2  | 27.09.2022 30.09.2022 | Bağlantılı Listeler ve İlgili Algoritmalar, Diziler ve Matrisler                                                                                                                                     | Tanımlanacak  |
+| Haftalar | Tarihler              | Konular                                                                                                                                                                                 | Diğer Görevler |
+|:-------- |:--------------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:-------------- |
+| Hafta 1  | 20.09.2022 23.09.2022 | Ders Planı ve İletişim, Lineer & Non-Lineer Veri Yapıları ve Performans Analizi, Veri ve Değişkenler için Nesnelerin ve Göstericilerin Uygulanması, ASN.1 / BER TLV / PER TLV Temelleri | Tanımlanacak   |
+| Hafta 2  | 27.09.2022 30.09.2022 | Bağlantılı Listeler ve İlgili Algoritmalar, Diziler ve Matrisler                                                                                                                        | Tanımlanacak   |
 
 ---
 
-| Hafta 3  | 04.10.2022 07.10.2022 | Yığınlar, Kuyruk Yapıları ve İlgili Algoritmalar ve Problemler.              | Tanımlanacak |
-|:-------- |:--------------------- |:--------------------------------------------------------------------------- |:----------- |
-| Hafta 4  | 11.10.2022 14.10.2022 | Ağaç Veri Yapıları Türleri ve Uygulamaları (İkili Ağaç, Ağaç Gezinmeleri, Heapler) | Tanımlanacak |
-| Hafta 5  | 18.10.2022 21.10.2022 | Grafik Veri Yapıları ve Gezinmeler                                           |             |
+| Hafta 3 | 04.10.2022 07.10.2022 | Yığınlar, Kuyruk Yapıları ve İlgili Algoritmalar ve Problemler.                    | Tanımlanacak |
+|:------- |:--------------------- |:---------------------------------------------------------------------------------- |:------------ |
+| Hafta 4 | 11.10.2022 14.10.2022 | Ağaç Veri Yapıları Türleri ve Uygulamaları (İkili Ağaç, Ağaç Gezinmeleri, Heapler) | Tanımlanacak |
+| Hafta 5 | 18.10.2022 21.10.2022 | Grafik Veri Yapıları ve Gezinmeler                                                 |              |
 
 ---
 
-| Hafta-6  | 25.10.2022 28.10.2022 | Grafik MST, Geri İzleme, Topolojik Sıralama, En Kısa Yollar, Bağlantı, Max Akış ve Döngü Algoritmaları. Grafik İzomorfizm ve Kanonizasyon, Grafik Kesitleri       | Tanımlanacak |
-|:-------- |:--------------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------ |:----------- |
-| Hafta-7  | 01.11.2022 04.11.2022 | Doğrusal, İkili ve Fibonacci Arama, Hashing ve Hash Tabloları, Mükemmel Hashing                                                                                     | Tanımlanacak |
-| Hafta-8  | 08.11.2022 11.11.2022 | **Ara Sınav**                                                                                                                                                       | Tanımlanacak |
+| Hafta-6 | 25.10.2022 28.10.2022 | Grafik MST, Geri İzleme, Topolojik Sıralama, En Kısa Yollar, Bağlantı, Max Akış ve Döngü Algoritmaları. Grafik İzomorfizm ve Kanonizasyon, Grafik Kesitleri | Tanımlanacak |
+|:------- |:--------------------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------- |:------------ |
+| Hafta-7 | 01.11.2022 04.11.2022 | Doğrusal, İkili ve Fibonacci Arama, Hashing ve Hash Tabloları, Mükemmel Hashing                                                                             | Tanımlanacak |
+| Hafta-8 | 08.11.2022 11.11.2022 | **Ara Sınav**                                                                                                                                               | Tanımlanacak |
 
 ---
 
-| Hafta-9  | 15.11.2022 18.11.2022 | Sıralama Algoritmaları, Taksonomi ve Karşılaştırmalar                                                                                                                                                      | Tanımlanacak |
-|:-------- |:--------------------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:----------- |
-| Hafta-10 | 22.11.2022 25.11.2022 | Gelişmiş Ağaç Veri Yapıları (İkili Arama Ağacı, AVL Ağacı, B Ağaçları ve türevleri, Kırmızı-Siyah Ağaçlar, Splay Ağaçları ve Gelişmiş Veri Yapıları, van Emde Boas Ağaçları, Binom ve Minimax Ağaçları)      | Tanımlanacak |
-| Hafta-11 | 29.11.2022 02.12.2022 | Dize Veri Yapıları, Alt Dizi Arama, Hizalama ve Karşılaştırma Algoritmaları                                                                                                                                 | Tanımlanacak |
+| Hafta-9  | 15.11.2022 18.11.2022 | Sıralama Algoritmaları, Taksonomi ve Karşılaştırmalar                                                                                                                                                   | Tanımlanacak |
+|:-------- |:--------------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:------------ |
+| Hafta-10 | 22.11.2022 25.11.2022 | Gelişmiş Ağaç Veri Yapıları (İkili Arama Ağacı, AVL Ağacı, B Ağaçları ve türevleri, Kırmızı-Siyah Ağaçlar, Splay Ağaçları ve Gelişmiş Veri Yapıları, van Emde Boas Ağaçları, Binom ve Minimax Ağaçları) | Tanımlanacak |
+| Hafta-11 | 29.11.2022 02.12.2022 | Dize Veri Yapıları, Alt Dizi Arama, Hizalama ve Karşılaştırma Algoritmaları                                                                                                                             | Tanımlanacak |
 
 ---
 
-| Hafta-12 | 06.12.2022 09.12.2022 | Dize Arama Algoritmaları, Tries, Ayrık Kümeler için Veri Yapıları                                                                                                 | Tanımlanacak |
-|:-------- |:--------------------- |:---------------------------------------------------------------------------------------------------------------------------------------------------------------- |:----------- |
-| Hafta-13 | 13.12.2022 16.12.2022 | Dosya Organizasyonuna Giriş ve İşleme, Ardışık Dosya Organizasyonu, Doğrudan Dosya Organizasyonu Hash Yöntemleri                                                  | Tanımlanacak |
-| Hafta-14 | 20.12.2022 23.12.2022 | Doğrudan Dosya Organizasyonu İndeksleri, Dosya için İkili ve B Ağaç Yapıları                                                                                      | Tanımlanacak |
+| Hafta-12 | 06.12.2022 09.12.2022 | Dize Arama Algoritmaları, Tries, Ayrık Kümeler için Veri Yapıları                                                | Tanımlanacak |
+|:-------- |:--------------------- |:---------------------------------------------------------------------------------------------------------------- |:------------ |
+| Hafta-13 | 13.12.2022 16.12.2022 | Dosya Organizasyonuna Giriş ve İşleme, Ardışık Dosya Organizasyonu, Doğrudan Dosya Organizasyonu Hash Yöntemleri | Tanımlanacak |
+| Hafta-14 | 20.12.2022 23.12.2022 | Doğrudan Dosya Organizasyonu İndeksleri, Dosya için İkili ve B Ağaç Yapıları                                     | Tanımlanacak |
 
 ---
 
 | Hafta-15 | 27.12.2022 30.12.2022 | Genişletilebilir Dosyalar için Hashing Teknikleri, Tries, Yaklaşık Dize Eşleşmesi, Trie Hashing, İkincil Anahtar Erişimi, Dosya Sıralama | Tanımlanacak |
-|:-------- |:--------------------- |:---------------------------------------------------------------------------------------------------------------------------------------- |:----------- |
-| Hafta-16 | 03.01.2023 06.01.2023 | **Final**                                                                                                                                 | Tanımlanacak |
+|:-------- |:--------------------- |:---------------------------------------------------------------------------------------------------------------------------------------- |:------------ |
+| Hafta-16 | 03.01.2023 06.01.2023 | **Final**                                                                                                                                | Tanımlanacak |
 
 ---
 
 $$
 Ders-İzlence-Sonu
 $$
-
-
