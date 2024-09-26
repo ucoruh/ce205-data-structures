@@ -493,55 +493,7 @@ Gerekirse, ders içeriği veya ders programında değişiklikler yapılabilir. B
 | -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
 | Hafta-13 | 20.12.2024 | Dosya Organizasyonu ve İşleme Giriş, Sıralı Dosya Organizasyonu, Doğrudan Dosya Organizasyonu Hash Yöntemleri + Doğrudan Dosya Organizasyonu İndeksleri, İkili ve B Ağaç Yapıları | TBD |
 | Hafta-14 | 27.12.2024 | **Quiz-2**                                                                                                                                                                        | TBD |
-
----
-
-| Hafta-15 | 03.01.2025 | Genişletilebilir Dosyalar için Hashing Teknikleri, Tries, Yaklaşık Dize Eşleştirme, Trie Hashing, İkincil Anahtar Getirme (2) Dosya Sıralama | TBD |
-| -------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| Hafta-16 | 10.01.2025 | **Proje İncelemesi ve Sunumu**                                                                                                               | TBD |
-
-----
-
-## Ders Programı Genel Bakış
-
-| Haftalar | Tarihler              | Konular                                                                                                                                                                                 | Diğer Görevler |
-|:-------- |:--------------------- |:--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:-------------- |
-| Hafta 1  | 20.09.2022 23.09.2022 | Ders Planı ve İletişim, Lineer & Non-Lineer Veri Yapıları ve Performans Analizi, Veri ve Değişkenler için Nesnelerin ve Göstericilerin Uygulanması, ASN.1 / BER TLV / PER TLV Temelleri | Tanımlanacak   |
-| Hafta 2  | 27.09.2022 30.09.2022 | Bağlantılı Listeler ve İlgili Algoritmalar, Diziler ve Matrisler                                                                                                                        | Tanımlanacak   |
-
----
-
-| Hafta 3 | 04.10.2022 07.10.2022 | Yığınlar, Kuyruk Yapıları ve İlgili Algoritmalar ve Problemler.                    | Tanımlanacak |
-|:------- |:--------------------- |:---------------------------------------------------------------------------------- |:------------ |
-| Hafta 4 | 11.10.2022 14.10.2022 | Ağaç Veri Yapıları Türleri ve Uygulamaları (İkili Ağaç, Ağaç Gezinmeleri, Heapler) | Tanımlanacak |
-| Hafta 5 | 18.10.2022 21.10.2022 | Grafik Veri Yapıları ve Gezinmeler                                                 |              |
-
----
-
-| Hafta-6 | 25.10.2022 28.10.2022 | Grafik MST, Geri İzleme, Topolojik Sıralama, En Kısa Yollar, Bağlantı, Max Akış ve Döngü Algoritmaları. Grafik İzomorfizm ve Kanonizasyon, Grafik Kesitleri | Tanımlanacak |
-|:------- |:--------------------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------- |:------------ |
-| Hafta-7 | 01.11.2022 04.11.2022 | Doğrusal, İkili ve Fibonacci Arama, Hashing ve Hash Tabloları, Mükemmel Hashing                                                                             | Tanımlanacak |
-| Hafta-8 | 08.11.2022 11.11.2022 | **Ara Sınav**                                                                                                                                               | Tanımlanacak |
-
----
-
-| Hafta-9  | 15.11.2022 18.11.2022 | Sıralama Algoritmaları, Taksonomi ve Karşılaştırmalar                                                                                                                                                   | Tanımlanacak |
-|:-------- |:--------------------- |:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |:------------ |
-| Hafta-10 | 22.11.2022 25.11.2022 | Gelişmiş Ağaç Veri Yapıları (İkili Arama Ağacı, AVL Ağacı, B Ağaçları ve türevleri, Kırmızı-Siyah Ağaçlar, Splay Ağaçları ve Gelişmiş Veri Yapıları, van Emde Boas Ağaçları, Binom ve Minimax Ağaçları) | Tanımlanacak |
-| Hafta-11 | 29.11.2022 02.12.2022 | Dize Veri Yapıları, Alt Dizi Arama, Hizalama ve Karşılaştırma Algoritmaları                                                                                                                             | Tanımlanacak |
-
----
-
-| Hafta-12 | 06.12.2022 09.12.2022 | Dize Arama Algoritmaları, Tries, Ayrık Kümeler için Veri Yapıları                                                | Tanımlanacak |
-|:-------- |:--------------------- |:---------------------------------------------------------------------------------------------------------------- |:------------ |
-| Hafta-13 | 13.12.2022 16.12.2022 | Dosya Organizasyonuna Giriş ve İşleme, Ardışık Dosya Organizasyonu, Doğrudan Dosya Organizasyonu Hash Yöntemleri | Tanımlanacak |
-| Hafta-14 | 20.12.2022 23.12.2022 | Doğrudan Dosya Organizasyonu İndeksleri, Dosya için İkili ve B Ağaç Yapıları                                     | Tanımlanacak |
-
----
-
-| Hafta-15 | 27.12.2022 30.12.2022 | Genişletilebilir Dosyalar için Hashing Teknikleri, Tries, Yaklaşık Dize Eşleşmesi, Trie Hashing, İkincil Anahtar Erişimi, Dosya Sıralama | Tanımlanacak |
-|:-------- |:--------------------- |:---------------------------------------------------------------------------------------------------------------------------------------- |:------------ |
-| Hafta-16 | 03.01.2023 06.01.2023 | **Final**                                                                                                                                | Tanımlanacak |
+| Hafta-15 | 03.01.2025 | Proje İncelemesi ve Sunumu 																																						| TBD |
 
 ---
 

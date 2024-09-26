@@ -503,12 +503,7 @@ If deemed necessary, changes in the lecture content or course schedule can be ma
 | ------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
 | Week-13 | 20.12.2024 | Introduction to File Organization and Processing Sequential File Organization,Direct File Organization Hash Methods + Direct File Organization Indexes Binary and B Tree Structures for File. | TBD |
 | Week-14 | 27.12.2024 | **Quiz-2**                                                                                                                                                                                    | TBD |
-
----
-
-| Week-15 | 03.01.2025 | Hashing Techniques for Expandable Files,Tries Approximate String Matching Trie Hashing Secondary Key Retrieval (2) File Sorting | TBD |
-| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------- | --- |
-| Week-16 | 10.01.2025 | **Project Review and Presentation**                                                                                             | TBD |
+| Week-15 | 03.01.2025 | **Project Review and Presentation** 																																						   | TBD |
 
 ---
 
