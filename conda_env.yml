@@ -1,0 +1,30 @@
+name: ce204-object-oriented-programming-mkdocs
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python=3.9
+  - pip
+  - pip:
+    - mkdocs>=1.5.3
+    - pymdown-extensions>=10.7
+    - mkdocs-material>=9.5.3
+    - mkdocs-material-extensions>=1.3.1
+    - mkdocs-simple-hooks>=0.1.5
+    - mkdocs-video>=1.5.0
+    - mkdocs-minify-plugin>=0.7.1
+    - mkdocs-git-revision-date-localized-plugin>=1.2.2
+    - mkdocs-static-i18n>=1.2.0
+    - mkdocs-with-pdf>=0.9.3
+    - qrcode>=7.4.2
+    - mkdocs-awesome-pages-plugin>=2.9.2
+    - mkdocs-embed-external-markdown>=2.3.0
+    - mkdocs-include-markdown-plugin>=6.0.4
+    - mkdocs-ezlinks-plugin>=0.1.14
+    - mkdocs-git-authors-plugin>=0.7.2
+    - mkdocs-git-committers-plugin>=0.2.3
+    - mkdocs-exclude>=1.0.2
+    - pptx2md>=1.0.0
+    - mkdocs-macros-plugin>=1.0.5
+    - tqdm>=4.64.0
+    - psutil>=5.9.0
