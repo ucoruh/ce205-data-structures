@@ -18,7 +18,7 @@ jobs:
         with:
           key: ${{ github.ref }}
           path: .cache
-      - run: pip install mkdocs
+      - run: pip install "mkdocs<2"
       - run: pip install pymdown-extensions
       - run: pip install mkdocs-material
       - run: pip install mkdocs-material-extensions
