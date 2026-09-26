@@ -65,6 +65,7 @@ Sorunu Detaylıca Açıklayınız.
   {% endfor %}
 {% endfor %}
 
+{% if git_info is defined %}
 {% for author in git_info.page_authors %}
   {% set id = id_for_email[author.email] if id_for_email[author.email] else author.name %}
   {% do contribs.setdefault(id, {'name':id, 'url':'#'}) %}
@@ -73,6 +74,7 @@ Sorunu Detaylıca Açıklayınız.
     contribs[id].get('contribution', 0) + author.contribution[:-1]|float
   ) %}
 {% endfor %}
+{% endif %}
 
 {% set contribs = contribs.values() |
   selectattr('contribution') |

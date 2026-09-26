@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ağaç terimleri: kök, ebeveyn, çocuk, yaprak, derinlik, yükseklik</title>
+<style>/* dsanim oynatıcı biçemi — açık/koyu tema; SVG renkleri Python'daki RENK tablosuyla aynı anlamda */
+:root {
+  --dsa-zemin: #ffffff; --dsa-yuzey: #f8f9fa; --dsa-cizgi: #dee2e6; --dsa-yazi: #1f2933; --dsa-soluk: #6c757d;
+  --dsa-vurgu: #fff3bf; --dsa-vurgu-c: #f08c00; --dsa-ana: #1971c2; --dsa-kod: #f8f9fa; --dsa-kod-yazi: #24292f;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.dsa-acik) {
+    --dsa-zemin: #1e2129; --dsa-yuzey: #262a33; --dsa-cizgi: #3a3f4b; --dsa-yazi: #e9ecef; --dsa-soluk: #adb5bd;
+    --dsa-vurgu: #5c4813; --dsa-vurgu-c: #fcc419; --dsa-ana: #4dabf7; --dsa-kod: #161b22; --dsa-kod-yazi: #e6edf3;
+  }
+}
+:root.dsa-koyu {
+  --dsa-zemin: #1e2129; --dsa-yuzey: #262a33; --dsa-cizgi: #3a3f4b; --dsa-yazi: #e9ecef; --dsa-soluk: #adb5bd;
+  --dsa-vurgu: #5c4813; --dsa-vurgu-c: #fcc419; --dsa-ana: #4dabf7; --dsa-kod: #161b22; --dsa-kod-yazi: #e6edf3;
+}
+html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; }
+.dsa { box-sizing: border-box; padding: 10px 12px 12px; outline: none; max-width: 1200px; margin: 0 auto; }
+.dsa *, .dsa *::before, .dsa *::after { box-sizing: border-box; }
+.dsa-ust { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+.dsa-baslik { font-weight: 700; font-size: 1.05rem; }
+.dsa-sayac { color: var(--dsa-soluk); font-size: .85rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.dsa-govde { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 10px; }
+.dsa-govde.dsa-kodsuz { grid-template-columns: 1fr; }
+@media (max-width: 760px) { .dsa-govde { grid-template-columns: 1fr; } }
+.dsa-sahne { background: var(--dsa-yuzey); border: 1px solid var(--dsa-cizgi); border-radius: 10px; overflow: hidden;
+  display: flex; align-items: center; }
+.dsa-sahne { justify-content: center; }
+.dsa-sahne svg { width: 100%; height: auto; max-height: 440px; display: block; }
+.dsa-kod { display: flex; flex-direction: column; min-height: 0; border: 1px solid var(--dsa-cizgi); border-radius: 10px;
+  overflow: hidden; background: var(--dsa-kod); }
+.dsa-sekme { display: flex; gap: 2px; padding: 4px 6px 0; border-bottom: 1px solid var(--dsa-cizgi); }
+.dsa-sekme button { border: 0; background: none; color: var(--dsa-soluk); padding: 4px 10px; font-size: .8rem;
+  cursor: pointer; border-bottom: 2px solid transparent; }
+.dsa-sekme button.etkin { color: var(--dsa-ana); border-bottom-color: var(--dsa-ana); font-weight: 600; }
+.dsa-pre { margin: 0; padding: 8px 0; overflow: auto; max-height: 340px; flex: 1; color: var(--dsa-kod-yazi);
+  font: 13px/1.5 'Cascadia Code', Consolas, 'DejaVu Sans Mono', monospace;
+  font-variant-ligatures: none; font-feature-settings: 'calt' 0, 'liga' 0; }
+.dsa-sat { display: block; padding: 0 10px 0 0; white-space: pre; transition: background .3s; border-left: 3px solid transparent; }
+.dsa-sat.vurgu { background: var(--dsa-vurgu); border-left-color: var(--dsa-vurgu-c); }
+.dsa-no { display: inline-block; width: 2.6em; padding-right: .8em; text-align: right; color: var(--dsa-soluk); user-select: none; }
+.dsa-cap { margin-top: 10px; min-height: 3.2em; padding: 10px 14px; border-radius: 10px; background: var(--dsa-yuzey);
+  border: 1px solid var(--dsa-cizgi); font-size: 1.02rem; line-height: 1.5; }
+.dsa-cap code { font-family: 'Cascadia Code', Consolas, monospace; font-size: .92em; font-variant-ligatures: none; font-feature-settings: 'calt' 0; background: var(--dsa-kod);
+  padding: 1px 5px; border-radius: 4px; border: 1px solid var(--dsa-cizgi); }
+.dsa-denetim { display: flex; align-items: center; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.dsa-d { min-width: 38px; height: 34px; border-radius: 8px; border: 1px solid var(--dsa-cizgi); background: var(--dsa-yuzey);
+  color: var(--dsa-yazi); cursor: pointer; font-size: 15px; }
+.dsa-d:hover { border-color: var(--dsa-ana); }
+.dsa-d.dsa-ana { background: var(--dsa-ana); color: #fff; border-color: var(--dsa-ana); min-width: 50px; }
+.dsa-d.etkin { border-color: var(--dsa-ana); color: var(--dsa-ana); }
+.dsa-cubuk { flex: 1; min-width: 120px; accent-color: var(--dsa-ana); }
+.dsa-hiz { height: 34px; border-radius: 8px; border: 1px solid var(--dsa-cizgi); background: var(--dsa-yuzey); color: var(--dsa-yazi); }
+.dsa-statik .dsa-denetim { display: none; }
+/* iki dilli sahne yazıları: yalnız sayfa dilindeki görünür */
+.dsa-dil-tr .l-en, .dsa-dil-en .l-tr { display: none; }
+/* sahne öğeleri: renk geçişleri ve belirme/solma */
+.dsa svg .e, .dsa svg .ok { transition: opacity .4s ease; }
+.dsa svg rect, .dsa svg circle, .dsa svg line, .dsa svg path, .dsa svg text { transition: fill .35s ease, stroke .35s ease; }
+.dsa svg .dsa-giris { opacity: 0; }
+.dsa svg .dsa-cikis { opacity: 0; }
+/* koyu tema: SVG'deki açık renkleri sınıflarla geçersiz kıl */
+:root.dsa-koyu .dsa-sahne svg > rect:first-of-type { fill: transparent; }
+@media (prefers-color-scheme: dark) { :root:not(.dsa-acik) .dsa-sahne svg > rect:first-of-type { fill: transparent; } }
+:root.dsa-koyu .dsa svg .shp.st-normal rect, :root.dsa-koyu .dsa svg .shp.st-normal circle { fill: #2b303b; stroke: #ced4da; }
+:root.dsa-koyu .dsa svg .shp.st-normal text, :root.dsa-koyu .dsa svg .lbl.st-normal text { fill: #e9ecef; }
+:root.dsa-koyu .dsa svg .shp.st-normal line { stroke: #ced4da; }
+:root.dsa-koyu .dsa svg .shp.st-normal circle[r="3.5"] { fill: #ced4da; }
+:root.dsa-koyu .dsa svg .shp.st-bos rect { fill: #23272f; }
+:root.dsa-koyu .dsa svg .ok.st-normal { stroke: #adb5bd; }
+:root.dsa-koyu .dsa svg .frm rect { fill: #262a33; }
+:root.dsa-koyu .dsa svg .frm text { fill: #ced4da; }
+@media (prefers-color-scheme: dark) {
+  :root:not(.dsa-acik) .dsa svg .shp.st-normal rect, :root:not(.dsa-acik) .dsa svg .shp.st-normal circle { fill: #2b303b; stroke: #ced4da; }
+  :root:not(.dsa-acik) .dsa svg .shp.st-normal text, :root:not(.dsa-acik) .dsa svg .lbl.st-normal text { fill: #e9ecef; }
+  :root:not(.dsa-acik) .dsa svg .shp.st-normal line { stroke: #ced4da; }
+  :root:not(.dsa-acik) .dsa svg .shp.st-normal circle[r="3.5"] { fill: #ced4da; }
+  :root:not(.dsa-acik) .dsa svg .shp.st-bos rect { fill: #23272f; }
+  :root:not(.dsa-acik) .dsa svg .ok.st-normal { stroke: #adb5bd; }
+  :root:not(.dsa-acik) .dsa svg .frm rect { fill: #262a33; }
+  :root:not(.dsa-acik) .dsa svg .frm text { fill: #ced4da; }
+}
+/* slayt kipi (?yer=slayt): 16:9 slayttaki iframe'e sığan sıkı yerleşim */
+.dsa-slayt body { overflow: hidden; }
+.dsa-slayt .dsa { padding: 4px 6px 6px; max-width: none; }
+.dsa-slayt .dsa-ust { margin-bottom: 2px; }
+.dsa-slayt .dsa-baslik { visibility: hidden; }
+.dsa-slayt .dsa-govde { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 8px; }
+.dsa-slayt .dsa-govde.dsa-kodsuz { grid-template-columns: 1fr; }
+.dsa-slayt .dsa-sahne svg { max-height: 350px; }
+.dsa-slayt .dsa-pre { max-height: 370px; font-size: 11.5px; }
+.dsa-slayt .dsa-cap { margin-top: 6px; min-height: 2.6em; padding: 6px 10px; font-size: .9rem; line-height: 1.4; }
+.dsa-slayt .dsa-denetim { margin-top: 6px; gap: 4px; }
+.dsa-slayt .dsa-d { height: 28px; min-width: 32px; font-size: 13px; }
+.dsa-slayt .dsa-hiz { height: 28px; }
+@media print { .dsa-denetim { display: none; } .dsa-pre { max-height: none; } }
+/* v2: example bar (preset, difficulty, random) and own values */
+.dsa-ornek, .dsa-kendi { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin: 0 0 8px; font-size: .85rem; }
+.dsa-etk { color: var(--dsa-soluk); }
+.dsa-sec { height: 30px; border-radius: 8px; border: 1px solid var(--dsa-cizgi); background: var(--dsa-yuzey); color: var(--dsa-yazi);
+  max-width: 100%; }
+.dsa-ornek .dsa-sec:first-of-type { flex: 1 1 220px; }
+.dsa-zar { min-width: 34px; height: 30px; font-size: 16px; }
+.dsa-girdi { flex: 1 1 260px; height: 30px; border-radius: 8px; border: 1px solid var(--dsa-cizgi); padding: 0 10px;
+  background: var(--dsa-yuzey); color: var(--dsa-yazi); font: 13px 'Cascadia Mono', Consolas, monospace; }
+.dsa-uygula { height: 30px; min-width: 64px; }
+.dsa-hata { flex-basis: 100%; color: #e03131; font-size: .82rem; min-height: 1em; }
+.dsa-kendi[hidden] { display: none; }
+.dsa-slayt .dsa-ornek { margin-bottom: 4px; font-size: .78rem; }
+.dsa-slayt .dsa-sec, .dsa-slayt .dsa-zar { height: 26px; }
+.dsa-slayt .dsa-kendi, .dsa-slayt .dsa-ornek .dsa-etk { display: none; }
+.dsa-statik .dsa-ornek, .dsa-statik .dsa-kendi { display: none; }
+/* v2.1: input strip (every input value from the start; current = highlighted, done = faded, next = dashed),
+   up-next line, speed − / + ; the controls sit ABOVE the scene so a long caption never pushes them away */
+.dsa-serit { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 0 0 8px; font-size: .85rem; }
+.dsa-serit[hidden] { display: none; }
+.dsa-serit .dsa-etk { margin-right: 4px; }
+.dsa-jeton { font: 13px/1.2 'Cascadia Mono', Consolas, monospace; padding: 3px 7px; border-radius: 6px; border: 1px solid var(--dsa-cizgi);
+  background: var(--dsa-yuzey); color: var(--dsa-yazi); transition: background .3s, border-color .3s, opacity .3s; white-space: nowrap; }
+.dsa-jeton.bitti { opacity: .4; }
+.dsa-jeton.simdi { background: var(--dsa-vurgu); border-color: var(--dsa-vurgu-c); font-weight: 700; box-shadow: inset 0 0 0 1px var(--dsa-vurgu-c); }
+.dsa-jeton.sonra { border-color: var(--dsa-ana); border-style: dashed; }
+.dsa-denetim { margin: 0 0 8px; }
+.dsa-sonraki { margin-top: 6px; color: var(--dsa-soluk); font-size: .88rem; line-height: 1.35; }
+.dsa-sonraki-etk { font-weight: 700; color: var(--dsa-ana); }
+.dsa-statik .dsa-serit, .dsa-statik .dsa-sonraki { display: none; }
+@media print { .dsa-serit, .dsa-sonraki { display: none; } }
+/* slide mode: fill the iframe; scene and code take the free height, caption scrolls inside its own box */
+html.dsa-slayt, html.dsa-slayt body { height: 100%; }
+.dsa-slayt .dsa { display: flex; flex-direction: column; height: 100vh; }
+.dsa-slayt .dsa-ust, .dsa-slayt .dsa-ornek, .dsa-slayt .dsa-serit, .dsa-slayt .dsa-denetim { flex: 0 0 auto; }
+.dsa-slayt .dsa-govde { flex: 1 1 auto; min-height: 0; }
+.dsa-slayt .dsa-sahne { min-height: 0; height: 100%; }
+.dsa-slayt .dsa-sahne svg { height: 100%; max-height: 100%; }
+.dsa-slayt .dsa-kod { min-height: 0; height: 100%; }
+.dsa-slayt .dsa-pre { max-height: none; }
+.dsa-slayt .dsa-denetim { margin: 0 0 4px; }
+.dsa-slayt .dsa-serit { flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; margin-bottom: 4px; scrollbar-width: none; }
+.dsa-slayt .dsa-serit::-webkit-scrollbar { display: none; }
+.dsa-slayt .dsa-jeton { font-size: 11.5px; padding: 2px 5px; flex: 0 0 auto; }
+.dsa-slayt .dsa-cap { flex: 0 0 auto; max-height: 4.4em; overflow-y: auto; }
+.dsa-slayt .dsa-sonraki { flex: 0 0 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: .8rem; margin-top: 3px; }
+</style>
+</head>
+<body>
+<div data-dsanim="tree-terminology"></div>
+<script>/* dsanim v2 — scene model, SVG renderer and frame recorder.
+ *
+ * An animation is a function build(S, data) that adds elements to a Scene S, changes them and calls S.step(...)
+ * after every visible change. The same code runs in the browser (player: frames are built from the dataset the
+ * user picks, types or randomises) and in Node (export.js: GIF/PNG for slides and printed notes).
+ *
+ * Elements (all positions in scene units; the view box is cropped to the content automatically):
+ *   box(id, {x, y, w, h, text, style, below, above, size, mono})      array cell, stack slot, generic rectangle
+ *   node(id, {x, y, w, h, value, style, isNull, below})               linked-list node: [ value | • ]
+ *   circle(id, {x, y, r, text, style, below})                          tree / graph vertex (x, y = centre)
+ *   label(id, {x, y, text, style, size, anchor, bold, mono})           free text
+ *   pointer(id, {target, text, side, style, dist})                     named pointer (top, head, front…) that follows its target
+ *   arrow(id, {from, to, kind, style, text, bend, head})               kind 'next' (from a node's pointer cell) or 'center'
+ *   region(id, {x, y, w, h, title, style})                             dashed background frame
+ *   brace(id, {from, to, text, side, style, dist})                     curly brace over the elements from … to (their
+ *                                                                      union), with a label: "already sorted", "< key"
+ * Styles: normal, hl (highlight), new, del (removed), dim, active, empty.
+ * Any text may be a plain string or {tr: '…', en: '…'}.
+ *
+ * Following the instructor's static drawings: name every array row on its left (label "A ="), put index numbers
+ * above the cells (box `above`), mark regions with braces, write the comparison on the right ("< 9"), and when the
+ * path matters (binary search, partition…) keep earlier states visible as rows with S.snapshot().
+ *   S.at(k)                          the input value with index k (in input.tokens / input.format order) is being
+ *                                    processed from the next step on; the player highlights it in the input strip
+ *   S.snapshot(prefix, ids, dx, dy, style)   copy elements (pointers/arrows/braces between them follow) to new ids
+ *                                    prefix+id, shifted by (dx, dy) — a "trace row" that stays on screen
+ */
+(function (root) {
+  'use strict';
+
+  var COLORS = {
+    normal: ['#ffffff', '#37474f', '#1f2933'],
+    hl: ['#fff3bf', '#f08c00', '#1f2933'],
+    new: ['#d3f9d8', '#2f9e44', '#1f2933'],
+    del: ['#ffe3e3', '#e03131', '#1f2933'],
+    dim: ['#f1f3f5', '#adb5bd', '#868e96'],
+    active: ['#d0ebff', '#1971c2', '#1f2933'],
+    empty: ['#f8f9fa', '#ced4da', '#adb5bd']
+  };
+  var ARROW = { normal: '#495057', hl: '#f08c00', new: '#2f9e44', del: '#e03131', dim: '#adb5bd', active: '#1971c2', empty: '#ced4da' };
+  var FONT = "'Segoe UI', 'Helvetica Neue', Arial, sans-serif";
+  var MONO = "Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace";
+  var PW = 26; // width of the pointer cell of a list node
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+  function num(v) { return (Math.round(v * 10) / 10).toString(); }
+  function txt(v, lang) {
+    if (v === null || v === undefined) return '';
+    if (typeof v !== 'object') return esc(v);
+    if (lang) return esc(v[lang] !== undefined ? v[lang] : (v.en || ''));
+    return '<tspan class="l-tr">' + esc(v.tr || '') + '</tspan><tspan class="l-en">' + esc(v.en || '') + '</tspan>';
+  }
+  function longest(v) {
+    if (v && typeof v === 'object') return (v.tr || '').length > (v.en || '').length ? (v.tr || '') : (v.en || '');
+    return String(v === undefined || v === null ? '' : v);
+  }
+  function copy(o) { return JSON.parse(JSON.stringify(o)); }
+
+  // ------------------------------------------------------------------ scene
+  function Scene() { this.el = {}; this.order = []; this.frames = []; this.cursor = undefined; }
+
+  Scene.prototype._add = function (id, kind, p) {
+    p = p || {};
+    p.kind = kind;
+    if (!p.style) p.style = kind === 'pointer' ? 'active' : (kind === 'region' ? 'dim' : 'normal');
+    if (!(id in this.el)) this.order.push(id);
+    this.el[id] = p;
+    return id;
+  };
+  Scene.prototype.box = function (id, p) { p = p || {}; p.w = p.w || 58; p.h = p.h || 44; p.size = p.size || 18; if (p.mono === undefined) p.mono = true; return this._add(id, 'box', p); };
+  Scene.prototype.node = function (id, p) { p = p || {}; p.w = p.w || 46; p.h = p.h || 40; return this._add(id, 'node', p); };
+  Scene.prototype.circle = function (id, p) { p = p || {}; p.r = p.r || 22; return this._add(id, 'circle', p); };
+  Scene.prototype.label = function (id, p) { p = p || {}; p.size = p.size || 15; p.anchor = p.anchor || 'middle'; return this._add(id, 'label', p); };
+  Scene.prototype.pointer = function (id, p) { p = p || {}; p.side = p.side || 'top'; p.dist = p.dist === undefined ? 34 : p.dist; p.x = 0; p.y = 0; return this._add(id, 'pointer', p); };
+  Scene.prototype.arrow = function (id, p) { p = p || {}; p.type = p.kind || 'next'; delete p.kind; p.bend = p.bend || 0; p.x = 0; p.y = 0; if (p.head === undefined) p.head = true; return this._add(id, 'arrow', p); };
+  Scene.prototype.region = function (id, p) { return this._add(id, 'region', p || {}); };
+  Scene.prototype.brace = function (id, p) { p = p || {}; p.side = p.side || 'top'; p.dist = p.dist === undefined ? 8 : p.dist; p.x = 0; p.y = 0; if (!p.style) p.style = 'active'; return this._add(id, 'brace', p); };
+  /** From the next recorded step on, input value k is the one being processed (player: input strip). null = none. */
+  Scene.prototype.at = function (k) { this.cursor = k === null ? undefined : k; };
+  /** Copy elements to prefix+id, shifted by (dx, dy); links among the copied ids are re-pointed to the copies. */
+  Scene.prototype.snapshot = function (prefix, ids, dx, dy, style) {
+    var out = [], self = this;
+    ids.forEach(function (id) {
+      var o = self.el[id];
+      if (!o) return;
+      var c = copy(o), linked = ['target', 'from', 'to'].filter(function (k) { return c[k] !== undefined; });
+      if (linked.some(function (k) { return ids.indexOf(c[k]) < 0; })) return;   // would point outside the copy
+      linked.forEach(function (k) { c[k] = prefix + c[k]; });
+      if (c.kind !== 'pointer' && c.kind !== 'arrow' && c.kind !== 'brace') { c.x += dx || 0; c.y += dy || 0; }
+      if (style) c.style = style;
+      self._add(prefix + id, c.kind, c);
+      out.push(prefix + id);
+    });
+    return out;
+  };
+
+  Scene.prototype.has = function (id) { return id in this.el; };
+  Scene.prototype.get = function (id) { return this.el[id]; };
+  Scene.prototype.set = function (id, p) { var o = this.el[id]; if (!o) return; for (var k in p) o[k] = p[k]; };
+  Scene.prototype.move = function (id, x, y) { var o = this.el[id]; if (!o) return; if (x !== null && x !== undefined) o.x = x; if (y !== null && y !== undefined) o.y = y; };
+  Scene.prototype.remove = function () {
+    for (var i = 0; i < arguments.length; i++) {
+      var id = arguments[i];
+      if (id in this.el) { delete this.el[id]; this.order.splice(this.order.indexOf(id), 1); }
+    }
+  };
+  Scene.prototype.styleAll = function (style, kind) {
+    for (var id in this.el) {
+      var o = this.el[id];
+      if ((!kind || o.kind === kind) && o.kind !== 'pointer' && o.kind !== 'region') o.style = style;
+    }
+  };
+  /** Record the current state. caption: {tr, en}; lines: {c: n | [n…], java: …} (1-based code lines). */
+  Scene.prototype.step = function (caption, lines) {
+    var l = {};
+    for (var k in (lines || {})) l[k] = Array.isArray(lines[k]) ? lines[k] : [lines[k]];
+    var state = {};
+    for (var i = 0; i < this.order.length; i++) state[this.order[i]] = copy(this.el[this.order[i]]);
+    this.frames.push({ state: state, order: this.order.slice(), cap: caption, lines: l, at: this.cursor });
+  };
+
+  // ------------------------------------------------------------------ geometry
+  function bbox(d, id) {
+    var o = d[id];
+    switch (o.kind) {
+      case 'box': case 'region': return [o.x, o.y, o.w, o.h];
+      case 'node': return [o.x, o.y, o.w + PW, o.h];
+      case 'circle': return [o.x - o.r, o.y - o.r, 2 * o.r, 2 * o.r];
+      case 'label':
+        var w = Math.max(20, longest(o.text).length * o.size * 0.58);
+        var x0 = o.x - (o.anchor === 'middle' ? w / 2 : (o.anchor === 'end' ? w : 0));
+        return [x0, o.y - o.size, w, o.size * 1.3];
+      default: return [o.x - 20, o.y - 10, 40, 20];
+    }
+  }
+  function centre(d, id) { var b = bbox(d, id); return [b[0] + b[2] / 2, b[1] + b[3] / 2]; }
+  function edgePoint(d, id, dx, dy) {
+    var o = d[id], c = centre(d, id), n = Math.hypot(dx, dy) || 1, ux = dx / n, uy = dy / n;
+    if (o.kind === 'circle') return [c[0] + ux * o.r, c[1] + uy * o.r];
+    var b = bbox(d, id), tx = ux ? (b[2] / 2) / Math.abs(ux) : 1e9, ty = uy ? (b[3] / 2) / Math.abs(uy) : 1e9, t = Math.min(tx, ty);
+    return [c[0] + ux * t, c[1] + uy * t];
+  }
+  function pointerPos(d, o) {
+    if (!(o.target in d)) return [o.x, o.y];
+    var b = bbox(d, o.target), u = o.dist, isNode = d[o.target].kind === 'node';
+    var cx = isNode ? b[0] + (b[2] - PW) / 2 : b[0] + b[2] / 2;
+    return { top: [cx, b[1] - u], bottom: [cx, b[1] + b[3] + u], left: [b[0] - u - 14, b[1] + b[3] / 2], right: [b[0] + b[2] + u + 14, b[1] + b[3] / 2] }[o.side];
+  }
+  /** Brace over the union of `from` … `to`: {x1, x2, yb (base, next to the elements), yt (tip)} or null. */
+  function braceGeom(d, o) {
+    if (!(o.from in d) || !(o.to in d)) return null;
+    var a = bbox(d, o.from), b = bbox(d, o.to), top = o.side !== 'bottom';
+    var x1 = Math.min(a[0], b[0]), x2 = Math.max(a[0] + a[2], b[0] + b[2]);
+    var extra = function (e) { return top ? (e.above !== undefined && e.above !== null ? 18 : 0) : (e.below !== undefined && e.below !== null ? 18 : 0); };
+    var pad = o.dist + Math.max(extra(d[o.from]), extra(d[o.to]));
+    var yb = top ? Math.min(a[1], b[1]) - pad : Math.max(a[1] + a[3], b[1] + b[3]) + pad;
+    return { x1: x1 + 2, x2: x2 - 2, yb: yb, yt: top ? yb - 12 : yb + 12, top: top };
+  }
+  function bracePathD(g) {
+    var xm = (g.x1 + g.x2) / 2, ym = (g.yb + g.yt) / 2, r = Math.min(10, (g.x2 - g.x1) / 4);
+    return 'M' + num(g.x1) + ' ' + num(g.yb) + ' Q' + num(g.x1) + ' ' + num(ym) + ' ' + num(g.x1 + r) + ' ' + num(ym) +
+      ' L' + num(xm - r) + ' ' + num(ym) + ' Q' + num(xm) + ' ' + num(ym) + ' ' + num(xm) + ' ' + num(g.yt) +
+      ' Q' + num(xm) + ' ' + num(ym) + ' ' + num(xm + r) + ' ' + num(ym) + ' L' + num(g.x2 - r) + ' ' + num(ym) +
+      ' Q' + num(g.x2) + ' ' + num(ym) + ' ' + num(g.x2) + ' ' + num(g.yb);
+  }
+  function arrowPath(d, o) {
+    var k = o.from, h = o.to;
+    if (!(k in d) || !(h in d)) return null;
+    if (o.type === 'next' && d[k].kind === 'node') {
+      var ko = d[k], x1 = ko.x + ko.w + PW / 2, y1 = ko.y + ko.h / 2, hb = bbox(d, h), b = o.bend;
+      if (hb[0] >= x1 + 10) {
+        var x2 = hb[0], y2 = hb[1] + hb[3] / 2;
+        return [x1, y1, x1 + (x2 - x1) * 0.4, y1 - b, x1 + (x2 - x1) * 0.6, y2 - b, x2 - 2, y2];
+      }
+      var X2 = hb[0] + hb[2] / 2, Y2 = hb[1] + hb[3], low = Math.max(y1, Y2) + 46 + b;
+      return [x1, y1 + 8, x1 + 30, low, X2 - 30, low, X2, Y2 + 2];
+    }
+    var c1 = centre(d, k), c2 = centre(d, h);
+    var p1 = edgePoint(d, k, c2[0] - c1[0], c2[1] - c1[1]), p2 = edgePoint(d, h, c1[0] - c2[0], c1[1] - c2[1]);
+    var nx = -(p2[1] - p1[1]), ny = p2[0] - p1[0], n = Math.hypot(nx, ny) || 1, ox = nx / n * o.bend, oy = ny / n * o.bend;
+    return [p1[0], p1[1], p1[0] + (p2[0] - p1[0]) / 3 + ox, p1[1] + (p2[1] - p1[1]) / 3 + oy,
+            p1[0] + 2 * (p2[0] - p1[0]) / 3 + ox, p1[1] + 2 * (p2[1] - p1[1]) / 3 + oy, p2[0], p2[1]];
+  }
+
+  // ------------------------------------------------------------------ renderer
+  function defs() {
+    var m = '';
+    for (var st in ARROW) {
+      m += '<marker id="ah-' + st + '" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">' +
+           '<path d="M0 0 L10 5 L0 10 z" fill="' + ARROW[st] + '"/></marker>';
+    }
+    return '<defs>' + m + '</defs>';
+  }
+
+  /** Render a state to the inner SVG (four layers). lang null → both languages as tspans (player); 'tr'/'en' → one. */
+  function render(d, order, lang, opacity) {
+    opacity = opacity || {};
+    var L = { back: [], arrow: [], shape: [], label: [] };
+    var ids = order || Object.keys(d);
+    for (var i = 0; i < ids.length; i++) {
+      var id = ids[i], o = d[id];
+      if (!o) continue;
+      var st = COLORS[o.style] ? o.style : 'normal', c = COLORS[st], fill = c[0], line = c[1], ink = c[2];
+      var op = opacity[id] === undefined ? 1 : opacity[id], ops = op >= 0.999 ? '' : ' opacity="' + num(op) + '"';
+      var did = ' data-id="' + esc(id) + '"';
+      if (o.kind === 'arrow') {
+        var p = arrowPath(d, o);
+        if (!p) continue;
+        var ds = 'M' + num(p[0]) + ' ' + num(p[1]) + ' C' + num(p[2]) + ' ' + num(p[3]) + ' ' + num(p[4]) + ' ' + num(p[5]) + ' ' + num(p[6]) + ' ' + num(p[7]);
+        L.arrow.push('<path' + did + ' class="ok st-' + st + '"' + ops + ' d="' + ds + '" fill="none" stroke="' + ARROW[st] +
+          '" stroke-width="2.2"' + (o.head ? ' marker-end="url(#ah-' + st + ')"' : '') + '/>');
+        if (o.text !== undefined && o.text !== null && o.text !== '') {
+          var mx = (p[0] + 3 * p[2] + 3 * p[4] + p[6]) / 8, my = (p[1] + 3 * p[3] + 3 * p[5] + p[7]) / 8;
+          L.label.push('<g data-id="' + esc(id) + '~m" class="e st-' + st + '"' + ops + ' transform="translate(' + num(mx) + ',' + num(my) + ')">' +
+            '<rect x="-14" y="-11" width="28" height="20" rx="4" fill="#ffffff" stroke="none"/>' +
+            '<text x="0" y="4" text-anchor="middle" font-size="13" font-family="' + MONO + '" fill="' + ARROW[st] + '" font-weight="600">' + txt(o.text, lang) + '</text></g>');
+        }
+        continue;
+      }
+      if (o.kind === 'brace') {
+        var g = braceGeom(d, o);
+        if (!g) continue;
+        L.arrow.push('<path' + did + ' class="ok brc st-' + st + '"' + ops + ' d="' + bracePathD(g) + '" fill="none" stroke="' + line + '" stroke-width="2"/>');
+        if (o.text !== undefined && o.text !== null && o.text !== '') {
+          L.label.push('<g data-id="' + esc(id) + '~t" class="e lbl st-' + st + '"' + ops + ' transform="translate(' + num((g.x1 + g.x2) / 2) + ',' + num(g.top ? g.yt - 6 : g.yt + 17) + ')">' +
+            '<text x="0" y="0" text-anchor="middle" font-size="15" font-weight="700" font-family="' + FONT + '" fill="' + line + '">' + txt(o.text, lang) + '</text></g>');
+        }
+        continue;
+      }
+      if (o.kind === 'pointer') {
+        var pp = pointerPos(d, o), side = o.side, path, ty, anch, tx;
+        if (side === 'top') { path = 'M0 6 L0 24'; ty = 0; anch = 'middle'; tx = 0; }
+        else if (side === 'bottom') { path = 'M0 -6 L0 -24'; ty = 14; anch = 'middle'; tx = 0; }
+        else if (side === 'left') { path = 'M14 0 L32 0'; ty = 5; anch = 'end'; tx = 10; }
+        else { path = 'M-14 0 L-32 0'; ty = 5; anch = 'start'; tx = -10; }
+        L.label.push('<g' + did + ' class="e isr st-' + st + '"' + ops + ' transform="translate(' + num(pp[0]) + ',' + num(pp[1]) + ')">' +
+          '<path d="' + path + '" stroke="' + line + '" stroke-width="2" marker-end="url(#ah-' + st + ')"/>' +
+          '<text x="' + tx + '" y="' + ty + '" text-anchor="' + anch + '" font-size="15" font-weight="700" font-family="' + MONO + '" fill="' + line + '">' + txt(o.text, lang) + '</text></g>');
+        continue;
+      }
+      if (o.kind === 'label') {
+        L.label.push('<g' + did + ' class="e lbl st-' + st + '"' + ops + ' transform="translate(' + num(o.x) + ',' + num(o.y) + ')">' +
+          '<text x="0" y="0" text-anchor="' + o.anchor + '" font-size="' + o.size + '"' + (o.bold ? ' font-weight="700"' : '') +
+          ' font-family="' + (o.mono ? MONO : FONT) + '" fill="' + ink + '">' + txt(o.text, lang) + '</text></g>');
+        continue;
+      }
+      if (o.kind === 'region') {
+        var r = '<rect x="0" y="0" width="' + num(o.w) + '" height="' + num(o.h) + '" rx="10" fill="' + fill + '" fill-opacity="0.45" stroke="' + line + '" stroke-dasharray="6 5" stroke-width="1.5"/>';
+        if (o.title) r += '<text x="10" y="-8" font-size="13" font-family="' + FONT + '" fill="' + ink + '" font-weight="600">' + txt(o.title, lang) + '</text>';
+        L.back.push('<g' + did + ' class="e frm st-' + st + '"' + ops + ' transform="translate(' + num(o.x) + ',' + num(o.y) + ')">' + r + '</g>');
+        continue;
+      }
+      var inner = '';
+      if (o.kind === 'box') {
+        var dash = st === 'empty' ? ' stroke-dasharray="5 4"' : '';
+        inner = '<rect x="0" y="0" width="' + num(o.w) + '" height="' + num(o.h) + '" rx="6" fill="' + fill + '" stroke="' + line + '" stroke-width="2"' + dash + '/>' +
+          '<text x="' + num(o.w / 2) + '" y="' + num(o.h / 2 + o.size * 0.36) + '" text-anchor="middle" font-size="' + o.size + '" font-weight="600" font-family="' +
+          (o.mono ? MONO : FONT) + '" fill="' + ink + '">' + txt(o.text, lang) + '</text>';
+        if (o.below !== undefined && o.below !== null) inner += '<text x="' + num(o.w / 2) + '" y="' + num(o.h + 16) + '" text-anchor="middle" font-size="13" font-family="' + MONO + '" fill="#5c6770">' + txt(o.below, lang) + '</text>';
+        if (o.above !== undefined && o.above !== null) inner += '<text x="' + num(o.w / 2) + '" y="-7" text-anchor="middle" font-size="13" font-family="' + MONO + '" fill="#5c6770">' + txt(o.above, lang) + '</text>';
+      } else if (o.kind === 'node') {
+        inner = '<rect x="0" y="0" width="' + num(o.w + PW) + '" height="' + num(o.h) + '" rx="6" fill="' + fill + '" stroke="' + line + '" stroke-width="2"/>' +
+          '<line x1="' + num(o.w) + '" y1="0" x2="' + num(o.w) + '" y2="' + num(o.h) + '" stroke="' + line + '" stroke-width="2"/>' +
+          '<text x="' + num(o.w / 2) + '" y="' + num(o.h / 2 + 6) + '" text-anchor="middle" font-size="17" font-weight="600" font-family="' + MONO + '" fill="' + ink + '">' + txt(o.value, lang) + '</text>';
+        inner += o.isNull
+          ? '<line x1="' + num(o.w + 4) + '" y1="' + num(o.h - 4) + '" x2="' + num(o.w + PW - 4) + '" y2="4" stroke="' + line + '" stroke-width="2"/>'
+          : '<circle cx="' + num(o.w + PW / 2) + '" cy="' + num(o.h / 2) + '" r="3.5" fill="' + line + '"/>';
+        if (o.below !== undefined && o.below !== null) inner += '<text x="' + num((o.w + PW) / 2) + '" y="' + num(o.h + 16) + '" text-anchor="middle" font-size="13" font-family="' + MONO + '" fill="#5c6770">' + txt(o.below, lang) + '</text>';
+      } else if (o.kind === 'circle') {
+        inner = '<circle cx="0" cy="0" r="' + num(o.r) + '" fill="' + fill + '" stroke="' + line + '" stroke-width="2"/>' +
+          '<text x="0" y="6" text-anchor="middle" font-size="16" font-weight="600" font-family="' + MONO + '" fill="' + ink + '">' + txt(o.text, lang) + '</text>';
+        if (o.below !== undefined && o.below !== null) inner += '<text x="0" y="' + num(o.r + 16) + '" text-anchor="middle" font-size="13" font-family="' + MONO + '" fill="#5c6770">' + txt(o.below, lang) + '</text>';
+      } else continue;
+      L.shape.push('<g' + did + ' class="e shp st-' + st + '"' + ops + ' transform="translate(' + num(o.x) + ',' + num(o.y) + ')">' + inner + '</g>');
+    }
+    return ['back', 'arrow', 'shape', 'label'].map(function (k) { return '<g class="kat kat-' + { back: 'arka', arrow: 'ok', shape: 'sekil', label: 'etiket' }[k] + '">' + L[k].join('') + '</g>'; }).join('');
+  }
+
+  /** Union bounding box of every element in every frame → [x, y, w, h]. */
+  function viewBox(frames, pad) {
+    pad = pad === undefined ? 26 : pad;
+    var X0 = 1e9, Y0 = 1e9, X1 = -1e9, Y1 = -1e9;
+    frames.forEach(function (f) {
+      var d = f.state;
+      for (var id in d) {
+        var o = d[id], b;
+        if (o.kind === 'arrow') {
+          var p = arrowPath(d, o);
+          if (!p) continue;
+          b = [Math.min(p[0], p[2], p[4], p[6]), Math.min(p[1], p[3], p[5], p[7]), Math.max(p[0], p[2], p[4], p[6]), Math.max(p[1], p[3], p[5], p[7])];
+        } else if (o.kind === 'brace') {
+          var g = braceGeom(d, o);
+          if (!g) continue;
+          var tw = longest(o.text).length * 8.7 + 8, xm = (g.x1 + g.x2) / 2;
+          b = g.top ? [Math.min(g.x1, xm - tw / 2), g.yt - 24, Math.max(g.x2, xm + tw / 2), g.yb]
+                    : [Math.min(g.x1, xm - tw / 2), g.yb, Math.max(g.x2, xm + tw / 2), g.yt + 24];
+        } else if (o.kind === 'pointer') {
+          var pp = pointerPos(d, o), w = longest(o.text).length * 9.5 + 8;
+          b = { top: [pp[0] - w / 2, pp[1] - 18, pp[0] + w / 2, pp[1] + 26], bottom: [pp[0] - w / 2, pp[1] - 26, pp[0] + w / 2, pp[1] + 20],
+                left: [pp[0] - w - 12, pp[1] - 12, pp[0] + 34, pp[1] + 12], right: [pp[0] - 34, pp[1] - 12, pp[0] + w + 12, pp[1] + 12] }[o.side];
+        } else {
+          var q = bbox(d, id);
+          b = [q[0], q[1], q[0] + q[2], q[1] + q[3]];
+          if ((o.kind === 'box' || o.kind === 'node' || o.kind === 'circle') && o.below !== undefined && o.below !== null) b[3] += 20;
+          if (o.kind === 'box' && o.above !== undefined && o.above !== null) b[1] -= 20;
+          if (o.kind === 'region' && o.title) b[1] -= 24;
+        }
+        X0 = Math.min(X0, b[0]); Y0 = Math.min(Y0, b[1]); X1 = Math.max(X1, b[2]); Y1 = Math.max(Y1, b[3]);
+      }
+    });
+    if (X0 > X1) return [0, 0, 800, 360];
+    var w2 = X1 - X0 + 2 * pad, h2 = Y1 - Y0 + 2 * pad;
+    if (w2 < 360) { X0 -= (360 - w2) / 2; w2 = 360; }
+    return [Math.round(X0 - pad), Math.round(Y0 - pad), Math.round(w2), Math.round(h2)];
+  }
+
+  /** In-between state for exports (GIF): positions eased, entering/leaving elements faded. */
+  function tween(a, b, t) {
+    var e = t * t * (3 - 2 * t), d = {}, opacity = {}, order = [];
+    for (var id in b.state) {
+      var o = copy(b.state[id]);
+      if (id in a.state) {
+        var p = a.state[id];
+        ['x', 'y', 'w', 'h', 'r'].forEach(function (k) { if (typeof p[k] === 'number' && typeof o[k] === 'number') o[k] = p[k] + (o[k] - p[k]) * e; });
+        if (e < 0.5) { o.style = p.style; ['text', 'value', 'isNull'].forEach(function (k) { if (k in p) o[k] = p[k]; }); }
+      } else opacity[id] = e;
+      d[id] = o; order.push(id);
+    }
+    for (var id2 in a.state) if (!(id2 in b.state)) { d[id2] = copy(a.state[id2]); opacity[id2] = 1 - e; order.push(id2); }
+    return { state: d, order: order, opacity: opacity };
+  }
+
+  function svg(frameLike, vb, lang, width) {
+    var W = width || vb[2], H = Math.round(W * vb[3] / vb[2]);
+    return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="' + vb.join(' ') + '" width="' + W + '" height="' + H + '">' + defs() +
+      '<rect x="' + vb[0] + '" y="' + vb[1] + '" width="' + vb[2] + '" height="' + vb[3] + '" fill="#ffffff"/>' +
+      render(frameLike.state, frameLike.order, lang, frameLike.opacity) + '</svg>';
+  }
+
+  // ------------------------------------------------------------------ small helpers for algorithm scripts
+  /** Deterministic RNG (mulberry32) so a random example can be reproduced from its seed. */
+  function rng(seed) {
+    var a = seed >>> 0;
+    return function () {
+      a = (a + 0x6D2B79F5) >>> 0;
+      var t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+  function randInt(r, lo, hi) { return lo + Math.floor(r() * (hi - lo + 1)); }
+  function T(tr, en) { return { tr: tr, en: en }; }
+  /** Parse "5, 8 13; 2" → [5, 8, 13, 2]; throws {tr, en} when a token is not an integer. */
+  function parseInts(text) {
+    var parts = String(text).split(/[\s,;]+/).filter(Boolean), out = [];
+    for (var i = 0; i < parts.length; i++) {
+      if (!/^-?\d+$/.test(parts[i])) throw T('"' + parts[i] + '" bir tamsayı değil.', '"' + parts[i] + '" is not an integer.');
+      out.push(parseInt(parts[i], 10));
+    }
+    return out;
+  }
+
+  var api = {
+    Scene: Scene, render: render, defs: defs, viewBox: viewBox, tween: tween, svg: svg,
+    rng: rng, randInt: randInt, T: T, parseInts: parseInts, COLORS: COLORS,
+    registry: {}, define: function (spec) { api.registry[spec.id] = spec; return spec; }
+  };
+  if (typeof module !== 'undefined' && module.exports) module.exports = api;
+  else root.DSAnim = api;
+})(typeof window !== 'undefined' ? window : this);
+</script>
+<script>/* Week 4 — tree vocabulary: root, parent, child, sibling, leaf/internal, edges, depth, height, degree, subtree.
+ * A GENERAL rooted tree (any number of children per node, not just binary), given as a parent list
+ * "LABEL:PARENT ..." with the root marked "LABEL:-". */
+(function (D) {
+  'use strict';
+  var T = D.T;
+
+  var C_CODE = [
+    '#define MAX_CHILDREN 8',
+    '',
+    'typedef struct Node {',
+    '    char label[4];',
+    '    struct Node *children[MAX_CHILDREN];',
+    '    int child_count;      /* degree of this node */',
+    '    int depth;            /* filled in by compute_depths() */',
+    '} Node;',
+    '',
+    'int height(Node *n) {',
+    '    if (n->child_count == 0)',
+    '        return 0;         /* a leaf: height 0 */',
+    '    int best = -1;',
+    '    for (int i = 0; i < n->child_count; i++) {',
+    '        int h = height(n->children[i]);',
+    '        if (h > best) best = h;',
+    '    }',
+    '    return best + 1;      /* 1 + tallest child */',
+    '}',
+    '',
+    'void compute_depths(Node *root) {',
+    '    Node *queue[MAX_NODES];',
+    '    int front = 0, rear = 0;',
+    '    root->depth = 0;',
+    '    queue[rear++] = root;',
+    '    while (front < rear) {',
+    '        Node *cur = queue[front++];',
+    '        for (int i = 0; i < cur->child_count; i++) {',
+    '            Node *ch = cur->children[i];',
+    '            ch->depth = cur->depth + 1;',
+    '            queue[rear++] = ch;',
+    '        }',
+    '    }',
+    '}'
+  ];
+  var JAVA_CODE = [
+    'static final int MAX_CHILDREN = 8;',
+    '',
+    'class Node {',
+    '    String label;',
+    '    Node[] children = new Node[MAX_CHILDREN];',
+    '    int childCount;       // degree of this node',
+    '    int depth;            // filled in by computeDepths()',
+    '}',
+    '',
+    'static int height(Node n) {',
+    '    if (n.childCount == 0)',
+    '        return 0;         // a leaf: height 0',
+    '    int best = -1;',
+    '    for (int i = 0; i < n.childCount; i++) {',
+    '        int h = height(n.children[i]);',
+    '        if (h > best) best = h;',
+    '    }',
+    '    return best + 1;      // 1 + tallest child',
+    '}',
+    '',
+    'static void computeDepths(Node root) {',
+    '    Node[] queue = new Node[MAX_NODES];',
+    '    int front = 0, rear = 0;',
+    '    root.depth = 0;',
+    '    queue[rear++] = root;',
+    '    while (front < rear) {',
+    '        Node cur = queue[front++];',
+    '        for (int i = 0; i < cur.childCount; i++) {',
+    '            Node ch = cur.children[i];',
+    '            ch.depth = cur.depth + 1;',
+    '            queue[rear++] = ch;',
+    '        }',
+    '    }',
+    '}'
+  ];
+  var LINES_STRUCT = { c: [3, 4, 5, 6, 7, 8], java: [3, 4, 5, 6, 7, 8] };
+  var LINES_CHILDREN = { c: [5], java: [5] };
+  var LINES_DEGREE = { c: [6], java: [6] };
+  var LINES_LEAF = { c: [10, 11, 12], java: [10, 11, 12] };
+  var LINES_HEIGHT_FULL = { c: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19], java: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19] };
+  var LINES_DEPTH_FULL = { c: [21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34], java: [21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34] };
+
+  /* ---- helpers local to build(); reference() does NOT call any of these (see bottom of file) ---- */
+  function buildTree(nodesArr) {
+    var byLabel = {};
+    nodesArr.forEach(function (n) { byLabel[n.label] = { label: n.label, parent: n.parent, children: [] }; });
+    var root = null;
+    nodesArr.forEach(function (n) {
+      if (n.parent === null) root = byLabel[n.label];
+      else byLabel[n.parent].children.push(byLabel[n.label]);
+    });
+    return { root: root, byLabel: byLabel };
+  }
+  /** Post-order x (leaves get the next free column, left to right), depth * DY for y. */
+  function layout(root) {
+    var pos = {}, i = 0, DX = 74, DY = 96, X0 = 50, Y0 = 44;
+    (function walk(n, depth) {
+      if (!n.children.length) { pos[n.label] = { x: X0 + i * DX, y: Y0 + depth * DY }; i++; return; }
+      n.children.forEach(function (c) { walk(c, depth + 1); });
+      var xs = n.children.map(function (c) { return pos[c.label].x; });
+      pos[n.label] = { x: (Math.min.apply(null, xs) + Math.max.apply(null, xs)) / 2, y: Y0 + depth * DY };
+    })(root, 0);
+    return pos;
+  }
+  function drawTree(S, root, pos) {
+    (function walk(n) {
+      S.circle('n' + n.label, { x: pos[n.label].x, y: pos[n.label].y, text: n.label, style: 'normal' });
+      n.children.forEach(function (c) {
+        S.arrow('e_' + n.label + '_' + c.label, { from: 'n' + n.label, to: 'n' + c.label, kind: 'center', head: false, style: 'normal' });
+        walk(c);
+      });
+    })(root);
+  }
+  /** Per-node annotation slots (depth / height / degree), computed ONCE from the static layout so every label
+   *  sits clear of every circle, every edge, and every OTHER label for the whole build. Preferred spot is
+   *  upper-right of the node (+r in x, -r*0.6 in y, left-aligned), like any other node — but a fixed offset is
+   *  not safe on a bushy or skewed tree (a tight sibling row, or a child whose parent approaches from the right
+   *  instead of the left), so each node sizes its box to the widest text it will ever actually show (`maxChars`,
+   *  from the real depth/height/degree values — most nodes need far less than a worst-case guess) and tries an
+   *  increasingly wide ring of candidate spots, keeping the first one that is provably free. */
+  function planAnnotationSlots(root, pos, maxChars) {
+    var r = 22, SZ = 15, H = SZ * 1.3;
+    var allNodes = [];
+    (function collect(n) { allNodes.push(n); n.children.forEach(collect); })(root);
+    var allEdges = [];
+    allNodes.forEach(function (n) { n.children.forEach(function (c) { allEdges.push([pos[n.label], pos[c.label]]); }); });
+
+    function rectOf(x, y, anchor, w) {
+      var x0 = anchor === 'middle' ? x - w / 2 : (anchor === 'end' ? x - w : x);
+      return [x0, y - SZ, w, H];
+    }
+    function hitsCircle(rect, cx, cy) {
+      return rect[0] < cx + r && rect[0] + rect[2] > cx - r && rect[1] < cy + r && rect[1] + rect[3] > cy - r;
+    }
+    /** Exact segment/rectangle intersection (endpoint-in-rect, or crossing one of its 4 sides) — no sampling
+     *  step to accidentally skip past a thin rectangle. */
+    function pointInRect(x, y, rect) { return x >= rect[0] && x <= rect[0] + rect[2] && y >= rect[1] && y <= rect[1] + rect[3]; }
+    function segSegHit(x1, y1, x2, y2, x3, y3, x4, y4) {
+      var d = (x2 - x1) * (y4 - y3) - (y2 - y1) * (x4 - x3);
+      if (d === 0) return false;
+      var t = ((x3 - x1) * (y4 - y3) - (y3 - y1) * (x4 - x3)) / d;
+      var u = ((x3 - x1) * (y2 - y1) - (y3 - y1) * (x2 - x1)) / d;
+      return t >= 0 && t <= 1 && u >= 0 && u <= 1;
+    }
+    function hitsSeg(rect, x1, y1, x2, y2) {
+      if (pointInRect(x1, y1, rect) || pointInRect(x2, y2, rect)) return true;
+      var rx = rect[0], ry = rect[1], rw = rect[2], rh = rect[3];
+      var corners = [[rx, ry], [rx + rw, ry], [rx + rw, ry + rh], [rx, ry + rh]];
+      for (var i = 0; i < 4; i++) {
+        var a = corners[i], b = corners[(i + 1) % 4];
+        if (segSegHit(x1, y1, x2, y2, a[0], a[1], b[0], b[1])) return true;
+      }
+      return false;
+    }
+    function rectsOverlap(a, b) { return a[0] < b[0] + b[2] && a[0] + a[2] > b[0] && a[1] < b[1] + b[3] && a[1] + a[3] > b[1]; }
+    function isFree(rect, selfPos, placedRects) {
+      for (var i = 0; i < allNodes.length; i++) {
+        var np = pos[allNodes[i].label];
+        if (np === selfPos) continue;
+        if (hitsCircle(rect, np.x, np.y)) return false;
+      }
+      for (var j = 0; j < allEdges.length; j++) {
+        var e = allEdges[j];
+        if (hitsSeg(rect, e[0].x, e[0].y, e[1].x, e[1].y)) return false;
+      }
+      for (var k = 0; k < placedRects.length; k++) if (rectsOverlap(rect, placedRects[k])) return false;
+      return true;
+    }
+    /** A ring of candidate spots around a node of radius r: near and far, on every side. A leaf has nothing
+     *  below it, so a centred "below" spot (reads best, like an array cell's caption) is tried first there. */
+    function candidatesFor(p, isLeaf) {
+      var near = r, far = r + 20, far2 = r + 44, far3 = r + 72;
+      var upR = { dx: near, dy: -near * 0.6, anchor: 'start' }, upL = { dx: -near, dy: -near * 0.6, anchor: 'end' };
+      var list = isLeaf
+        ? [{ dx: 0, dy: near + 16, anchor: 'middle' }, upR, upL]
+        : [upR, upL, { dx: 0, dy: -near - 12, anchor: 'middle' },
+           { dx: near, dy: near + 16, anchor: 'start' }, { dx: -near, dy: near + 16, anchor: 'end' }];
+      [far, far2, far3].forEach(function (d) {
+        list = list.concat([
+          { dx: d, dy: -near * 0.6, anchor: 'start' }, { dx: -d, dy: -near * 0.6, anchor: 'end' },
+          { dx: 0, dy: -d - 12, anchor: 'middle' },
+          { dx: d, dy: near + 16, anchor: 'start' }, { dx: -d, dy: near + 16, anchor: 'end' },
+          { dx: d, dy: 0, anchor: 'start' }, { dx: -d, dy: 0, anchor: 'end' }
+        ]);
+      });
+      return list.map(function (o) { return { x: p.x + o.dx, y: p.y + o.dy, anchor: o.anchor }; });
+    }
+
+    var slots = {}, placedRects = [];
+    allNodes.forEach(function (n) {
+      var p = pos[n.label], w = Math.max(20, (maxChars[n.label] || 4) * SZ * 0.58);
+      var candidates = candidatesFor(p, n.children.length === 0);
+      var chosen = null, chosenRect = null;
+      for (var i = 0; i < candidates.length && !chosen; i++) {
+        var c = candidates[i], rect = rectOf(c.x, c.y, c.anchor, w);
+        if (isFree(rect, p, placedRects)) { chosen = c; chosenRect = rect; }
+      }
+      /* Extremely rare last resort: climb straight up, further and further above the node, until clear. */
+      var lift = 1;
+      while (!chosen && lift <= 12) {
+        var c2 = { x: p.x, y: p.y - r - 12 - lift * 14, anchor: 'middle' };
+        var rect2 = rectOf(c2.x, c2.y, c2.anchor, w);
+        if (isFree(rect2, p, placedRects)) { chosen = c2; chosenRect = rect2; }
+        lift++;
+      }
+      if (!chosen) { chosen = candidates[0]; chosenRect = rectOf(chosen.x, chosen.y, chosen.anchor, w); }
+      slots[n.label] = chosen;
+      placedRects.push(chosenRect);
+    });
+    return slots;
+  }
+  function annotate(S, label, slot, text) {
+    var lid = 'lab_' + label;
+    if (S.has(lid)) S.set(lid, { text: text });
+    else S.label(lid, { x: slot.x, y: slot.y, text: text, anchor: slot.anchor, size: 15, mono: true, style: 'dim' });
+  }
+  function clearAnnotate(S, label) { var lid = 'lab_' + label; if (S.has(lid)) S.remove(lid); }
+  /** Recursive, bottom-up: exactly the height() shown in the code panel. */
+  function computeHeights(root) {
+    var height = {};
+    (function rec(n) {
+      if (!n.children.length) { height[n.label] = 0; return 0; }
+      var best = -1;
+      n.children.forEach(function (c) { var h = rec(c); if (h > best) best = h; });
+      height[n.label] = best + 1;
+      return best + 1;
+    })(root);
+    return height;
+  }
+  /** Breadth-first, exactly the compute_depths() shown in the code panel. */
+  function bfsDepths(root) {
+    var depth = {}, queue = [root], qi = 0;
+    depth[root.label] = 0;
+    while (qi < queue.length) {
+      var cur = queue[qi++];
+      cur.children.forEach(function (c) { depth[c.label] = depth[cur.label] + 1; queue.push(c); });
+    }
+    return depth;
+  }
+  function nodesByDepth(depth) {
+    var byDepth = [];
+    for (var label in depth) { var d = depth[label]; if (!byDepth[d]) byDepth[d] = []; byDepth[d].push(label); }
+    return byDepth;
+  }
+  function label(i) {
+    var s = '', n = i + 1;
+    while (n > 0) { var r = (n - 1) % 26; s = String.fromCharCode(65 + r) + s; n = Math.floor((n - 1) / 26); }
+    return s;
+  }
+  /** A random recursive tree: node i attaches to an earlier node; chainBias occasionally extends the
+   *  most-recently-added node instead, producing uneven depths on harder levels. */
+  function randomTree(r, n, chainBias) {
+    var nodes = [{ label: label(0), parent: null }];
+    for (var i = 1; i < n; i++) {
+      var parentIdx = (chainBias && r() < chainBias) ? i - 1 : D.randInt(r, 0, i - 1);
+      nodes.push({ label: label(i), parent: nodes[parentIdx].label });
+    }
+    return nodes;
+  }
+
+  D.define({
+    id: 'tree-terminology',
+    title: T('Ağaç terimleri: kök, ebeveyn, çocuk, yaprak, derinlik, yükseklik', 'Tree vocabulary: root, parent, child, leaf, depth, height'),
+    code: { c: C_CODE, java: JAVA_CODE },
+    presets: [
+      { id: 'normal', level: 'normal', name: T('11 düğüm, dallı (bushy) bir ağaç', '11 nodes, a bushy tree'),
+        data: { nodes: [
+          { label: 'A', parent: null }, { label: 'B', parent: 'A' }, { label: 'C', parent: 'A' }, { label: 'D', parent: 'A' },
+          { label: 'E', parent: 'B' }, { label: 'F', parent: 'B' }, { label: 'G', parent: 'C' }, { label: 'H', parent: 'D' },
+          { label: 'I', parent: 'D' }, { label: 'J', parent: 'D' }, { label: 'K', parent: 'E' }
+        ] } },
+      { id: 'hard', level: 'hard', name: T('18 düğüm, düzensiz derinlikler (5. seviyeye kadar)', '18 nodes, uneven depths (down to level 5)'),
+        data: { nodes: [
+          { label: 'R', parent: null },
+          { label: 'P1', parent: 'R' }, { label: 'P2', parent: 'P1' }, { label: 'P3', parent: 'P2' }, { label: 'P4', parent: 'P3' }, { label: 'P5', parent: 'P4' },
+          { label: 'Q1', parent: 'R' }, { label: 'Q2', parent: 'R' }, { label: 'Q3', parent: 'R' },
+          { label: 'S1', parent: 'Q1' }, { label: 'S2', parent: 'Q1' }, { label: 'S3', parent: 'Q2' }, { label: 'S4', parent: 'Q3' },
+          { label: 'U1', parent: 'S1' }, { label: 'U2', parent: 'S3' }, { label: 'U3', parent: 'S3' },
+          { label: 'V1', parent: 'U1' }, { label: 'W1', parent: 'V1' }
+        ] } },
+      { id: 'chain', level: 'edge', name: T('Zincir (dejenere): 10 düğüm, her biri tek çocuklu', 'A chain (degenerate): 10 nodes, each with one child'),
+        data: { nodes: (function () {
+          var arr = [{ label: 'R', parent: null }];
+          for (var i = 1; i < 10; i++) arr.push({ label: 'C' + i, parent: i === 1 ? 'R' : 'C' + (i - 1) });
+          return arr;
+        })() } },
+      { id: 'star', level: 'edge', name: T('Yıldız: kökün 10 çocuğu var', 'A star: the root has 10 children'),
+        data: { nodes: (function () {
+          var arr = [{ label: 'R', parent: null }];
+          for (var i = 1; i <= 10; i++) arr.push({ label: 'L' + i, parent: 'R' });
+          return arr;
+        })() } },
+      { id: 'single', level: 'edge', name: T('Tek düğüm', 'A single node'), data: { nodes: [{ label: 'R', parent: null }] }, small: true }
+    ],
+    levels: ['easy', 'normal', 'hard', 'extreme'],
+    /** Number of nodes in the tree. */
+    size: function (d) { return d.nodes.length; },
+    /** Independent computation, checked against S.result by test.js: walks the flat parent list only --
+     *  depth by walking parent links upward from each node, height as the max depth among a node's own
+     *  descendants (found by walking every OTHER node's parent chain back up to see if it passes through
+     *  it) — a completely different technique from build()'s tree-object recursion / BFS. */
+    reference: function (d) {
+      var nodes = d.nodes, byLabel = {};
+      nodes.forEach(function (n) { byLabel[n.label] = n; });
+      var root = null, childCount = {};
+      nodes.forEach(function (n) { childCount[n.label] = 0; });
+      nodes.forEach(function (n) { if (n.parent === null) root = n.label; else childCount[n.parent]++; });
+      var leaves = [], internal = [];
+      nodes.forEach(function (n) { (childCount[n.label] === 0 ? leaves : internal).push(n.label); });
+      leaves.sort(); internal.sort();
+      var depth = {};
+      nodes.forEach(function (n) {
+        var dd = 0, cur = n.label;
+        while (byLabel[cur].parent !== null) { dd++; cur = byLabel[cur].parent; }
+        depth[n.label] = dd;
+      });
+      var heightOf = {};
+      nodes.forEach(function (n) {
+        var maxDescDepth = depth[n.label];
+        nodes.forEach(function (m) {
+          var cur = m.label, isDesc = false;
+          while (cur !== null) { if (cur === n.label) { isDesc = true; break; } cur = byLabel[cur].parent; }
+          if (isDesc) maxDescDepth = Math.max(maxDescDepth, depth[m.label]);
+        });
+        heightOf[n.label] = maxDescDepth - depth[n.label];
+      });
+      var maxDegree = 0;
+      nodes.forEach(function (n) { maxDegree = Math.max(maxDegree, childCount[n.label]); });
+      return { root: root, leaves: leaves, internal: internal, edges: nodes.length - 1, height: heightOf[root], depth: depth, heightOf: heightOf, degree: maxDegree };
+    },
+    random: function (level, r) {
+      var n = { easy: 10, normal: 12, hard: 18, extreme: 24 }[level] || 12;
+      var chainBias = { easy: 0, normal: 0.1, hard: 0.35, extreme: 0.25 }[level] || 0;
+      return { nodes: randomTree(r, n, chainBias) };
+    },
+    input: {
+      hint: T('Örnek: A:- B:A C:A D:A E:B F:B   (ETİKET:EBEVEYN; kök için ETİKET:-; etiket 1-3 karakter)',
+              'Example: A:- B:A C:A D:A E:B F:B   (LABEL:PARENT; LABEL:- for the root; label 1-3 characters)'),
+      parse: function (text) {
+        var s = String(text).trim();
+        if (!s) throw T('Metin boş: en az bir düğüm yazın (örn. "A:-").', 'The text is empty: write at least one node (e.g. "A:-").');
+        var toks = s.split(/\s+/).filter(Boolean);
+        var nodes = [], seen = {}, rootCount = 0;
+        for (var i = 0; i < toks.length; i++) {
+          var tok = toks[i];
+          var m = /^([A-Za-z0-9]{1,3}):(-|[A-Za-z0-9]{1,3})$/.exec(tok);
+          if (!m) throw T('"' + tok + '" anlaşılmadı: "ETİKET:EBEVEYN" ya da "ETİKET:-" biçiminde yazın (etiket 1-3 karakter).',
+                           '"' + tok + '" is not understood: write "LABEL:PARENT" or "LABEL:-" (label 1-3 characters).');
+          var lbl = m[1], parent = m[2] === '-' ? null : m[2];
+          if (seen[lbl]) throw T('"' + lbl + '" etiketi birden fazla kez kullanılmış.', 'Label "' + lbl + '" is used more than once.');
+          seen[lbl] = true;
+          if (parent === null) rootCount++;
+          nodes.push({ label: lbl, parent: parent });
+        }
+        if (rootCount === 0) throw T('Kök işaretlenmemiş: tam olarak bir düğüm ":-" ile işaretlenmeli.', 'No root marked: exactly one node must be marked ":-".');
+        if (rootCount > 1) throw T('Birden fazla kök işaretlenmiş: tam olarak bir düğüm ":-" olmalı.', 'More than one root marked: exactly one node must be ":-".');
+        var byLabel = {};
+        nodes.forEach(function (n) { byLabel[n.label] = n; });
+        nodes.forEach(function (n) {
+          if (n.parent !== null && !byLabel[n.parent]) throw T('"' + n.label + '" düğümünün ebeveyni "' + n.parent + '" tanımlı değil.',
+                                                                'Node "' + n.label + '" has parent "' + n.parent + '" which is not defined.');
+        });
+        nodes.forEach(function (n) {
+          var cur = n.label, steps = 0;
+          while (byLabel[cur].parent !== null) {
+            cur = byLabel[cur].parent;
+            steps++;
+            if (steps > nodes.length) throw T('Ebeveyn zincirinde bir döngü var ("' + n.label + '" köke ulaşamıyor).',
+                                               'There is a cycle in the parent chain ("' + n.label + '" cannot reach the root).');
+          }
+        });
+        return { nodes: nodes };
+      },
+      format: function (d) { return d.nodes.map(function (n) { return n.label + ':' + (n.parent === null ? '-' : n.parent); }).join(' '); },
+      bad: ['', 'A:- B:-', 'A:B B:A', 'A:- B:C C:B', 'A:- B:Z', 'A:- B:A B:A']
+    },
+    build: function (S, d) {
+      var tree = buildTree(d.nodes), root = tree.root;
+      var pos = layout(root);
+      /* Depth, height and degree are needed for the per-node annotation slots below (so each slot is sized to
+       * the widest text it will actually show) and are reused later when those steps run. */
+      var depthMap = bfsDepths(root), heightMap = computeHeights(root);
+      var degreeMap = {}, maxDegree = 0;
+      d.nodes.forEach(function (n) { var deg = tree.byLabel[n.label].children.length; degreeMap[n.label] = deg; maxDegree = Math.max(maxDegree, deg); });
+      var maxChars = {};
+      d.nodes.forEach(function (n) {
+        maxChars[n.label] = Math.max(('d=' + depthMap[n.label]).length, ('h=' + heightMap[n.label]).length, ('deg ' + degreeMap[n.label]).length);
+      });
+      var slots = planAnnotationSlots(root, pos, maxChars);
+      drawTree(S, root, pos);
+      (function levelLabels() {
+        var byD = nodesByDepth(depthMap);
+        for (var dd = 0; dd < byD.length; dd++) {
+          if (!byD[dd] || !byD[dd].length) continue;
+          var minX = Math.min.apply(null, byD[dd].map(function (l) { return pos[l].x; }));
+          var y = pos[byD[dd][0]].y;
+          S.label('dlvl' + dd, { x: minX - 44, y: y + 5, text: 'd=' + dd, anchor: 'end', size: 14, mono: true, style: 'dim' });
+        }
+      })();
+
+      S.step(T('Bu genel bir KÖKLÜ AĞAÇ (rooted tree): ikili ağaçtan farklı olarak bir düğümün istediği kadar çocuğu olabilir. `children` dizisi her düğümün çocuklarına işaret eder.',
+               'This is a general ROOTED TREE: unlike a binary tree, a node may have any number of children. The `children` array points to each node\'s own children.'), LINES_STRUCT);
+
+      S.set('n' + root.label, { style: 'hl' });
+      S.step(T('KÖK (root): ebeveyni olmayan tek düğüm — burada `' + root.label + '`. Her ağacın tam olarak bir kökü vardır ve dolaşma ondan başlar.',
+               'The ROOT: the one node with no parent — here `' + root.label + '`. Every tree has exactly one root, and traversal starts there.'));
+      S.set('n' + root.label, { style: 'normal' });
+
+      /* parent / child — pick a node with children if one exists besides a trivial single-node tree */
+      var demo = null;
+      (function findDemo(n) { if (demo) return; if (n !== root && n.children.length) { demo = n; return; } n.children.forEach(findDemo); })(root);
+      if (!demo) demo = root;
+      S.set('n' + demo.label, { style: 'hl' });
+      var kidLabels = demo.children.map(function (c) { return c.label; });
+      if (demo.children.length) demo.children.forEach(function (c) { S.set('n' + c.label, { style: 'new' }); });
+      if (demo !== root) S.set('e_' + demo.parent + '_' + demo.label, { style: 'active' });
+      S.step(demo.children.length
+        ? T('EBEVEYN (parent) / ÇOCUK (child): `' + demo.label + '`' + (demo !== root ? ' düğümünün ebeveyni `' + demo.parent + '`,' : ' köktür, ebeveyni yok,') + ' çocukları ise ' + kidLabels.join(', ') + '.',
+            'PARENT / CHILD: `' + demo.label + '`' + (demo !== root ? '\'s parent is `' + demo.parent + '`,' : ' is the root, so it has no parent,') + ' and its children are ' + kidLabels.join(', ') + '.')
+        : T('`' + demo.label + '` bir yaprak: çocuğu yok. Bu küçük ağaçta çocuklu bir düğüm göstermek için başka bir örneğe bakmak gerekir.',
+            '`' + demo.label + '` is a leaf: it has no children. This tiny tree has no other node to demonstrate one with.'), LINES_CHILDREN);
+      demo.children.forEach(function (c) { S.set('n' + c.label, { style: 'normal' }); });
+      if (demo !== root) S.set('e_' + demo.parent + '_' + demo.label, { style: 'normal' });
+
+      /* siblings — the other children of demo's parent */
+      var siblings = [];
+      if (demo !== root) { siblings = tree.byLabel[demo.parent].children.map(function (c) { return c.label; }).filter(function (l) { return l !== demo.label; }); }
+      siblings.forEach(function (l) { S.set('n' + l, { style: 'active' }); });
+      S.step(siblings.length
+        ? T('KARDEŞ (sibling): `' + demo.label + '` ile aynı ebeveyni paylaşan düğümler: ' + siblings.join(', ') + '.',
+            'SIBLINGS: nodes that share the same parent as `' + demo.label + '`: ' + siblings.join(', ') + '.')
+        : (demo === root
+          ? T('Kökün kardeşi olamaz: tek köktür, ebeveyni yok.', 'The root has no siblings: it is the only root, with no parent.')
+          : T('`' + demo.label + '` tek çocuk: kardeşi yok.', '`' + demo.label + '` is an only child: it has no siblings.')));
+      S.set('n' + demo.label, { style: 'normal' });
+      siblings.forEach(function (l) { S.set('n' + l, { style: 'normal' }); });
+
+      /* leaves vs internal */
+      var leaves = [], internal = [];
+      d.nodes.forEach(function (n) { (tree.byLabel[n.label].children.length === 0 ? leaves : internal).push(n.label); });
+      leaves.sort(); internal.sort();
+      leaves.forEach(function (l) { S.set('n' + l, { style: 'new' }); });
+      internal.forEach(function (l) { S.set('n' + l, { style: 'active' }); });
+      S.step(T('YAPRAK (leaf, yeşil): çocuğu olmayan düğüm — `child_count == 0`. İÇ DÜĞÜM (internal, mavi): en az bir çocuğu olan düğüm. Yapraklar: ' + leaves.join(', ') + '. İç düğümler: ' + internal.join(', ') + '.',
+               'A LEAF (green) has no children — `child_count == 0`. An INTERNAL node (blue) has at least one child. Leaves: ' + leaves.join(', ') + '. Internal: ' + internal.join(', ') + '.'), LINES_LEAF);
+      d.nodes.forEach(function (n) { S.set('n' + n.label, { style: 'normal' }); });
+
+      /* edges = n - 1 */
+      var edges = d.nodes.length - 1;
+      d.nodes.forEach(function (n) { if (n.parent !== null) S.set('e_' + n.parent + '_' + n.label, { style: 'hl' }); });
+      S.step(T('KENAR (edge) sayısı: her düğümün (kök hariç) tam olarak bir ebeveyne giden bir kenarı vardır, o yüzden bir ağaçta her zaman (düğüm sayısı - 1) = ' + edges + ' kenar vardır.',
+               'Number of EDGES: every node except the root has exactly one edge to its parent, so a tree always has (node count - 1) = ' + edges + ' edges.'), LINES_DEGREE);
+      d.nodes.forEach(function (n) { if (n.parent !== null) S.set('e_' + n.parent + '_' + n.label, { style: 'normal' }); });
+
+      /* depth, level by level (BFS) */
+      var byDepth = nodesByDepth(depthMap), maxDepth = byDepth.length - 1;
+      for (var dd = 0; dd <= maxDepth; dd++) {
+        byDepth[dd].forEach(function (l) { S.set('n' + l, { style: 'hl' }); annotate(S, l, slots[l], 'd=' + dd); });
+        S.step(dd === 0
+          ? T('DERİNLİK (depth) 0: kökün derinliği her zaman 0\'dır (`' + byDepth[0][0] + '`).',
+              'DEPTH 0: the root\'s depth is always 0 (`' + byDepth[0][0] + '`).')
+          : T('Derinlik ' + dd + ': köke ' + dd + ' kenar uzaklıktaki düğümler (bir üst seviyenin derinliği + 1): ' + byDepth[dd].join(', ') + '.',
+              'Depth ' + dd + ': the nodes ' + dd + ' edges away from the root (parent\'s depth + 1): ' + byDepth[dd].join(', ') + '.'), LINES_DEPTH_FULL);
+      }
+      /* Clear the "d=" depth tags before HEIGHT starts, so a number on screen always means only one thing
+       * (otherwise B's leftover "d=1" next to E's new "h=1" reads as two different quantities with the same
+       * value, which is confusing the first time students see both). */
+      d.nodes.forEach(function (n) { S.set('n' + n.label, { style: 'normal' }); clearAnnotate(S, n.label); });
+
+      /* height, bottom-up (leaves = 0) — shown level by level, deepest level first */
+      for (var dd2 = maxDepth; dd2 >= 0; dd2--) {
+        byDepth[dd2].forEach(function (l) { S.set('n' + l, { style: 'active' }); annotate(S, l, slots[l], 'h=' + heightMap[l]); });
+        var pairs = byDepth[dd2].map(function (l) { return l + '=' + heightMap[l]; }).join(', ');
+        S.step(dd2 === maxDepth
+          ? T('YÜKSEKLİK (height), en alttan başlıyoruz: yapraklar yükseklik 0 alır: ' + pairs + '.',
+              'HEIGHT, starting from the bottom: leaves get height 0: ' + pairs + '.')
+          : T('Yükseklik ' + dd2 + '. seviyede: her düğümün yüksekliği = 1 + (çocuklarının en büyük yüksekliği): ' + pairs + '.',
+              'Height at level ' + dd2 + ': each node\'s height = 1 + (the tallest of its children): ' + pairs + '.'), LINES_HEIGHT_FULL);
+      }
+      d.nodes.forEach(function (n) { S.set('n' + n.label, { style: 'normal' }); });
+
+      var height = heightMap[root.label];
+      S.set('n' + root.label, { style: 'hl' });
+      annotate(S, root.label, slots[root.label], 'h=' + height);
+      S.step(T('AĞACIN YÜKSEKLİĞİ = kökün yüksekliği = ' + height + '. (Eşdeğer olarak: en derin yaprağın derinliği.)',
+               'The HEIGHT OF THE TREE = the height of the root = ' + height + '. (Equivalently: the depth of the deepest leaf.)'), LINES_HEIGHT_FULL);
+      S.set('n' + root.label, { style: 'normal' });
+      /* Clear the "h=" height tags before DEGREE starts, for the same reason: one number, one meaning. */
+      d.nodes.forEach(function (n) { clearAnnotate(S, n.label); });
+
+      /* degree of each node, and of the tree */
+      d.nodes.forEach(function (n) { annotate(S, n.label, slots[n.label], 'deg ' + degreeMap[n.label]); });
+      S.step(T('DERECE (degree): bir düğümün derecesi = çocuk sayısı (`child_count`). Ağacın derecesi = en büyük düğüm derecesi = ' + maxDegree + '.',
+               'DEGREE: a node\'s degree = its number of children (`child_count`). The tree\'s degree = the largest node degree = ' + maxDegree + '.'), LINES_DEGREE);
+      d.nodes.forEach(function (n) { clearAnnotate(S, n.label); });
+
+      /* one subtree, framed */
+      var subtreeRoot = null;
+      (function findSub(n) { if (subtreeRoot) return; if (n !== root && n.children.length) subtreeRoot = n; n.children.forEach(findSub); })(root);
+      if (!subtreeRoot) subtreeRoot = root.children.length ? root.children[0] : root;
+      var members = [];
+      (function collect(n) { members.push(n.label); n.children.forEach(collect); })(subtreeRoot);
+      var xs = members.map(function (l) { return pos[l].x; }), ys = members.map(function (l) { return pos[l].y; });
+      var pad = 30;
+      S.region('sub', { x: Math.min.apply(null, xs) - pad, y: Math.min.apply(null, ys) - pad, w: Math.max.apply(null, xs) - Math.min.apply(null, xs) + 2 * pad, h: Math.max.apply(null, ys) - Math.min.apply(null, ys) + 2 * pad, title: T('altağaç (subtree): ' + subtreeRoot.label, 'subtree: ' + subtreeRoot.label) });
+      members.forEach(function (l) { S.set('n' + l, { style: 'hl' }); });
+      S.step((subtreeRoot === root
+        ? T('ALTAĞAÇ (subtree): bir düğüm ve onun altındaki her şey. Kökün kendisinin altağacı, ağacın tamamıdır.',
+            'A SUBTREE: a node together with everything below it. The root\'s own subtree is the whole tree.')
+        : T('ALTAĞAÇ (subtree): `' + subtreeRoot.label + '` düğümü ve onun altındaki her şey (' + members.join(', ') + '), kesikli çerçeve içinde.',
+            'A SUBTREE: node `' + subtreeRoot.label + '` together with everything below it (' + members.join(', ') + '), framed in dashes.')), LINES_CHILDREN);
+
+      var leavesR = leaves, internalR = internal;
+      S.result = { root: root.label, leaves: leavesR, internal: internalR, edges: edges, height: height,
+        depth: (function () { var o = {}; d.nodes.forEach(function (n) { o[n.label] = depthMap[n.label]; }); return o; })(),
+        heightOf: (function () { var o = {}; d.nodes.forEach(function (n) { o[n.label] = heightMap[n.label]; }); return o; })(),
+        degree: maxDegree };
+    }
+  });
+})(typeof DSAnim !== 'undefined' ? DSAnim : require('../../web/scene.js'));
+</script>
+<script>/* dsanim v2 player — builds the frames in the browser from the chosen example, random data or the user's own values,
+ * then plays them: elements are matched by data-id, positions glide, colours fade, new elements appear, removed ones fade.
+ * Controls: example picker (normal / hard / edge cases), difficulty + random, own values, first/prev/play/next/last,
+ * speed, narration (browser speech synthesis), code language tabs.
+ * Keyboard: space = play/pause, ← → = step, Home/End = first/last.
+ * URL: lang=tr|en, example=<preset id>, level=easy|normal|hard|extreme, seed=<n>, step=<n>, auto=1, code=c|java|0,
+ *      static=1 (print: last step, no controls), mode=slide (compact layout for a 16:9 slide).
+ *      Old Turkish names still work: kare, oto, kod, statik, yer=slayt.
+ */
+(function () {
+  'use strict';
+  var NUMS = /-?\d*\.?\d+(?:e-?\d+)?/g;
+  var TEXT = {
+    tr: { play: 'Oynat', pause: 'Duraklat', next: 'Sonraki adım', prev: 'Önceki adım', first: 'Başa dön', last: 'Sona git',
+          speed: 'Hız', voice: 'Sesli anlatım', step: 'Adım', example: 'Örnek', level: 'Zorluk', random: 'Rastgele',
+          own: 'Kendi değerlerin', apply: 'Uygula', custom: 'Kendi değerleri', randomName: 'Rastgele',
+          input: 'Girdi', upNext: 'Sıradaki →', lastStep: 'Son adım.', faster: 'Hızlandır (+)', slower: 'Yavaşlat (−)',
+          levels: { easy: 'kolay', normal: 'normal', hard: 'zor', extreme: 'uç' },
+          groups: { normal: 'Normal', hard: 'Zor', edge: 'Uç ve anormal durumlar' } },
+    en: { play: 'Play', pause: 'Pause', next: 'Next step', prev: 'Previous step', first: 'First step', last: 'Last step',
+          speed: 'Speed', voice: 'Narration', step: 'Step', example: 'Example', level: 'Difficulty', random: 'Random',
+          own: 'Your values', apply: 'Apply', custom: 'Your values', randomName: 'Random',
+          input: 'Input', upNext: 'Next →', lastStep: 'Last step.', faster: 'Faster (+)', slower: 'Slower (−)',
+          levels: { easy: 'easy', normal: 'normal', hard: 'hard', extreme: 'extreme' },
+          groups: { normal: 'Normal', hard: 'Hard', edge: 'Edge and abnormal cases' } }
+  };
+  var CODE_NAME = { c: 'C', java: 'Java', cpp: 'C++', py: 'Python', pseudo: 'Pseudocode' };
+  var SPEEDS = [0.5, 0.75, 1, 1.5, 2, 3, 4];
+  function savedSpeed() { try { var v = +window.localStorage.getItem('dsanim-speed'); return SPEEDS.indexOf(v) >= 0 ? v : 1; } catch (e) { return 1; } }
+  function saveSpeed(v) { try { window.localStorage.setItem('dsanim-speed', String(v)); } catch (e) { /* private mode */ } }
+  function plain(s) { return String(s || '').replace(/[`*]/g, ''); }
+
+  function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  function nums(s) { return (s || '').match(NUMS) || []; }
+  function fill(s, n) { var i = 0; return s.replace(NUMS, function () { return (+n[i++]).toFixed(2); }); }
+  function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function fmt(s) { return esc(s).replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>'); }
+  function pick(v, lang) { return v && typeof v === 'object' ? (v[lang] !== undefined ? v[lang] : v.en) : v; }
+
+  function Player(root, spec, opt) {
+    this.root = root; this.spec = spec; this.o = opt || {};
+    this.lang = this.o.lang === 'en' ? 'en' : 'tr';
+    this.i = 0; this.playing = false; this.speed = savedSpeed(); this.voice = false; this.timer = null; this.anim = null;
+    // spec.code may be a function of the data (e.g. #define CAP follows the chosen example)
+    this.codeOf = function (d) { return this.o.noCode ? {} : (typeof spec.code === 'function' ? spec.code(d || spec.presets[0].data) : (spec.code || {})); };
+    this.code = this.codeOf(null);
+    var langs = Object.keys(this.code);
+    this.codeLang = (this.o.code && this.code[this.o.code]) ? this.o.code : langs[0];
+    this.setup();
+    var start = this.presetById(this.o.example) || spec.presets[0];
+    if (this.o.seed) this.useRandom(this.o.level || 'normal', +this.o.seed, false);
+    else this.useData(start.data, start.id, false);
+    var first = Math.max(0, Math.min(this.frames.length - 1, (this.o.step || 1) - 1));
+    if (this.o.static) first = this.frames.length - 1;
+    this.go(first, false);
+    if (this.o.auto && !this.o.static) this.play();
+  }
+
+  Player.prototype.presetById = function (id) {
+    if (!id) return null;
+    for (var i = 0; i < this.spec.presets.length; i++) if (this.spec.presets[i].id === id) return this.spec.presets[i];
+    return null;
+  };
+
+  Player.prototype.setup = function () {
+    var s = this.spec, y = TEXT[this.lang], self = this;
+    this.root.classList.add('dsa', 'dsa-dil-' + this.lang);
+    if (this.o.static) this.root.classList.add('dsa-statik');
+    if (this.o.slide) document.documentElement.classList.add('dsa-slayt');
+
+    var top = el('div', 'dsa-ust');
+    top.appendChild(el('div', 'dsa-baslik', esc(pick(s.title, this.lang))));
+    this.counter = el('div', 'dsa-sayac');
+    top.appendChild(this.counter);
+    this.root.appendChild(top);
+
+    // example bar
+    var bar = el('div', 'dsa-ornek');
+    this.sel = el('select', 'dsa-sec');
+    this.sel.title = y.example; this.sel.setAttribute('aria-label', y.example);
+    ['normal', 'hard', 'edge'].forEach(function (lvl) {
+      var ps = s.presets.filter(function (p) { return (p.level || 'normal') === lvl; });
+      if (!ps.length) return;
+      var g = el('optgroup'); g.label = y.groups[lvl];
+      ps.forEach(function (p) { var op = el('option', '', esc(pick(p.name, self.lang))); op.value = p.id; g.appendChild(op); });
+      self.sel.appendChild(g);
+    });
+    var gx = el('optgroup'); gx.label = '—';
+    var opR = el('option', '', '🎲 ' + y.randomName); opR.value = '__random'; gx.appendChild(opR);
+    if (s.input) { var opC = el('option', '', '✎ ' + y.custom); opC.value = '__custom'; gx.appendChild(opC); }
+    this.sel.appendChild(gx);
+    this.sel.addEventListener('change', function () {
+      var v = self.sel.value;
+      if (v === '__random') self.useRandom(self.levelSel.value, null, true);
+      else if (v === '__custom') { self.ownRow.hidden = false; self.ownInput.focus(); }
+      else { var p = self.presetById(v); self.useData(p.data, p.id, true); }
+    });
+    bar.appendChild(el('span', 'dsa-etk', y.example));
+    bar.appendChild(this.sel);
+
+    this.levelSel = el('select', 'dsa-sec dsa-zor');
+    this.levelSel.title = y.level;
+    (s.levels || ['easy', 'normal', 'hard', 'extreme']).forEach(function (l) {
+      var op = el('option', '', y.levels[l] || l); op.value = l; if (l === 'normal') op.selected = true; self.levelSel.appendChild(op);
+    });
+    var dice = el('button', 'dsa-d dsa-zar', '🎲');
+    dice.type = 'button'; dice.title = y.random + ' (' + y.level.toLowerCase() + ')';
+    dice.addEventListener('click', function () { self.useRandom(self.levelSel.value, null, true); });
+    if (s.random) { bar.appendChild(el('span', 'dsa-etk', y.level)); bar.appendChild(this.levelSel); bar.appendChild(dice); }
+    this.root.appendChild(bar);
+
+    // own values
+    this.ownRow = el('div', 'dsa-kendi');
+    this.ownRow.hidden = true;
+    if (s.input) {
+      this.ownInput = el('input', 'dsa-girdi');
+      this.ownInput.type = 'text';
+      this.ownInput.placeholder = pick(s.input.hint, this.lang) || '';
+      this.ownInput.setAttribute('aria-label', y.own);
+      var ap = el('button', 'dsa-d dsa-uygula', y.apply); ap.type = 'button'; this.applyBtn = ap;
+      this.err = el('div', 'dsa-hata');
+      var applyOwn = function () {
+        try {
+          var data = s.input.parse(self.ownInput.value);
+          self.err.textContent = '';
+          self.useData(data, '__custom', true);
+        } catch (e) {
+          self.err.textContent = pick(e && (e.tr || e.en) ? e : { tr: String(e.message || e), en: String(e.message || e) }, self.lang);
+        }
+      };
+      ap.addEventListener('click', applyOwn);
+      this.ownInput.addEventListener('keydown', function (e) { if (e.key === 'Enter') { e.preventDefault(); applyOwn(); } });
+      this.ownRow.appendChild(el('span', 'dsa-etk', y.own));
+      this.ownRow.appendChild(this.ownInput);
+      this.ownRow.appendChild(ap);
+      this.ownRow.appendChild(this.err);
+    }
+    this.root.appendChild(this.ownRow);
+
+    // input strip: every input value from the first step on; the one being processed (frame.at) is highlighted
+    this.tape = el('div', 'dsa-serit');
+    this.tape.hidden = !s.input;
+    this.root.appendChild(this.tape);
+
+    var ctl = el('div', 'dsa-denetim');
+    function btn(html, title, fn) { var b = el('button', 'dsa-d', html); b.type = 'button'; b.title = title; b.setAttribute('aria-label', title); b.addEventListener('click', fn); ctl.appendChild(b); return b; }
+    btn('&#x23EE;', y.first, function () { self.stop(); self.go(0, true); });
+    btn('&#x25C0;', y.prev, function () { self.stop(); self.go(self.i - 1, true); });
+    this.playBtn = btn('&#x25B6;', y.play, function () { self.playing ? self.stop() : self.play(); });
+    this.playBtn.classList.add('dsa-ana');
+    btn('&#x25B6;&#x2759;', y.next, function () { self.stop(); self.go(self.i + 1, true); });
+    btn('&#x23ED;', y.last, function () { self.stop(); self.go(self.frames.length - 1, true); });
+    this.slider = el('input', 'dsa-cubuk');
+    this.slider.type = 'range'; this.slider.min = 1;
+    this.slider.setAttribute('aria-label', y.step);
+    this.slider.addEventListener('input', function () { self.stop(); self.go(+self.slider.value - 1, false); });
+    ctl.appendChild(this.slider);
+    var sp = el('select', 'dsa-hiz');
+    sp.title = y.speed; sp.setAttribute('aria-label', y.speed);
+    SPEEDS.forEach(function (h) { var op = el('option', '', h + '×'); op.value = h; if (h === self.speed) op.selected = true; sp.appendChild(op); });
+    this.setSpeed = function (v) { self.speed = v; sp.value = String(v); saveSpeed(v); };
+    sp.addEventListener('change', function () { self.setSpeed(+sp.value); });
+    btn('&minus;', y.slower, function () { var k = SPEEDS.indexOf(self.speed); if (k > 0) self.setSpeed(SPEEDS[k - 1]); });
+    ctl.appendChild(sp);
+    btn('+', y.faster, function () { var k = SPEEDS.indexOf(self.speed); if (k < SPEEDS.length - 1) self.setSpeed(SPEEDS[k + 1]); });
+    if ('speechSynthesis' in window) {
+      this.voiceBtn = btn('&#x1F507;', y.voice, function () {
+        self.voice = !self.voice; self.voiceBtn.innerHTML = self.voice ? '&#x1F50A;' : '&#x1F507;';
+        self.voiceBtn.classList.toggle('etkin', self.voice);
+        if (self.voice) self.say(); else window.speechSynthesis.cancel();
+      });
+    }
+    this.root.appendChild(ctl);
+
+
+    var body = el('div', 'dsa-govde' + (Object.keys(this.code).length ? '' : ' dsa-kodsuz'));
+    var stage = el('div', 'dsa-sahne');
+    this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    this.svg.setAttribute('role', 'img');
+    stage.appendChild(this.svg);
+    body.appendChild(stage);
+    if (Object.keys(this.code).length) {
+      var box = el('div', 'dsa-kod'), tabs = el('div', 'dsa-sekme');
+      Object.keys(this.code).forEach(function (k) {
+        var b = el('button', k === self.codeLang ? 'etkin' : '', CODE_NAME[k] || k);
+        b.type = 'button';
+        b.addEventListener('click', function () {
+          self.codeLang = k; self.drawCode(); self.markCode();
+          Array.prototype.forEach.call(tabs.children, function (c) { c.classList.toggle('etkin', c === b); });
+        });
+        tabs.appendChild(b);
+      });
+      box.appendChild(tabs);
+      this.pre = el('pre', 'dsa-pre');
+      box.appendChild(this.pre);
+      body.appendChild(box);
+    }
+    this.root.appendChild(body);
+
+    this.cap = el('div', 'dsa-cap');
+    this.cap.setAttribute('aria-live', 'polite');
+    this.root.appendChild(this.cap);
+    this.nextEl = el('div', 'dsa-sonraki');
+    this.root.appendChild(this.nextEl);
+
+
+    this.root.tabIndex = 0;
+    this.root.addEventListener('keydown', function (e) {
+      var t = e.target.tagName;
+      if (t === 'SELECT' || t === 'INPUT') return;
+      if (e.key === ' ' || e.key === 'k') { e.preventDefault(); self.playing ? self.stop() : self.play(); }
+      else if (e.key === 'ArrowRight' || e.key === 'l') { e.preventDefault(); self.stop(); self.go(self.i + 1, true); }
+      else if (e.key === 'ArrowLeft' || e.key === 'j') { e.preventDefault(); self.stop(); self.go(self.i - 1, true); }
+      else if (e.key === 'Home') { e.preventDefault(); self.stop(); self.go(0, true); }
+      else if (e.key === 'End') { e.preventDefault(); self.stop(); self.go(self.frames.length - 1, true); }
+      else if (e.key === '+' || e.key === '=') { e.preventDefault(); var k1 = SPEEDS.indexOf(self.speed); if (k1 < SPEEDS.length - 1) self.setSpeed(SPEEDS[k1 + 1]); }
+      else if (e.key === '-' || e.key === '_') { e.preventDefault(); var k2 = SPEEDS.indexOf(self.speed); if (k2 > 0) self.setSpeed(SPEEDS[k2 - 1]); }
+    });
+    this.drawCode();
+  };
+
+  /** Build all frames for a dataset and show the first one. */
+  Player.prototype.useData = function (data, id, reset) {
+    var S = new window.DSAnim.Scene();
+    this.spec.build(S, data);
+    if (!S.frames.length) S.step({ tr: '(boş)', en: '(empty)' }, {});
+    this.frames = S.frames;
+    this.data = data;
+    if (typeof this.spec.code === 'function') { this.code = this.codeOf(data); this.drawCode(); }
+    this.vb = window.DSAnim.viewBox(this.frames);
+    this.svg.setAttribute('viewBox', this.vb.join(' '));
+    this.svg.innerHTML = window.DSAnim.defs() + '<g class="kat kat-arka"></g><g class="kat kat-ok"></g><g class="kat kat-sekil"></g><g class="kat kat-etiket"></g>';
+    this.inner = this.frames.map(function (f) { return window.DSAnim.render(f.state, f.order, null); });
+    if (this.sel && id && id.indexOf('__') !== 0) this.sel.value = id;
+    if (this.spec.input && this.ownInput) this.ownInput.value = this.spec.input.format(data);
+    this.drawTape(data);
+    this.slider.max = this.frames.length;
+    this.i = 0;
+    if (reset) { this.stop(); this.go(0, false); }
+  };
+
+  Player.prototype.useRandom = function (level, seed, reset) {
+    if (!this.spec.random) return;
+    var sd = seed || Math.floor(Math.random() * 1e9);
+    var data = this.spec.random(level, window.DSAnim.rng(sd));
+    this.useData(data, '__random', reset);
+    if (this.sel) this.sel.value = '__random';
+    if (this.levelSel) this.levelSel.value = level;
+  };
+
+  Player.prototype.drawTape = function (data) {
+    if (!this.tape || !this.spec.input) return;
+    var inp = this.spec.input, toks = inp.tokens ? inp.tokens(data) : String(inp.format(data)).split(/\s+/).filter(Boolean);
+    this.tape.innerHTML = '<span class="dsa-etk">' + esc(TEXT[this.lang].input) + '</span>';
+    var self = this;
+    this.chips = toks.map(function (t) { var c = el('span', 'dsa-jeton', esc(t)); self.tape.appendChild(c); return c; });
+  };
+  Player.prototype.markTape = function (at) {
+    if (!this.chips) return;
+    var cur = null;
+    this.chips.forEach(function (c, k) {
+      var has = at !== undefined && at !== null;
+      c.classList.toggle('bitti', has && k < at);
+      c.classList.toggle('simdi', has && k === at);
+      c.classList.toggle('sonra', has && k === at + 1);
+      if (has && k === at) cur = c;
+    });
+    if (cur && this.tape.scrollWidth > this.tape.clientWidth) this.tape.scrollLeft = Math.max(0, cur.offsetLeft - this.tape.clientWidth / 3);
+  };
+  Player.prototype.drawCode = function () {
+    if (!this.pre) return;
+    var lines = this.code[this.codeLang] || [];
+    this.pre.innerHTML = lines.map(function (s, i) {
+      return '<span class="dsa-sat" data-n="' + (i + 1) + '"><span class="dsa-no">' + (i + 1) + '</span>' + (esc(s) || ' ') + '</span>';
+    }).join('');
+  };
+
+  Player.prototype.markCode = function () {
+    if (!this.pre) return;
+    var f = this.frames[this.i], hot = (f.lines && f.lines[this.codeLang]) || [], first = null;
+    Array.prototype.forEach.call(this.pre.children, function (s) {
+      var on = hot.indexOf(+s.getAttribute('data-n')) >= 0;
+      s.classList.toggle('vurgu', on);
+      if (on && !first) first = s;
+    });
+    if (first) {
+      var p = this.pre, top = first.offsetTop - p.offsetTop;
+      if (top < p.scrollTop || top > p.scrollTop + p.clientHeight - 30) p.scrollTop = Math.max(0, top - 40);
+    }
+  };
+
+  Player.prototype.go = function (target, animate) {
+    var n = this.frames.length;
+    if (target < 0 || target >= n) { if (target >= n) this.stop(); return; }
+    var jump = Math.abs(target - this.i) !== 1;
+    this.i = target;
+    this.morph(this.inner[target], animate && !jump && !this.o.static);
+    var f = this.frames[target];
+    this.cap.innerHTML = fmt(pick(f.cap, this.lang) || '');
+    this.counter.textContent = TEXT[this.lang].step + ' ' + (target + 1) + ' / ' + n;
+    this.markTape(f.at);
+    var nf = this.frames[target + 1], y2 = TEXT[this.lang];
+    if (nf) {
+      var nc = plain(pick(nf.cap, this.lang)), cut = nc.search(/[.!?](\s|$)/);
+      if (cut > 20 && cut < 150) nc = nc.slice(0, cut + 1); else if (nc.length > 150) nc = nc.slice(0, 147) + '…';
+      this.nextEl.innerHTML = '<span class="dsa-sonraki-etk">' + esc(y2.upNext) + '</span> ' + esc(nc);
+    } else this.nextEl.innerHTML = '<span class="dsa-sonraki-etk">' + esc(y2.lastStep) + '</span>';
+    this.slider.value = target + 1;
+    this.markCode();
+    if (this.voice) this.say();
+  };
+
+  Player.prototype.morph = function (html, animate) {
+    var self = this, tmp = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    tmp.innerHTML = html;
+    if (this.anim) { cancelAnimationFrame(this.anim); this.anim = null; if (this.finish) this.finish(); }
+    var jobs = [];
+    ['arka', 'ok', 'sekil', 'etiket'].forEach(function (layer) {
+      var live = self.svg.querySelector('.kat-' + layer), next = tmp.querySelector('.kat-' + layer);
+      if (!live || !next) return;
+      var old = {};
+      Array.prototype.forEach.call(live.children, function (c) { if (!c.classList.contains('dsa-cikis')) old[c.getAttribute('data-id')] = c; });
+      var order = [];
+      Array.prototype.slice.call(next.children).forEach(function (y) {
+        var id = y.getAttribute('data-id'), o = old[id];
+        if (o && o.tagName === y.tagName) {
+          delete old[id];
+          var attr = y.tagName === 'path' ? 'd' : 'transform', from = o.getAttribute(attr), to = y.getAttribute(attr);
+          var a = nums(from), b = nums(to);
+          if (y.tagName === 'g') self.updateInner(o, y);
+          o.setAttribute('class', y.getAttribute('class'));
+          ['stroke', 'marker-end', 'opacity'].forEach(function (k) { if (y.hasAttribute(k)) o.setAttribute(k, y.getAttribute(k)); else if (k !== 'stroke') o.removeAttribute(k); });
+          if (animate && a.length && a.length === b.length && from !== to) jobs.push({ e: o, n: attr, a: a, b: b, s: to });
+          else o.setAttribute(attr, to);
+          order.push(o);
+        } else {
+          var ne = y.cloneNode(true);
+          if (animate) ne.classList.add('dsa-giris');
+          order.push(ne);
+        }
+      });
+      Object.keys(old).forEach(function (id) {
+        var c = old[id];
+        if (animate) { c.classList.add('dsa-cikis'); setTimeout(function () { if (c.parentNode) c.parentNode.removeChild(c); }, 450); }
+        else live.removeChild(c);
+      });
+      order.forEach(function (e) { live.appendChild(e); });
+      if (animate) requestAnimationFrame(function () { requestAnimationFrame(function () {
+        Array.prototype.forEach.call(live.querySelectorAll('.dsa-giris'), function (e) { e.classList.remove('dsa-giris'); });
+      }); });
+    });
+    if (!jobs.length) return;
+    var dur = 480 / this.speed, t0 = null;
+    this.finish = function () { jobs.forEach(function (j) { j.e.setAttribute(j.n, j.s); }); self.finish = null; };
+    function tick(t) {
+      if (t0 === null) t0 = t;
+      var p = Math.min(1, (t - t0) / dur), e = ease(p);
+      jobs.forEach(function (j) { j.e.setAttribute(j.n, fill(j.s, j.a.map(function (x, k) { return +x + (+j.b[k] - +x) * e; }))); });
+      if (p < 1) self.anim = requestAnimationFrame(tick); else { self.anim = null; if (self.finish) self.finish(); }
+    }
+    this.anim = requestAnimationFrame(tick);
+  };
+
+  Player.prototype.updateInner = function (o, y) {
+    var a = o.children, b = y.children, same = a.length === b.length;
+    for (var k = 0; same && k < a.length; k++) if (a[k].tagName !== b[k].tagName) same = false;
+    if (!same) { o.innerHTML = y.innerHTML; return; }
+    for (var j = 0; j < a.length; j++) {
+      var ea = a[j], eb = b[j];
+      Array.prototype.forEach.call(eb.attributes, function (at) { if (ea.getAttribute(at.name) !== at.value) ea.setAttribute(at.name, at.value); });
+      Array.prototype.slice.call(ea.attributes).forEach(function (at) { if (!eb.hasAttribute(at.name)) ea.removeAttribute(at.name); });
+      if (ea.innerHTML !== eb.innerHTML) ea.innerHTML = eb.innerHTML;
+    }
+  };
+
+  Player.prototype.wait = function () { var c = pick(this.frames[this.i].cap, this.lang) || ''; return (700 + c.length * 20) / this.speed; };
+  Player.prototype.play = function () {
+    var self = this;
+    if (this.i >= this.frames.length - 1) this.go(0, false);
+    this.playing = true; this.playBtn.innerHTML = '&#x23F8;'; this.playBtn.title = TEXT[this.lang].pause;
+    function next() {
+      if (!self.playing) return;
+      if (self.i >= self.frames.length - 1) { self.stop(); return; }
+      self.go(self.i + 1, true);
+      self.schedule(next);
+    }
+    this.schedule(next);
+  };
+  Player.prototype.schedule = function (fn) {
+    var self = this;
+    clearTimeout(this.timer);
+    if (this.voice && this.utter) {
+      var done = false, backup = setTimeout(function () { if (!done) { done = true; fn(); } }, 20000);
+      this.utter.onend = function () { if (!done) { done = true; clearTimeout(backup); self.timer = setTimeout(fn, 500 / self.speed); } };
+    } else this.timer = setTimeout(fn, this.wait());
+  };
+  Player.prototype.stop = function () {
+    this.playing = false; clearTimeout(this.timer);
+    if (this.playBtn) { this.playBtn.innerHTML = '&#x25B6;'; this.playBtn.title = TEXT[this.lang].play; }
+  };
+  Player.prototype.say = function () {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    var u = new SpeechSynthesisUtterance((pick(this.frames[this.i].cap, this.lang) || '').replace(/[`*]/g, ''));
+    u.lang = this.lang === 'tr' ? 'tr-TR' : 'en-US';
+    u.rate = Math.min(1.6, 0.95 * this.speed);
+    var v = window.speechSynthesis.getVoices().filter(function (s) { return s.lang && s.lang.toLowerCase().indexOf(u.lang.slice(0, 2).toLowerCase()) === 0; });
+    if (v.length) u.voice = v[0];
+    this.utter = u;
+    window.speechSynthesis.speak(u);
+  };
+
+  function theme() {
+    try {
+      var p = window.parent && window.parent !== window ? window.parent.document.body : null, s = p && p.getAttribute('data-md-color-scheme');
+      if (s === 'slate') document.documentElement.classList.add('dsa-koyu');
+      else if (s === 'default') document.documentElement.classList.add('dsa-acik');
+    } catch (e) { /* other origin: follow the OS theme */ }
+  }
+  function reportHeight(id) {
+    if (window.parent === window) return;
+    var last = 0;
+    function send() {
+      var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+      if (Math.abs(h - last) > 2) { last = h; window.parent.postMessage({ dsanim: true, ad: id, yukseklik: h }, '*'); }
+    }
+    if ('ResizeObserver' in window) new ResizeObserver(send).observe(document.documentElement);
+    window.addEventListener('load', send);
+    setTimeout(send, 300);
+  }
+
+  function start() {
+    var q = new URLSearchParams(location.search);
+    function p(a, b) { return q.get(a) !== null ? q.get(a) : q.get(b); }
+    var ids = Object.keys(window.DSAnim.registry);
+    Array.prototype.forEach.call(document.querySelectorAll('[data-dsanim]'), function (root, k) {
+      var spec = window.DSAnim.registry[root.getAttribute('data-dsanim')] || window.DSAnim.registry[ids[k]];
+      if (!spec) return;
+      theme();
+      var codeArg = p('code', 'kod'), mode = p('mode', 'yer');
+      var player = new Player(root, spec, {
+        lang: q.get('lang') || (document.documentElement.lang || 'tr').slice(0, 2),
+        example: q.get('example'), level: q.get('level'), seed: q.get('seed'),
+        step: +(p('step', 'kare') || 1), auto: p('auto', 'oto') === '1', static: p('static', 'statik') === '1',
+        code: codeArg, noCode: codeArg === '0', slide: mode === 'slide' || mode === 'slayt'
+      });
+      if (window.parent === window || q.get('focus') === '1') root.focus({ preventScroll: true });
+      reportHeight(spec.id);
+      if (q.get('selftest') === '1') selftest(player, spec);
+    });
+  }
+  /** ?selftest=1 — drive the real UI: every example, random data at every level, own values (good and bad). */
+  function selftest(player, spec) {
+    var errors = [], runs = 0;
+    window.addEventListener('error', function (e) { errors.push('window error: ' + e.message); });
+    function walk(label) {
+      if (!player.frames.length) errors.push(label + ': no frames');
+      for (var i = 0; i < player.frames.length; i++) player.go(i, false);
+      if (!player.svg.querySelectorAll('[data-id]').length) errors.push(label + ': nothing drawn');
+      if (!player.cap.textContent.trim()) errors.push(label + ': empty caption');
+      runs++;
+    }
+    try {
+      spec.presets.forEach(function (p) {
+        player.sel.value = p.id; player.sel.dispatchEvent(new Event('change')); walk('example ' + p.id);
+      });
+      (spec.levels || ['easy', 'normal', 'hard', 'extreme']).forEach(function (l) {
+        for (var s = 1; s <= 5; s++) { player.useRandom(l, s, true); walk('random ' + l + '/' + s); }
+      });
+      if (spec.input) {
+        player.ownInput.value = spec.input.format(spec.presets[spec.presets.length - 1].data);
+        player.applyBtn.click();
+        if (player.err.textContent) errors.push('own values rejected: ' + player.err.textContent);
+        walk('own values');
+        player.ownInput.value = (spec.input.bad && spec.input.bad[1]) || '@@@';
+        player.applyBtn.click();
+        if (!player.err.textContent) errors.push('bad own values were accepted');
+      }
+      player.go(0, false); player.go(1, true); player.go(2, true);   // animated transitions must not throw
+    } catch (e) { errors.push(String(e && e.stack || e)); }
+    var out = document.createElement('pre');
+    out.id = 'dsa-selftest';
+    out.textContent = JSON.stringify({ id: spec.id, ok: !errors.length, runs: runs, errors: errors });
+    document.body.appendChild(out);
+  }
+
+  window.DSAnimPlayer = Player;
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
+</body>
+</html>

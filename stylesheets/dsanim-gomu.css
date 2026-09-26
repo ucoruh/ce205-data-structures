@@ -1,0 +1,14 @@
+/* Ders notlarına gömülü operasyon animasyonları (tools/dsanim): taşmasız, içeriğe göre boy alan iframe */
+iframe.dsanim {
+  display: block;
+  width: 100%;
+  height: 640px;              /* ilk boy; oynatıcı gerçek yüksekliğini bildirince güncellenir */
+  margin: 1em 0 1.4em;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: .6rem;
+  background: var(--md-default-bg-color);
+  overflow: hidden;
+}
+@media screen and (max-width: 44.9375em) { iframe.dsanim { height: 980px; } }
+@media print { iframe.dsanim { display: none; } .dsanim-baski { display: block !important; } }
+.dsanim-baski { display: none; }
