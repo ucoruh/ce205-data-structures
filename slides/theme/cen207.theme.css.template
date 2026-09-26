@@ -1,0 +1,127 @@
+/* @theme cen207 */
+/* CEN207 Data Structures -- shared Marp theme.
+   This file is turned into cen207.css by tools/build_outputs.py ({{LOGO}} becomes the embedded logo).
+   Slide classes are kept identical to the course-notes toolchain this was ported from, so existing decks
+   do not need to change: baslik (title slide), bolum (section break), yogun (dense), sema (diagram-heavy),
+   kucuk / cok-yogun (smaller text for very full slides). */
+@import 'default';
+
+section {
+  font-size: 26px;
+  padding: 60px 64px 56px 64px;
+}
+header {
+  left: 64px;
+  top: 20px;
+  padding-left: 34px;
+  min-height: 30px;
+  line-height: 30px;
+  color: #5b6770;
+  font-size: 15px;
+  background: url("{{LOGO}}") no-repeat left center / auto 28px;
+}
+footer {
+  left: 64px;
+  bottom: 18px;
+  color: #5b6770;
+  font-size: 14px;
+}
+section::after {
+  right: 64px;
+  bottom: 18px;
+  font-size: 14px;
+  color: #5b6770;
+}
+h1 { color: #2e7d32; font-size: 40px; }
+h2 { color: #2e7d32; }
+table { font-size: 22px; }
+pre { font-size: 18px; }
+code { font-size: 0.9em; }
+
+section.baslik { text-align: center; justify-content: center; }
+section.baslik h1 { font-size: 52px; }
+section.bolum { background: #2e7d32; color: #fff; justify-content: center; }
+section.bolum h1, section.bolum h2 { color: #fff; }
+section.bolum header, section.bolum footer, section.bolum::after { color: #d9ecd9; }
+section.yogun { font-size: 22px; padding-top: 50px; }
+section.yogun h1 { font-size: 34px; margin-bottom: 8px; }
+section.yogun table { font-size: 19px; }
+section.yogun pre { font-size: 16px; }
+section.sema pre { font-size: 21px; line-height: 1.25; }
+
+/* ============================================================
+   Visual refinement, applied to all 16 weeks.
+   ============================================================ */
+:root {
+  --cen-accent: #2e7d32;
+  --cen-accent-2: #43a047;
+  --cen-ink: #22331f;
+  --cen-soft: #eef6ee;
+  --cen-line: #c8e6c9;
+}
+section { color: var(--cen-ink); line-height: 1.35; letter-spacing: .1px; }
+section > *:first-child { margin-top: 0; }
+section h1 { border-bottom: 3px solid var(--cen-line); padding-bottom: 8px; margin-bottom: 18px; letter-spacing: .2px; }
+section h2 { color: var(--cen-accent-2); margin: 10px 0 6px; }
+strong { color: var(--cen-accent); }
+section ul, section ol { margin: 6px 0 6px 4px; }
+section li { margin: 5px 0; padding-left: 2px; }
+section ul > li::marker { color: var(--cen-accent-2); }
+section table { border-collapse: collapse; width: 100%; margin: 6px 0; box-shadow: 0 1px 0 var(--cen-line); }
+section th, section td { border: 1px solid var(--cen-line); padding: 6px 10px; text-align: left; vertical-align: top; }
+section thead th { background: var(--cen-accent); color: #fff; font-weight: 600; border-color: var(--cen-accent); }
+section tbody tr:nth-child(even) { background: var(--cen-soft); }
+section pre { background: #f6f8fa; border: 1px solid var(--cen-line); border-left: 4px solid var(--cen-accent-2); border-radius: 8px; padding: 12px 14px; line-height: 1.3; overflow: hidden; }
+section :not(pre) > code { background: var(--cen-soft); padding: .05em .35em; border-radius: 5px; }
+section blockquote { border-left: 5px solid var(--cen-accent-2); background: var(--cen-soft); margin: 8px 0; padding: 8px 14px; border-radius: 0 8px 8px 0; color: var(--cen-ink); }
+section.bolum { background: linear-gradient(135deg, #2e7d32 0%, #43a047 100%); }
+section.bolum h1 { border-bottom: none; font-size: 46px; }
+section.baslik h1 { border-bottom: none; }
+section.yogun { line-height: 1.28; }
+section.yogun li { margin: 3px 0; }
+section.yogun th, section.yogun td { padding: 4px 8px; }
+section.kucuk { font-size: 20px; }
+section.kucuk h1 { font-size: 30px; }
+section.kucuk table { font-size: 17px; }
+section.kucuk pre { font-size: 15px; }
+section.cok-yogun { font-size: 18px; line-height: 1.22; }
+section.cok-yogun h1 { font-size: 27px; margin-bottom: 8px; }
+section.cok-yogun table { font-size: 15px; }
+section.cok-yogun th, section.cok-yogun td { padding: 3px 6px; }
+section.cok-yogun pre { font-size: 14px; }
+
+/* Images fit the slide. A single image on its own line is written with a fixed width (![w:950](...));
+   drawings vary in aspect ratio, so a tall one used to push the heading up and a wide one used to overflow
+   the edge. A lone image that is the only content of its paragraph, after any heading and bullets, instead
+   fills the space LEFT and keeps its own ratio. */
+section > p:has(> img:only-child) {
+  flex: 1 1 0; min-height: 0; margin: 6px 0;
+  display: flex; align-items: center; justify-content: center;
+}
+section > p > img:only-child {
+  width: 100% !important; height: 100% !important;
+  max-width: 100% !important; max-height: 100% !important;
+  object-fit: contain;
+}
+
+/* Data-structure animations (tools/dsanim): a slide embeds
+     <iframe class="dsanim" src="anim/NAME.html?yer=slayt&lang=xx" ...></iframe>
+   In the HTML deck the player runs live and fills the slide's free width at a fixed height that always
+   stays inside the 1280x720 slide. In the printed PDF the iframe is replaced with a still image of class
+   "dsanim" too (the animation's last frame); the same sizing rule applies to both so the layout does not
+   shift between the two outputs. */
+iframe.dsanim, img.dsanim {
+  display: block;
+  width: 100%;
+  height: 560px;
+  max-width: 100%;
+  max-height: 560px;
+  border: 0;
+  margin: 8px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  object-fit: contain;
+  background: #fff;
+}
+section.yogun iframe.dsanim, section.yogun img.dsanim { height: 480px; max-height: 480px; }
+section.cok-yogun iframe.dsanim, section.cok-yogun img.dsanim { height: 420px; max-height: 420px; }

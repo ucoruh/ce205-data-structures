@@ -1,0 +1,127 @@
+/* @theme cen207 */
+/* CEN207 Data Structures -- shared Marp theme.
+   This file is turned into cen207.css by tools/build_outputs.py (data:image/jpeg;base64,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 becomes the embedded logo).
+   Slide classes are kept identical to the course-notes toolchain this was ported from, so existing decks
+   do not need to change: baslik (title slide), bolum (section break), yogun (dense), sema (diagram-heavy),
+   kucuk / cok-yogun (smaller text for very full slides). */
+@import 'default';
+
+section {
+  font-size: 26px;
+  padding: 60px 64px 56px 64px;
+}
+header {
+  left: 64px;
+  top: 20px;
+  padding-left: 34px;
+  min-height: 30px;
+  line-height: 30px;
+  color: #5b6770;
+  font-size: 15px;
+  background: url("data:image/jpeg;base64,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") no-repeat left center / auto 28px;
+}
+footer {
+  left: 64px;
+  bottom: 18px;
+  color: #5b6770;
+  font-size: 14px;
+}
+section::after {
+  right: 64px;
+  bottom: 18px;
+  font-size: 14px;
+  color: #5b6770;
+}
+h1 { color: #2e7d32; font-size: 40px; }
+h2 { color: #2e7d32; }
+table { font-size: 22px; }
+pre { font-size: 18px; }
+code { font-size: 0.9em; }
+
+section.baslik { text-align: center; justify-content: center; }
+section.baslik h1 { font-size: 52px; }
+section.bolum { background: #2e7d32; color: #fff; justify-content: center; }
+section.bolum h1, section.bolum h2 { color: #fff; }
+section.bolum header, section.bolum footer, section.bolum::after { color: #d9ecd9; }
+section.yogun { font-size: 22px; padding-top: 50px; }
+section.yogun h1 { font-size: 34px; margin-bottom: 8px; }
+section.yogun table { font-size: 19px; }
+section.yogun pre { font-size: 16px; }
+section.sema pre { font-size: 21px; line-height: 1.25; }
+
+/* ============================================================
+   Visual refinement, applied to all 16 weeks.
+   ============================================================ */
+:root {
+  --cen-accent: #2e7d32;
+  --cen-accent-2: #43a047;
+  --cen-ink: #22331f;
+  --cen-soft: #eef6ee;
+  --cen-line: #c8e6c9;
+}
+section { color: var(--cen-ink); line-height: 1.35; letter-spacing: .1px; }
+section > *:first-child { margin-top: 0; }
+section h1 { border-bottom: 3px solid var(--cen-line); padding-bottom: 8px; margin-bottom: 18px; letter-spacing: .2px; }
+section h2 { color: var(--cen-accent-2); margin: 10px 0 6px; }
+strong { color: var(--cen-accent); }
+section ul, section ol { margin: 6px 0 6px 4px; }
+section li { margin: 5px 0; padding-left: 2px; }
+section ul > li::marker { color: var(--cen-accent-2); }
+section table { border-collapse: collapse; width: 100%; margin: 6px 0; box-shadow: 0 1px 0 var(--cen-line); }
+section th, section td { border: 1px solid var(--cen-line); padding: 6px 10px; text-align: left; vertical-align: top; }
+section thead th { background: var(--cen-accent); color: #fff; font-weight: 600; border-color: var(--cen-accent); }
+section tbody tr:nth-child(even) { background: var(--cen-soft); }
+section pre { background: #f6f8fa; border: 1px solid var(--cen-line); border-left: 4px solid var(--cen-accent-2); border-radius: 8px; padding: 12px 14px; line-height: 1.3; overflow: hidden; }
+section :not(pre) > code { background: var(--cen-soft); padding: .05em .35em; border-radius: 5px; }
+section blockquote { border-left: 5px solid var(--cen-accent-2); background: var(--cen-soft); margin: 8px 0; padding: 8px 14px; border-radius: 0 8px 8px 0; color: var(--cen-ink); }
+section.bolum { background: linear-gradient(135deg, #2e7d32 0%, #43a047 100%); }
+section.bolum h1 { border-bottom: none; font-size: 46px; }
+section.baslik h1 { border-bottom: none; }
+section.yogun { line-height: 1.28; }
+section.yogun li { margin: 3px 0; }
+section.yogun th, section.yogun td { padding: 4px 8px; }
+section.kucuk { font-size: 20px; }
+section.kucuk h1 { font-size: 30px; }
+section.kucuk table { font-size: 17px; }
+section.kucuk pre { font-size: 15px; }
+section.cok-yogun { font-size: 18px; line-height: 1.22; }
+section.cok-yogun h1 { font-size: 27px; margin-bottom: 8px; }
+section.cok-yogun table { font-size: 15px; }
+section.cok-yogun th, section.cok-yogun td { padding: 3px 6px; }
+section.cok-yogun pre { font-size: 14px; }
+
+/* Images fit the slide. A single image on its own line is written with a fixed width (![w:950](...));
+   drawings vary in aspect ratio, so a tall one used to push the heading up and a wide one used to overflow
+   the edge. A lone image that is the only content of its paragraph, after any heading and bullets, instead
+   fills the space LEFT and keeps its own ratio. */
+section > p:has(> img:only-child) {
+  flex: 1 1 0; min-height: 0; margin: 6px 0;
+  display: flex; align-items: center; justify-content: center;
+}
+section > p > img:only-child {
+  width: 100% !important; height: 100% !important;
+  max-width: 100% !important; max-height: 100% !important;
+  object-fit: contain;
+}
+
+/* Data-structure animations (tools/dsanim): a slide embeds
+     <iframe class="dsanim" src="anim/NAME.html?yer=slayt&lang=xx" ...></iframe>
+   In the HTML deck the player runs live and fills the slide's free width at a fixed height that always
+   stays inside the 1280x720 slide. In the printed PDF the iframe is replaced with a still image of class
+   "dsanim" too (the animation's last frame); the same sizing rule applies to both so the layout does not
+   shift between the two outputs. */
+iframe.dsanim, img.dsanim {
+  display: block;
+  width: 100%;
+  height: 560px;
+  max-width: 100%;
+  max-height: 560px;
+  border: 0;
+  margin: 8px 0;
+  border-radius: 8px;
+  overflow: hidden;
+  object-fit: contain;
+  background: #fff;
+}
+section.yogun iframe.dsanim, section.yogun img.dsanim { height: 480px; max-height: 480px; }
+section.cok-yogun iframe.dsanim, section.cok-yogun img.dsanim { height: 420px; max-height: 420px; }

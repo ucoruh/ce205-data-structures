@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tree terminology</title>
+<style>/* dsanim oynatıcı biçemi — açık/koyu tema; SVG renkleri Python'daki RENK tablosuyla aynı anlamda */
+:root {
+  --dsa-zemin: #ffffff; --dsa-yuzey: #f8f9fa; --dsa-cizgi: #dee2e6; --dsa-yazi: #1f2933; --dsa-soluk: #6c757d;
+  --dsa-vurgu: #fff3bf; --dsa-vurgu-c: #f08c00; --dsa-ana: #1971c2; --dsa-kod: #f8f9fa; --dsa-kod-yazi: #24292f;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.dsa-acik) {
+    --dsa-zemin: #1e2129; --dsa-yuzey: #262a33; --dsa-cizgi: #3a3f4b; --dsa-yazi: #e9ecef; --dsa-soluk: #adb5bd;
+    --dsa-vurgu: #5c4813; --dsa-vurgu-c: #fcc419; --dsa-ana: #4dabf7; --dsa-kod: #161b22; --dsa-kod-yazi: #e6edf3;
+  }
+}
+:root.dsa-koyu {
+  --dsa-zemin: #1e2129; --dsa-yuzey: #262a33; --dsa-cizgi: #3a3f4b; --dsa-yazi: #e9ecef; --dsa-soluk: #adb5bd;
+  --dsa-vurgu: #5c4813; --dsa-vurgu-c: #fcc419; --dsa-ana: #4dabf7; --dsa-kod: #161b22; --dsa-kod-yazi: #e6edf3;
+}
+html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; }
+.dsa { box-sizing: border-box; padding: 10px 12px 12px; outline: none; max-width: 1200px; margin: 0 auto; }
+.dsa *, .dsa *::before, .dsa *::after { box-sizing: border-box; }
+.dsa-ust { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+.dsa-baslik { font-weight: 700; font-size: 1.05rem; }
+.dsa-sayac { color: var(--dsa-soluk); font-size: .85rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.dsa-govde { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 10px; }
+.dsa-govde.dsa-kodsuz { grid-template-columns: 1fr; }
+@media (max-width: 760px) { .dsa-govde { grid-template-columns: 1fr; } }
+.dsa-sahne { background: var(--dsa-yuzey); border: 1px solid var(--dsa-cizgi); border-radius: 10px; overflow: hidden;
+  display: flex; align-items: center; }
+.dsa-sahne { justify-content: center; }
+.dsa-sahne svg { width: 100%; height: auto; max-height: 440px; display: block; }
+.dsa-kod { display: flex; flex-direction: column; min-height: 0; border: 1px solid var(--dsa-cizgi); border-radius: 10px;
+  overflow: hidden; background: var(--dsa-kod); }
+.dsa-sekme { display: flex; gap: 2px; padding: 4px 6px 0; border-bottom: 1px solid var(--dsa-cizgi); }
+.dsa-sekme button { border: 0; background: none; color: var(--dsa-soluk); padding: 4px 10px; font-size: .8rem;
+  cursor: pointer; border-bottom: 2px solid transparent; }
+.dsa-sekme button.etkin { color: var(--dsa-ana); border-bottom-color: var(--dsa-ana); font-weight: 600; }
+.dsa-pre { margin: 0; padding: 8px 0; overflow: auto; max-height: 340px; flex: 1; color: var(--dsa-kod-yazi);
+  font: 13px/1.5 'Cascadia Code', Consolas, 'DejaVu Sans Mono', monospace;
+  font-variant-ligatures: none; font-feature-settings: 'calt' 0, 'liga' 0; }
+.dsa-sat { display: block; padding: 0 10px 0 0; white-space: pre; transition: background .3s; border-left: 3px solid transparent; }
+.dsa-sat.vurgu { background: var(--dsa-vurgu); border-left-color: var(--dsa-vurgu-c); }
+.dsa-no { display: inline-block; width: 2.6em; padding-right: .8em; text-align: right; color: var(--dsa-soluk); user-select: none; }
+.dsa-cap { margin-top: 10px; min-height: 3.2em; padding: 10px 14px; border-radius: 10px; background: var(--dsa-yuzey);
+  border: 1px solid var(--dsa-cizgi); font-size: 1.02rem; line-height: 1.5; }
+.dsa-cap code { font-family: 'Cascadia Code', Consolas, monospace; font-size: .92em; font-variant-ligatures: none; font-feature-settings: 'calt' 0; background: var(--dsa-kod);
+  padding: 1px 5px; border-radius: 4px; border: 1px solid var(--dsa-cizgi); }
+.dsa-denetim { display: flex; align-items: center; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.dsa-d { min-width: 38px; height: 34px; border-radius: 8px; border: 1px solid var(--dsa-cizgi); background: var(--dsa-yuzey);
+  color: var(--dsa-yazi); cursor: pointer; font-size: 15px; }
+.dsa-d:hover { border-color: var(--dsa-ana); }
+.dsa-d.dsa-ana { background: var(--dsa-ana); color: #fff; border-color: var(--dsa-ana); min-width: 50px; }
+.dsa-d.etkin { border-color: var(--dsa-ana); color: var(--dsa-ana); }
+.dsa-cubuk { flex: 1; min-width: 120px; accent-color: var(--dsa-ana); }
+.dsa-hiz { height: 34px; border-radius: 8px; border: 1px solid var(--dsa-cizgi); background: var(--dsa-yuzey); color: var(--dsa-yazi); }
+.dsa-statik .dsa-denetim { display: none; }
+/* iki dilli sahne yazıları: yalnız sayfa dilindeki görünür */
+.dsa-dil-tr .l-en, .dsa-dil-en .l-tr { display: none; }
+/* sahne öğeleri: renk geçişleri ve belirme/solma */
+.dsa svg .e, .dsa svg .ok { transition: opacity .4s ease; }
+.dsa svg rect, .dsa svg circle, .dsa svg line, .dsa svg path, .dsa svg text { transition: fill .35s ease, stroke .35s ease; }
+.dsa svg .dsa-giris { opacity: 0; }
+.dsa svg .dsa-cikis { opacity: 0; }
+/* koyu tema: SVG'deki açık renkleri sınıflarla geçersiz kıl */
+:root.dsa-koyu .dsa-sahne svg > rect:first-of-type { fill: transparent; }
+@media (prefers-color-scheme: dark) { :root:not(.dsa-acik) .dsa-sahne svg > rect:first-of-type { fill: transparent; } }
+:root.dsa-koyu .dsa svg .shp.st-normal rect, :root.dsa-koyu .dsa svg .shp.st-normal circle { fill: #2b303b; stroke: #ced4da; }
+:root.dsa-koyu .dsa svg .shp.st-normal text, :root.dsa-koyu .dsa svg .lbl.st-normal text { fill: #e9ecef; }
+:root.dsa-koyu .dsa svg .shp.st-normal line { stroke: #ced4da; }
+:root.dsa-koyu .dsa svg .shp.st-normal circle[r="3.5"] { fill: #ced4da; }
+:root.dsa-koyu .dsa svg .shp.st-bos rect { fill: #23272f; }
+:root.dsa-koyu .dsa svg .ok.st-normal { stroke: #adb5bd; }
+:root.dsa-koyu .dsa svg .frm rect { fill: #262a33; }
+:root.dsa-koyu .dsa svg .frm text { fill: #ced4da; }
+@media (prefers-color-scheme: dark) {
+  :root:not(.dsa-acik) .dsa svg .shp.st-normal rect, :root:not(.dsa-acik) .dsa svg .shp.st-normal circle { fill: #2b303b; stroke: #ced4da; }
+  :root:not(.dsa-acik) .dsa svg .shp.st-normal text, :root:not(.dsa-acik) .dsa svg .lbl.st-normal text { fill: #e9ecef; }
+  :root:not(.dsa-acik) .dsa svg .shp.st-normal line { stroke: #ced4da; }
+  :root:not(.dsa-acik) .dsa svg .shp.st-normal circle[r="3.5"] { fill: #ced4da; }
+  :root:not(.dsa-acik) .dsa svg .shp.st-bos rect { fill: #23272f; }
+  :root:not(.dsa-acik) .dsa svg .ok.st-normal { stroke: #adb5bd; }
+  :root:not(.dsa-acik) .dsa svg .frm rect { fill: #262a33; }
+  :root:not(.dsa-acik) .dsa svg .frm text { fill: #ced4da; }
+}
+/* slayt kipi (?yer=slayt): 16:9 slayttaki iframe'e sığan sıkı yerleşim */
+.dsa-slayt body { overflow: hidden; }
+.dsa-slayt .dsa { padding: 4px 6px 6px; max-width: none; }
+.dsa-slayt .dsa-ust { margin-bottom: 2px; }
+.dsa-slayt .dsa-baslik { visibility: hidden; }
+.dsa-slayt .dsa-govde { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 8px; }
+.dsa-slayt .dsa-govde.dsa-kodsuz { grid-template-columns: 1fr; }
+.dsa-slayt .dsa-sahne svg { max-height: 350px; }
+.dsa-slayt .dsa-pre { max-height: 370px; font-size: 11.5px; }
+.dsa-slayt .dsa-cap { margin-top: 6px; min-height: 2.6em; padding: 6px 10px; font-size: .9rem; line-height: 1.4; }
+.dsa-slayt .dsa-denetim { margin-top: 6px; gap: 4px; }
+.dsa-slayt .dsa-d { height: 28px; min-width: 32px; font-size: 13px; }
+.dsa-slayt .dsa-hiz { height: 28px; }
+@media print { .dsa-denetim { display: none; } .dsa-pre { max-height: none; } }
+</style>
+</head>
+<body>
+<div data-dsanim="dsanim-veri"></div>
+<script type="application/json" id="dsanim-veri">{"ad":"tree-terminology","baslik":{"tr":"Agac terimleri","en":"Tree terminology"},"gen":656,"yuk":419,"vb":[72,12,656,419],"kod":{"c":["/* height: empty subtree = -1, single node = 0 */","static int height(Node *node) {","    if (node == NULL) return -1;","    int lh = height(node->left);","    int rh = height(node->right);","    return 1 + (lh > rh ? lh : rh);","}","","/* degree: number of non-null children (0, 1, or 2) */","static int degree(Node *node) {","    int d = 0;","    if (node->left != NULL) d++;","    if (node->right != NULL) d++;","    return d;","}","","/* depthOf: edge count from root to the node holding target, or -1 if absent */","static int depth_of(Node *root, int target, int depth) {","    if (root == NULL) return -1;","    if (root->value == target) return depth;","    int left_depth = depth_of(root->left, target, depth + 1);","    if (left_depth != -1) return left_depth;","    return depth_of(root->right, target, depth + 1);","}"],"java":["/* height: empty subtree = -1, single node = 0 */","static int height(Node node) {","    if (node == null) return -1;","    int lh = height(node.left);","    int rh = height(node.right);","    return 1 + Math.max(lh, rh);","}","","/* degree: number of non-null children (0, 1, or 2) */","static int degree(Node node) {","    int d = 0;","    if (node.left != null) d++;","    if (node.right != null) d++;","    return d;","}","","/* depthOf: edge count from root to the node holding target, or -1 if absent */","static int depthOf(Node root, int target, int depth) {","    if (root == null) return -1;","    if (root.value == target) return depth;","    int leftDepth = depthOf(root.left, target, depth + 1);","    if (leftDepth != -1) return leftDepth;","    return depthOf(root.right, target, depth + 1);","}"]},"tanim":"<defs><marker id=\"ah-normal\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L10 5 L0 10 z\" fill=\"#495057\"/><\/marker><marker id=\"ah-vurgu\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L10 5 L0 10 z\" fill=\"#f08c00\"/><\/marker><marker id=\"ah-yeni\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L10 5 L0 10 z\" fill=\"#2f9e44\"/><\/marker><marker id=\"ah-sil\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L10 5 L0 10 z\" fill=\"#e03131\"/><\/marker><marker id=\"ah-soluk\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L10 5 L0 10 z\" fill=\"#adb5bd\"/><\/marker><marker id=\"ah-aktif\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L10 5 L0 10 z\" fill=\"#1971c2\"/><\/marker><marker id=\"ah-bos\" viewBox=\"0 0 10 10\" refX=\"9\" refY=\"5\" markerWidth=\"7\" markerHeight=\"7\" orient=\"auto-start-reverse\"><path d=\"M0 0 L10 5 L0 10 z\" fill=\"#ced4da\"/><\/marker><\/defs>","kareler":[{"ic":"<g class=\"kat kat-arka\"><\/g><g class=\"kat kat-ok\"><path data-id=\"e8_3\" class=\"ok st-normal\" d=\"M379.9 68.9 C333.3 89.6 286.7 110.4 240.1 131.1\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><path data-id=\"e8_10\" class=\"ok st-normal\" d=\"M420.1 68.9 C466.7 89.6 513.3 110.4 559.9 131.1\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><path data-id=\"e3_1\" class=\"ok st-normal\" d=\"M202.8 153.7 C180.9 171.2 159.1 188.8 137.2 206.3\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><path data-id=\"e3_6\" class=\"ok st-normal\" d=\"M237.2 153.7 C259.1 171.2 280.9 188.8 302.8 206.3\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><path data-id=\"e6_4\" class=\"ok st-normal\" d=\"M306.8 237.6 C295.6 252.5 284.4 267.5 273.2 282.4\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><path data-id=\"e6_7\" class=\"ok st-normal\" d=\"M333.2 237.6 C344.4 252.5 355.6 267.5 366.8 282.4\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><path data-id=\"e10_14\" class=\"ok st-normal\" d=\"M597.2 153.7 C619.1 171.2 640.9 188.8 662.8 206.3\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><path data-id=\"e14_13\" class=\"ok st-normal\" d=\"M666.8 237.6 C655.6 252.5 644.4 267.5 633.2 282.4\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><\/g><g class=\"kat kat-sekil\"><g data-id=\"n8\" class=\"e shp st-normal\" transform=\"translate(400,60)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">8<\/text><\/g><g data-id=\"n3\" class=\"e shp st-normal\" transform=\"translate(220,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">3<\/text><\/g><g data-id=\"n10\" class=\"e shp st-normal\" transform=\"translate(580,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">10<\/text><\/g><g data-id=\"n1\" class=\"e shp st-normal\" transform=\"translate(120,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">1<\/text><\/g><g data-id=\"n6\" class=\"e shp st-normal\" transform=\"translate(320,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">6<\/text><\/g><g data-id=\"n14\" class=\"e shp st-normal\" transform=\"translate(680,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">14<\/text><\/g><g data-id=\"n4\" class=\"e shp st-normal\" transform=\"translate(260,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">4<\/text><\/g><g data-id=\"n7\" class=\"e shp st-normal\" transform=\"translate(380,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">7<\/text><\/g><g data-id=\"n13\" class=\"e shp st-normal\" transform=\"translate(620,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">13<\/text><\/g><\/g><g class=\"kat kat-etiket\"><\/g>","cap":{"tr":"Bu haftanin ornek agaci (tree): her daire bir dugum (node), her cizgi bir kenar (edge). Bu, bir ikili arama agaci (binary search tree): her dugumun en fazla iki cocugu var, sol < dugum < sag.","en":"Our tree (tree) for this week: every circle is a node, every line is an edge. This is a binary search tree: every node has at most two children, left < node < right."},"satir":{}},{"ic":"<g class=\"kat kat-arka\"><\/g><g class=\"kat kat-ok\"><path data-id=\"e8_3\" class=\"ok st-soluk\" d=\"M379.9 68.9 C333.3 89.6 286.7 110.4 240.1 131.1\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e8_10\" class=\"ok st-soluk\" d=\"M420.1 68.9 C466.7 89.6 513.3 110.4 559.9 131.1\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e3_1\" class=\"ok st-soluk\" d=\"M202.8 153.7 C180.9 171.2 159.1 188.8 137.2 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e3_6\" class=\"ok st-soluk\" d=\"M237.2 153.7 C259.1 171.2 280.9 188.8 302.8 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e6_4\" class=\"ok st-soluk\" d=\"M306.8 237.6 C295.6 252.5 284.4 267.5 273.2 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e6_7\" class=\"ok st-soluk\" d=\"M333.2 237.6 C344.4 252.5 355.6 267.5 366.8 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e10_14\" class=\"ok st-soluk\" d=\"M597.2 153.7 C619.1 171.2 640.9 188.8 662.8 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e14_13\" class=\"ok st-soluk\" d=\"M666.8 237.6 C655.6 252.5 644.4 267.5 633.2 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><\/g><g class=\"kat kat-sekil\"><g data-id=\"n8\" class=\"e shp st-vurgu\" transform=\"translate(400,60)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">8<\/text><\/g><g data-id=\"n3\" class=\"e shp st-soluk\" transform=\"translate(220,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">3<\/text><\/g><g data-id=\"n10\" class=\"e shp st-soluk\" transform=\"translate(580,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">10<\/text><\/g><g data-id=\"n1\" class=\"e shp st-soluk\" transform=\"translate(120,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">1<\/text><\/g><g data-id=\"n6\" class=\"e shp st-soluk\" transform=\"translate(320,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">6<\/text><\/g><g data-id=\"n14\" class=\"e shp st-soluk\" transform=\"translate(680,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">14<\/text><\/g><g data-id=\"n4\" class=\"e shp st-soluk\" transform=\"translate(260,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">4<\/text><\/g><g data-id=\"n7\" class=\"e shp st-soluk\" transform=\"translate(380,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">7<\/text><\/g><g data-id=\"n13\" class=\"e shp st-soluk\" transform=\"translate(620,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">13<\/text><\/g><\/g><g class=\"kat kat-etiket\"><\/g>","cap":{"tr":"Kok (root): ebeveyni olmayan tek dugum. Burada 8, agacin koku.","en":"Root: the one node with no parent. Here, 8 is the root of the tree."},"satir":{}},{"ic":"<g class=\"kat kat-arka\"><\/g><g class=\"kat kat-ok\"><path data-id=\"e8_3\" class=\"ok st-soluk\" d=\"M379.9 68.9 C333.3 89.6 286.7 110.4 240.1 131.1\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e8_10\" class=\"ok st-soluk\" d=\"M420.1 68.9 C466.7 89.6 513.3 110.4 559.9 131.1\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e3_1\" class=\"ok st-soluk\" d=\"M202.8 153.7 C180.9 171.2 159.1 188.8 137.2 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e3_6\" class=\"ok st-soluk\" d=\"M237.2 153.7 C259.1 171.2 280.9 188.8 302.8 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e6_4\" class=\"ok st-soluk\" d=\"M306.8 237.6 C295.6 252.5 284.4 267.5 273.2 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e6_7\" class=\"ok st-soluk\" d=\"M333.2 237.6 C344.4 252.5 355.6 267.5 366.8 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e10_14\" class=\"ok st-soluk\" d=\"M597.2 153.7 C619.1 171.2 640.9 188.8 662.8 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e14_13\" class=\"ok st-soluk\" d=\"M666.8 237.6 C655.6 252.5 644.4 267.5 633.2 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><\/g><g class=\"kat kat-sekil\"><g data-id=\"n8\" class=\"e shp st-soluk\" transform=\"translate(400,60)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">8<\/text><\/g><g data-id=\"n3\" class=\"e shp st-soluk\" transform=\"translate(220,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">3<\/text><\/g><g data-id=\"n10\" class=\"e shp st-soluk\" transform=\"translate(580,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">10<\/text><\/g><g data-id=\"n1\" class=\"e shp st-vurgu\" transform=\"translate(120,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">1<\/text><\/g><g data-id=\"n6\" class=\"e shp st-soluk\" transform=\"translate(320,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">6<\/text><\/g><g data-id=\"n14\" class=\"e shp st-soluk\" transform=\"translate(680,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">14<\/text><\/g><g data-id=\"n4\" class=\"e shp st-vurgu\" transform=\"translate(260,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">4<\/text><\/g><g data-id=\"n7\" class=\"e shp st-vurgu\" transform=\"translate(380,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">7<\/text><\/g><g data-id=\"n13\" class=\"e shp st-vurgu\" transform=\"translate(620,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">13<\/text><\/g><\/g><g class=\"kat kat-etiket\"><\/g>","cap":{"tr":"Yaprak (leaf): cocugu olmayan dugum. 1, 4, 7 ve 13 bu agacin yapraklari.","en":"Leaf: a node with no children. 1, 4, 7, and 13 are the leaves of this tree."},"satir":{"c":[10,11,12,13],"java":[10,11,12,13]}},{"ic":"<g class=\"kat kat-arka\"><\/g><g class=\"kat kat-ok\"><path data-id=\"e8_3\" class=\"ok st-soluk\" d=\"M379.9 68.9 C333.3 89.6 286.7 110.4 240.1 131.1\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e8_10\" class=\"ok st-vurgu\" d=\"M420.1 68.9 C466.7 89.6 513.3 110.4 559.9 131.1\" fill=\"none\" stroke=\"#f08c00\" stroke-width=\"2.2\" marker-end=\"url(#ah-vurgu)\"/><path data-id=\"e3_1\" class=\"ok st-soluk\" d=\"M202.8 153.7 C180.9 171.2 159.1 188.8 137.2 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e3_6\" class=\"ok st-soluk\" d=\"M237.2 153.7 C259.1 171.2 280.9 188.8 302.8 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e6_4\" class=\"ok st-soluk\" d=\"M306.8 237.6 C295.6 252.5 284.4 267.5 273.2 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e6_7\" class=\"ok st-soluk\" d=\"M333.2 237.6 C344.4 252.5 355.6 267.5 366.8 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e10_14\" class=\"ok st-vurgu\" d=\"M597.2 153.7 C619.1 171.2 640.9 188.8 662.8 206.3\" fill=\"none\" stroke=\"#f08c00\" stroke-width=\"2.2\" marker-end=\"url(#ah-vurgu)\"/><path data-id=\"e14_13\" class=\"ok st-vurgu\" d=\"M666.8 237.6 C655.6 252.5 644.4 267.5 633.2 282.4\" fill=\"none\" stroke=\"#f08c00\" stroke-width=\"2.2\" marker-end=\"url(#ah-vurgu)\"/><\/g><g class=\"kat kat-sekil\"><g data-id=\"n8\" class=\"e shp st-vurgu\" transform=\"translate(400,60)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">8<\/text><\/g><g data-id=\"n3\" class=\"e shp st-soluk\" transform=\"translate(220,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">3<\/text><\/g><g data-id=\"n10\" class=\"e shp st-vurgu\" transform=\"translate(580,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">10<\/text><\/g><g data-id=\"n1\" class=\"e shp st-soluk\" transform=\"translate(120,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">1<\/text><\/g><g data-id=\"n6\" class=\"e shp st-soluk\" transform=\"translate(320,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">6<\/text><\/g><g data-id=\"n14\" class=\"e shp st-vurgu\" transform=\"translate(680,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">14<\/text><\/g><g data-id=\"n4\" class=\"e shp st-soluk\" transform=\"translate(260,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">4<\/text><\/g><g data-id=\"n7\" class=\"e shp st-soluk\" transform=\"translate(380,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">7<\/text><\/g><g data-id=\"n13\" class=\"e shp st-vurgu\" transform=\"translate(620,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">13<\/text><\/g><\/g><g class=\"kat kat-etiket\"><g data-id=\"not\" class=\"e lbl st-vurgu\" transform=\"translate(400,400)\"><text x=\"0\" y=\"0\" text-anchor=\"middle\" font-size=\"17\" font-weight=\"700\" font-family=\"'Segoe UI', 'Helvetica Neue', Arial, sans-serif\" fill=\"#1f2933\"><tspan class=\"l-tr\">yukseklik (height) = 3 (kenar sayisi)<\/tspan><tspan class=\"l-en\">height = 3 (edge count)<\/tspan><\/text><\/g><\/g>","cap":{"tr":"Yukseklik (height): kokten en uzak yaprağa kadar giden yoldaki KENAR sayisi. kok8 -> 10 -> 14 -> 13 yolu 3 kenar: yukseklik(agac) = 3.","en":"Height: the number of EDGES on the longest root-to-leaf path. root8 -> 10 -> 14 -> 13 is 3 edges: height(tree) = 3."},"satir":{"c":[2,3,4,5,6],"java":[2,3,4,5,6]}},{"ic":"<g class=\"kat kat-arka\"><\/g><g class=\"kat kat-ok\"><path data-id=\"e8_3\" class=\"ok st-vurgu\" d=\"M379.9 68.9 C333.3 89.6 286.7 110.4 240.1 131.1\" fill=\"none\" stroke=\"#f08c00\" stroke-width=\"2.2\" marker-end=\"url(#ah-vurgu)\"/><path data-id=\"e8_10\" class=\"ok st-soluk\" d=\"M420.1 68.9 C466.7 89.6 513.3 110.4 559.9 131.1\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e3_1\" class=\"ok st-soluk\" d=\"M202.8 153.7 C180.9 171.2 159.1 188.8 137.2 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e3_6\" class=\"ok st-vurgu\" d=\"M237.2 153.7 C259.1 171.2 280.9 188.8 302.8 206.3\" fill=\"none\" stroke=\"#f08c00\" stroke-width=\"2.2\" marker-end=\"url(#ah-vurgu)\"/><path data-id=\"e6_4\" class=\"ok st-soluk\" d=\"M306.8 237.6 C295.6 252.5 284.4 267.5 273.2 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e6_7\" class=\"ok st-soluk\" d=\"M333.2 237.6 C344.4 252.5 355.6 267.5 366.8 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e10_14\" class=\"ok st-soluk\" d=\"M597.2 153.7 C619.1 171.2 640.9 188.8 662.8 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e14_13\" class=\"ok st-soluk\" d=\"M666.8 237.6 C655.6 252.5 644.4 267.5 633.2 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><\/g><g class=\"kat kat-sekil\"><g data-id=\"n8\" class=\"e shp st-vurgu\" transform=\"translate(400,60)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">8<\/text><\/g><g data-id=\"n3\" class=\"e shp st-vurgu\" transform=\"translate(220,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">3<\/text><\/g><g data-id=\"n10\" class=\"e shp st-soluk\" transform=\"translate(580,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">10<\/text><\/g><g data-id=\"n1\" class=\"e shp st-soluk\" transform=\"translate(120,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">1<\/text><\/g><g data-id=\"n6\" class=\"e shp st-vurgu\" transform=\"translate(320,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">6<\/text><\/g><g data-id=\"n14\" class=\"e shp st-soluk\" transform=\"translate(680,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">14<\/text><\/g><g data-id=\"n4\" class=\"e shp st-soluk\" transform=\"translate(260,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">4<\/text><\/g><g data-id=\"n7\" class=\"e shp st-soluk\" transform=\"translate(380,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">7<\/text><\/g><g data-id=\"n13\" class=\"e shp st-soluk\" transform=\"translate(620,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">13<\/text><\/g><\/g><g class=\"kat kat-etiket\"><g data-id=\"not\" class=\"e lbl st-vurgu\" transform=\"translate(400,400)\"><text x=\"0\" y=\"0\" text-anchor=\"middle\" font-size=\"17\" font-weight=\"700\" font-family=\"'Segoe UI', 'Helvetica Neue', Arial, sans-serif\" fill=\"#1f2933\"><tspan class=\"l-tr\">derinlik (depth) = 2<\/tspan><tspan class=\"l-en\">depth = 2<\/tspan><\/text><\/g><\/g>","cap":{"tr":"Derinlik (depth): bir dugumun kokten uzakligi, yine kenar sayisiyla. kok8 -> 3 -> 6 iki kenar: derinlik(6) = 2.","en":"Depth: how far a node is from the root, again counted in edges. root8 -> 3 -> 6 is two edges: depth(6) = 2."},"satir":{"c":[16,17,18,19,20],"java":[16,17,18,19,20]}},{"ic":"<g class=\"kat kat-arka\"><\/g><g class=\"kat kat-ok\"><path data-id=\"e8_3\" class=\"ok st-vurgu\" d=\"M379.9 68.9 C333.3 89.6 286.7 110.4 240.1 131.1\" fill=\"none\" stroke=\"#f08c00\" stroke-width=\"2.2\" marker-end=\"url(#ah-vurgu)\"/><path data-id=\"e8_10\" class=\"ok st-vurgu\" d=\"M420.1 68.9 C466.7 89.6 513.3 110.4 559.9 131.1\" fill=\"none\" stroke=\"#f08c00\" stroke-width=\"2.2\" marker-end=\"url(#ah-vurgu)\"/><path data-id=\"e3_1\" class=\"ok st-soluk\" d=\"M202.8 153.7 C180.9 171.2 159.1 188.8 137.2 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e3_6\" class=\"ok st-soluk\" d=\"M237.2 153.7 C259.1 171.2 280.9 188.8 302.8 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e6_4\" class=\"ok st-soluk\" d=\"M306.8 237.6 C295.6 252.5 284.4 267.5 273.2 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e6_7\" class=\"ok st-soluk\" d=\"M333.2 237.6 C344.4 252.5 355.6 267.5 366.8 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e10_14\" class=\"ok st-soluk\" d=\"M597.2 153.7 C619.1 171.2 640.9 188.8 662.8 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e14_13\" class=\"ok st-soluk\" d=\"M666.8 237.6 C655.6 252.5 644.4 267.5 633.2 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><\/g><g class=\"kat kat-sekil\"><g data-id=\"n8\" class=\"e shp st-vurgu\" transform=\"translate(400,60)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">8<\/text><\/g><g data-id=\"n3\" class=\"e shp st-soluk\" transform=\"translate(220,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">3<\/text><\/g><g data-id=\"n10\" class=\"e shp st-soluk\" transform=\"translate(580,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">10<\/text><\/g><g data-id=\"n1\" class=\"e shp st-soluk\" transform=\"translate(120,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">1<\/text><\/g><g data-id=\"n6\" class=\"e shp st-soluk\" transform=\"translate(320,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">6<\/text><\/g><g data-id=\"n14\" class=\"e shp st-soluk\" transform=\"translate(680,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">14<\/text><\/g><g data-id=\"n4\" class=\"e shp st-soluk\" transform=\"translate(260,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">4<\/text><\/g><g data-id=\"n7\" class=\"e shp st-soluk\" transform=\"translate(380,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">7<\/text><\/g><g data-id=\"n13\" class=\"e shp st-soluk\" transform=\"translate(620,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">13<\/text><\/g><\/g><g class=\"kat kat-etiket\"><g data-id=\"not\" class=\"e lbl st-vurgu\" transform=\"translate(400,400)\"><text x=\"0\" y=\"0\" text-anchor=\"middle\" font-size=\"17\" font-weight=\"700\" font-family=\"'Segoe UI', 'Helvetica Neue', Arial, sans-serif\" fill=\"#1f2933\"><tspan class=\"l-tr\">derece (degree) = 2<\/tspan><tspan class=\"l-en\">degree = 2<\/tspan><\/text><\/g><\/g>","cap":{"tr":"Derece (degree): bir dugumun DOGRUDAN cocuk sayisi (0, 1 ya da 2). 8 dugumunun iki cocugu var: derece(8) = 2.","en":"Degree: the number of a node's DIRECT children (0, 1, or 2). Node 8 has two children: degree(8) = 2."},"satir":{"c":[9,10,11,12,13],"java":[9,10,11,12,13]}},{"ic":"<g class=\"kat kat-arka\"><\/g><g class=\"kat kat-ok\"><path data-id=\"e8_3\" class=\"ok st-soluk\" d=\"M379.9 68.9 C333.3 89.6 286.7 110.4 240.1 131.1\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e8_10\" class=\"ok st-soluk\" d=\"M420.1 68.9 C466.7 89.6 513.3 110.4 559.9 131.1\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e3_1\" class=\"ok st-soluk\" d=\"M202.8 153.7 C180.9 171.2 159.1 188.8 137.2 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e3_6\" class=\"ok st-soluk\" d=\"M237.2 153.7 C259.1 171.2 280.9 188.8 302.8 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e6_4\" class=\"ok st-soluk\" d=\"M306.8 237.6 C295.6 252.5 284.4 267.5 273.2 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e6_7\" class=\"ok st-soluk\" d=\"M333.2 237.6 C344.4 252.5 355.6 267.5 366.8 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e10_14\" class=\"ok st-vurgu\" d=\"M597.2 153.7 C619.1 171.2 640.9 188.8 662.8 206.3\" fill=\"none\" stroke=\"#f08c00\" stroke-width=\"2.2\" marker-end=\"url(#ah-vurgu)\"/><path data-id=\"e14_13\" class=\"ok st-soluk\" d=\"M666.8 237.6 C655.6 252.5 644.4 267.5 633.2 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><\/g><g class=\"kat kat-sekil\"><g data-id=\"n8\" class=\"e shp st-soluk\" transform=\"translate(400,60)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">8<\/text><\/g><g data-id=\"n3\" class=\"e shp st-soluk\" transform=\"translate(220,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">3<\/text><\/g><g data-id=\"n10\" class=\"e shp st-vurgu\" transform=\"translate(580,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">10<\/text><\/g><g data-id=\"n1\" class=\"e shp st-soluk\" transform=\"translate(120,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">1<\/text><\/g><g data-id=\"n6\" class=\"e shp st-soluk\" transform=\"translate(320,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">6<\/text><\/g><g data-id=\"n14\" class=\"e shp st-soluk\" transform=\"translate(680,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">14<\/text><\/g><g data-id=\"n4\" class=\"e shp st-soluk\" transform=\"translate(260,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">4<\/text><\/g><g data-id=\"n7\" class=\"e shp st-soluk\" transform=\"translate(380,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">7<\/text><\/g><g data-id=\"n13\" class=\"e shp st-soluk\" transform=\"translate(620,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">13<\/text><\/g><\/g><g class=\"kat kat-etiket\"><g data-id=\"not\" class=\"e lbl st-vurgu\" transform=\"translate(400,400)\"><text x=\"0\" y=\"0\" text-anchor=\"middle\" font-size=\"17\" font-weight=\"700\" font-family=\"'Segoe UI', 'Helvetica Neue', Arial, sans-serif\" fill=\"#1f2933\"><tspan class=\"l-tr\">derece (degree) = 1<\/tspan><tspan class=\"l-en\">degree = 1<\/tspan><\/text><\/g><\/g>","cap":{"tr":"10 dugumunun yalnizca bir cocugu var (14, sag taraftan): derece(10) = 1. Boyle dugumlere \"tek cocuklu\" denir.","en":"10 has only one child (14, on the right): degree(10) = 1. Such a node is sometimes called \"unary\"."},"satir":{"c":[9,10,11,12,13],"java":[9,10,11,12,13]}},{"ic":"<g class=\"kat kat-arka\"><\/g><g class=\"kat kat-ok\"><path data-id=\"e8_3\" class=\"ok st-soluk\" d=\"M379.9 68.9 C333.3 89.6 286.7 110.4 240.1 131.1\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e8_10\" class=\"ok st-soluk\" d=\"M420.1 68.9 C466.7 89.6 513.3 110.4 559.9 131.1\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e3_1\" class=\"ok st-soluk\" d=\"M202.8 153.7 C180.9 171.2 159.1 188.8 137.2 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e3_6\" class=\"ok st-soluk\" d=\"M237.2 153.7 C259.1 171.2 280.9 188.8 302.8 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e6_4\" class=\"ok st-soluk\" d=\"M306.8 237.6 C295.6 252.5 284.4 267.5 273.2 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e6_7\" class=\"ok st-soluk\" d=\"M333.2 237.6 C344.4 252.5 355.6 267.5 366.8 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e10_14\" class=\"ok st-soluk\" d=\"M597.2 153.7 C619.1 171.2 640.9 188.8 662.8 206.3\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><path data-id=\"e14_13\" class=\"ok st-soluk\" d=\"M666.8 237.6 C655.6 252.5 644.4 267.5 633.2 282.4\" fill=\"none\" stroke=\"#adb5bd\" stroke-width=\"2.2\" marker-end=\"url(#ah-soluk)\"/><\/g><g class=\"kat kat-sekil\"><g data-id=\"n8\" class=\"e shp st-soluk\" transform=\"translate(400,60)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">8<\/text><\/g><g data-id=\"n3\" class=\"e shp st-soluk\" transform=\"translate(220,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">3<\/text><\/g><g data-id=\"n10\" class=\"e shp st-soluk\" transform=\"translate(580,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">10<\/text><\/g><g data-id=\"n1\" class=\"e shp st-vurgu\" transform=\"translate(120,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#fff3bf\" stroke=\"#f08c00\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">1<\/text><\/g><g data-id=\"n6\" class=\"e shp st-soluk\" transform=\"translate(320,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">6<\/text><\/g><g data-id=\"n14\" class=\"e shp st-soluk\" transform=\"translate(680,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">14<\/text><\/g><g data-id=\"n4\" class=\"e shp st-soluk\" transform=\"translate(260,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">4<\/text><\/g><g data-id=\"n7\" class=\"e shp st-soluk\" transform=\"translate(380,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">7<\/text><\/g><g data-id=\"n13\" class=\"e shp st-soluk\" transform=\"translate(620,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#f1f3f5\" stroke=\"#adb5bd\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#868e96\">13<\/text><\/g><\/g><g class=\"kat kat-etiket\"><g data-id=\"not\" class=\"e lbl st-vurgu\" transform=\"translate(400,400)\"><text x=\"0\" y=\"0\" text-anchor=\"middle\" font-size=\"17\" font-weight=\"700\" font-family=\"'Segoe UI', 'Helvetica Neue', Arial, sans-serif\" fill=\"#1f2933\"><tspan class=\"l-tr\">derece (degree) = 0<\/tspan><tspan class=\"l-en\">degree = 0<\/tspan><\/text><\/g><\/g>","cap":{"tr":"1 dugumunun hic cocugu yok: derece(1) = 0. Derecesi 0 olan her dugum bir yapraktir -- yaprak tanimi tam da bu.","en":"Node 1 has no children: degree(1) = 0. Every node of degree 0 is a leaf -- that is exactly the definition of a leaf."},"satir":{"c":[9,10,11,12,13],"java":[9,10,11,12,13]}},{"ic":"<g class=\"kat kat-arka\"><\/g><g class=\"kat kat-ok\"><path data-id=\"e8_3\" class=\"ok st-normal\" d=\"M379.9 68.9 C333.3 89.6 286.7 110.4 240.1 131.1\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><path data-id=\"e8_10\" class=\"ok st-normal\" d=\"M420.1 68.9 C466.7 89.6 513.3 110.4 559.9 131.1\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><path data-id=\"e3_1\" class=\"ok st-normal\" d=\"M202.8 153.7 C180.9 171.2 159.1 188.8 137.2 206.3\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><path data-id=\"e3_6\" class=\"ok st-normal\" d=\"M237.2 153.7 C259.1 171.2 280.9 188.8 302.8 206.3\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><path data-id=\"e6_4\" class=\"ok st-normal\" d=\"M306.8 237.6 C295.6 252.5 284.4 267.5 273.2 282.4\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><path data-id=\"e6_7\" class=\"ok st-normal\" d=\"M333.2 237.6 C344.4 252.5 355.6 267.5 366.8 282.4\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><path data-id=\"e10_14\" class=\"ok st-normal\" d=\"M597.2 153.7 C619.1 171.2 640.9 188.8 662.8 206.3\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><path data-id=\"e14_13\" class=\"ok st-normal\" d=\"M666.8 237.6 C655.6 252.5 644.4 267.5 633.2 282.4\" fill=\"none\" stroke=\"#495057\" stroke-width=\"2.2\" marker-end=\"url(#ah-normal)\"/><\/g><g class=\"kat kat-sekil\"><g data-id=\"n8\" class=\"e shp st-normal\" transform=\"translate(400,60)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">8<\/text><\/g><g data-id=\"n3\" class=\"e shp st-normal\" transform=\"translate(220,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">3<\/text><\/g><g data-id=\"n10\" class=\"e shp st-normal\" transform=\"translate(580,140)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">10<\/text><\/g><g data-id=\"n1\" class=\"e shp st-normal\" transform=\"translate(120,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">1<\/text><\/g><g data-id=\"n6\" class=\"e shp st-normal\" transform=\"translate(320,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">6<\/text><\/g><g data-id=\"n14\" class=\"e shp st-normal\" transform=\"translate(680,220)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">14<\/text><\/g><g data-id=\"n4\" class=\"e shp st-normal\" transform=\"translate(260,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">4<\/text><\/g><g data-id=\"n7\" class=\"e shp st-normal\" transform=\"translate(380,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">7<\/text><\/g><g data-id=\"n13\" class=\"e shp st-normal\" transform=\"translate(620,300)\"><circle cx=\"0\" cy=\"0\" r=\"22\" fill=\"#ffffff\" stroke=\"#37474f\" stroke-width=\"2\"/><text x=\"0\" y=\"6\" text-anchor=\"middle\" font-size=\"16\" font-weight=\"600\" font-family=\"Consolas, 'DejaVu Sans Mono', 'Cascadia Mono', monospace\" fill=\"#1f2933\">13<\/text><\/g><\/g><g class=\"kat kat-etiket\"><\/g>","cap":{"tr":"Sirada: tam (full), tik (complete) ve mukemmel (perfect) agac siniflandirmasi, ve bir agaci dizi (array) ile tutmanin yolu -- bunlari nottaki tabloda gorecegiz.","en":"Coming up: the full/complete/perfect tree classification, and how to store a tree in a plain array -- we will see those in a table in the notes."},"satir":{}}]}</script>
+<script>/* dsanim oynatıcı — veri yapısı operasyonlarını adım adım oynatır.
+ * Kareler Python (dsanim.py) tarafından SVG olarak üretilir; burada öğeler data-id ile eşlenir,
+ * konumlar (transform, path d) yumuşak kaydırılır, renkler CSS geçişiyle değişir, yeni öğeler belirir,
+ * silinenler solar. Denetimler: ⏮ ◀ ▶/⏸ ▶ ⏭, hız, sesli anlatım (tarayıcının konuşma sentezi), kod dili.
+ * Klavye: boşluk = oynat/duraklat, ← → = adım, Home/End = baş/son.
+ * URL parametreleri: lang=tr|en, kare=N, oto=1, kod=c|java, statik=1 (yazdırma: denetim yok, son kare).
+ */
+(function () {
+  'use strict';
+  var SAYI = /-?\d*\.?\d+(?:e-?\d+)?/g;
+  var YAZI = {
+    tr: { oynat: 'Oynat', dur: 'Duraklat', ileri: 'Sonraki adım', geri: 'Önceki adım', bas: 'Başa dön',
+          son: 'Sona git', hiz: 'Hız', ses: 'Sesli anlatım', adim: 'Adım', kod: 'Kod' },
+    en: { oynat: 'Play', dur: 'Pause', ileri: 'Next step', geri: 'Previous step', bas: 'First step',
+          son: 'Last step', hiz: 'Speed', ses: 'Narration', adim: 'Step', kod: 'Code' }
+  };
+  var KOD_AD = { c: 'C', java: 'Java', cpp: 'C++', py: 'Python', pseudo: 'Pseudocode' };
+
+  function yumusak(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+  function sayilar(s) { return (s || '').match(SAYI) || []; }
+  function doldur(s, n) { var i = 0; return s.replace(SAYI, function () { return (+n[i++]).toFixed(2); }); }
+  function el(ad, sinif, ic) { var e = document.createElement(ad); if (sinif) e.className = sinif; if (ic != null) e.innerHTML = ic; return e; }
+  function kacis(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+  function bicim(s) {
+    return kacis(s).replace(/`([^`]+)`/g, '<code>$1</code>').replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  }
+
+  function Oynatici(kok, veri, secenek) {
+    this.kok = kok; this.s = secenek || {};
+    this.v = this.s.kodYok ? Object.assign({}, veri, { kod: {} }) : veri;
+    veri = this.v;
+    this.dil = (this.s.dil === 'en' || this.s.dil === 'tr') ? this.s.dil : 'tr';
+    this.i = 0; this.oynuyor = false; this.hiz = 1; this.ses = false; this.zaman = null; this.anim = null;
+    var diller = Object.keys(veri.kod || {});
+    this.kodDil = (this.s.kod && veri.kod[this.s.kod]) ? this.s.kod : diller[0];
+    this.kur();
+    var bas = Math.max(0, Math.min(veri.kareler.length - 1, (this.s.kare || 1) - 1));
+    if (this.s.statik) bas = veri.kareler.length - 1;
+    this.git(bas, false);
+    if (this.s.oto && !this.s.statik) this.oynat();
+  }
+
+  Oynatici.prototype.kur = function () {
+    var v = this.v, y = YAZI[this.dil], self = this;
+    this.kok.classList.add('dsa', 'dsa-dil-' + this.dil);
+    if (this.s.statik) this.kok.classList.add('dsa-statik');
+    if (this.s.yer === 'slayt') document.documentElement.classList.add('dsa-slayt');
+    var ust = el('div', 'dsa-ust');
+    ust.appendChild(el('div', 'dsa-baslik', kacis(v.baslik[this.dil] || v.baslik.en)));
+    this.sayac = el('div', 'dsa-sayac');
+    ust.appendChild(this.sayac);
+    this.kok.appendChild(ust);
+
+    var govde = el('div', 'dsa-govde' + (v.kod && Object.keys(v.kod).length ? '' : ' dsa-kodsuz'));
+    var sahneKap = el('div', 'dsa-sahne');
+    var ns = 'http://www.w3.org/2000/svg';
+    this.svg = document.createElementNS(ns, 'svg');
+    this.svg.setAttribute('viewBox', (v.vb || [0, 0, v.gen, v.yuk]).join(' '));
+    this.svg.setAttribute('role', 'img');
+    this.svg.innerHTML = v.tanim + '<g class="kat kat-arka"></g><g class="kat kat-ok"></g><g class="kat kat-sekil"></g><g class="kat kat-etiket"></g>';
+    sahneKap.appendChild(this.svg);
+    govde.appendChild(sahneKap);
+
+    if (v.kod && Object.keys(v.kod).length) {
+      var kodKap = el('div', 'dsa-kod');
+      var sekme = el('div', 'dsa-sekme');
+      Object.keys(v.kod).forEach(function (k) {
+        var b = el('button', k === self.kodDil ? 'etkin' : '', KOD_AD[k] || k);
+        b.type = 'button';
+        b.addEventListener('click', function () { self.kodDil = k; self.kodCiz(); self.kodVurgu(); Array.prototype.forEach.call(sekme.children, function (c) { c.classList.toggle('etkin', c === b); }); });
+        sekme.appendChild(b);
+      });
+      kodKap.appendChild(sekme);
+      this.pre = el('pre', 'dsa-pre');
+      kodKap.appendChild(this.pre);
+      govde.appendChild(kodKap);
+    }
+    this.kok.appendChild(govde);
+
+    this.cap = el('div', 'dsa-cap');
+    this.cap.setAttribute('aria-live', 'polite');
+    this.kok.appendChild(this.cap);
+
+    var den = el('div', 'dsa-denetim');
+    function dugme(ic, baslik, fn) { var b = el('button', 'dsa-d', ic); b.type = 'button'; b.title = baslik; b.setAttribute('aria-label', baslik); b.addEventListener('click', fn); den.appendChild(b); return b; }
+    dugme('&#x23EE;', y.bas, function () { self.dur(); self.git(0, true); });
+    dugme('&#x25C0;', y.geri, function () { self.dur(); self.git(self.i - 1, true); });
+    this.oBtn = dugme('&#x25B6;', y.oynat, function () { self.oynuyor ? self.dur() : self.oynat(); });
+    this.oBtn.classList.add('dsa-ana');
+    dugme('&#x25B6;&#x2759;', y.ileri, function () { self.dur(); self.git(self.i + 1, true); });
+    dugme('&#x23ED;', y.son, function () { self.dur(); self.git(v.kareler.length - 1, true); });
+    this.cubuk = el('input', 'dsa-cubuk');
+    this.cubuk.type = 'range'; this.cubuk.min = 1; this.cubuk.max = v.kareler.length; this.cubuk.value = 1;
+    this.cubuk.setAttribute('aria-label', y.adim);
+    this.cubuk.addEventListener('input', function () { self.dur(); self.git(+self.cubuk.value - 1, false); });
+    den.appendChild(this.cubuk);
+    var hiz = el('select', 'dsa-hiz');
+    hiz.title = y.hiz;
+    [0.5, 0.75, 1, 1.5, 2].forEach(function (h) { var o = el('option', '', h + '×'); o.value = h; if (h === 1) o.selected = true; hiz.appendChild(o); });
+    hiz.addEventListener('change', function () { self.hiz = +hiz.value; });
+    den.appendChild(hiz);
+    if ('speechSynthesis' in window) {
+      this.sBtn = dugme('&#x1F507;', y.ses, function () {
+        self.ses = !self.ses; self.sBtn.innerHTML = self.ses ? '&#x1F50A;' : '&#x1F507;';
+        self.sBtn.classList.toggle('etkin', self.ses);
+        if (self.ses) self.konus(); else window.speechSynthesis.cancel();
+      });
+    }
+    this.kok.appendChild(den);
+
+    this.kok.tabIndex = 0;
+    this.kok.addEventListener('keydown', function (e) {
+      if (e.target.tagName === 'SELECT' || e.target.tagName === 'INPUT') return;
+      if (e.key === ' ' || e.key === 'k') { e.preventDefault(); self.oynuyor ? self.dur() : self.oynat(); }
+      else if (e.key === 'ArrowRight' || e.key === 'l') { e.preventDefault(); self.dur(); self.git(self.i + 1, true); }
+      else if (e.key === 'ArrowLeft' || e.key === 'j') { e.preventDefault(); self.dur(); self.git(self.i - 1, true); }
+      else if (e.key === 'Home') { e.preventDefault(); self.dur(); self.git(0, true); }
+      else if (e.key === 'End') { e.preventDefault(); self.dur(); self.git(v.kareler.length - 1, true); }
+    });
+    this.kodCiz();
+  };
+
+  Oynatici.prototype.kodCiz = function () {
+    if (!this.pre) return;
+    var satirlar = this.v.kod[this.kodDil] || [];
+    this.pre.innerHTML = satirlar.map(function (s, i) {
+      return '<span class="dsa-sat" data-n="' + (i + 1) + '"><span class="dsa-no">' + (i + 1) + '</span>' + (kacis(s) || ' ') + '</span>';
+    }).join('');
+  };
+
+  Oynatici.prototype.kodVurgu = function () {
+    if (!this.pre) return;
+    var k = this.v.kareler[this.i], hat = (k.satir && k.satir[this.kodDil]) || [], ilk = null;
+    Array.prototype.forEach.call(this.pre.children, function (s) {
+      var on = hat.indexOf(+s.getAttribute('data-n')) >= 0;
+      s.classList.toggle('vurgu', on);
+      if (on && !ilk) ilk = s;
+    });
+    if (ilk) {
+      var p = this.pre, ust = ilk.offsetTop - p.offsetTop;
+      if (ust < p.scrollTop || ust > p.scrollTop + p.clientHeight - 30) p.scrollTop = Math.max(0, ust - 40);
+    }
+  };
+
+  Oynatici.prototype.git = function (hedef, gecis) {
+    var n = this.v.kareler.length;
+    if (hedef < 0 || hedef >= n) { if (hedef >= n) this.dur(); return; }
+    var yeni = this.v.kareler[hedef];
+    var buyuk = Math.abs(hedef - this.i) !== 1;
+    this.i = hedef;
+    this.morf(yeni.ic, gecis && !buyuk && !this.s.statik);
+    this.cap.innerHTML = bicim(yeni.cap[this.dil] || yeni.cap.en || '');
+    this.sayac.textContent = YAZI[this.dil].adim + ' ' + (hedef + 1) + ' / ' + n;
+    this.cubuk.value = hedef + 1;
+    this.kodVurgu();
+    if (this.ses) this.konus();
+  };
+
+  Oynatici.prototype.morf = function (ic, gecis) {
+    var self = this;
+    var tmp = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    tmp.innerHTML = ic;
+    if (this.anim) { cancelAnimationFrame(this.anim); this.anim = null; this.animBitir && this.animBitir(); }
+    var isler = [];
+    ['arka', 'ok', 'sekil', 'etiket'].forEach(function (kat) {
+      var canli = self.svg.querySelector('.kat-' + kat), yeniKat = tmp.querySelector('.kat-' + kat);
+      if (!canli || !yeniKat) return;
+      var eski = {};
+      Array.prototype.forEach.call(canli.children, function (c) { if (!c.classList.contains('dsa-cikis')) eski[c.getAttribute('data-id')] = c; });
+      var sira = [];
+      Array.prototype.slice.call(yeniKat.children).forEach(function (y) {
+        var id = y.getAttribute('data-id'), o = eski[id];
+        if (o && o.tagName === y.tagName) {
+          delete eski[id];
+          var nitelik = y.tagName === 'path' ? 'd' : 'transform';
+          var bas = o.getAttribute(nitelik), son = y.getAttribute(nitelik);
+          var a = sayilar(bas), b = sayilar(son);
+          // iç yapı: aynıysa nitelikleri yerinde güncelle (CSS renk geçişi çalışsın), değilse değiştir
+          if (y.tagName === 'g') self.icGuncelle(o, y);
+          o.setAttribute('class', y.getAttribute('class'));
+          ['stroke', 'marker-end', 'opacity'].forEach(function (k) { if (y.hasAttribute(k)) o.setAttribute(k, y.getAttribute(k)); else if (k === 'opacity') o.removeAttribute(k); });
+          if (gecis && a.length && a.length === b.length && bas !== son) isler.push({ e: o, n: nitelik, a: a, b: b, s: son });
+          else o.setAttribute(nitelik, son);
+          sira.push(o);
+        } else {
+          var yeniE = y.cloneNode(true);
+          if (gecis) { yeniE.classList.add('dsa-giris'); }
+          sira.push(yeniE);
+        }
+      });
+      Object.keys(eski).forEach(function (id) {
+        var c = eski[id];
+        if (gecis) { c.classList.add('dsa-cikis'); setTimeout(function () { if (c.parentNode) c.parentNode.removeChild(c); }, 450); }
+        else canli.removeChild(c);
+      });
+      sira.forEach(function (e) { if (e.parentNode !== canli) canli.appendChild(e); });
+      if (gecis) requestAnimationFrame(function () { requestAnimationFrame(function () {
+        Array.prototype.forEach.call(canli.querySelectorAll('.dsa-giris'), function (e) { e.classList.remove('dsa-giris'); });
+      }); });
+    });
+    if (!isler.length) return;
+    var sure = 650 / this.hiz, t0 = null;
+    this.animBitir = function () { isler.forEach(function (j) { j.e.setAttribute(j.n, j.s); }); self.animBitir = null; };
+    function adim(t) {
+      if (t0 === null) t0 = t;
+      var p = Math.min(1, (t - t0) / sure), e = yumusak(p);
+      isler.forEach(function (j) {
+        var ara = j.a.map(function (x, k) { return +x + (+j.b[k] - +x) * e; });
+        j.e.setAttribute(j.n, doldur(j.s, ara));
+      });
+      if (p < 1) self.anim = requestAnimationFrame(adim);
+      else { self.anim = null; self.animBitir && self.animBitir(); }
+    }
+    this.anim = requestAnimationFrame(adim);
+  };
+
+  Oynatici.prototype.icGuncelle = function (o, y) {
+    var a = o.children, b = y.children, ayni = a.length === b.length;
+    for (var k = 0; ayni && k < a.length; k++) if (a[k].tagName !== b[k].tagName) ayni = false;
+    if (!ayni) { o.innerHTML = y.innerHTML; return; }
+    for (var j = 0; j < a.length; j++) {
+      var ea = a[j], eb = b[j];
+      Array.prototype.forEach.call(eb.attributes, function (at) { if (ea.getAttribute(at.name) !== at.value) ea.setAttribute(at.name, at.value); });
+      Array.prototype.slice.call(ea.attributes).forEach(function (at) { if (!eb.hasAttribute(at.name)) ea.removeAttribute(at.name); });
+      if (ea.textContent !== eb.textContent) ea.textContent = eb.textContent;
+    }
+  };
+
+  Oynatici.prototype.bekleme = function () {
+    var c = this.v.kareler[this.i].cap[this.dil] || '';
+    return (1300 + c.length * 38) / this.hiz;
+  };
+
+  Oynatici.prototype.oynat = function () {
+    var self = this;
+    if (this.i >= this.v.kareler.length - 1) this.git(0, false);
+    this.oynuyor = true;
+    this.oBtn.innerHTML = '&#x23F8;'; this.oBtn.title = YAZI[this.dil].dur;
+    function sonraki() {
+      if (!self.oynuyor) return;
+      if (self.i >= self.v.kareler.length - 1) { self.dur(); return; }
+      self.git(self.i + 1, true);
+      self.zamanla(sonraki);
+    }
+    this.zamanla(sonraki);
+  };
+
+  Oynatici.prototype.zamanla = function (fn) {
+    var self = this;
+    clearTimeout(this.zaman);
+    if (this.ses && this.soz) {
+      var bitti = false, yedek = setTimeout(function () { if (!bitti) { bitti = true; fn(); } }, 20000);
+      this.soz.onend = function () { if (!bitti) { bitti = true; clearTimeout(yedek); self.zaman = setTimeout(fn, 500 / self.hiz); } };
+    } else {
+      this.zaman = setTimeout(fn, this.bekleme());
+    }
+  };
+
+  Oynatici.prototype.dur = function () {
+    this.oynuyor = false; clearTimeout(this.zaman);
+    if (this.oBtn) { this.oBtn.innerHTML = '&#x25B6;'; this.oBtn.title = YAZI[this.dil].oynat; }
+  };
+
+  Oynatici.prototype.konus = function () {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    var metin = (this.v.kareler[this.i].cap[this.dil] || '').replace(/[`*]/g, '');
+    var u = new SpeechSynthesisUtterance(metin);
+    u.lang = this.dil === 'tr' ? 'tr-TR' : 'en-US';
+    u.rate = Math.min(1.6, 0.95 * this.hiz);
+    var ses = window.speechSynthesis.getVoices().filter(function (s) { return s.lang && s.lang.toLowerCase().indexOf(u.lang.slice(0, 2).toLowerCase()) === 0; });
+    if (ses.length) u.voice = ses[0];
+    this.soz = u;
+    window.speechSynthesis.speak(u);
+  };
+
+  function temaUygula(kok) {
+    try {
+      var p = window.parent && window.parent !== window ? window.parent.document.body : null;
+      var sema = p && p.getAttribute('data-md-color-scheme');
+      if (sema === 'slate') kok.classList.add('dsa-koyu');
+      else if (sema === 'default') kok.classList.add('dsa-acik');
+    } catch (e) { /* farklı köken: işletim sistemi temasına uy */ }
+  }
+
+  // Gömülü (iframe) kullanımda sayfaya kendi yüksekliğini bildirir; sayfa iframe boyunu buna göre ayarlar
+  function yukseklikBildir(ad) {
+    if (window.parent === window) return;
+    var son = 0;
+    function gonder() {
+      var h = Math.ceil(document.documentElement.getBoundingClientRect().height);
+      if (Math.abs(h - son) > 2) { son = h; window.parent.postMessage({ dsanim: true, ad: ad, yukseklik: h }, '*'); }
+    }
+    if ('ResizeObserver' in window) new ResizeObserver(gonder).observe(document.documentElement);
+    window.addEventListener('load', gonder);
+    setTimeout(gonder, 300);
+  }
+
+  window.dsanim = {
+    Oynatici: Oynatici,
+    baslat: function () {
+      var q = new URLSearchParams(location.search);
+      Array.prototype.forEach.call(document.querySelectorAll('[data-dsanim]'), function (kok) {
+        var veri = JSON.parse(document.getElementById(kok.getAttribute('data-dsanim')).textContent);
+        var dil = q.get('lang') || (document.documentElement.lang || 'tr').slice(0, 2);
+        temaUygula(document.documentElement);
+        new Oynatici(kok, veri, { dil: dil, kare: +(q.get('kare') || 1), oto: q.get('oto') === '1', kod: q.get('kod'),
+                                  kodYok: q.get('kod') === '0', statik: q.get('statik') === '1', yer: q.get('yer') });
+        if (window.parent === window || q.get('odak') === '1') kok.focus({ preventScroll: true });
+        yukseklikBildir(veri.ad);
+      });
+    }
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', window.dsanim.baslat);
+  else window.dsanim.baslat();
+})();
+</script>
+</body>
+</html>

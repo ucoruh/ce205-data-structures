@@ -1,0 +1,48 @@
+/* CEN207 course site -- extra styles for the per-page download buttons and the embedded deck. */
+
+/* Download buttons */
+.materials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 1em 0 0.6em 0;
+}
+.md-typeset .materials .md-button {
+  margin: 0;
+  padding: 0.35em 0.9em;
+  font-size: 0.68rem;
+}
+
+/* Embedded Marp deck: 16:9, fits the column width without overflowing */
+.deck-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 0.4em 0 0.2em 0;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+.deck-frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.md-typeset .deck-hint {
+  margin-top: 0.2em;
+  font-size: 0.64rem;
+  color: var(--md-default-fg-color--light);
+}
+
+/* Print (lecture-note PDF): navigation and the embedded deck are not shown */
+@media print {
+  .materials,
+  .deck-frame,
+  .deck-hint,
+  .md-consent {
+    display: none !important;
+  }
+}

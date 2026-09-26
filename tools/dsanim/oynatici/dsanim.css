@@ -1,0 +1,96 @@
+/* dsanim oynatıcı biçemi — açık/koyu tema; SVG renkleri Python'daki RENK tablosuyla aynı anlamda */
+:root {
+  --dsa-zemin: #ffffff; --dsa-yuzey: #f8f9fa; --dsa-cizgi: #dee2e6; --dsa-yazi: #1f2933; --dsa-soluk: #6c757d;
+  --dsa-vurgu: #fff3bf; --dsa-vurgu-c: #f08c00; --dsa-ana: #1971c2; --dsa-kod: #f8f9fa; --dsa-kod-yazi: #24292f;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not(.dsa-acik) {
+    --dsa-zemin: #1e2129; --dsa-yuzey: #262a33; --dsa-cizgi: #3a3f4b; --dsa-yazi: #e9ecef; --dsa-soluk: #adb5bd;
+    --dsa-vurgu: #5c4813; --dsa-vurgu-c: #fcc419; --dsa-ana: #4dabf7; --dsa-kod: #161b22; --dsa-kod-yazi: #e6edf3;
+  }
+}
+:root.dsa-koyu {
+  --dsa-zemin: #1e2129; --dsa-yuzey: #262a33; --dsa-cizgi: #3a3f4b; --dsa-yazi: #e9ecef; --dsa-soluk: #adb5bd;
+  --dsa-vurgu: #5c4813; --dsa-vurgu-c: #fcc419; --dsa-ana: #4dabf7; --dsa-kod: #161b22; --dsa-kod-yazi: #e6edf3;
+}
+html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif; }
+.dsa { box-sizing: border-box; padding: 10px 12px 12px; outline: none; max-width: 1200px; margin: 0 auto; }
+.dsa *, .dsa *::before, .dsa *::after { box-sizing: border-box; }
+.dsa-ust { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 6px; }
+.dsa-baslik { font-weight: 700; font-size: 1.05rem; }
+.dsa-sayac { color: var(--dsa-soluk); font-size: .85rem; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.dsa-govde { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 10px; }
+.dsa-govde.dsa-kodsuz { grid-template-columns: 1fr; }
+@media (max-width: 760px) { .dsa-govde { grid-template-columns: 1fr; } }
+.dsa-sahne { background: var(--dsa-yuzey); border: 1px solid var(--dsa-cizgi); border-radius: 10px; overflow: hidden;
+  display: flex; align-items: center; }
+.dsa-sahne { justify-content: center; }
+.dsa-sahne svg { width: 100%; height: auto; max-height: 440px; display: block; }
+.dsa-kod { display: flex; flex-direction: column; min-height: 0; border: 1px solid var(--dsa-cizgi); border-radius: 10px;
+  overflow: hidden; background: var(--dsa-kod); }
+.dsa-sekme { display: flex; gap: 2px; padding: 4px 6px 0; border-bottom: 1px solid var(--dsa-cizgi); }
+.dsa-sekme button { border: 0; background: none; color: var(--dsa-soluk); padding: 4px 10px; font-size: .8rem;
+  cursor: pointer; border-bottom: 2px solid transparent; }
+.dsa-sekme button.etkin { color: var(--dsa-ana); border-bottom-color: var(--dsa-ana); font-weight: 600; }
+.dsa-pre { margin: 0; padding: 8px 0; overflow: auto; max-height: 340px; flex: 1; color: var(--dsa-kod-yazi);
+  font: 13px/1.5 'Cascadia Code', Consolas, 'DejaVu Sans Mono', monospace;
+  font-variant-ligatures: none; font-feature-settings: 'calt' 0, 'liga' 0; }
+.dsa-sat { display: block; padding: 0 10px 0 0; white-space: pre; transition: background .3s; border-left: 3px solid transparent; }
+.dsa-sat.vurgu { background: var(--dsa-vurgu); border-left-color: var(--dsa-vurgu-c); }
+.dsa-no { display: inline-block; width: 2.6em; padding-right: .8em; text-align: right; color: var(--dsa-soluk); user-select: none; }
+.dsa-cap { margin-top: 10px; min-height: 3.2em; padding: 10px 14px; border-radius: 10px; background: var(--dsa-yuzey);
+  border: 1px solid var(--dsa-cizgi); font-size: 1.02rem; line-height: 1.5; }
+.dsa-cap code { font-family: 'Cascadia Code', Consolas, monospace; font-size: .92em; font-variant-ligatures: none; font-feature-settings: 'calt' 0; background: var(--dsa-kod);
+  padding: 1px 5px; border-radius: 4px; border: 1px solid var(--dsa-cizgi); }
+.dsa-denetim { display: flex; align-items: center; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
+.dsa-d { min-width: 38px; height: 34px; border-radius: 8px; border: 1px solid var(--dsa-cizgi); background: var(--dsa-yuzey);
+  color: var(--dsa-yazi); cursor: pointer; font-size: 15px; }
+.dsa-d:hover { border-color: var(--dsa-ana); }
+.dsa-d.dsa-ana { background: var(--dsa-ana); color: #fff; border-color: var(--dsa-ana); min-width: 50px; }
+.dsa-d.etkin { border-color: var(--dsa-ana); color: var(--dsa-ana); }
+.dsa-cubuk { flex: 1; min-width: 120px; accent-color: var(--dsa-ana); }
+.dsa-hiz { height: 34px; border-radius: 8px; border: 1px solid var(--dsa-cizgi); background: var(--dsa-yuzey); color: var(--dsa-yazi); }
+.dsa-statik .dsa-denetim { display: none; }
+/* iki dilli sahne yazıları: yalnız sayfa dilindeki görünür */
+.dsa-dil-tr .l-en, .dsa-dil-en .l-tr { display: none; }
+/* sahne öğeleri: renk geçişleri ve belirme/solma */
+.dsa svg .e, .dsa svg .ok { transition: opacity .4s ease; }
+.dsa svg rect, .dsa svg circle, .dsa svg line, .dsa svg path, .dsa svg text { transition: fill .35s ease, stroke .35s ease; }
+.dsa svg .dsa-giris { opacity: 0; }
+.dsa svg .dsa-cikis { opacity: 0; }
+/* koyu tema: SVG'deki açık renkleri sınıflarla geçersiz kıl */
+:root.dsa-koyu .dsa-sahne svg > rect:first-of-type { fill: transparent; }
+@media (prefers-color-scheme: dark) { :root:not(.dsa-acik) .dsa-sahne svg > rect:first-of-type { fill: transparent; } }
+:root.dsa-koyu .dsa svg .shp.st-normal rect, :root.dsa-koyu .dsa svg .shp.st-normal circle { fill: #2b303b; stroke: #ced4da; }
+:root.dsa-koyu .dsa svg .shp.st-normal text, :root.dsa-koyu .dsa svg .lbl.st-normal text { fill: #e9ecef; }
+:root.dsa-koyu .dsa svg .shp.st-normal line { stroke: #ced4da; }
+:root.dsa-koyu .dsa svg .shp.st-normal circle[r="3.5"] { fill: #ced4da; }
+:root.dsa-koyu .dsa svg .shp.st-bos rect { fill: #23272f; }
+:root.dsa-koyu .dsa svg .ok.st-normal { stroke: #adb5bd; }
+:root.dsa-koyu .dsa svg .frm rect { fill: #262a33; }
+:root.dsa-koyu .dsa svg .frm text { fill: #ced4da; }
+@media (prefers-color-scheme: dark) {
+  :root:not(.dsa-acik) .dsa svg .shp.st-normal rect, :root:not(.dsa-acik) .dsa svg .shp.st-normal circle { fill: #2b303b; stroke: #ced4da; }
+  :root:not(.dsa-acik) .dsa svg .shp.st-normal text, :root:not(.dsa-acik) .dsa svg .lbl.st-normal text { fill: #e9ecef; }
+  :root:not(.dsa-acik) .dsa svg .shp.st-normal line { stroke: #ced4da; }
+  :root:not(.dsa-acik) .dsa svg .shp.st-normal circle[r="3.5"] { fill: #ced4da; }
+  :root:not(.dsa-acik) .dsa svg .shp.st-bos rect { fill: #23272f; }
+  :root:not(.dsa-acik) .dsa svg .ok.st-normal { stroke: #adb5bd; }
+  :root:not(.dsa-acik) .dsa svg .frm rect { fill: #262a33; }
+  :root:not(.dsa-acik) .dsa svg .frm text { fill: #ced4da; }
+}
+/* slayt kipi (?yer=slayt): 16:9 slayttaki iframe'e sığan sıkı yerleşim */
+.dsa-slayt body { overflow: hidden; }
+.dsa-slayt .dsa { padding: 4px 6px 6px; max-width: none; }
+.dsa-slayt .dsa-ust { margin-bottom: 2px; }
+.dsa-slayt .dsa-baslik { visibility: hidden; }
+.dsa-slayt .dsa-govde { grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 8px; }
+.dsa-slayt .dsa-govde.dsa-kodsuz { grid-template-columns: 1fr; }
+.dsa-slayt .dsa-sahne svg { max-height: 350px; }
+.dsa-slayt .dsa-pre { max-height: 370px; font-size: 11.5px; }
+.dsa-slayt .dsa-cap { margin-top: 6px; min-height: 2.6em; padding: 6px 10px; font-size: .9rem; line-height: 1.4; }
+.dsa-slayt .dsa-denetim { margin-top: 6px; gap: 4px; }
+.dsa-slayt .dsa-d { height: 28px; min-width: 32px; font-size: 13px; }
+.dsa-slayt .dsa-hiz { height: 28px; }
+@media print { .dsa-denetim { display: none; } .dsa-pre { max-height: none; } }

@@ -1,0 +1,6 @@
+# CEN207 Marp settings -- so the HTML deck can be opened offline (without internet):
+# emoji are kept as characters, not converted to images (twemoji, CDN).
+options:
+  emoji:
+    shortcode: false
+    unicode: false

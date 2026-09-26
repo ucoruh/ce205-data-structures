@@ -1,6 +1,9 @@
 # Project information
-site_name: "RTEU CE205 Data Structures Course Notes"
+site_name: "RTEU CEN207 Data Structures Course Notes (Formerly CE205)"
 docs_dir: docs  # Where to find the markdown files
+exclude_docs: |
+  desktop.ini
+  **/desktop.ini
 site_dir: site  # Where to output the HTML files
 site_author: 'Asst. Prof. Dr. Uğur CORUH'
 site_url: 'https://ucoruh.github.io/ce205-data-structures/'
@@ -159,6 +162,7 @@ plugins:
   - mkdocs-simple-hooks:
       hooks:
         on_env: "hooks:on_env"
+        on_page_content: "hooks:on_page_content"
   - external-markdown
   - mkdocs-video
   - search:
@@ -173,31 +177,36 @@ plugins:
           name: "English"
           build: true
           default: true
-          site_name: "RTEU CE205 Data Structures Course Notes"
+          site_name: "RTEU CEN207 Data Structures Course Notes (Formerly CE205)"
         - locale: tr
           name: "Türkçe"
           build: true
-          site_name: "RTEU CE205 Veri Yapıları Ders Notları"
+          site_name: "RTEÜ CEN207 Veri Yapıları Ders Notları (eski kodu CE205)"
           nav_translations:
               Home: "Anasayfa"
               Syllabus: "Ders Programı"
+              Prerequisites: "Ön Gereksinimler"
               Course Modules: "Ders Modülleri"
-              Week-1 (Introduction to Data Structures): "Hafta-1 (Veri Yapılarına Giriş)"
-              Week-2 (Linked Lists): "Hafta-2 (Bağlı Listeler)"
+              Week-1 (Introduction, Big-O, Pointers): "Hafta-1 (Giriş, Büyük O, İşaretçiler)"
+              Week-2 (Linked Lists, Arrays, Matrices): "Hafta-2 (Bağlı Listeler, Diziler, Matrisler)"
               Week-3 (Stacks and Queues): "Hafta-3 (Yığınlar ve Kuyruklar)"
-              Week-4 (Tree Data Structures): "Hafta-4 (Ağaç Veri Yapıları)"
-              Week-5 (Graph Data Structures): "Hafta-5 (Graf Veri Yapıları)"
-              Week-6 (Graph Algorithms): "Hafta-6 (Graf Algoritmaları)"
-              Week-7 (Search and Hashing): "Hafta-7 (Arama ve Hashleme)"
-              Week-8 (Midterm): "Hafta-8 (Ara Sınav)"
-              Week-9 (Sorting): "Hafta-9 (Sıralama)"
-              Week-10 (Advanced Tree Structures): "Hafta-10 (İleri Ağaç Yapıları)"
-              Week-11 (String Data Structures): "Hafta-11 (Dize Veri Yapıları)"
-              Week-12 (String Algorithms): "Hafta-12 (Dize Algoritmaları)"
-              Week-13 (Sequential and Direct File Organization): "Hafta-13 (Sıralı ve Doğrudan Dosya Düzeni)"
-              Week-14 (Direct File Organization and B Tree Structures for File): "Hafta-14 (Dosya için Doğrudan Dosya ve B Ağaç Yapıları)"
-              Week-15 (Hashing Techniques, String Matching, Trie, Secondary Key Retrieval, File Sorting): "Hafta-15 (Hashleme Teknikleri, Dize Eşleştirme, Trie, İkincil Anahtar Erişimi, Dosya Sıralama)"
-              Week-16 (Final): "Hafta-16 (Final)"
+              Week-4 (Trees, Heaps, Huffman): "Hafta-4 (Ağaçlar, Öbekler, Huffman)"
+              Week-5 (Graphs and Traversals): "Hafta-5 (Çizgeler ve Dolaşmalar)"
+              Week-6 (Search and Hashing): "Hafta-6 (Arama ve Hash)"
+              Week-7 (Midterm Project Demos): "Hafta-7 (Ara Proje Gösterimleri)"
+              "Week-8 (Midterm Exam Week: Quiz-1)": "Hafta-8 (Ara Sınav Haftası: Quiz-1)"
+              Week-9 (Graph Algorithms): "Hafta-9 (Çizge Algoritmaları)"
+              Week-10 (Sorting): "Hafta-10 (Sıralama)"
+              Week-11 (Advanced Trees): "Hafta-11 (Gelişmiş Ağaçlar)"
+              Week-12 (Strings): "Hafta-12 (Dizeler)"
+              String Structures: "Dize Yapıları"
+              String Algorithms: "Dize Algoritmaları"
+              Week-13 (File Organisation I): "Hafta-13 (Dosya Organizasyonu I)"
+              Week-14 (File Organisation II): "Hafta-14 (Dosya Organizasyonu II)"
+              Indexes and B-Trees for Files: "İndeksler ve Dosyalar için B-Ağaçları"
+              Extendible Hashing and File Sorting: "Genişletilebilir Hash ve Dosya Sıralama"
+              Week-15 (Final Project Demos): "Hafta-15 (Final Proje Gösterimleri)"
+              "Week-16 (Final Exam Period: Quiz-2)": "Hafta-16 (Final Sınav Dönemi: Quiz-2)"
               Project Guide: "Proje Rehberi"
               License: "Lisans"
               Resume: "Özgeçmiş"
@@ -209,11 +218,14 @@ plugins:
       htmlmin_opts:
         remove_comments: true
   - git-revision-date-localized:
+      enabled: !ENV [CEN207_GIT, true]
       fallback_to_build_date: true
       type: timeago
   - git-authors:
+      enabled: !ENV [CEN207_GIT, true]
       sort_authors_by: contribution
   - git-committers:
+      enabled: !ENV [CEN207_GIT, true]
       repository: ucoruh/ce205-data-structures
       docs_path: docs/
       branch: main
@@ -222,28 +234,38 @@ plugins:
 
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+  - javascripts/dsanim-gomu.js
+
+extra_css:
+  - stylesheets/dsanim-gomu.css
+  - stylesheets/cen207.css
 
 # Page tree (for navigation)
 nav:
   - Home: index.md
   - Syllabus: syllabus/syllabus.md
+  - Prerequisites: prerequisites/index.md
   - Course Modules:
-    - Week-1 (Introduction to Data Structures): week-1-intro/ce205-week-1-intro.md
-    - Week-2 (Linked Lists): week-2-linkedlist/ce205-week-2-linkedlist.md
-    - Week-3 (Stacks and Queues): week-3-stack/ce205-week-3-stack.md
-    - Week-4 (Tree Data Structures): week-4-tree-structures/ce205-week-4-tree-structures.md
-    - Week-5 (Grapy Data Structures): week-5-graph-structures/ce205-week-5-graph-structures.md
-    - Week-6 (Graph Algorithms): week-6-graph-algorithms/ce205-week-6-graph-algorithms.md
-    - Week-7 (Search and Hashing): week-7-search-hashing/ce205-week-7-search-hashing.md
-    - Week-8 (Midterm): week-8-midterm/ce205-week-8-midterm.md
-    - Week-9 (Sorting): week-9-sorting/ce205-week-9-sorting.md
-    - Week-10 (Advanced Tree Structures): week-10-advanced-tree-structures/ce205-week-10-advanced-tree-structures.md      
-    - Week-11 (String Data Structures): week-11-string-structures/ce205-week-11-string-structures.md 
-    - Week-12 (String Algorithms): week-12-string-algorithms/ce205-week-12-string-algorithms.md
-    - Week-13 (Sequential and Direct File Organization): week-13-direct-sequential-file/ce205-week-13-direct-sequential-file.md
-    - Week-14 (Direct File Organization and B Tree Structures for File): week-14-direct-file-b-tree/ce205-week-14-direct-file-b-tree.md
-    - Week-15 (Hashing Techniques, String Matching, Trie, Secondary Key Retrival, File Sorting): week-15-hashing-trie/ce205-week-15-hashing-trie.md
-    - Week-16 (Final): week-16-final/ce205-week-16-final.md
+    - Week-1 (Introduction, Big-O, Pointers): week-1/cen207-week-1.md
+    - Week-2 (Linked Lists, Arrays, Matrices): week-2-linkedlist/ce205-week-2-linkedlist.md
+    - Week-3 (Stacks and Queues): week-3/cen207-week-3.md
+    - Week-4 (Trees, Heaps, Huffman): week-4/cen207-week-4.md
+    - Week-5 (Graphs and Traversals): week-5-graph-structures/ce205-week-5-graph-structures.md
+    - Week-6 (Search and Hashing): week-7-search-hashing/ce205-week-7-search-hashing.md
+    - Week-7 (Midterm Project Demos): week-7/cen207-week-7.md
+    - "Week-8 (Midterm Exam Week: Quiz-1)": week-8/cen207-week-8.md
+    - Week-9 (Graph Algorithms): week-6-graph-algorithms/ce205-week-6-graph-algorithms.md
+    - Week-10 (Sorting): week-9-sorting/ce205-week-9-sorting.md
+    - Week-11 (Advanced Trees): week-10-advanced-tree-structures/ce205-week-10-advanced-tree-structures.md
+    - Week-12 (Strings):
+      - String Structures: week-11-string-structures/ce205-week-11-string-structures.md
+      - String Algorithms: week-12-string-algorithms/ce205-week-12-string-algorithms.md
+    - Week-13 (File Organisation I): week-13-direct-sequential-file/ce205-week-13-direct-sequential-file.md
+    - Week-14 (File Organisation II):
+      - Indexes and B-Trees for Files: week-14-direct-file-b-tree/ce205-week-14-direct-file-b-tree.md
+      - Extendible Hashing and File Sorting: week-15-hashing-trie/ce205-week-15-hashing-trie.md
+    - Week-15 (Final Project Demos): week-15/cen207-week-15.md
+    - "Week-16 (Final Exam Period: Quiz-2)": week-16/cen207-week-16.md
   - Project Guide: project-guide/index.md
   - License: license.md
   - Resume: resume/index.md
