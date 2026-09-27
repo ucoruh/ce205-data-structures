@@ -247,10 +247,10 @@ nav:
   - Prerequisites: prerequisites/index.md
   - Course Modules:
     - Week-1 (Introduction, Big-O, Pointers): week-1/cen207-week-1.md
-    - Week-2 (Linked Lists, Arrays, Matrices): week-2-linkedlist/ce205-week-2-linkedlist.md
+    - Week-2 (Linked Lists, Arrays, Matrices): week-2/cen207-week-2.md
     - Week-3 (Stacks and Queues): week-3/cen207-week-3.md
     - Week-4 (Trees, Heaps, Huffman): week-4/cen207-week-4.md
-    - Week-5 (Graphs and Traversals): week-5-graph-structures/ce205-week-5-graph-structures.md
+    - Week-5 (Graphs and Traversals): week-5/cen207-week-5.md
     - Week-6 (Search and Hashing): week-7-search-hashing/ce205-week-7-search-hashing.md
     - Week-7 (Midterm Project Demos): week-7/cen207-week-7.md
     - "Week-8 (Midterm Exam Week: Quiz-1)": week-8/cen207-week-8.md
