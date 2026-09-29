@@ -600,7 +600,7 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
     /** Independent computation: same well-known algorithm, coded separately from build(). */
     reference: function (d) {
       var arr = d.arr, n = arr.length, target = d.target;
-      var b = block(n), prev = 0, step = b, comp = 0, index = -1, i;
+      var b = Math.max(1, Math.floor(Math.sqrt(n))), prev = 0, step = b, comp = 0, index = -1, i;   /* block size, computed independently of build()'s block() */
       while (step < n) {
         comp++;
         if (arr[step - 1] >= target) break;
