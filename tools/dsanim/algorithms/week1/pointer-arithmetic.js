@@ -125,14 +125,18 @@
           S.set('a' + k, { style: 'new' });
           S.set('p', { target: 'a' + k });
           S.set('calc', { text: 'p + ' + k + ' = ' + base + ' + ' + k + '×' + sz + ' = ' + addr + ',  *(p+' + k + ') = ' + values[k] });
+          var rangeNoteFalse = T('k < 0 || k >= N? (' + k + ' < 0 || ' + k + ' >= ' + n + ') hayır', 'k < 0 || k >= N? (' + k + ' < 0 || ' + k + ' >= ' + n + ') no');
           if (first) {
             S.step(T('`p + ' + k + '` p\'yi DEĞİŞTİRMEZ; yeni bir adres HESAPLAR: ' + base + ' + ' + k + '×' + sz + ' = ' + addr + '. `*(p + ' + k + ')` bu adresi dereferanslar: ' + values[k] + '.',
                      '`p + ' + k + '` does NOT change p; it COMPUTES a new address: ' + base + ' + ' + k + '×' + sz + ' = ' + addr + '. `*(p + ' + k + ')` dereferences that address: ' + values[k] + '.'),
-                   { c: [7, 8], java: [7] });
+                   { c: [{ n: 4, note: rangeNoteFalse }, { n: 5, skip: true }, 7, 8],
+                     java: [{ n: 4, note: rangeNoteFalse }, { n: 5, skip: true }, 7] });
             first = false;
           } else {
             S.step(T('`p + ' + k + '` = ' + addr + ', `*(p + ' + k + ')` = ' + values[k] + '.',
-                     '`p + ' + k + '` = ' + addr + ', `*(p + ' + k + ')` = ' + values[k] + '.'), { c: [7, 8], java: [7] });
+                     '`p + ' + k + '` = ' + addr + ', `*(p + ' + k + ')` = ' + values[k] + '.'),
+                   { c: [{ n: 4, note: rangeNoteFalse }, { n: 5, skip: true }, 7, 8],
+                     java: [{ n: 4, note: rangeNoteFalse }, { n: 5, skip: true }, 7] });
           }
           S.set('a' + k, { style: 'normal' });
         } else {
@@ -141,7 +145,8 @@
           S.set('calc', { text: 'p + ' + k + ' → dizinin dışında (out of range)' });
           S.step(T('`p + ' + k + '` — `k = ' + k + '`, `0 ≤ k < ' + n + '` koşulunu sağlamıyor: dizinin DIŞINA çıkıyor. `*(p + ' + k + ')` okumak **tanımsız davranış (UB)**: standart hiçbir garanti vermez, çökebilir ya da çöp bir değer dönebilir.',
                    '`p + ' + k + '` — `k = ' + k + '` does not satisfy `0 ≤ k < ' + n + '`: it steps OUTSIDE the array. Reading `*(p + ' + k + ')` is **undefined behavior (UB)**: it might crash or return garbage.'),
-                 { c: [4, 5], java: [4, 5] });
+                 { c: [{ n: 4, note: T('k < 0 || k >= N? (' + k + ' < 0 || ' + k + ' >= ' + n + ') evet', 'k < 0 || k >= N? (' + k + ' < 0 || ' + k + ' >= ' + n + ') yes') }, 5, { n: 7, skip: true }, { n: 8, skip: true }],
+                   java: [{ n: 4, note: T('k < 0 || k >= N? (' + k + ' < 0 || ' + k + ' >= ' + n + ') evet', 'k < 0 || k >= N? (' + k + ' < 0 || ' + k + ' >= ' + n + ') yes') }, 5, { n: 7, skip: true }] });
         }
       });
       S.remove('p');

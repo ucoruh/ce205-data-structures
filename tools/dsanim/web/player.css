@@ -140,3 +140,25 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
 .dsa-slayt .dsa-jeton { font-size: 11.5px; padding: 2px 5px; flex: 0 0 auto; }
 .dsa-slayt .dsa-cap { flex: 0 0 auto; max-height: 4.4em; overflow-y: auto; }
 .dsa-slayt .dsa-sonraki { flex: 0 0 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: .8rem; margin-top: 3px; }
+/* v2.2: program counter (▶ on the line being executed), branch notes (true/false, → call), skipped branch dimmed */
+.dsa-sat.pc { background: var(--dsa-vurgu); border-left-color: var(--dsa-ana); box-shadow: inset 3px 0 0 var(--dsa-ana); font-weight: 600; }
+.dsa-sat.pc .dsa-no::before { content: '\25B6'; color: var(--dsa-ana); font-size: .8em; margin-right: 2px; }
+.dsa-sat.atla { opacity: .38; text-decoration: line-through; text-decoration-color: var(--dsa-soluk); }
+.dsa-not { display: inline-block; margin-left: 10px; padding: 0 6px; border-radius: 4px; font-size: .85em; font-weight: 700;
+  background: var(--dsa-ana); color: #fff; font-family: 'Segoe UI', Arial, sans-serif; }
+.dsa-sat.atla .dsa-not { background: var(--dsa-soluk); }
+/* v2.3: zoom / pan / full screen on the scene */
+.dsa-sahne { position: relative; touch-action: pan-y; }
+.dsa-sahne.dsa-zoomed { cursor: grab; touch-action: none; }
+.dsa-sahne.dsa-drag { cursor: grabbing; }
+.dsa-zoom { position: absolute; top: 6px; right: 6px; display: flex; gap: 3px; opacity: .55; transition: opacity .2s; z-index: 2; }
+.dsa-sahne:hover .dsa-zoom, .dsa-zoom:focus-within { opacity: 1; }
+.dsa-zb { width: 28px; height: 26px; border-radius: 6px; border: 1px solid var(--dsa-cizgi); background: var(--dsa-zemin);
+  color: var(--dsa-yazi); cursor: pointer; font-size: 15px; line-height: 1; padding: 0; }
+.dsa-zb:hover { border-color: var(--dsa-ana); color: var(--dsa-ana); }
+.dsa:fullscreen { background: var(--dsa-zemin); max-width: none; height: 100vh; display: flex; flex-direction: column; overflow: auto; }
+.dsa:fullscreen .dsa-govde { flex: 1 1 auto; min-height: 0; }
+.dsa:fullscreen .dsa-sahne svg { max-height: none; height: 100%; }
+.dsa:fullscreen .dsa-pre { max-height: none; }
+@media print { .dsa-zoom { display: none; } }
+.dsa-statik .dsa-zoom { display: none; }

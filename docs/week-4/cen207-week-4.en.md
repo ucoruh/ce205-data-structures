@@ -3624,8 +3624,8 @@ heap**, and it is built directly on top of the complete-tree array from section 
 ### 5.2 A short history and the heap property
 
 The heap was introduced by **J. W. J. Williams** in 1964, in the same short paper that introduced **heap sort**
-(section 5.4) — the heap was invented specifically to make that sorting algorithm possible. Shortly afterward,
-**R. W. Floyd** published a faster way to build a heap from an already-existing array (section 5.3), turning an
+(section 5.6) — the heap was invented specifically to make that sorting algorithm possible. Shortly afterward,
+**R. W. Floyd** published a faster way to build a heap from an already-existing array (section 5.5), turning an
 O(n log n) construction into O(n).
 
 A **binary heap** is a complete binary tree (so it always fits perfectly in an array — no wasted cells) that
@@ -4423,7 +4423,7 @@ array into a valid starting heap with a small `heapify_prepare` helper (a previe
     Expected output: identical to the C run above (same algorithm, same data).
 
 Notice the "drain fully" edge case: extracting all 10 values, one at a time, produces them in **fully sorted**
-order (`2, 5, 9, 13, 17, 20, 26, 31, 38, 44`) — this is not a coincidence, it *is* how heap sort (section 5.5)
+order (`2, 5, 9, 13, 17, 20, 26, 31, 38, 44`) — this is not a coincidence, it *is* how heap sort (section 5.6)
 works. Also notice the final line, `heap: [size = 0]`: extracting the very last element correctly leaves an
 empty heap, with no out-of-bounds access, because `size` becomes 0 and the sift-down loop's `left < size` /
 `right < size` guards make the loop body simply never execute.
@@ -6953,7 +6953,7 @@ moment of doubt about where one code ends and the next begins.
 ![Huffman encoding and decoding — step by step](anim/huffman-encode-decode.png)
 </div>
 
-In the picker, also try **more variety: "THEQUICKBROWNFOX" (17 characters)** (hard) and the edge cases **only 2
+In the picker, also try **more variety: "THEQUICKBROWNFOX" (16 characters)** (hard) and the edge cases **only 2
 distinct symbols: 10 characters**, **very skewed: nine As, one B**, **with digits: 14 characters**, and **a long
 text: 30 characters** — or press 🎲 for random data at four difficulty levels, or type your own text (at least
 10 characters, at least 2 distinct).

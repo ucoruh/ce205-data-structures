@@ -128,10 +128,36 @@
                'Quadratic probing: on a collision we probe `home + 1²`, `home + 2²`, `home + 3²`, … (mod ' + m + ') — a fast-growing step instead of a fixed one. This reduces linear probing\'s primary clustering.'),
              { c: [5, 6, 7, 8], java: [5, 6, 7, 8] });
 
+      /* Line positions into the C/JAVA arrays above (identical numbering in both languages: insert()
+         has no language-specific extra lines here). */
+      var L = { entry: 6, forchk: 7, idxcalc: 8, ifchk: 9, place1: 10, place2: 11, ret: 12, full: 15 };
+      function insertLines(first, continuing) {
+        var c = [];
+        if (first) c.push(L.entry);
+        c.push({ n: L.forchk, note: T('i<M? evet', 'i<M? yes') }, L.idxcalc, { n: L.ifchk, note: continuing ? T('dolu mu? evet', 'occupied? yes') : T('dolu mu? hayır', 'occupied? no') });
+        if (continuing) c.push({ n: L.place1, skip: true }, { n: L.place2, skip: true }, { n: L.ret, skip: true });
+        else c.push(L.place1, L.place2, L.ret);
+        return c;
+      }
+
       var state = new Array(m).fill('E'), table = new Array(m).fill(null), insertResults = [];
       keys.forEach(function (key, k) {
         S.at(k);
         var home = h(key, m), seq = [], placed = false, probes = 0, idx;
+        var pend = [], pendIdxs = [];
+        function flushContinue() {
+          if (!pend.length) return;
+          pendIdxs.forEach(function (pi) { S.set('c' + pi, { style: 'hl' }); });
+          S.set('dec', { text: T('dolu, i² sıçra', 'occupied, jump by i²'), style: 'hl' });
+          var cLines = [], jLines = [];
+          pend.forEach(function (ln) { cLines = cLines.concat(ln); jLines = jLines.concat(ln); });
+          S.step(pend.length === 1
+            ? T('Hücre ' + pendIdxs[0] + ' dolu — bir sonraki karesel sıçramaya geçeriz.', 'Cell ' + pendIdxs[0] + ' is occupied — we move to the next quadratic jump.')
+            : T('Hücreler ' + pendIdxs.join(', ') + ' dolu (' + pend.length + ' hücre) — sırayla karesel sıçramalarla ilerleriz.',
+                'Cells ' + pendIdxs.join(', ') + ' are occupied (' + pend.length + ' cells) — we move through the quadratic jumps one by one.'),
+            { c: cLines, java: jLines });
+          pend = []; pendIdxs = [];
+        }
         for (var i2 = 0; i2 < m; i2++) {
           idx = (home + i2 * i2) % m;
           seq.push(idx);
@@ -139,23 +165,25 @@
           S.set('c' + idx, { style: 'hl' });
           S.set('probe', { text: 'home=' + home + ': ' + seq.join(' → ') });
           if (state[idx] !== 'O') {
+            flushContinue();
             table[idx] = key; state[idx] = 'O';
             S.set('c' + idx, { text: String(key), style: 'new' });
             S.set('dec', { text: probes > 1 ? T('yerleşti (' + probes + '. yoklama)', 'placed (probe ' + probes + ')') : T('yerleşti', 'placed'), style: 'new' });
             placed = true;
+            var pl = insertLines(i2 === 0, false);
             S.step(probes > 1
               ? T('`insert(' + key + ')`: `home = ' + home + '`, ' + (probes - 1) + ' karesel sıçramadan sonra hücre ' + idx + ' boş bulundu. Dizi: `' + seq.join(' → ') + '`.',
                   '`insert(' + key + ')`: `home = ' + home + '`, after ' + (probes - 1) + ' quadratic jump' + (probes - 1 > 1 ? 's' : '') + ', cell ' + idx + ' was found free. Sequence: `' + seq.join(' → ') + '`.')
               : T('`insert(' + key + ')`: `home = ' + idx + '`, hücre boştu, doğrudan yerleşir.', '`insert(' + key + ')`: `home = ' + idx + '`, the cell was empty, it settles immediately.'),
-              { c: [8, 9, 10, 11, 12], java: [8, 9, 10, 11, 12] });
+              { c: pl, java: pl });
             break;
           } else {
-            S.set('dec', { text: T('dolu, i² sıçra', 'occupied, jump by i²'), style: 'hl' });
-            S.step(T('Hücre ' + idx + ' dolu — `i = ' + (i2 + 1) + '` için `(home + ' + (i2 + 1) + '²) mod ' + m + '` hücresine sıçrarız.',
-                     'Cell ' + idx + ' is occupied — we jump to `(home + ' + (i2 + 1) + '²) mod ' + m + '` for `i = ' + (i2 + 1) + '`.'), { c: [7, 8], java: [7, 8] });
+            pend.push(insertLines(i2 === 0, true));
+            pendIdxs.push(idx);
           }
         }
         if (!placed) {
+          flushContinue();
           var occupied = state.filter(function (s) { return s === 'O'; }).length;
           var cycled = occupied < m;
           S.set('dec', { text: cycled ? T('döngü — boş hücre yok!', 'cycle — no free slot reached!') : T('tablo dolu!', 'table full!'), style: 'del' });
@@ -164,7 +192,7 @@
                 'All `' + m + '` probes were tried but they kept revisiting the same few cells — the table is NOT full (' + (m - occupied) + ' cells are still empty), yet this key\'s quadratic sequence never reaches them. `m = ' + m + '` is not prime (' + (m % 2 === 0 ? 'divisible by 2' : 'composite') + '), which is exactly when this can happen — **flagged**.')
             : T('`' + m + '` hücrenin hepsi yoklandı, hiçbiri boş değil — tablo gerçekten **dolu**, `insert(' + key + ')` reddedilir.',
                 'All `' + m + '` cells were probed, none was free — the table is genuinely **full**, `insert(' + key + ')` is rejected.'),
-            { c: [14, 15], java: [13, 14] });
+            { c: [{ n: L.forchk, note: T('i<M? hayır', 'i<M? no') }, L.full], java: [{ n: L.forchk, note: T('i<M? hayır', 'i<M? no') }, L.full] });
         }
         insertResults.push({ key: key, placed: placed, probes: probes, cycled: !placed && (state.filter(function (s) { return s === 'O'; }).length) < m });
       });

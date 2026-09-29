@@ -206,8 +206,10 @@
         order.splice(idx, 0, nd);
         if (id1) S.arrow('v' + id0, { from: id1, to: id0, kind: 'center', head: false, style: 'dim' });
         relayoutAndWire(); clean();
+        var levelNote = T('i (' + it.level + ') < level (' + it.level + ')? hayır sonunda (döngü ' + it.level + ' kez döner)', 'i < level (' + it.level + ')? no eventually (the loop runs ' + it.level + ' time' + (it.level === 1 ? '' : 's') + ')');
         S.step(T((detailed ? '`update[i]->forward[i] = n` her seviyede: ' : (opIdx + 1) + '. ekleme: ') + it.v + ' sıralı konumuna girdi' + (it.level >= 2 ? ', hızlı şeritte de yer aldı.' : ', yalnız taban listede.'),
-                 (detailed ? '`update[i]->forward[i] = n` at every level: ' : 'insert ' + (opIdx + 1) + ': ') + it.v + ' is now in its sorted place' + (it.level >= 2 ? ', and it also sits on the express lane.' : ', on the base list only.')), { c: [12, 13, 14, 15], java: [10, 11, 12, 13] });
+                 (detailed ? '`update[i]->forward[i] = n` at every level: ' : 'insert ' + (opIdx + 1) + ': ') + it.v + ' is now in its sorted place' + (it.level >= 2 ? ', and it also sits on the express lane.' : ', on the base list only.')),
+               { c: [13, { n: 14, note: levelNote }, 15, 16], java: [10, { n: 11, note: levelNote }, 12, 13] });
       });
       clean();
 
@@ -217,7 +219,9 @@
         var detailed = si === 0;
         var comparisons = 0, curOrderIdx = -1;
         S.pointer('curP', { target: 'hdr1', text: 'cur', side: 'top', dist: 30 });
-        S.step(T((si + 1) + '. `sl_search(' + key + ')`: `cur = header`. Seviye 1\'den (hızlı şerit) başlıyoruz.', (si + 1) + '. `sl_search(' + key + ')`: `cur = header`. We start at level 1 (the express lane).'), { c: [21, 22], java: [21, 22] });
+        S.step(T((si + 1) + '. `sl_search(' + key + ')`: `cur = header`. Seviye 1\'den (hızlı şerit) başlıyoruz.', (si + 1) + '. `sl_search(' + key + ')`: `cur = header`. We start at level 1 (the express lane).'),
+               { c: [21, 22, { n: 23, note: T('i (1) >= 0? evet (MAX_LEVEL-1\'den başlar)', 'i (1) >= 0? yes (starts at MAX_LEVEL-1)') }],
+                 java: [21, 22, { n: 23, note: T('i (1) >= 0? evet (MAX_LEVEL-1\'den başlar)', 'i (1) >= 0? yes (starts at MAX_LEVEL-1)') }] });
         var lvl1 = []; order.forEach(function (nd, idx) { if (nd.level >= 2) lvl1.push(idx); });
         while (true) {
           var nextIdx = -1;
@@ -225,23 +229,31 @@
           if (nextIdx === -1 || order[nextIdx].value >= key) break;
           comparisons++; curOrderIdx = nextIdx;
           S.set('curP', { target: order[curOrderIdx].id1 });
-          if (detailed) S.step(T('seviye 1: `cur->forward[1]->value` (' + order[curOrderIdx].value + ') < ' + key + ' -- sağa git.', 'level 1: `cur->forward[1]->value` (' + order[curOrderIdx].value + ') < ' + key + ' -- go right.'), { c: [23, 24], java: [23, 24] });
+          if (detailed) S.step(T('seviye 1: `cur->forward[1]->value` (' + order[curOrderIdx].value + ') < ' + key + ' -- sağa git.', 'level 1: `cur->forward[1]->value` (' + order[curOrderIdx].value + ') < ' + key + ' -- go right.'),
+                                { c: [{ n: 24, note: T('cur->forward[1]->value < ' + key + '? evet', 'cur->forward[1]->value < ' + key + '? yes') }, 25, 26],
+                                  java: [{ n: 24, note: T('cur.forward[1].value < ' + key + '? evet', 'cur.forward[1].value < ' + key + '? yes') }, 25, 26] });
         }
-        S.step(T('seviye 1\'de daha yakın düğüm yok -- **aşağı in**.', 'no closer node at level 1 -- **drop down**.'), { c: 27, java: 27 });
+        S.step(T('seviye 1\'de daha yakın düğüm yok -- **aşağı in**.', 'no closer node at level 1 -- **drop down**.'),
+               { c: { n: 24, note: T('cur->forward[1]->value < ' + key + '? hayır (aşağı in)', 'cur->forward[1]->value < ' + key + '? no (drop down)') },
+                 java: { n: 24, note: T('cur.forward[1].value < ' + key + '? hayır (aşağı in)', 'cur.forward[1].value < ' + key + '? no (drop down)') } });
         S.set('curP', { target: curOrderIdx === -1 ? 'hdr0' : order[curOrderIdx].id0 });
         while (true) {
           var nextIdx0 = curOrderIdx + 1;
           if (nextIdx0 >= order.length || order[nextIdx0].value >= key) break;
           comparisons++; curOrderIdx = nextIdx0;
           S.set('curP', { target: order[curOrderIdx].id0 });
-          if (detailed) S.step(T('seviye 0: `cur->forward[0]->value` (' + order[curOrderIdx].value + ') < ' + key + ' -- sağa git.', 'level 0: `cur->forward[0]->value` (' + order[curOrderIdx].value + ') < ' + key + ' -- go right.'), { c: [23, 24], java: [23, 24] });
+          if (detailed) S.step(T('seviye 0: `cur->forward[0]->value` (' + order[curOrderIdx].value + ') < ' + key + ' -- sağa git.', 'level 0: `cur->forward[0]->value` (' + order[curOrderIdx].value + ') < ' + key + ' -- go right.'),
+                                { c: [{ n: 24, note: T('cur->forward[0]->value < ' + key + '? evet', 'cur->forward[0]->value < ' + key + '? yes') }, 25, 26],
+                                  java: [{ n: 24, note: T('cur.forward[0].value < ' + key + '? evet', 'cur.forward[0].value < ' + key + '? yes') }, 25, 26] });
         }
         var checkIdx = curOrderIdx + 1;
         comparisons++;
         var found = checkIdx < order.length && order[checkIdx].value === key;
         if (found) S.set(order[checkIdx].id0, { style: 'hl' });
         S.step(T('seviye 0\'da son kontrol: ' + (found ? '`' + key + '` bulundu' : '`' + key + '` yok') + '. Toplam ' + comparisons + ' karşılaştırma.',
-                 'final check at level 0: ' + (found ? '`' + key + '` found' : '`' + key + '` is not there') + '. ' + comparisons + ' comparisons in total.'), { c: [29, 30, 31], java: [29, 30, 31] });
+                 'final check at level 0: ' + (found ? '`' + key + '` found' : '`' + key + '` is not there') + '. ' + comparisons + ' comparisons in total.'),
+               { c: [{ n: 24, note: T('cur->forward[0]->value < ' + key + '? hayır (aşağı in)', 'cur->forward[0]->value < ' + key + '? no (drop down)') }, 30, 31, 32],
+                 java: [{ n: 24, note: T('cur.forward[0].value < ' + key + '? hayır (aşağı in)', 'cur.forward[0].value < ' + key + '? no (drop down)') }, 30, 31, 32, 33] });
         S.remove('curP');
         searchResults.push({ found: found, comparisons: comparisons });
       });

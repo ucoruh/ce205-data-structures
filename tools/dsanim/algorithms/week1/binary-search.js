@@ -189,7 +189,9 @@
           S.set('h' + mid, { style: 'new' });
           S.set('dec', { text: T('= ' + target + ' bulundu', '= ' + target + ' found'), style: 'new' });
           S.step(T('`arr[' + mid + '] == ' + target + '`? Evet — ' + steps + '. karşılaştırmada bulundu.',
-                   '`arr[' + mid + '] == ' + target + '`? Yes — found on comparison ' + steps + '.'), { c: [5, 6, 7], java: [6, 7, 8] });
+                   '`arr[' + mid + '] == ' + target + '`? Yes — found on comparison ' + steps + '.'),
+                 { c: [5, { n: 6, note: T('arr[mid] == target? (' + v + ' == ' + target + ') evet', 'arr[mid] == target? (' + v + ' == ' + target + ') yes') }, 7],
+                   java: [6, { n: 7, note: T('arr[mid] == target? (' + v + ' == ' + target + ') evet', 'arr[mid] == target? (' + v + ' == ' + target + ') yes') }, 8] });
           S.remove('lop'); S.remove('hip'); S.remove('mp');
           break;
         } else if (v < target) {
@@ -197,7 +199,10 @@
           S.set('dec', { text: '< ' + target, style: 'hl' });
           S.step(T('`arr[' + mid + '] = ' + v + ' < ' + target + '` — ' + target + ' varsa sağ yarıda olmalı. Sol yarıyı (indeks ' + lo + '-' + mid + ') eleriz.',
                    '`arr[' + mid + '] = ' + v + ' < ' + target + '` — if ' + target + ' is here, it must be in the right half. We discard the left half (indices ' + lo + '-' + mid + ').'),
-                 { c: [5, 8, 9], java: [6, 9, 10] });
+                 { c: [5, { n: 6, note: T('arr[mid] == target? (' + v + ' == ' + target + ') hayır', 'arr[mid] == target? (' + v + ' == ' + target + ') no') }, { n: 7, skip: true },
+                        { n: 8, note: T('arr[mid] < target? (' + v + ' < ' + target + ') evet', 'arr[mid] < target? (' + v + ' < ' + target + ') yes') }, 9, { n: 11, skip: true }],
+                   java: [6, { n: 7, note: T('arr[mid] == target? (' + v + ' == ' + target + ') hayır', 'arr[mid] == target? (' + v + ' == ' + target + ') no') }, { n: 8, skip: true },
+                           { n: 9, note: T('arr[mid] < target? (' + v + ' < ' + target + ') evet', 'arr[mid] < target? (' + v + ' < ' + target + ') yes') }, 10, { n: 12, skip: true }] });
           freezeGen(gen);
           lo = mid + 1;
           gen++;
@@ -206,7 +211,11 @@
           S.set('h' + mid, { style: 'hl' });
           S.set('dec', { text: '> ' + target, style: 'hl' });
           S.step(T('`arr[' + mid + '] = ' + v + ' > ' + target + '` — sağ yarıyı eleriz.',
-                   '`arr[' + mid + '] = ' + v + ' > ' + target + '` — we discard the right half.'), { c: [5, 8, 10, 11], java: [6, 9, 11, 12] });
+                   '`arr[' + mid + '] = ' + v + ' > ' + target + '` — we discard the right half.'),
+                 { c: [5, { n: 6, note: T('arr[mid] == target? (' + v + ' == ' + target + ') hayır', 'arr[mid] == target? (' + v + ' == ' + target + ') no') }, { n: 7, skip: true },
+                        { n: 8, note: T('arr[mid] < target? (' + v + ' < ' + target + ') hayır', 'arr[mid] < target? (' + v + ' < ' + target + ') no') }, { n: 9, skip: true }, 10, 11],
+                   java: [6, { n: 7, note: T('arr[mid] == target? (' + v + ' == ' + target + ') hayır', 'arr[mid] == target? (' + v + ' == ' + target + ') no') }, { n: 8, skip: true },
+                           { n: 9, note: T('arr[mid] < target? (' + v + ' < ' + target + ') hayır', 'arr[mid] < target? (' + v + ' < ' + target + ') no') }, { n: 10, skip: true }, 11, 12] });
           freezeGen(gen);
           hi = mid - 1;
           gen++;

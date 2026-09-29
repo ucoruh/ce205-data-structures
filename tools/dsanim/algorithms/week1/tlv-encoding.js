@@ -210,9 +210,13 @@
         if (longForm) S.label(rid + '_note', { x: vbRes.x + 10, y: y + BH / 2 + 5, text: T('uzun!', 'long!'), size: 12, bold: true, anchor: 'start', style: 'active' });
         var valDesc = vb.length === 0 ? T('değer yok (boş)', 'no value bytes (empty)') : T(vb.length + ' değer baytı', vb.length + ' value byte' + (vb.length > 1 ? 's' : ''));
         if (first) {
+          var lenNote = longForm
+            ? T('len < 128? (' + vb.length + ' < 128) hayır -> uzun biçim', 'len < 128? (' + vb.length + ' < 128) no -> long form')
+            : T('len < 128? (' + vb.length + ' < 128) evet -> kısa biçim', 'len < 128? (' + vb.length + ' < 128) yes -> short form');
           S.step(T('`' + f.name + '` (' + f.type + ') — Tag = `0x' + hx(tag) + '`. Uzunluk ' + (longForm ? ('UZUN biçim: `0x' + hx(lb[0]) + '` + ' + (lb.length - 1) + ' bayt') : ('KISA biçim: `0x' + hx(lb[0]) + '`')) + '. Sonra ' + valDesc.tr + '.',
                    '`' + f.name + '` (' + f.type + ') — Tag = `0x' + hx(tag) + '`. Length is the ' + (longForm ? ('LONG form: `0x' + hx(lb[0]) + '` + ' + (lb.length - 1) + ' byte' + (lb.length > 2 ? 's' : '')) : ('SHORT form: `0x' + hx(lb[0]) + '`')) + '. Then ' + valDesc.en + '.'),
-                 { c: longForm ? [9, 10, 11] : [7], java: longForm ? [10, 11] : [4] });
+                 { c: longForm ? [{ n: 7, note: lenNote }, 9, 10, 11] : [{ n: 7, note: lenNote }],
+                   java: longForm ? [{ n: 4, note: lenNote }, 10, 11] : [{ n: 4, note: lenNote }] });
           first = false;
         } else {
           S.step(T('`' + f.name + '` (' + f.type + ') — `0x' + hx(tag) + '`, uzunluk ' + (longForm ? 'uzun biçim' : ('`0x' + hx(lb[0]) + '`')) + ', ' + valDesc.tr + '.',

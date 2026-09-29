@@ -56,10 +56,12 @@
       ]
     };
   }
-  var L_DECL = [1, 2, 3];
-  var L_ADDR = [6, 7, 8];
-  var L_ROW = [10, 11, 12, 13];
-  var L_COL = [16, 17, 18, 19];
+  /* Java combines the ROWS/COLS #defines into one line, so every subsequent line number is off by one
+     relative to C from here on -- these are kept as separate {c, java} pairs, never shared numbers. */
+  var L_DECL = { c: [1, 2, 3], java: [1, 2] };
+  var L_ADDR = { c: [6, 7, 8], java: [5, 6, 7] };
+  var L_ROW = { c: [10, 11, 12, 13], java: [9, 10, 11, 12] };
+  var L_COL = { c: [16, 17, 18, 19], java: [15, 16, 17, 18] };
 
   D.define({
     id: 'matrix-row-major',
@@ -167,7 +169,7 @@
 
       S.step(T('`mat[' + rows + '][' + cols + ']` matrisi hafızada düz bir dizi: `addr(i, j) = ' + (d.layout === 'row' ? 'i*COLS+j' : 'j*ROWS+i') + '` (' + (d.layout === 'row' ? 'satır öncelikli' : 'sütun öncelikli') + '). Altta hafızayı GERÇEK adres sırasıyla gösteriyoruz.',
                'The `mat[' + rows + '][' + cols + ']` matrix is really flat in memory: `addr(i, j) = ' + (d.layout === 'row' ? 'i*COLS+j' : 'j*ROWS+i') + '` (' + (d.layout === 'row' ? 'row-major' : 'column-major') + '). Below, memory is shown in its TRUE address order.'),
-             { c: L_DECL.concat(L_ADDR), java: L_DECL.concat(L_ADDR) });
+             { c: L_DECL.c.concat(L_ADDR.c), java: L_DECL.java.concat(L_ADDR.java) });
 
       var order = [];
       if (d.traversal === 'row') { for (var ri = 0; ri < rows; ri++) for (var rj = 0; rj < cols; rj++) order.push([ri, rj]); }
@@ -190,11 +192,21 @@
         S.set('note', { text: jump === null ? T('ilk hücre', 'first cell') : (Math.abs(jump) === 1 ? T('Δ=' + (jump > 0 ? '+1' : '-1') + ' (bitişik)', 'Δ=' + (jump > 0 ? '+1' : '-1') + ' (adjacent)') : T('Δ=' + (jump > 0 ? '+' : '') + jump + ' (atlama!)', 'Δ=' + (jump > 0 ? '+' : '') + jump + ' (jump!)')) });
         prevAddr = addr;
         var detailed = k < 2;
+        var outerVar = d.traversal === 'row' ? 'i' : 'j', innerVar = d.traversal === 'row' ? 'j' : 'i';
+        var outerVal = d.traversal === 'row' ? i3 : j3, innerVal = d.traversal === 'row' ? j3 : i3;
+        var outerBound = d.traversal === 'row' ? rows : cols, innerBound = d.traversal === 'row' ? cols : rows;
+        var baseLines = d.traversal === 'row' ? L_ROW : L_COL;
+        function withNotes(arr) {
+          var out = arr.slice();
+          out[1] = { n: out[1], note: T(outerVar + ' (' + outerVal + ') < ' + outerBound + '? evet', outerVar + ' (' + outerVal + ') < ' + outerBound + '? yes') };
+          out[2] = { n: out[2], note: T(innerVar + ' (' + innerVal + ') < ' + innerBound + '? evet', innerVar + ' (' + innerVal + ') < ' + innerBound + '? yes') };
+          return out;
+        }
         S.step(detailed
           ? T('`M[' + i3 + '][' + j3 + '] = ' + v + '`: `addr(' + i3 + ',' + j3 + ') = ' + addr + '`. ' + (jump === null ? 'Gezinmenin ilk hücresi.' : (Math.abs(jump) === 1 ? 'Bir önceki adresin HEMEN yanında -- bitişik bellek.' : 'Bir önceki adresten ' + Math.abs(jump) + ' uzakta -- bellekte ATLIYORUZ.')),
                '`M[' + i3 + '][' + j3 + '] = ' + v + '`: `addr(' + i3 + ',' + j3 + ') = ' + addr + '`. ' + (jump === null ? 'The first cell of the traversal.' : (Math.abs(jump) === 1 ? 'Right next to the previous address -- adjacent memory.' : Math.abs(jump) + ' away from the previous address -- we JUMP in memory.')))
           : T('`M[' + i3 + '][' + j3 + '] = ' + v + '` at `addr = ' + addr + '`.', '`M[' + i3 + '][' + j3 + '] = ' + v + '` at `addr = ' + addr + '`.'),
-          { c: d.traversal === 'row' ? L_ROW : L_COL, java: d.traversal === 'row' ? L_ROW : L_COL });
+          { c: withNotes(baseLines.c), java: withNotes(baseLines.java) });
       });
       S.at(null);
       for (var q2 = 0; q2 < rows; q2++) for (var w2 = 0; w2 < cols; w2++) S.set('c' + q2 + '_' + w2, { style: 'dim' });

@@ -83,5 +83,15 @@ int main(void) {
     };
     run_scenario("edge: completely full, a real overflow (cap 8)", 8, edge, 10);
 
+    /* abnormal: drain to empty (underflow), then refill past the wrap to full again --
+     * front and rear coincide at both the "just emptied" and "just filled" moments;
+     * count is what tells the two apart. */
+    Op abnormal[] = {
+        {false, 11}, {false, 22}, {false, 33},
+        {true, 0}, {true, 0}, {true, 0}, {true, 0},
+        {false, 44}, {false, 55}, {false, 66}, {false, 77}, {false, 88}, {false, 99}
+    };
+    run_scenario("abnormal: drain to empty, then refill past the wrap to full (cap 5)", 5, abnormal, 13);
+
     return 0;
 }

@@ -9,6 +9,8 @@ public class InfixToPostfix {
         return 0;
     }
 
+    // Returns null when the input has unbalanced parentheses: an extra ')' with no '('
+    // left to match, or a '(' that is never closed.
     String toPostfix(String in) {
         char[] ops = new char[100]; int top = -1; StringBuilder out = new StringBuilder();
         for (int i = 0; i < in.length(); i++) {
@@ -18,8 +20,9 @@ public class InfixToPostfix {
             } else if (c == '(') {
                 ops[++top] = c;                // opener: push
             } else if (c == ')') {
-                while (ops[top] != '(')
+                while (top >= 0 && ops[top] != '(')
                     out.append(ops[top--]);    // flush to the matching (
+                if (top < 0) return null;      // unbalanced: nothing left to match this )
                 top--;                          // discard the ( itself
             } else {
                 while (top >= 0 && ops[top] != '(' && prec(ops[top]) >= prec(c))
@@ -27,13 +30,17 @@ public class InfixToPostfix {
                 ops[++top] = c;                // push operator
             }
         }
-        while (top >= 0) out.append(ops[top--]); // flush what's left
+        while (top >= 0) {
+            if (ops[top] == '(') return null;  // unbalanced: this ( was never closed
+            out.append(ops[top--]);            // flush what's left
+        }
         return out.toString();
     }
 
     void run(String label, String expr) {
         System.out.println("-- " + label + " --");
-        System.out.println(expr + " -> " + toPostfix(expr));
+        String result = toPostfix(expr);
+        System.out.println(expr + " -> " + (result != null ? result : "ERROR (unbalanced parentheses)"));
         System.out.println();
     }
 
@@ -48,5 +55,11 @@ public class InfixToPostfix {
 
         // edge: a long chain of same-precedence operators (left-associativity)
         conv.run("edge: same-precedence chain (left-associativity)", "A+B+C+D+E+F+G+H+I+J");
+
+        // abnormal: a closing parenthesis is missing -- the ( after C-( is never closed
+        conv.run("abnormal: unbalanced, a closing parenthesis is missing", "A+(B*C-(D+E)*F");
+
+        // abnormal: an extra closing parenthesis -- no ( was ever pushed to match it
+        conv.run("abnormal: unbalanced, an extra closing parenthesis", "A+B*C)-D+E*F");
     }
 }

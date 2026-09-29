@@ -98,15 +98,18 @@
       S.box('w_i', { x: WX, y: WY + 10, w: 90, h: 36, text: '-', above: 'i', style: 'dim', size: 15, mono: true });
       S.box('w_n', { x: WX, y: WY + 60, w: 90, h: 36, text: String(n), above: 'n', style: 'normal', size: 15, mono: true });
       S.box('w_sum', { x: WX, y: WY + 110, w: 90, h: 36, text: '-', above: 'sum', style: 'dim', size: 15, mono: true });
+      var guardPreviewNote = n === 0
+        ? T('n == 0? evet (henüz kontrol edilmedi, kesme noktası burada)', 'n == 0? yes (not checked yet, this is where the breakpoint sits)')
+        : T('n == 0? hayır (henüz kontrol edilmedi, kesme noktası burada)', 'n == 0? no (not checked yet, this is where the breakpoint sits)');
       S.step(T('`average_buggy(arr, ' + n + ')` çağrılır. `n = ' + n + '`. `break debug_average.c:2` — koruma satırına bir kesme noktası (breakpoint) koyuyoruz.',
                '`average_buggy(arr, ' + n + ')` is called. `n = ' + n + '`. `break debug_average.c:2` — we set a breakpoint on the guard line.'),
-             { c: [1, 2], java: [1, 2] });
+             { c: [1, { n: 2, note: guardPreviewNote }], java: [1, { n: 2, note: guardPreviewNote }] });
 
       if (n === 0) {
         S.set('w_n', { style: 'hl' });
         S.step(T('`run` — program hemen bu satırda durur: `n == 0`, doğru. Sıfıra bölme (division by zero) **tanımsız davranış (UB)** olurdu; koruma bunu önler ve `0` döner.',
                  '`run` — the program stops right here: `n == 0` is true. Dividing by zero would be **undefined behavior (UB)**; the guard prevents it and returns `0`.'),
-               { c: [2], java: [2] });
+               { c: [{ n: 2, note: T('n == 0? evet', 'n == 0? yes') }], java: [{ n: 2, note: T('n == 0? evet', 'n == 0? yes') }] });
         S.set('w_n', { style: 'normal' });
         S.result = { n: 0, sum: 0, buggy: 0, fixed: 0, guarded: true };
         S.step(T('Bitti: dizi boş olduğu için `average_buggy` de `average_fixed` de güvenle `0` döner — çökme yok, hata da yok, çünkü zaten hesaplanmadı.',
@@ -117,7 +120,10 @@
       S.set('w_i', { style: 'del' });
       S.step(T('`run` — program `sum = sum + arr[i];` satırında durur, İLK yinelemeden ÖNCE: `i = 0`, `sum = 0` (henüz hiçbir şey toplanmadı).',
                '`run` — the program stops at `sum = sum + arr[i];`, BEFORE the first iteration: `i = 0`, `sum = 0` (nothing has been added yet).'),
-             { c: [3, 4], java: [3, 4] });
+             { c: [{ n: 2, note: T('n == 0? hayır (n = ' + n + ')', 'n == 0? no (n = ' + n + ')') }, 3,
+                    { n: 4, note: T('i < n? (0 < ' + n + ') evet', 'i < n? (0 < ' + n + ') yes') }],
+               java: [{ n: 2, note: T('n == 0? hayır (n = ' + n + ')', 'n == 0? no (n = ' + n + ')') }, 3,
+                      { n: 4, note: T('i < n? (0 < ' + n + ') evet', 'i < n? (0 < ' + n + ') yes') }] });
       S.set('w_i', { style: 'normal' });
       S.set('w_sum', { style: 'normal' });
 
@@ -130,7 +136,8 @@
         S.set('w_sum', { text: String(sum), style: 'new' });
         S.step(T('`next` — `sum = sum + arr[' + i + ']` çalışır: `sum = ' + sum + '`. Döngü kontrolüne geri döner, `i` artar.',
                  '`next` — `sum = sum + arr[' + i + ']` runs: `sum = ' + sum + '`. Back to the loop check, `i` is incremented.'),
-               { c: [4, 5], java: [4] });
+               { c: [{ n: 4, note: T('i < n? (' + i + ' < ' + n + ') evet', 'i < n? (' + i + ' < ' + n + ') yes') }, 5],
+                 java: [{ n: 4, note: T('i < n? (' + i + ' < ' + n + ') evet', 'i < n? (' + i + ' < ' + n + ') yes') }] });
         S.set('a' + i, { style: 'normal' });
       }
       if (n > detail) {
@@ -140,7 +147,8 @@
         S.set('w_sum', { text: String(sum), style: 'new' });
         S.step(T((n - detail) + ' `next` daha aynı şekilde geçti — aynı satır, aynı birikim. Döngü biter: `i = ' + n + '`, `sum = ' + sum + '`.',
                  (n - detail) + ' more `next` steps went by the same way — same line, same accumulation. The loop ends: `i = ' + n + '`, `sum = ' + sum + '`.'),
-               { c: [4, 5], java: [4] });
+               { c: [{ n: 4, note: T('i < n? (' + n + ' < ' + n + ') hayır — döngü biter', 'i < n? (' + n + ' < ' + n + ') no — loop ends') }, { n: 5, skip: true }],
+                 java: [{ n: 4, note: T('i < n? (' + n + ' < ' + n + ') hayır — döngü biter', 'i < n? (' + n + ' < ' + n + ') no — loop ends') }] });
       }
 
       S.at(null);
@@ -162,9 +170,48 @@
                  (lossy ? ' The real result was `' + fixed + '` — **this is the moment the wrong value appears**: the fractional part was silently dropped.' : ' It divides evenly here, so nothing is lost.')),
              { c: [6], java: [5] });
       S.set('w_div', { style: 'normal' });
+
+      /* Now trace average_fixed's OWN guard and loop -- a fresh call, with its own local `sum`, never
+       * reusing average_buggy's. DETAIL_FIXED = 1: only the first iteration is shown one step at a time
+       * (average_buggy already taught what a `next` step looks like), the rest are grouped, to stay well
+       * inside the steps budget. */
+      var DETAIL_FIXED = 1;
+      S.set('w_i', { text: '-', style: 'dim' });
+      S.set('w_sum', { text: '-', style: 'dim' });
+      var fixedGuardFalse = T('n == 0? hayır (n = ' + n + ')', 'n == 0? no (n = ' + n + ')');
+      var fixedFirstCheck = T('i < n? (0 < ' + n + ') evet', 'i < n? (0 < ' + n + ') yes');
+      S.step(T('`average_fixed(arr, ' + n + ')` — bu YENİ bir çağrı, kendi tazesi `sum`\'ı ile, `average_buggy`\'ninkini yeniden kullanmaz. `break debug_average.c:10`, `run` — koruma satırında duruyoruz, sonra döngünün ilk kontrolüne geçiyoruz.',
+               '`average_fixed(arr, ' + n + ')` — this is a NEW call, with its own fresh `sum`, never reusing `average_buggy`\'s. `break debug_average.c:10`, `run` — we stop at the guard line, then move to the loop\'s first check.'),
+             { c: [9, { n: 10, note: fixedGuardFalse }, 11, { n: 12, note: fixedFirstCheck }],
+               java: [8, { n: 9, note: fixedGuardFalse }, 10, { n: 11, note: fixedFirstCheck }] });
+
+      var sum2 = 0;
+      for (i = 0; i < DETAIL_FIXED; i++) {
+        S.at(i);
+        sum2 += arr[i];
+        S.set('w_i', { text: String(i), style: 'new' });
+        S.set('w_sum', { text: String(sum2), style: 'new' });
+        S.step(T('`next` — `average_fixed`\'de de `sum = sum + arr[' + i + ']` çalışır: `sum = ' + sum2 + '`. Aynı birikim mantığı, tamamen ayrı bir `sum` üzerinde.',
+                 '`next` — in `average_fixed` too, `sum = sum + arr[' + i + ']` runs: `sum = ' + sum2 + '`. Same accumulation logic, on a completely separate `sum`.'),
+               { c: [{ n: 12, note: fixedFirstCheck }, 13], java: [{ n: 11, note: fixedFirstCheck }] });
+      }
+      if (n > DETAIL_FIXED) {
+        for (i = DETAIL_FIXED; i < n; i++) sum2 += arr[i];
+        S.at(n - 1);
+        S.set('w_i', { text: String(n), style: 'new' });
+        S.set('w_sum', { text: String(sum2), style: 'new' });
+        var fixedLoopEnds = T('i < n? (' + n + ' < ' + n + ') hayır — döngü biter', 'i < n? (' + n + ' < ' + n + ') no — loop ends');
+        S.step(T((n - DETAIL_FIXED) + ' `next` daha aynı şekilde geçti — `average_fixed`\'in kendi `sum`\'ı da aynı yolla birikiyor. Döngü biter: `i = ' + n + '`, `sum = ' + sum2 + '`.',
+                 (n - DETAIL_FIXED) + ' more `next` steps went by the same way — `average_fixed`\'s own `sum` accumulates the same way too. The loop ends: `i = ' + n + '`, `sum = ' + sum2 + '`.'),
+               { c: [{ n: 12, note: fixedLoopEnds }, { n: 13, skip: true }], java: [{ n: 11, note: fixedLoopEnds }] });
+      }
+      S.at(null);
+      S.set('w_i', { style: 'dim' });
+      S.set('w_sum', { style: 'hl' });
+
       S.box('w_fdiv', { x: WX, y: WY + 160, w: 190, h: 36, text: '(double) sum / n = ' + fixed, style: 'new', size: 13, mono: true });
-      S.step(T('`print (double) sum / n` — **' + fixed + '**. AYNI `sum` ve `n`, kayan noktalıya zorlanmış: gerçek cevap. Hata döngüde değildi, yalnızca son bölmedeydi.',
-               '`print (double) sum / n` — **' + fixed + '**. The SAME `sum` and `n`, forced to floating point: the real answer. The bug was never in the loop — only in the final division.'),
+      S.step(T('`break debug_average.c:14` sonra `continue` — `average_fixed`\'in kendi döngüsü de bitti, `return (double) sum / n;` satırındayız: `sum = ' + sum2 + '` (aynı diziden, `average_buggy`\'ninkiyle aynı çıktı — beklendiği gibi), `n = ' + n + '`. `print (double) sum / n` — **' + fixed + '**. AYNI değerler, kayan noktalıya zorlanmış: gerçek cevap. Hata döngüde değildi, yalnızca son bölmedeydi.',
+               '`break debug_average.c:14` then `continue` — `average_fixed`\'s own loop has finished too, we are at `return (double) sum / n;`: `sum = ' + sum2 + '` (from the same array, matching `average_buggy`\'s total — as expected), `n = ' + n + '`. `print (double) sum / n` — **' + fixed + '**. The SAME values, forced to floating point: the real answer. The bug was never in the loop — only in the final division.'),
              { c: [14], java: [12] });
 
       S.result = { n: n, sum: sum, buggy: buggy, fixed: fixed, guarded: false };

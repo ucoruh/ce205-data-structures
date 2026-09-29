@@ -114,24 +114,24 @@
         mvIdx++;
       }
 
+      // Intro/illegal-move steps describe the algorithm in general or a scripted rule violation that never
+      // actually happens in a real call: neither corresponds to lines that have executed yet, so no code lines
+      // are attached to them (the player just shows the caption, no ▶ marker).
       S.step(T('Kural: `' + d.n + '` diski A\'dan C\'ye taşı; her seferinde tek disk, büyük disk küçüğün üstüne asla konamaz. Fikir özyinelemeli: üstteki `n-1` diski kenara çek, en büyüğü taşı, `n-1` diski onun üstüne geri koy.',
-               'Rule: move `' + d.n + '` disks from A to C; one disk at a time, a larger disk is never placed on a smaller one. The idea is recursive: move the top `n-1` disks aside, move the largest, put the `n-1` disks back on top of it.'),
-             { c: [1, 2, 3, 4, 5], java: [1, 2, 3, 4, 5] });
+               'Rule: move `' + d.n + '` disks from A to C; one disk at a time, a larger disk is never placed on a smaller one. The idea is recursive: move the top `n-1` disks aside, move the largest, put the `n-1` disks back on top of it.'));
 
       if (d.n === 2) {
         var w2 = WIDTH(2);
         S.set(diskId(2), { x: PEG.A - w2 / 2, y: BASE_Y - 3 * DH, style: 'del' });
         decide('illegal!', 'del');
         S.step(T('Önce **yasak** bir hamleyi gösterelim: disk 2 (büyük), disk 1\'in (küçük) üstüne konmaya çalışılıyor. Bu **kurala aykırı** — büyük disk hiçbir zaman küçüğün üstüne konamaz, bu yüzden reddedilir.',
-                 'First let us show an **illegal** move: disk 2 (larger) is being placed on top of disk 1 (smaller). This **breaks the rule** — a larger disk can never go on a smaller one, so it is rejected.'),
-               { c: [4], java: [4] });
+                 'First let us show an **illegal** move: disk 2 (larger) is being placed on top of disk 1 (smaller). This **breaks the rule** — a larger disk can never go on a smaller one, so it is rejected.'));
         place('A');
         S.set(diskId(2), { style: 'active' });
         S.set(diskId(1), { style: 'active' });
         decide('', 'normal');
         S.step(T('Reddedildi. Pegler gerçek başlangıç durumuna döndü; şimdi asıl özyinelemeli çözümü izleyelim.',
-                 'Rejected. The pegs are reset to the real starting position; now let us follow the actual recursive solution.'),
-               { c: [1, 2, 3, 4, 5], java: [1, 2, 3, 4, 5] });
+                 'Rejected. The pegs are reset to the real starting position; now let us follow the actual recursive solution.'));
       }
 
       function resetDisks(style) { for (var dk = 1; dk <= d.n; dk++) S.set(diskId(dk), { style: style }); }

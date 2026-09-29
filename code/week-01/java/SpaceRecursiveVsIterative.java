@@ -29,8 +29,8 @@ public class SpaceRecursiveVsIterative {
         System.out.println("-- " + label + " --");
         printArray(arr);
         int n = arr.length;
-        System.out.println("sumRecursive -> " + sumRecursive(arr, n) + " (uses O(n) stack space: " + n + " frames)");
-        System.out.println("sumIterative -> " + sumIterative(arr, n) + " (uses O(1) stack space: 1 frame, reused)");
+        System.out.println("sum_recursive -> " + sumRecursive(arr, n) + " (uses O(n) stack space: " + n + " frames)");
+        System.out.println("sum_iterative -> " + sumIterative(arr, n) + " (uses O(1) stack space: 1 frame, reused)");
         System.out.println();
     }
 

@@ -177,7 +177,7 @@
           decide('empty!', 'del');
           S.step(T('`pop()` — `top == NULL`, çıkaracak düğüm yok → **alttan taşma**. `false` döner; program çökmez.',
                    '`pop()` — `top == NULL`, there is no node to remove → **underflow**. It returns `false`; the program does not crash.'),
-                 { c: 15, java: 15 });
+                 { c: { n: 15, note: T('top == NULL? evet', 'top == NULL? yes') }, java: { n: 15, note: T('top == NULL? evet', 'top == NULL? yes') } });
           S.set('top', { style: 'active' });
           return;
         }
@@ -189,7 +189,7 @@
           S.label('out', { x: X0 + 260, y: Y0 - 70, text: 'out = ' + v, style: 'hl', size: 18, bold: true, mono: true });
           S.step(T('`pop()` — yığın boş değil. `tmp = top` en üst düğümü tutar; `*out = tmp->data` (' + v + ') okunur, biraz sonra `tmp`\'yi serbest bırakacağız.',
                    '`pop()` — the stack is not empty. `tmp = top` holds the top node; `*out = tmp->data` (' + v + ') is read, we will free `tmp` in a moment.'),
-                 { c: [16, 17], java: [16, 17] });
+                 { c: [{ n: 15, note: T('top == NULL? hayır', 'top == NULL? no') }, 16, 17], java: [{ n: 15, note: T('top == NULL? hayır', 'top == NULL? no') }, 16, 17] });
           list.shift();
           if (list.length) S.remove('o' + tmp);
           S.remove(tmp);
@@ -197,7 +197,7 @@
           addPopped(v);
           S.step(T('`top = top->next`; `free(tmp)`: bellek geri verilir. (Java\'da bunu çöp toplayıcı yapar.) Unutursak bellek sızıntısı olur.',
                    '`top = top->next`; `free(tmp)`: the memory is given back. (In Java the garbage collector does this.) Forgetting it leaks memory.'),
-                 { c: [18, 19], java: [18, 19] });
+                 { c: [18, 19, 20], java: [18, 19, 20] });
           S.remove('out');
         } else {
           S.set(tmp, { style: 'del' });
@@ -208,7 +208,8 @@
           addPopped(v);
           S.step(T('`pop()` → ' + v + '; `tmp` serbest bırakılır, `top` bir alt düğüme geçer.' + (list.length ? '' : ' Son düğüm de gitti: yığın yine boş, `top = NULL`.'),
                    '`pop()` → ' + v + '; `tmp` is freed, `top` moves to the node below.' + (list.length ? '' : ' Even the last node is gone: the stack is empty again, `top = NULL`.')),
-                 { c: [16, 17, 18, 19], java: [16, 17, 18, 19] });
+                 { c: [{ n: 15, note: T('top == NULL? hayır', 'top == NULL? no') }, 16, 17, 18, 19, 20],
+                   java: [{ n: 15, note: T('top == NULL? hayır', 'top == NULL? no') }, 16, 17, 18, 19, 20] });
         }
       });
       clean(); decide('', 'normal'); S.at(null);

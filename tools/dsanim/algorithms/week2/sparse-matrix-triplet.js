@@ -53,9 +53,7 @@
   }
   var L_DECL = { c: [1, 2], java: [1, 2] };
   var L_STRUCT = { c: [4, 5, 6], java: [4, 5, 6, 7] };
-  var L_SCAN = { c: [9, 10], java: [11, 12] };
-  var L_CHECK = { c: [11], java: [13] };
-  var L_STORE = { c: [12, 13, 14, 15], java: [14] };
+  var L_STORE = { c: [13, 14, 15, 16], java: [15] };
   var L_DONE = { c: [17], java: [16, 17, 18] };
 
   D.define({
@@ -149,8 +147,12 @@
           S.at(ri * cols + rj);
           var v = mat[ri][rj];
           S.set('c' + ri + '_' + rj, { style: 'hl' });
+          var iNote = T('i (' + ri + ') < ROWS (' + rows + ')? evet', 'i (' + ri + ') < ROWS (' + rows + ')? yes');
+          var jNote = T('j (' + rj + ') < COLS (' + cols + ')? evet', 'j (' + rj + ') < COLS (' + cols + ')? yes');
           if (v !== 0) {
-            S.step(T('`M[' + ri + '][' + rj + '] = ' + v + '`: sıfır değil -- triplet tablosuna eklenir.', '`M[' + ri + '][' + rj + '] = ' + v + '`: nonzero -- added to the triplet table.'), L_CHECK);
+            S.step(T('`M[' + ri + '][' + rj + '] = ' + v + '`: sıfır değil -- triplet tablosuna eklenir.', '`M[' + ri + '][' + rj + '] = ' + v + '`: nonzero -- added to the triplet table.'),
+                   { c: [{ n: 10, note: iNote }, { n: 11, note: jNote }, { n: 12, note: T('mat[' + ri + '][' + rj + '] != 0? evet', 'mat[' + ri + '][' + rj + '] != 0? yes') }],
+                     java: [{ n: 12, note: iNote }, { n: 13, note: jNote }, { n: 14, note: T('mat[' + ri + '][' + rj + '] != 0? evet', 'mat[' + ri + '][' + rj + '] != 0? yes') }] });
             var ty = TY + count * (TH + TGAP);
             S.box('tr' + count, { x: TX, y: ty, w: TW, h: TH, text: String(ri), style: 'new', size: 14 });
             S.box('tc' + count, { x: TX + TW + TGAP, y: ty, w: TW, h: TH, text: String(rj), style: 'new', size: 14 });
@@ -161,7 +163,9 @@
             S.step(T('`out[' + (count - 1) + '] = (' + ri + ', ' + rj + ', ' + v + ')`, `k++` -> ' + count + '.', '`out[' + (count - 1) + '] = (' + ri + ', ' + rj + ', ' + v + ')`, `k++` -> ' + count + '.'), L_STORE);
           } else if (!zeroShown) {
             zeroShown = true;
-            S.step(T('`M[' + ri + '][' + rj + '] = 0`: atlanır, tabloya girmez. Kalan sıfırlar sessizce atlanacak.', '`M[' + ri + '][' + rj + '] = 0`: skipped, it never enters the table. The remaining zeros will be skipped silently.'), L_CHECK);
+            S.step(T('`M[' + ri + '][' + rj + '] = 0`: atlanır, tabloya girmez. Kalan sıfırlar sessizce atlanacak.', '`M[' + ri + '][' + rj + '] = 0`: skipped, it never enters the table. The remaining zeros will be skipped silently.'),
+                   { c: [{ n: 10, note: iNote }, { n: 11, note: jNote }, { n: 12, note: T('mat[' + ri + '][' + rj + '] != 0? hayır', 'mat[' + ri + '][' + rj + '] != 0? no') }],
+                     java: [{ n: 12, note: iNote }, { n: 13, note: jNote }, { n: 14, note: T('mat[' + ri + '][' + rj + '] != 0? hayır', 'mat[' + ri + '][' + rj + '] != 0? no') }] });
             S.set('c' + ri + '_' + rj, { style: 'dim' });
           } else {
             S.set('c' + ri + '_' + rj, { style: 'dim' });

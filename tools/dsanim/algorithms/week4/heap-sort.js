@@ -65,6 +65,23 @@
     return { c: c, java: j };
   }
 
+  /** When several loop iterations are concatenated into one S.step, the same source line can be "run" in
+   *  one iteration and "the side not taken" (skip) in another — the player highlights by line NUMBER for
+   *  the whole step, so a line that really executed at least once must never also carry a skip mark. */
+  function dedupeSkip(lines) {
+    var ran = {};
+    lines.forEach(function (x) {
+      var n = x && typeof x === 'object' ? x.n : x;
+      var isSkip = !!(x && typeof x === 'object' && x.skip);
+      if (!isSkip) ran[n] = true;
+    });
+    return lines.filter(function (x) {
+      var n = x && typeof x === 'object' ? x.n : x;
+      var isSkip = !!(x && typeof x === 'object' && x.skip);
+      return !(isSkip && ran[n]);
+    });
+  }
+
   function heapPositions(n, cx, topY, levelY, totalW) {
     var pos = {}, i, level, first, count, width;
     for (i = 0; i < n; i++) {
@@ -156,41 +173,97 @@
         if (S.has('sortedBrace')) S.remove('sortedBrace');
         if (size > 0) S.brace('heapBrace', { from: 'b0', to: 'b' + (size - 1), text: T('öbek', 'heap'), side: 'bottom', dist: 14 });
         if (size < n) S.brace('sortedBrace', { from: 'b' + size, to: 'b' + (n - 1), text: T('sıralı', 'sorted'), side: 'bottom', dist: 14 });
+        /* Level labels only for levels the CURRENT (shrinking) heap region actually occupies — never a
+         * leftover d=k label once every node on level k has moved into the sorted tail. */
+        var curMaxLevel = size > 0 ? Math.floor(Math.log(size) / Math.LN2) : -1;
+        for (var lv = 0; lv <= maxLevel; lv++) {
+          var firstAt = Math.pow(2, lv) - 1, lid = 'dlvl' + lv;
+          if (lv <= curMaxLevel && firstAt < n) {
+            if (!S.has(lid)) S.label(lid, { x: pos[firstAt][0] - 46, y: pos[firstAt][1] + 5, text: 'd=' + lv, anchor: 'end', size: 14, mono: true, style: 'dim' });
+          } else if (S.has(lid)) S.remove(lid);
+        }
       }
       function cmp(text, style) { if (text === null) { if (S.has('cmp')) S.remove('cmp'); return; } if (S.has('cmp')) S.set('cmp', { text: text, style: style }); else S.label('cmp', { x: X0 + n * DX + 4, y: ARRY + 5, text: text, anchor: 'start', size: 15, mono: true, bold: true, style: style }); }
       var LT = kind === 'max' ? '>' : '<', GE = kind === 'max' ? '≤' : '≥';
 
-      function siftDownFrom(i0, limit) {
+      /** `sift_down`'s one-iteration code-panel lines: 4 (compute `left, right, best`), 5 and 6 (each a
+       *  single-line `if (...) best = left/right;` — decision and action fused, a note on the comparison
+       *  is enough), 7 (`if (best == i) break;`, likewise fused — note only). When we DON'T break, lines
+       *  8-9 (swap, `i = best;`) run; when we DO, they are marked skip. */
+      function siftDownIter(i, limit) {
+        var l = 2 * i + 1, r = 2 * i + 2, best = i;
+        var leftExists = l < limit, leftBetter = leftExists && less(kind, arr[l], arr[best]);
+        if (leftBetter) best = l;
+        var rightExists = r < limit, rightBetter = rightExists && less(kind, arr[r], arr[best]);
+        if (rightBetter) best = r;
+        var stop = best === i;
+        var lines = [{ n: 3, note: T('while(1): her zaman gir, break ile çık', 'while(1): always enter, exit via break') }, 4];
+        lines.push({ n: 5, note: !leftExists ? T('sol çocuk yok', 'no left child') : (leftBetter ? T('arr[left] ' + LT + ' arr[best]? evet', 'arr[left] ' + LT + ' arr[best]? yes') : T('arr[left] ' + LT + ' arr[best]? hayır', 'arr[left] ' + LT + ' arr[best]? no')) });
+        lines.push({ n: 6, note: !rightExists ? T('sağ çocuk yok', 'no right child') : (rightBetter ? T('arr[right] ' + LT + ' arr[best]? evet', 'arr[right] ' + LT + ' arr[best]? yes') : T('arr[right] ' + LT + ' arr[best]? hayır', 'arr[right] ' + LT + ' arr[best]? no')) });
+        lines.push({ n: 7, note: stop ? T('best == i? evet', 'best == i? yes') : T('best == i? hayır', 'best == i? no') });
+        if (stop) lines.push({ n: 8, skip: true }, { n: 9, skip: true });
+        else lines.push(8, 9);
+        return { lines: lines, best: best, stop: stop };
+      }
+      /** The first sift-down of every phase (build-heap, and the first two extraction rounds) is shown in
+       *  full detail: one S.step per iteration, including the final "stop" iteration (the guide's "show
+       *  the first operation in detail"). */
+      function siftDownDetailed(i0, limit) {
         var i = i0;
         while (true) {
-          var l = 2 * i + 1, r = 2 * i + 2, best = i;
-          if (l < limit && less(kind, arr[l], arr[best])) best = l;
-          if (r < limit && less(kind, arr[r], arr[best])) best = r;
-          if (best === i) break;
-          cmp(arr[best] + ' ' + LT + ' ' + arr[i] + ' → swap', 'hl');
-          var tmp = arr[i]; arr[i] = arr[best]; arr[best] = tmp;
-          sync([i, best]);
-          S.step(T('Sifting-down: ' + i + ' ve ' + best + '. indisler yer değiştirir.', 'Sifting down: swap indices ' + i + ' and ' + best + '.'),
-                 { c: [6, 8], java: [6, 8] });
+          var it = siftDownIter(i, limit);
+          if (it.stop) {
+            sync([i]);
+            cmp('stop: ' + arr[i] + ' ' + GE + ' children', 'dim');
+            S.step(T('Çocuklarla karşılaştır: hiçbiri daha iyi değil, öbek özelliği sağlandı, dur.', 'Compare with the children: none is better, the heap property holds, stop.'),
+                   { c: it.lines, java: it.lines });
+            cmp(null);
+            return i;
+          }
+          cmp(arr[it.best] + ' ' + LT + ' ' + arr[i] + ' → swap', 'hl');
+          var tmp = arr[i]; arr[i] = arr[it.best]; arr[it.best] = tmp;
+          sync([i, it.best]);
+          S.step(T('Sifting-down: ' + i + ' ve ' + it.best + '. indisler yer değiştirir.', 'Sifting down: swap indices ' + i + ' and ' + it.best + '.'),
+                 { c: it.lines, java: it.lines });
           cmp(null);
-          i = best;
+          i = it.best;
+        }
+      }
+      /** Every later sift-down (build-heap calls after the first, and extraction rounds after the first
+       *  two) is grouped into a SINGLE step: every code-panel line that really executed, in order, across
+       *  every iteration — the same "detailed first, then fast" pattern as the other heap files, needed
+       *  to keep the worst-case step count well under the ~45-step budget. */
+      function siftDownFast(i0, limit) {
+        var lines = [], i = i0;
+        while (true) {
+          var it = siftDownIter(i, limit);
+          lines = lines.concat(it.lines);
+          if (it.stop) return { lines: dedupeSkip(lines), finalI: i };
+          var tmp = arr[i]; arr[i] = arr[it.best]; arr[it.best] = tmp;
+          i = it.best;
         }
       }
 
+      var maxLevel = n > 0 ? Math.floor(Math.log(n) / Math.LN2) : 0;
       sync();
       S.label('arrlbl', { x: X0 - 14, y: ARRY + 5, text: 'A =', anchor: 'end', size: 15, mono: true, style: 'dim' });
-      var maxLevel = n > 0 ? Math.floor(Math.log(n) / Math.LN2) : 0;
-      for (var lv = 0; lv <= maxLevel; lv++) {
-        var firstAt = Math.pow(2, lv) - 1;
-        if (firstAt < n) S.label('dlvl' + lv, { x: pos[firstAt][0] - 46, y: pos[firstAt][1] + 5, text: 'd=' + lv, anchor: 'end', size: 14, mono: true, style: 'dim' });
+      S.step(T('Dizi henüz sıralı değil. 1. adım: dizinin tamamını ' + (kind === 'min' ? 'min' : 'max') + '-öbeğe çevir (build-heap, O(n)): son iç düğümden (`i = n/2 - 1`) başlayıp köke doğru her `i` için `sift_down` çağrılır.',
+               'The array is not sorted yet. Step 1: turn the whole array into a ' + (kind === 'min' ? 'min' : 'max') + '-heap (build-heap, O(n)): starting from the last internal node (`i = n/2 - 1`) down to the root, `sift_down` is called for every `i`.'),
+             { c: [14, 15, 16], java: [14, 15, 16] });
+      var buildFirst = true;
+      for (var i0 = Math.floor(n / 2) - 1; i0 >= 0; i0--) {
+        if (buildFirst) { buildFirst = false; siftDownDetailed(i0, n); }
+        else {
+          var bt = siftDownFast(i0, n);
+          sync([bt.finalI]);
+          var blines = [16].concat(bt.lines);
+          S.step(T('`sift_down(arr, ' + n + ', ' + i0 + ')`: bu iç düğüm için öbek özelliğini sağlar.', '`sift_down(arr, ' + n + ', ' + i0 + ')`: settles the heap property for this internal node.'),
+                 { c: blines, java: blines });
+        }
       }
-      S.step(T('Dizi henüz sıralı değil. 1. adım: dizinin tamamını ' + (kind === 'min' ? 'min' : 'max') + '-öbeğe çevir (build-heap, O(n)).',
-               'The array is not sorted yet. Step 1: turn the whole array into a ' + (kind === 'min' ? 'min' : 'max') + '-heap (build-heap, O(n)).'));
-      for (var i0 = Math.floor(n / 2) - 1; i0 >= 0; i0--) siftDownFrom(i0, n);
       sync();
       S.step(T('Öbek kuruldu: [' + arr.join(', ') + ']. 2. adım: kökü (her zaman en iyi kalan değer) sıralı bölgenin başına taşı, öbeği küçült, sift-down ile onar — ve tekrarla.',
-               'The heap is built: [' + arr.join(', ') + ']. Step 2: move the root (always the best value left) to the front of the sorted region, shrink the heap, repair with sift-down — and repeat.'),
-             { c: [16, 17, 18, 19, 20, 21], java: [16, 17, 18, 19, 20, 21] });
+               'The heap is built: [' + arr.join(', ') + ']. Step 2: move the root (always the best value left) to the front of the sorted region, shrink the heap, repair with sift-down — and repeat.'));
 
       var round = 0;
       while (size > 1) {
@@ -201,21 +274,24 @@
           sync([0, size - 1]);
           S.step(T('Kök (' + arr[size - 1] + ') sıralı bölgenin başlangıcıyla yer değiştirir.',
                    'The root (' + arr[size - 1] + ') swaps with the start of the sorted region.'),
-                 { c: [18, 19, 20], java: [18, 19, 20] });
+                 { c: [18, 19, 20, 21], java: [18, 19, 20, 21] });
         }
         size--;
         if (detailed) {
           sync();
-          S.step(T(arr[size] + ' artık sıralı kabul edilir ve öbekten çıkar (soluk kutu); öbek sınırı ' + size + '\'e küçülür.',
-                   arr[size] + ' now counts as sorted and leaves the heap (dim box); the heap boundary shrinks to ' + size + '.'),
-                 { c: [17], java: [17] });
-          siftDownFrom(0, size);
+          S.step(T(arr[size] + ' artık sıralı kabul edilir ve öbekten çıkar (soluk kutu); öbek sınırı ' + size + '\'e küçülür, sonra `sift_down` çağrılır.',
+                   arr[size] + ' now counts as sorted and leaves the heap (dim box); the heap boundary shrinks to ' + size + ', then `sift_down` is called.'),
+                 { c: [18, 22], java: [18, 22] });
+          if (size > 0) siftDownDetailed(0, size);
         } else {
-          siftDownFrom(0, size);
-          sync();
+          /* `sift_down(arr, heap_size - 1, 0)` (22) is a call into the separate `sift_down` helper: the
+           * call line, then the callee's own traced lines — grouped into one step with the swap (19-21)
+           * so a whole extraction round beyond the first two costs exactly one step. */
+          var rlines = [19, 20, 21, 22];
+          if (size > 0) { var rt = siftDownFast(0, size); rlines = rlines.concat(rt.lines); sync([rt.finalI]); } else sync();
           S.step(T('Kök sıralı bölgeye taşınır, sift-down öbeği onarır. Kalan öbek boyutu: ' + size + '.',
                    'The root moves into the sorted region, sift-down repairs the heap. Remaining heap size: ' + size + '.'),
-                 { c: [18, 19, 20, 21], java: [18, 19, 20, 21] });
+                 { c: rlines, java: rlines });
         }
       }
       sync();

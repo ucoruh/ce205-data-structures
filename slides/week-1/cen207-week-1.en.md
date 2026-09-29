@@ -422,9 +422,9 @@ else
 
 # The growth race: shape beats speed
 
-Watch three functions race as `n` doubles:
-plain `n`, `n·log₂n` (best sorts), and `n²`
-(simple sorts, and nested loops in general).
+Watch five functions race as `n` doubles:
+`log₂n`, plain `n`, `n·log₂n` (best sorts), `n²`
+(simple sorts, and nested loops), and `2ⁿ` (exponential).
 
 <!-- Speaker note: Two points on a much larger scale — this animation shows the whole scale at once. -->
 
@@ -465,10 +465,12 @@ for (int i = 0; i < count; i++) {
     long n = ns[i];
     double nlogn = (double) n * log2((double) n);
     double nsq = (double) n * (double) n;
+    char pow2n[MAX_DIGITS];
+    pow2_decimal((int) n, pow2n);
 }
 ```
 
-<!-- Speaker note: This is exactly the loop that produced the table you just saw, for five realistic sizes. -->
+<!-- Speaker note: This is exactly the loop that produced the table you just saw, for five realistic sizes; pow2_decimal builds 2^n's exact decimal digits (Section 3.6 of the notes), since n squared and n log n fit in a double but 2^n does not. -->
 
 ---
 
@@ -1430,7 +1432,7 @@ Watch it happen live, step by step.
 # The gdb session
 
 ```console
-(gdb) break debug_average.c:11
+(gdb) break debug_average.c:14
 (gdb) run
 (gdb) print sum
 (gdb) print sum / n

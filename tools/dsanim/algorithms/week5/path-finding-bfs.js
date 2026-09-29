@@ -57,6 +57,24 @@
   var LINES_BFS = { c: [6, 7, 8, 9, 10, 11, 12], java: [6, 7, 8, 9, 10, 11, 12] };
   var LINES_NOPATH = { c: [15], java: [15] };
   var LINES_WALK = { c: [16, 17, 18], java: [16, 17, 18] };
+  /** One `dequeue`: line 10 always runs. For every neighbour the `for` loop (11) actually reaches, the whole
+   *  `if (!visited[...]) {...}` (12) is a single line, so a `{note}` on it says whether the condition was
+   *  true (enqueued, parent recorded) or false (already visited, nothing happens) -- there is no separate
+   *  body line to mark `{skip: true}` since the effects live inside that same line's braces. A vertex with no
+   *  neighbours shows the `for` check failing immediately. */
+  function dequeueLines(trace) {
+    var lines = [10];
+    if (!trace.length) {
+      lines.push({ n: 11, note: T('n != NULL? hayır (komşu yok)', 'n != NULL? no (no neighbours)') });
+      return { c: lines, java: lines };
+    }
+    trace.forEach(function (t) {
+      lines.push({ n: 11, note: T('n != NULL? evet (sıradaki: `' + t.v + '`)', 'n != NULL? yes (next: `' + t.v + '`)') });
+      lines.push({ n: 12, note: t.already ? T('!visited[' + t.v + ']? hayır (zaten ziyaret edilmiş)', '!visited[' + t.v + ']? no (already visited)') : T('!visited[' + t.v + ']? evet (kuyruğa eklenir, ebeveyn kaydedilir)', '!visited[' + t.v + ']? yes (enqueued, parent recorded)') });
+    });
+    lines.push({ n: 11, note: T('n != NULL? hayır (komşu kalmadı)', 'n != NULL? no (no neighbours left)') });
+    return { c: lines, java: lines };
+  }
 
   var EDGE_RE = /^([A-Za-z0-9]{1,3})(-|>)([A-Za-z0-9]{1,3})(?::(\d+))?$/;
   function parseGraphST(text) {
@@ -210,9 +228,11 @@
       while (queue.length) {
         var u = queue.shift();
         S.set('n' + u, { style: u === s ? 'active' : 'hl' });
-        var kids = [];
+        var kids = [], trace = [];
         (adj[u] || []).forEach(function (v) {
-          if (!visited[v]) {
+          var was = !!visited[v];
+          trace.push({ v: v, already: was });
+          if (!was) {
             visited[v] = true; parent[v] = u; level[v] = level[u] + 1; queue.push(v); kids.push(v);
             S.set('n' + v, { style: v === t ? 'new' : 'active' }); setParent(v, u);
             for (var ei = 0; ei < edges.length; ei++) { var e = edges[ei]; if ((e.a === u && e.b === v) || (!directed && e.a === v && e.b === u)) { S.set('e' + ei, { style: 'active' }); break; } }
@@ -221,7 +241,7 @@
         updateQueue(queue);
         var foundT = kids.indexOf(t) >= 0;
         S.step(T('`dequeue()` → `' + u + '`. Ziyaret edilmemiş komşuları (alfabetik) kuyruğa eklenir, ebeveynleri `' + u + '` olarak kaydedilir: ' + (kids.length ? kids.join(', ') : T('yok', 'none').tr) + '.' + (foundT ? ' `t = ' + t + '` bulundu!' : ''),
-                 '`dequeue()` → `' + u + '`. Its unvisited neighbours (alphabetical) are enqueued, with `' + u + '` recorded as their parent: ' + (kids.length ? kids.join(', ') : 'none') + '.' + (foundT ? ' `t = ' + t + '` found!' : '')));
+                 '`dequeue()` → `' + u + '`. Its unvisited neighbours (alphabetical) are enqueued, with `' + u + '` recorded as their parent: ' + (kids.length ? kids.join(', ') : 'none') + '.' + (foundT ? ' `t = ' + t + '` found!' : '')), dequeueLines(trace));
         if (u !== s) S.set('n' + u, { style: 'dim' });
       }
 

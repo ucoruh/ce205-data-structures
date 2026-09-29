@@ -139,7 +139,9 @@
           while (j < n && OPEN.indexOf(text[j]) === -1 && CLOSE.indexOf(text[j]) === -1) j++;
           highlight(i2, j - 1);
           S.at(i2);
-          S.step(T('`' + text.slice(i2, j) + '`: parantez değil, atla.', '`' + text.slice(i2, j) + '`: not a bracket, skip.'), { c: [3, 4], java: [3, 4] });
+          S.step(T('`' + text.slice(i2, j) + '`: parantez değil, atla.', '`' + text.slice(i2, j) + '`: not a bracket, skip.'),
+                 { c: [3, 4, { n: 5, note: T('açan mı? hayır', 'opener? no') }, { n: 6, skip: true }, { n: 7, note: T('kapanan mı? hayır', 'closer? no') }, { n: 8, skip: true }, { n: 9, skip: true }, { n: 10, skip: true }],
+                   java: [3, 4, { n: 5, note: T('açan mı? hayır', 'opener? no') }, { n: 6, skip: true }, { n: 7, note: T('kapanan mı? hayır', 'closer? no') }, { n: 8, skip: true }, { n: 9, skip: true }, { n: 10, skip: true }] });
           i2 = j;
           continue;
         }
@@ -151,14 +153,17 @@
           stack.push({ ch: c, idx: i2, id: sid });
           decide('push', 'new');
           S.step(T('`' + c + '` bir açan parantez: yığına it (push). Yığında ' + stack.length + ' açık parantez var.',
-                   '`' + c + '` is an opener: push it. ' + stack.length + ' open bracket(s) are on the stack.'), { c: [5, 6], java: [5, 6] });
+                   '`' + c + '` is an opener: push it. ' + stack.length + ' open bracket(s) are on the stack.'),
+                 { c: [{ n: 5, note: T('açan mı? evet', 'opener? yes') }, 6], java: [{ n: 5, note: T('açan mı? evet', 'opener? yes') }, 6] });
           S.set(sid, { style: 'normal' });
         } else if (!stack.length) {
           S.set('t' + i2, { style: 'del' });
           result = { balanced: false, errorIndex: i2, errorKind: 'empty' };
           decide('empty!', 'del');
           S.step(T('`' + c + '` bir kapanan ama yığın boş: eşleştirilecek açan yok → **dengesiz**.',
-                   '`' + c + '` is a closer but the stack is empty: nothing to match → **unbalanced**.'), { c: [7, 8], java: [7, 8] });
+                   '`' + c + '` is a closer but the stack is empty: nothing to match → **unbalanced**.'),
+                 { c: [{ n: 5, note: T('açan mı? hayır', 'opener? no') }, { n: 6, skip: true }, { n: 7, note: T('kapanan mı? evet', 'closer? yes') }, { n: 8, note: T('top == -1? evet', 'top == -1? yes') }],
+                   java: [{ n: 5, note: T('açan mı? hayır', 'opener? no') }, { n: 6, skip: true }, { n: 7, note: T('kapanan mı? evet', 'closer? yes') }, { n: 8, note: T('top == -1? evet', 'top == -1? yes') }] });
           break;
         } else {
           var top = stack[stack.length - 1];
@@ -168,7 +173,9 @@
             result = { balanced: false, errorIndex: i2, errorKind: 'mismatch' };
             decide('mismatch!', 'del');
             S.step(T('`' + c + '` geldi ama yığının tepesinde `' + top.ch + '` var; eşleşmiyor → **dengesiz**.',
-                     '`' + c + '` arrives but `' + top.ch + '` is on top of the stack; they do not match → **unbalanced**.'), { c: [9, 10], java: [9, 10] });
+                     '`' + c + '` arrives but `' + top.ch + '` is on top of the stack; they do not match → **unbalanced**.'),
+                   { c: [{ n: 5, note: T('açan mı? hayır', 'opener? no') }, { n: 6, skip: true }, { n: 7, note: T('kapanan mı? evet', 'closer? yes') }, { n: 8, note: T('top == -1? hayır', 'top == -1? no') }, 9, { n: 10, note: T('eşleşiyor mu? hayır', 'matches? no') }],
+                     java: [{ n: 5, note: T('açan mı? hayır', 'opener? no') }, { n: 6, skip: true }, { n: 7, note: T('kapanan mı? evet', 'closer? yes') }, { n: 8, note: T('top == -1? hayır', 'top == -1? no') }, 9, { n: 10, note: T('eşleşiyor mu? hayır', 'matches? no') }] });
             break;
           }
           S.set(top.id, { style: 'del' });
@@ -176,7 +183,9 @@
           stack.pop();
           decide('( ' + top.ch + c + ' matches )', 'new');
           S.step(T('`' + c + '` bir kapanan: yığından çek (pop) → `' + top.ch + '`. Eşleşiyorlar.',
-                   '`' + c + '` is a closer: pop → `' + top.ch + '`. They match.'), { c: [9, 10], java: [9, 10] });
+                   '`' + c + '` is a closer: pop → `' + top.ch + '`. They match.'),
+                 { c: [{ n: 5, note: T('açan mı? hayır', 'opener? no') }, { n: 6, skip: true }, { n: 7, note: T('kapanan mı? evet', 'closer? yes') }, { n: 8, note: T('top == -1? hayır', 'top == -1? no') }, 9, { n: 10, note: T('eşleşiyor mu? evet', 'matches? yes') }],
+                   java: [{ n: 5, note: T('açan mı? hayır', 'opener? no') }, { n: 6, skip: true }, { n: 7, note: T('kapanan mı? evet', 'closer? yes') }, { n: 8, note: T('top == -1? hayır', 'top == -1? no') }, 9, { n: 10, note: T('eşleşiyor mu? evet', 'matches? yes') }] });
         }
         i2++;
       }
@@ -186,13 +195,15 @@
           result = { balanced: false, errorIndex: stack[0].idx, errorKind: 'unclosed' };
           decide('unbalanced!', 'del');
           S.step(T('Girdi bitti ama yığında ' + stack.length + ' açan parantez kaldı → **dengesiz**.',
-                   'The input is over but ' + stack.length + ' opener(s) remain on the stack → **unbalanced**.'), { c: 13, java: 13 });
+                   'The input is over but ' + stack.length + ' opener(s) remain on the stack → **unbalanced**.'),
+                 { c: { n: 13, note: T('top == -1? hayır', 'top == -1? no') }, java: { n: 13, note: T('top == -1? hayır', 'top == -1? no') } });
         } else {
           result = { balanced: true, errorIndex: -1, errorKind: null };
           for (var kk = 0; kk < n; kk++) S.set('t' + kk, { style: 'new' });
           decide('balanced', 'new');
           S.step(T('Girdi bitti, yığın boş: her açan kendi kapananını buldu → **dengeli**. Her karakter bir kez işlenir: O(n).',
-                   'The input is over and the stack is empty: every opener found its closer → **balanced**. Each character is handled once: O(n).'), { c: 13, java: 13 });
+                   'The input is over and the stack is empty: every opener found its closer → **balanced**. Each character is handled once: O(n).'),
+                 { c: { n: 13, note: T('top == -1? evet', 'top == -1? yes') }, java: { n: 13, note: T('top == -1? evet', 'top == -1? yes') } });
         }
       }
       S.result = result;

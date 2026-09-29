@@ -165,11 +165,39 @@
                'We search for `target = ' + target + '` in a **sorted** array of `n = ' + n + '` elements. First we find the smallest Fibonacci number >= `n`: `fib = ' + fib + '` (`fib1 = ' + fib1 + '`, `fib2 = ' + fib2 + '`).'),
              { c: [1, 2, 3], java: [1, 2, 3, 4] });
 
+      /* Line positions: C has one combined `offset=-1, comp=0;` entry line that Java splits into two,
+         so C and Java positions diverge inside the main loop -- tracked separately. */
+      var FC = { icalc: 6, inc: 7, ltchk: 8, gtchk: 11, elsehit: 13 };
+      var FJ = { icalc: 8, inc: 9, ltchk: 10, gtchk: 13, elsehit: 15 };
+      function branchLines(firstIter, outcome, icalcInBounds) {
+        /* outcome: 'found' | 'less' | 'greater'. The split-point line (icalc) is shown in the dedicated
+           "first" step for iteration 0 (see below) -- only NON-first iterations need it repeated here,
+           since they have no separate callout step of their own. */
+        var c = [], j = [];
+        var icalcNote = icalcInBounds ? T('offset+fib2<n-1? evet', 'offset+fib2<n-1? yes') : T('offset+fib2<n-1? hayır', 'offset+fib2<n-1? no');
+        if (!firstIter) { c.push({ n: FC.icalc, note: icalcNote }); j.push({ n: FJ.icalc, note: icalcNote }); }
+        c.push(FC.inc); j.push(FJ.inc);
+        if (outcome === 'less') {
+          c.push({ n: FC.ltchk, note: T('küçük mü? evet', 'less? yes') }); j.push({ n: FJ.ltchk, note: T('küçük mü? evet', 'less? yes') });
+          return { c: c, java: j };
+        }
+        c.push({ n: FC.ltchk, note: T('küçük mü? hayır', 'less? no') }); j.push({ n: FJ.ltchk, note: T('küçük mü? hayır', 'less? no') });
+        if (outcome === 'greater') {
+          c.push({ n: FC.gtchk, note: T('büyük mü? evet', 'greater? yes') }); j.push({ n: FJ.gtchk, note: T('büyük mü? evet', 'greater? yes') });
+          return { c: c, java: j };
+        }
+        c.push({ n: FC.gtchk, note: T('büyük mü? hayır', 'greater? no') }, FC.elsehit);
+        j.push({ n: FJ.gtchk, note: T('büyük mü? hayır', 'greater? no') }, FJ.elsehit);
+        return { c: c, java: j };
+      }
+
       var offset = -1, comp = 0, index = -1, first = true;
       while (fib > 1) {
         var lo = offset + 1, hi = Math.min(offset + fib, n - 1);
         setRange(lo, hi);
-        var i = (offset + fib2 < n - 1) ? offset + fib2 : n - 1;
+        var icalcInBounds = offset + fib2 < n - 1;
+        var i = icalcInBounds ? offset + fib2 : n - 1;
+        var wasFirst = first;
         comp++;
         S.set('h' + i, { style: 'hl' });
         setCnt(comp);
@@ -177,7 +205,8 @@
         if (first) {
           S.step(T('Bölme noktası: `i = offset + fib2 = ' + offset + ' + ' + fib2 + ' = ' + i + '` (dizi sonunu aşarsa `n - 1`\'e sabitlenir).',
                    'The split point: `i = offset + fib2 = ' + offset + ' + ' + fib2 + ' = ' + i + '` (clamped to `n - 1` if it would overshoot).'),
-                 { c: [6], java: [8] });
+                 { c: [{ n: 6, note: icalcInBounds ? T('offset+fib2<n-1? evet', 'offset+fib2<n-1? yes') : T('offset+fib2<n-1? hayır', 'offset+fib2<n-1? no') }],
+                   java: [{ n: 8, note: icalcInBounds ? T('offset+fib2<n-1? evet', 'offset+fib2<n-1? yes') : T('offset+fib2<n-1? hayır', 'offset+fib2<n-1? no') }] });
           first = false;
         }
         var v = arr[i];
@@ -185,8 +214,9 @@
           index = i;
           S.set('h' + i, { style: 'new' });
           S.set('dec', { text: '= ' + target + ' found', style: 'new' });
+          var bl = branchLines(wasFirst, 'found', icalcInBounds);
           S.step(T('`arr[' + i + '] == ' + target + '`? Evet — ' + comp + '. karşılaştırmada bulundu.',
-                   '`arr[' + i + '] == ' + target + '`? Yes — found on comparison ' + comp + '.'), { c: [13, 14, 15], java: [15, 16] });
+                   '`arr[' + i + '] == ' + target + '`? Yes — found on comparison ' + comp + '.'), bl);
           break;
         } else if (v < target) {
           S.set('h' + i, { style: 'hl' });
@@ -194,17 +224,19 @@
           fib = fib1; fib1 = fib2; fib2 = fib - fib1;
           offset = i;
           setFib(fib, fib1, fib2, offset);
+          var ll = branchLines(wasFirst, 'less', icalcInBounds);
           S.step(T('`arr[' + i + '] = ' + v + ' < ' + target + '` — sol tarafı (`0..' + i + '`) eleriz; Fibonacci üçlüsü bir basamak küçülür.',
                    '`arr[' + i + '] = ' + v + ' < ' + target + '` — we eliminate the left side (`0..' + i + '`); the Fibonacci triple shrinks by one step.'),
-                 { c: [8, 9, 10], java: [10, 11, 12] });
+                 ll);
         } else {
           S.set('h' + i, { style: 'hl' });
           S.set('dec', { text: '> ' + target, style: 'hl' });
           fib = fib2; fib1 = fib1 - fib2; fib2 = fib - fib1;
           setFib(fib, fib1, fib2, offset);
+          var gl = branchLines(wasFirst, 'greater', icalcInBounds);
           S.step(T('`arr[' + i + '] = ' + v + ' > ' + target + '` — sağ tarafı eleriz; Fibonacci üçlüsü iki basamak küçülür.',
                    '`arr[' + i + '] = ' + v + ' > ' + target + '` — we eliminate the right side; the Fibonacci triple shrinks by two steps.'),
-                 { c: [11, 12], java: [13, 14] });
+                 gl);
         }
       }
       if (index === -1 && fib1 === 1 && offset + 1 < n) {
@@ -218,12 +250,16 @@
           S.set('h' + last, { style: 'new' });
           S.set('dec', { text: '= ' + target + ' found', style: 'new' });
           S.step(T('Tek eleman kaldı: `arr[' + last + '] == ' + target + '`? Evet — bulundu.',
-                   'One element is left over: `arr[' + last + '] == ' + target + '`? Yes — found.'), { c: [18, 19, 20], java: [19, 20, 21] });
+                   'One element is left over: `arr[' + last + '] == ' + target + '`? Yes — found.'),
+                 { c: [{ n: 18, note: T('fib1==1 && offset+1<n? evet', 'fib1==1 && offset+1<n? yes') }, 19, { n: 20, note: T('arr[offset+1]==target? evet', 'arr[offset+1]==target? yes') }],
+                   java: [{ n: 19, note: T('fib1==1 && offset+1<n? evet', 'fib1==1 && offset+1<n? yes') }, 20, { n: 21, note: T('arr[offset+1]==target? evet', 'arr[offset+1]==target? yes') }] });
         } else {
           S.set('h' + last, { style: 'del' });
           S.set('dec', { text: T('bulunamadı', 'not found'), style: 'del' });
           S.step(T('Tek eleman kaldı: `arr[' + last + '] = ' + arr[last] + ' != ' + target + '` — bulunamadı.',
-                   'One element is left over: `arr[' + last + '] = ' + arr[last] + ' != ' + target + '` — not found.'), { c: [18, 19, 20], java: [19, 20, 21] });
+                   'One element is left over: `arr[' + last + '] = ' + arr[last] + ' != ' + target + '` — not found.'),
+                 { c: [{ n: 18, note: T('fib1==1 && offset+1<n? evet', 'fib1==1 && offset+1<n? yes') }, 19, { n: 20, note: T('arr[offset+1]==target? hayır', 'arr[offset+1]==target? no') }],
+                   java: [{ n: 19, note: T('fib1==1 && offset+1<n? evet', 'fib1==1 && offset+1<n? yes') }, 20, { n: 21, note: T('arr[offset+1]==target? hayır', 'arr[offset+1]==target? no') }] });
         }
       }
       S.at(null);

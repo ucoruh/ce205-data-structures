@@ -192,7 +192,7 @@
           if (detailed) {
             headDetailSeen++;
             S.step(T('`insert_head(' + v + ')`: yeni düğüm bellekte ' + hex(addr) + ' adresinde. `n->npx = addr(NULL) ^ addr(head)` = `0 ^ ' + hex(npx) + '` = `' + hex(npx) + '`.',
-                     '`insert_head(' + v + ')`: the new node lives at address ' + hex(addr) + '. `n->npx = addr(NULL) ^ addr(head)` = `0 ^ ' + hex(npx) + '` = `' + hex(npx) + '`.'), { c: [10, 11], java: [7, 8] });
+                     '`insert_head(' + v + ')`: the new node lives at address ' + hex(addr) + '. `n->npx = addr(NULL) ^ addr(head)` = `0 ^ ' + hex(npx) + '` = `' + hex(npx) + '`.'), { c: [10, 11, 12], java: [7, 8] });
           }
           meta[nid] = { addr: addr, npx: npx };
           S.set(nid, { below: 'npx=' + hex(npx) });
@@ -200,13 +200,16 @@
             var oldHeadOldNext = meta[oldHeadId].npx; // old head's prev was 0 (NULL)
             var newHeadNpx = addr ^ oldHeadOldNext;
             if (detailed) S.step(T('Eski baş (' + hex(meta[oldHeadId].addr) + ') güncellenir: onun `prev`\'i artık `n` (' + hex(addr) + '). `head->npx = addr(n) ^ addr(xor_node(head->npx, NULL))` = `' + hex(addr) + ' ^ ' + hex(oldHeadOldNext) + '` = `' + hex(newHeadNpx) + '`.',
-                                   'The old head (' + hex(meta[oldHeadId].addr) + ') is updated: its `prev` is now `n` (' + hex(addr) + '). `head->npx = addr(n) ^ addr(xor_node(head->npx, NULL))` = `' + hex(addr) + ' ^ ' + hex(oldHeadOldNext) + '` = `' + hex(newHeadNpx) + '`.'), { c: 13, java: [9, 10] });
+                                   'The old head (' + hex(meta[oldHeadId].addr) + ') is updated: its `prev` is now `n` (' + hex(addr) + '). `head->npx = addr(n) ^ addr(xor_node(head->npx, NULL))` = `' + hex(addr) + ' ^ ' + hex(oldHeadOldNext) + '` = `' + hex(newHeadNpx) + '`.'),
+                                 { c: [{ n: 13, note: T('head != NULL? evet', 'head != NULL? yes') }, 14],
+                                   java: [{ n: 9, note: T('head != NONE? evet', 'head != NONE? yes') }, 10, 11] });
             meta[oldHeadId].npx = newHeadNpx;
           }
           order.unshift(nid);
           relayout(); refreshLabels(); clean();
           S.step(T((detailed ? '`head = n`: ' : '`insert_head(' + v + ')`: ') + 'yeni düğüm artık baş. Bu liste O(1) ekleme yapar, tıpkı sıradan bir tekil bağlı liste gibi -- fark yalnız alan sayısında.',
-                   (detailed ? '`head = n`: ' : '`insert_head(' + v + ')`: ') + 'the new node is now the head. This is still an O(1) insertion, just like a plain singly linked list -- the only difference is the field count.'), { c: 16, java: 11 });
+                   (detailed ? '`head = n`: ' : '`insert_head(' + v + ')`: ') + 'the new node is now the head. This is still an O(1) insertion, just like a plain singly linked list -- the only difference is the field count.'),
+                 oldHeadId ? { c: 17, java: 13 } : { c: [16, 17], java: [12, 13] });
         } else {
           var oldTailId = order.length ? order[order.length - 1] : null;
           var npx2 = oldTailId ? meta[oldTailId].addr : 0;
@@ -214,7 +217,7 @@
           if (detailedT) {
             tailDetailSeen++;
             S.step(T('`insert_tail(' + v + ')`: yeni düğüm bellekte ' + hex(addr) + ' adresinde. `n->npx = addr(tail) ^ addr(NULL)` = `' + hex(npx2) + ' ^ 0` = `' + hex(npx2) + '`.',
-                     '`insert_tail(' + v + ')`: the new node lives at address ' + hex(addr) + '. `n->npx = addr(tail) ^ addr(NULL)` = `' + hex(npx2) + ' ^ 0` = `' + hex(npx2) + '`.'), { c: [21, 22], java: [17, 18] });
+                     '`insert_tail(' + v + ')`: the new node lives at address ' + hex(addr) + '. `n->npx = addr(tail) ^ addr(NULL)` = `' + hex(npx2) + ' ^ 0` = `' + hex(npx2) + '`.'), { c: [21, 22, 23], java: [17, 18] });
           }
           meta[nid] = { addr: addr, npx: npx2 };
           S.set(nid, { below: 'npx=' + hex(npx2) });
@@ -222,13 +225,16 @@
             var oldTailOldPrev = meta[oldTailId].npx; // old tail's next was 0 (NULL)
             var newTailNpx = oldTailOldPrev ^ addr;
             if (detailedT) S.step(T('Eski son (tail) (' + hex(meta[oldTailId].addr) + ') güncellenir: onun `next`\'i artık `n` (' + hex(addr) + '). `tail->npx = addr(xor_node(tail->npx, NULL)) ^ addr(n)` = `' + hex(oldTailOldPrev) + ' ^ ' + hex(addr) + '` = `' + hex(newTailNpx) + '`.',
-                                    'The old tail (' + hex(meta[oldTailId].addr) + ') is updated: its `next` is now `n` (' + hex(addr) + '). `tail->npx = addr(xor_node(tail->npx, NULL)) ^ addr(n)` = `' + hex(oldTailOldPrev) + ' ^ ' + hex(addr) + '` = `' + hex(newTailNpx) + '`.'), { c: 25, java: [19, 20] });
+                                    'The old tail (' + hex(meta[oldTailId].addr) + ') is updated: its `next` is now `n` (' + hex(addr) + '). `tail->npx = addr(xor_node(tail->npx, NULL)) ^ addr(n)` = `' + hex(oldTailOldPrev) + ' ^ ' + hex(addr) + '` = `' + hex(newTailNpx) + '`.'),
+                                  { c: [{ n: 24, note: T('tail != NULL? evet', 'tail != NULL? yes') }, 25],
+                                    java: [{ n: 19, note: T('tail != NONE? evet', 'tail != NONE? yes') }, 20, 21] });
             meta[oldTailId].npx = newTailNpx;
           }
           order.push(nid);
           relayout(); refreshLabels(); clean();
           S.step(T((detailedT ? '`tail = n`: ' : '`insert_tail(' + v + ')`: ') + 'yeni düğüm artık son (tail). Aynı O(1) numara, yalnız yön ters.',
-                   (detailedT ? '`tail = n`: ' : '`insert_tail(' + v + ')`: ') + 'the new node is now the tail. The same O(1) trick, just in the other direction.'), { c: 27, java: 21 });
+                   (detailedT ? '`tail = n`: ' : '`insert_tail(' + v + ')`: ') + 'the new node is now the tail. The same O(1) trick, just in the other direction.'),
+                 oldTailId ? { c: 28, java: 23 } : { c: [27, 28], java: [22, 23] });
         }
       });
       S.at(null);
@@ -241,7 +247,8 @@
       }
 
       S.step(T('`traverse_forward(head)`: `prev = NULL` (0), `cur = head`. Her adımda `next`\'i `cur->npx XOR prev` ile HESAPLIYORUZ -- saklı bir `next` alanı yok.',
-               '`traverse_forward(head)`: `prev = NULL` (0), `cur = head`. At every step we COMPUTE `next` as `cur->npx XOR prev` -- there is no stored `next` field.'), { c: [30, 31], java: [25, 26] });
+               '`traverse_forward(head)`: `prev = NULL` (0), `cur = head`. At every step we COMPUTE `next` as `cur->npx XOR prev` -- there is no stored `next` field.'),
+             { c: [32, { n: 33, note: T('cur != NULL? evet', 'cur != NULL? yes') }], java: [27, { n: 28, note: T('cur != NONE? evet', 'cur != NONE? yes') }] });
       var prevAddr = 0, curId = order[0], forwardOut = [], hop = 0;
       while (curId) {
         clean(); S.set(curId, { style: 'active' });
@@ -250,9 +257,10 @@
         if (nextId) S.arrow('fwdArw', { from: curId, to: nextId, kind: 'center', bend: 30, style: 'hl', text: T('sonraki', 'next') });
         else if (S.has('fwdArw')) S.remove('fwdArw');
         forwardOut.push(Number(S.get(curId).value));
+        var fwdLines = { c: [{ n: 33, note: T('cur != NULL? evet', 'cur != NULL? yes') }, 34, 35, 36], java: [{ n: 28, note: T('cur != NONE? evet', 'cur != NONE? yes') }, 29, 30, 31] };
         if (hop < 3) S.step(T('değer ' + S.get(curId).value + '; `next = npx (' + hex(meta[curId].npx) + ') ^ prev (' + hex(prevAddr) + ')` = `' + hex(nextAddr2) + '` = ' + (nextId ? 'düğüm ' + S.get(nextId).value : 'NULL') + '.',
-                               'value ' + S.get(curId).value + '; `next = npx (' + hex(meta[curId].npx) + ') ^ prev (' + hex(prevAddr) + ')` = `' + hex(nextAddr2) + '` = ' + (nextId ? 'node ' + S.get(nextId).value : 'NULL') + '.'), { c: [32, 33], java: [27, 28] });
-        else S.step(T('değer ' + S.get(curId).value + '; aynı XOR hesabı hızlı devam eder.', 'value ' + S.get(curId).value + '; the same XOR computation continues quickly.'), { c: [32, 33], java: [27, 28] });
+                               'value ' + S.get(curId).value + '; `next = npx (' + hex(meta[curId].npx) + ') ^ prev (' + hex(prevAddr) + ')` = `' + hex(nextAddr2) + '` = ' + (nextId ? 'node ' + S.get(nextId).value : 'NULL') + '.'), fwdLines);
+        else S.step(T('değer ' + S.get(curId).value + '; aynı XOR hesabı hızlı devam eder.', 'value ' + S.get(curId).value + '; the same XOR computation continues quickly.'), fwdLines);
         prevAddr = meta[curId].addr; curId = nextId; hop++;
       }
       if (S.has('fwdArw')) S.remove('fwdArw');
@@ -260,7 +268,8 @@
 
       var tailId = order[order.length - 1];
       S.step(T('`traverse_backward(tail)`: aynı numara, ters yönde -- `next = NULL` (0) ile başlar, `xor_node(cur->npx, next)` ile `prev`\'i hesaplar.',
-               '`traverse_backward(tail)`: the same trick, run backward -- starts with `next = NULL` (0), computes `prev` via `xor_node(cur->npx, next)`.'), { c: [39, 40], java: [34, 35] });
+               '`traverse_backward(tail)`: the same trick, run backward -- starts with `next = NULL` (0), computes `prev` via `xor_node(cur->npx, next)`.'),
+             { c: [41, { n: 42, note: T('cur != NULL? evet', 'cur != NULL? yes') }], java: [36, { n: 37, note: T('cur != NONE? evet', 'cur != NONE? yes') }] });
       var nextAddrB = 0, curIdB = tailId, backwardOut = [], hopB = 0;
       while (curIdB) {
         clean(); S.set(curIdB, { style: 'active' });
@@ -269,9 +278,10 @@
         if (prevId) S.arrow('bwdArw', { from: curIdB, to: prevId, kind: 'center', bend: -30, style: 'active', text: T('önceki', 'prev') });
         else if (S.has('bwdArw')) S.remove('bwdArw');
         backwardOut.push(Number(S.get(curIdB).value));
+        var bwdLines = { c: [{ n: 42, note: T('cur != NULL? evet', 'cur != NULL? yes') }, 43, 44, 45], java: [{ n: 37, note: T('cur != NONE? evet', 'cur != NONE? yes') }, 38, 39, 40] };
         if (hopB < 2) S.step(T('değer ' + S.get(curIdB).value + '; `prev = npx (' + hex(meta[curIdB].npx) + ') ^ next (' + hex(nextAddrB) + ')` = `' + hex(prevAddr2) + '` = ' + (prevId ? 'düğüm ' + S.get(prevId).value : 'NULL') + '.',
-                                'value ' + S.get(curIdB).value + '; `prev = npx (' + hex(meta[curIdB].npx) + ') ^ next (' + hex(nextAddrB) + ')` = `' + hex(prevAddr2) + '` = ' + (prevId ? 'node ' + S.get(prevId).value : 'NULL') + '.'), { c: [41, 42], java: [36, 37] });
-        else S.step(T('geriye: ' + S.get(curIdB).value + '.', 'backward: ' + S.get(curIdB).value + '.'), { c: [41, 42], java: [36, 37] });
+                                'value ' + S.get(curIdB).value + '; `prev = npx (' + hex(meta[curIdB].npx) + ') ^ next (' + hex(nextAddrB) + ')` = `' + hex(prevAddr2) + '` = ' + (prevId ? 'node ' + S.get(prevId).value : 'NULL') + '.'), bwdLines);
+        else S.step(T('geriye: ' + S.get(curIdB).value + '.', 'backward: ' + S.get(curIdB).value + '.'), bwdLines);
         nextAddrB = meta[curIdB].addr; curIdB = prevId; hopB++;
       }
       if (S.has('bwdArw')) S.remove('bwdArw');

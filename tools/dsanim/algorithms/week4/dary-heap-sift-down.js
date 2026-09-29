@@ -86,6 +86,24 @@
     return { c: c, java: j };
   }
 
+  /** When several loop iterations are concatenated into one S.step, the same source line can be
+   *  "run" in one iteration and "the side not taken" (skip) in another — the player highlights by
+   *  line NUMBER for the whole step, so a line that really executed at least once must never also
+   *  carry a skip mark. Drop the conflicting skip entries; the run occurrence still shows it. */
+  function dedupeSkip(lines) {
+    var ran = {};
+    lines.forEach(function (x) {
+      var n = x && typeof x === 'object' ? x.n : x;
+      var isSkip = !!(x && typeof x === 'object' && x.skip);
+      if (!isSkip) ran[n] = true;
+    });
+    return lines.filter(function (x) {
+      var n = x && typeof x === 'object' ? x.n : x;
+      var isSkip = !!(x && typeof x === 'object' && x.skip);
+      return !(isSkip && ran[n]);
+    });
+  }
+
   function dHeapPositions(n, deg, cx, topY, levelY, totalW) {
     var pos = {};
     for (var i = 0; i < n; i++) {
@@ -167,11 +185,19 @@
       var kind = d.kind, deg = d.d, n = d.values.length, k = Math.min(d.extracts, n);
       var CX = 420, TOPY = 50, LEVELY = 84, TOTALW = Math.max(360, 64 * n);
       var pos = dHeapPositions(n, deg, CX, TOPY, LEVELY, TOTALW);
-      var maxLevel = 0, first = 0, count = 1;
-      while (first + count < n) { first += count; count *= deg; maxLevel++; }
+      var maxLevel = 0, first = 0, count = 1, levelFirst = [0];
+      while (first + count < n) { first += count; count *= deg; maxLevel++; levelFirst.push(first); }
       var ARRY = TOPY + (maxLevel + 1) * LEVELY + 70, DX = 56;
       var X0 = CX - (n - 1) * DX / 2;
       var arr = d.values.slice(), size = n;
+
+      /** Level of the last currently-occupied node (size-1), by the same D-ary level math as dHeapPositions. */
+      function curMaxLevel() {
+        if (size <= 0) return -1;
+        var lvl = 0, f = 0, c = 1;
+        while (f + c < size) { f += c; c *= deg; lvl++; }
+        return lvl;
+      }
 
       function sync(hi) {
         for (var i = 0; i < n; i++) {
@@ -192,6 +218,15 @@
         }
         var infoText = size === 0 ? T('öbek boş (size = 0)', 'the heap is empty (size = 0)') : T('D = ' + deg + ', size = ' + size, 'D = ' + deg + ', size = ' + size);
         if (S.has('info')) S.set('info', { text: infoText }); else S.label('info', { x: CX, y: TOPY - 24, text: infoText, style: 'dim', size: 15 });
+        /* Level labels only for levels the CURRENT (shrinking) heap actually occupies — never a leftover
+         * d=k label once every node on level k has been extracted away. */
+        var cml = curMaxLevel();
+        for (var lv = 0; lv <= maxLevel; lv++) {
+          var lid = 'dlvl' + lv;
+          if (lv <= cml) {
+            if (!S.has(lid)) S.label(lid, { x: pos[levelFirst[lv]][0] - 46, y: pos[levelFirst[lv]][1] + 5, text: 'd=' + lv, anchor: 'end', size: 14, mono: true, style: 'dim' });
+          } else if (S.has(lid)) S.remove(lid);
+        }
       }
       function cmp(text, style) { if (text === null) { if (S.has('cmp')) S.remove('cmp'); return; } if (S.has('cmp')) S.set('cmp', { text: text, style: style }); else S.label('cmp', { x: X0 + n * DX + 4, y: ARRY + 5, text: text, anchor: 'start', size: 15, mono: true, bold: true, style: style }); }
       var LT = kind === 'max' ? '>' : '<', GE = kind === 'max' ? '≤' : '≥';
@@ -206,61 +241,101 @@
       sync();
       S.label('arrlbl', { x: X0 - 14, y: ARRY + 5, text: 'heap[] =', anchor: 'end', size: 15, mono: true, style: 'dim' });
       S.label('exlbl', { x: X0 - 14, y: ARRY + 67, text: T('çıkarılan =', 'extracted ='), anchor: 'end', size: 15, mono: true, style: 'dim' });
-      (function levelLabels() {
-        var lvl = 0, lfirst = 0, lcount = 1;
-        while (lfirst < n) {
-          S.label('dlvl' + lvl, { x: pos[lfirst][0] - 46, y: pos[lfirst][1] + 5, text: 'd=' + lvl, anchor: 'end', size: 14, mono: true, style: 'dim' });
-          lfirst += lcount; lcount *= deg; lvl++;
-        }
-      })();
       S.step(T('Bir D-ary öbek, her düğümün en fazla D çocuğu olan bir dizi-tabanlı ağaçtır (burada D = ' + deg + '); çocuklar `D*i+1 .. D*i+D`, ebeveyn `(i-1)/D`. Başlangıç ' + (kind === 'min' ? 'min' : 'max') + '-öbeği geçerli: ' + n + ' değer. ' + k + ' çıkarma yapılacak.',
                'A D-ary heap is an array-backed tree where every node has up to D children (here D = ' + deg + '); children at `D*i+1 .. D*i+D`, parent at `(i-1)/D`. The starting ' + (kind === 'min' ? 'min' : 'max') + '-heap is valid: ' + n + ' values. ' + k + ' extractions will happen.'));
 
+      /** One sift-down iteration's worth of executed code-panel lines for index `i` (reads the CURRENT
+       *  arr/size from the closure, does not mutate). Line 11 (target=i, base=...) always runs once; then
+       *  for each of the D child slots the loop header (12), the child index (13, ALWAYS evaluated even
+       *  past the end of the array — `child = base + c` has no condition) and the if-check (14, with a
+       *  note on the compared values, or "no such child" when child >= size) all run, and line 15
+       *  (target = child) is taken only for the slot that actually won (skip:true otherwise); line 12
+       *  runs once more for the loop's final (false) re-check. Line 17 (if (target == i) break;) decides
+       *  whether the function returns here or falls through to the swap block (19-22). */
+      function iterLines(i) {
+        var base = deg * i + 1, target = i;
+        var lines = [{ n: 10, note: T('while(1): her zaman gir, break ile çık', 'while(1): always enter, exit via break') }, 11];
+        for (var c = 0; c < deg; c++) {
+          var child = base + c;
+          var exists = child < size;
+          var won = exists && less(kind, arr[child], arr[target]);
+          lines.push({ n: 12, note: T('c < D? evet', 'c < D? yes') }, 13);
+          lines.push({ n: 14, note: !exists ? T('bu çocuk yok (child ≥ size)', 'no such child (child ≥ size)')
+            : (won ? T(arr[child] + ' ' + LT + ' ' + arr[target] + '? evet', arr[child] + ' ' + LT + ' ' + arr[target] + '? yes')
+                   : T(arr[child] + ' ' + LT + ' ' + arr[target] + '? hayır', arr[child] + ' ' + LT + ' ' + arr[target] + '? no')) });
+          lines.push(won ? 15 : { n: 15, skip: true });
+          if (won) target = child;
+        }
+        lines.push({ n: 12, note: T('c < D? hayır', 'c < D? no') });
+        var stop = target === i;
+        lines.push({ n: 17, note: stop ? T('target == i? evet', 'target == i? yes') : T('target == i? hayır', 'target == i? no') });
+        if (!stop) lines.push(19, 20, 21, 22);
+        /* Line 15 (`target = child;`) is the for-loop body: across the up-to-D child slots checked in
+         * THIS single call, it is taken (run) for the winning slot and not taken (skip) for the others —
+         * dedupe so a line that really ran at least once never also carries a skip mark (see dedupeSkip). */
+        return { lines: dedupeSkip(lines), target: target, stop: stop };
+      }
+      /** Runs the whole sift-down for one extraction (mutates arr/size via the real swaps) and returns
+       *  every code-panel line that really executed, in order — used for the fast, lumped steps. */
+      function siftDownTraceLines(startI) {
+        var lines = [], i = startI;
+        while (true) {
+          var it = iterLines(i);
+          lines = lines.concat(it.lines);
+          if (it.stop) return { lines: dedupeSkip(lines), finalI: i };
+          var tmp = arr[i]; arr[i] = arr[it.target]; arr[it.target] = tmp;
+          i = it.target;
+        }
+      }
+
       var order = [];
+      var detailedShown = false;
       for (var t = 0; t < k; t++) {
         var best = arr[0];
         order.push(best);
-        if (t === 0) {
+        if (!detailedShown) {
+          detailedShown = true;
           sync([0]);
           outputBox(best);
           S.step(T('`extract()`: kökteki değer (' + best + ') kaydedilir; bu, döndürülecek sonuç.',
                    '`extract()`: the root value (' + best + ') is saved; this is the result that will be returned.'),
-                 { c: [4], java: [3] });
+                 { c: [5], java: [5] });
           arr[0] = arr[size - 1]; size--;
           sync([0]);
           S.step(T('Son eleman köke taşınır (' + arr[0] + '), öbek küçülür: size = ' + size + '. Kökte öbek özelliği bozuk olabilir.',
                    'The last element moves to the root (' + arr[0] + '), the heap shrinks: size = ' + size + '. The root may now violate the heap property.'),
-                 { c: [5, 6], java: [4, 5] });
+                 { c: [6, 7], java: [6, 7] });
           var i = 0;
           while (true) {
-            var base = deg * i + 1, tgt = i, kids = [];
-            for (var c = 0; c < deg; c++) { var ci = base + c; if (ci < size) { kids.push(ci); if (less(kind, arr[ci], arr[tgt])) tgt = ci; } }
-            if (tgt === i) {
+            var it = iterLines(i);
+            var base = deg * i + 1, kids = [];
+            for (var c = 0; c < deg; c++) { var ci = base + c; if (ci < size) kids.push(ci); }
+            if (it.stop) {
               sync([i].concat(kids));
               cmp('stop: ' + arr[i] + ' ' + GE + ' children', 'dim');
               S.step(T('En fazla ' + deg + ' çocukla karşılaştır: hiçbiri daha iyi değil, öbek özelliği sağlandı, dur.',
                        'Compare with up to ' + deg + ' children: none is better, the heap property holds, stop.'),
-                     { c: [10, 11, 12, 13, 14, 15], java: [9, 10, 11, 12, 13, 14] });
+                     { c: it.lines, java: it.lines });
               cmp(null);
               break;
             }
-            cmp(arr[tgt] + ' ' + LT + ' ' + arr[i] + ' → swap', 'hl');
-            var tmp = arr[i]; arr[i] = arr[tgt]; arr[tgt] = tmp;
-            sync([i, tgt]);
-            S.step(T(tgt + '. indisteki çocuk en iyisi: yer değiştir (swap). Değer aşağı "batıyor" (sift-down).',
-                     'The child at index ' + tgt + ' is the best: swap. The value "sinks down" (sift-down).'),
-                   { c: [17, 18, 19, 20], java: [16, 17, 18, 19] });
+            cmp(arr[it.target] + ' ' + LT + ' ' + arr[i] + ' → swap', 'hl');
+            var tmp = arr[i]; arr[i] = arr[it.target]; arr[it.target] = tmp;
+            sync([i, it.target]);
+            S.step(T(it.target + '. indisteki çocuk en iyisi: yer değiştir (swap). Değer aşağı "batıyor" (sift-down).',
+                     'The child at index ' + it.target + ' is the best: swap. The value "sinks down" (sift-down).'),
+                   { c: it.lines, java: it.lines });
             cmp(null);
-            i = tgt;
+            i = it.target;
           }
         } else {
           arr[0] = arr[size - 1]; size--;
-          siftDownAt(arr, size, 0, deg, kind);
-          sync();
+          var trace = siftDownTraceLines(0);
+          sync([trace.finalI]);
           outputBox(best);
           S.step(T('`extract()`: kök (' + best + ') alınır, son eleman köke gelir, sift-down (en fazla ' + deg + ' çocukla karşılaştırarak) öbeği onarır. Kalan boyut: ' + size + '.',
                    '`extract()`: the root (' + best + ') is taken, the last element moves to the root, sift-down (comparing up to ' + deg + ' children) repairs the heap. Remaining size: ' + size + '.'),
-                 { c: [4, 5, 6, 8, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20], java: [3, 4, 5, 7, 9, 10, 11, 12, 13, 14, 16, 17, 18, 19] });
+                 { c: [5, 6, 7].concat(trace.lines), java: [5, 6, 7].concat(trace.lines) });
         }
       }
       sync();

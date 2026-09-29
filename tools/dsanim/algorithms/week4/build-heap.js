@@ -166,38 +166,75 @@
       if (firstLeaf < n) S.brace('leaves', { from: 'b' + firstLeaf, to: 'b' + (n - 1), text: T('yapraklar — zaten öbek', 'leaves — already heaps'), side: 'bottom', dist: 14 });
       S.step(T('Başlangıç dizisi rastgele sıralanmış, henüz bir ' + (kind === 'min' ? 'min' : 'max') + '-öbek değil. Fikir: yaprakların zaten tek başına birer "öbek" olduğunu kullanıp, iç düğümleri alttan yukarıya sift-down ile düzelt.',
                'The starting array is in arbitrary order, not yet a ' + (kind === 'min' ? 'min' : 'max') + '-heap. Idea: leaves are already trivially heaps by themselves, so fix the internal nodes bottom-up with sift-down.'),
-             { c: [23, 24], java: [23, 24] });
+             { c: [23, { n: 24, note: T('i >= 0? evet', 'i >= 0? yes') }], java: [23, { n: 24, note: T('i >= 0? evet', 'i >= 0? yes') }] });
       if (S.has('leaves')) S.remove('leaves');
 
+      /** One sift-down iteration's worth of executed code-panel lines for index `i` (reads the CURRENT
+       *  arr/n from the closure, does not mutate). Both `if`s (line 8 left-child, line 10 right-child) get
+       *  a note on the compared values and a skip:true on the side not taken; line 12 (best == i) decides
+       *  whether break (13, taken) or the swap block (15-18, taken) runs, the other side skip:true. */
+      function iterLines(i) {
+        var left = 2 * i + 1, right = 2 * i + 2, best = i;
+        var leftExists = left < n;
+        var leftBetter = leftExists && less(kind, arr[left], arr[best]);
+        if (leftBetter) best = left;
+        var rightExists = right < n;
+        var rightBetter = rightExists && less(kind, arr[right], arr[best]);
+        if (rightBetter) best = right;
+        var lines = [{ n: 3, note: T('while(1): her zaman gir, break ile çık', 'while(1): always enter, exit via break') }, 4, 5, 6];
+        lines.push({ n: 8, note: !leftExists ? T('sol çocuk yok', 'no left child')
+          : (leftBetter ? T(arr[left] + ' ' + LT + ' ' + arr[i] + '? evet', arr[left] + ' ' + LT + ' ' + arr[i] + '? yes')
+                        : T(arr[left] + ' ' + LT + ' ' + arr[i] + '? hayır', arr[left] + ' ' + LT + ' ' + arr[i] + '? no')) });
+        lines.push(leftBetter ? 9 : { n: 9, skip: true });
+        var afterLeft = leftBetter ? left : i;
+        lines.push({ n: 10, note: !rightExists ? T('sağ çocuk yok', 'no right child')
+          : (rightBetter ? T(arr[right] + ' ' + LT + ' ' + arr[afterLeft] + '? evet', arr[right] + ' ' + LT + ' ' + arr[afterLeft] + '? yes')
+                         : T(arr[right] + ' ' + LT + ' ' + arr[afterLeft] + '? hayır', arr[right] + ' ' + LT + ' ' + arr[afterLeft] + '? no')) });
+        lines.push(rightBetter ? 11 : { n: 11, skip: true });
+        var stop = best === i;
+        lines.push({ n: 12, note: stop ? T('best == i? evet', 'best == i? yes') : T('best == i? hayır', 'best == i? no') });
+        if (stop) lines.push(13, { n: 15, skip: true }, { n: 16, skip: true }, { n: 17, skip: true }, { n: 18, skip: true });
+        else lines.push({ n: 13, skip: true }, 15, 16, 17, 18);
+        return { lines: lines, best: best, stop: stop };
+      }
+
       for (var i0 = Math.floor(n / 2) - 1; i0 >= 0; i0--) {
-        var l0 = 2 * i0 + 1, r0 = 2 * i0 + 2, best0 = i0;
-        if (l0 < n && less(kind, arr[l0], arr[best0])) best0 = l0;
-        if (r0 < n && less(kind, arr[r0], arr[best0])) best0 = r0;
+        var it0 = iterLines(i0);
+        var l0 = 2 * i0 + 1, r0 = 2 * i0 + 2;
         var hi0 = [i0]; if (l0 < n) hi0.push(l0); if (r0 < n) hi0.push(r0);
         sync(hi0);
-        if (best0 === i0) {
+        if (it0.stop) {
           cmp('stop: ' + arr[i0] + ' ' + GE + ' children', 'dim');
           S.step(T('İndis ' + i0 + ' (' + arr[i0] + ') için sifting başlar: çocuklarla karşılaştır — zaten en iyi o, yer değiştirme gerekmiyor.',
                    'Sifting begins at index ' + i0 + ' (' + arr[i0] + '): compare with its children — it is already the best, no swap needed.'),
-                 { c: [7, 8, 9, 10, 11, 12], java: [7, 8, 9, 10, 11, 12] });
+                 { c: it0.lines, java: it0.lines });
           cmp(null);
           continue;
         }
-        cmp(arr[best0] + ' ' + LT + ' ' + arr[i0] + ' → swap', 'hl');
-        S.step(T('İndis ' + i0 + ' (' + arr[i0] + ') için sifting başlar: çocuklarla karşılaştır — ' + best0 + '. indisteki ' + arr[best0] + ' daha iyi.',
-                 'Sifting begins at index ' + i0 + ' (' + arr[i0] + '): compare with its children — ' + arr[best0] + ' at index ' + best0 + ' is better.'),
-               { c: [7, 8, 9, 10, 11, 12], java: [7, 8, 9, 10, 11, 12] });
-        var cur = i0;
-        while (best0 !== cur) {
+        cmp(arr[it0.best] + ' ' + LT + ' ' + arr[i0] + ' → swap', 'hl');
+        S.step(T('İndis ' + i0 + ' (' + arr[i0] + ') için sifting başlar: çocuklarla karşılaştır — ' + it0.best + '. indisteki ' + arr[it0.best] + ' daha iyi.',
+                 'Sifting begins at index ' + i0 + ' (' + arr[i0] + '): compare with its children — ' + arr[it0.best] + ' at index ' + it0.best + ' is better.'),
+               { c: it0.lines, java: it0.lines });
+        var cur = i0, best0 = it0.best;
+        while (true) {
           var tmp = arr[cur]; arr[cur] = arr[best0]; arr[best0] = tmp;
           sync([cur, best0]);
           S.step(T(cur + ' ve ' + best0 + '. indisler yer değiştirir (swap).', 'Swap indices ' + cur + ' and ' + best0 + '.'),
-                 { c: [14, 15, 16], java: [14, 15, 16] });
+                 { c: [15, 16, 17, 18], java: [15, 16, 17, 18] });
           cmp(null);
           cur = best0;
-          var l1 = 2 * cur + 1, r1 = 2 * cur + 2; best0 = cur;
-          if (l1 < n && less(kind, arr[l1], arr[best0])) best0 = l1;
-          if (r1 < n && less(kind, arr[r1], arr[best0])) best0 = r1;
+          var itN = iterLines(cur);
+          if (itN.stop) {
+            sync([cur]);
+            cmp('stop: ' + arr[cur] + ' ' + GE + ' children', 'dim');
+            S.step(T('Batmaya devam: indis ' + cur + ' (' + arr[cur] + ') çocuklarla karşılaştırılır — artık en iyi o, dur.',
+                     'Sinking continues: index ' + cur + ' (' + arr[cur] + ') is compared with its children — it is now the best, stop.'),
+                   { c: itN.lines, java: itN.lines });
+            cmp(null);
+            break;
+          }
+          cmp(arr[itN.best] + ' ' + LT + ' ' + arr[cur] + ' → swap', 'hl');
+          best0 = itN.best;
         }
       }
       sync();

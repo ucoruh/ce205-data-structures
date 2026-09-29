@@ -1361,6 +1361,8 @@ dört zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi `d=N` d
     }
 
     void rotate_left(int arr[], int n, int d) {
+        if (n == 0)
+            return;                     /* empty array: nothing to rotate */
         d = d % n;
         reverse(arr, 0, d - 1);        /* reverse the first d elements */
         reverse(arr, d, n - 1);        /* reverse the remaining n-d elements */
@@ -1383,6 +1385,8 @@ dört zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi `d=N` d
 
     static void rotateLeft(int[] arr, int d) {
         int n = arr.length;
+        if (n == 0)
+            return;                     // empty array: nothing to rotate
         d = d % n;
         reverse(arr, 0, d - 1);        // reverse the first d elements
         reverse(arr, d, n - 1);        // reverse the remaining n-d elements
@@ -1416,6 +1420,8 @@ dört zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi `d=N` d
         }
 
         void rotate_left(int arr[], int n, int d) {
+            if (n == 0)
+                return;                     /* empty array: nothing to rotate */
             d = d % n;
             reverse(arr, 0, d - 1);        /* reverse the first d elements */
             reverse(arr, d, n - 1);        /* reverse the remaining n-d elements */
@@ -1484,6 +1490,8 @@ dört zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi `d=N` d
 
             static void rotateLeft(int[] arr, int d) {
                 int n = arr.length;
+                if (n == 0)
+                    return;                     // empty array: nothing to rotate
                 d = d % n;
                 reverse(arr, 0, d - 1);        // reverse the first d elements
                 reverse(arr, d, n - 1);        // reverse the remaining n-d elements
@@ -3666,7 +3674,7 @@ yürüyün, her elemanı karşılaştırın, ilk eşleşmede durun — ancak "bi
 yerine bir `next` işaretçisini izlemek anlamına gelir. Burada Hafta 1'in **ikili aramasının (binary search)**
 bir eşdeğeri yoktur: ikili arama, orta elemana O(1)'de doğrudan atlamaya ihtiyaç duyar, ve bir bağlı liste,
 önce oraya yürümeden bunu yapmanın bir yolunu sunmaz — ki bu tüm amacı boşa çıkarır. (Hafta 1'in
-`array_linear_search.c` ve `array_binary_search.c` dosyalarına son zamanlarda bakmadıysanız, aşağıdaki 11.
+`array_linear_search.c` ve `array_binary_search.c` dosyalarına son zamanlarda bakmadıysanız, aşağıdaki 12.
 bölümün tablosu tam olarak bu takası yeniden ele alır, ve Alıştırma 1 sizden bunları bu bölümün
 `singly_search.c`'siyle yan yana yeniden çalıştırmanızı ister.)
 

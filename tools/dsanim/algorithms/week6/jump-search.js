@@ -154,23 +154,27 @@
           S.set('dec', { text: '>= ' + target, style: 'hl' });
           S.step(T('`arr[' + (step - 1) + '] = ' + arr[step - 1] + ' >= ' + target + '` — bu blok sınırı hedefi geçti ya da tuttu. `target` varsa bu blokta olmalı; sıçramayı durdururuz.',
                    '`arr[' + (step - 1) + '] = ' + arr[step - 1] + ' >= ' + target + '` — this block boundary reached or passed the target. If `target` exists, it must be in this block; we stop jumping.'),
-                 { c: [5, 6, 7], java: [7, 8, 9] });
+                 { c: [{ n: 5, note: T('step<n? evet', 'step<n? yes') }, 6, { n: 7, note: T('arr[step-1]>=target? evet', 'arr[step-1]>=target? yes') }],
+                   java: [{ n: 7, note: T('step<n? evet', 'step<n? yes') }, 8, { n: 9, note: T('arr[step-1]>=target? evet', 'arr[step-1]>=target? yes') }] });
           break;
         }
         S.set('dec', { text: '< ' + target, style: 'normal' });
         S.step(T('Sıçrama ' + jumpNo + ': `arr[' + (step - 1) + '] = ' + arr[step - 1] + ' < ' + target + '` — bu blok tamamen elenir, bir sonraki bloğa atlarız.',
                  'Jump ' + jumpNo + ': `arr[' + (step - 1) + '] = ' + arr[step - 1] + ' < ' + target + '` — this whole block is ruled out, we jump to the next one.'),
-               { c: [5, 6, 7, 8, 9], java: [7, 8, 9, 10, 11] });
+               { c: [{ n: 5, note: T('step<n? evet', 'step<n? yes') }, 6, { n: 7, note: T('arr[step-1]>=target? hayır', 'arr[step-1]>=target? no') }, 8, 9],
+                 java: [{ n: 7, note: T('step<n? evet', 'step<n? yes') }, 8, { n: 9, note: T('arr[step-1]>=target? hayır', 'arr[step-1]>=target? no') }, 10, 11] });
         dim(prev, step);
         prev = step;
         step += b;
       }
-      if (step > n) step = n;
+      var stepClamped = step > n;
+      if (stepClamped) step = n;
       dim(0, prev);
       S.brace('cur', { from: 'h' + prev, to: 'h' + (step - 1), text: T('geçerli blok', 'current block'), side: 'bottom', dist: 14, style: 'active' });
       S.step(T('Şimdi `[' + prev + '..' + (step - 1) + ']` bloğunu **soldan sağa doğrusal** tararız — en çok `block = ' + b + '` karşılaştırma.',
                'Now we scan the block `[' + prev + '..' + (step - 1) + ']` **left to right, linearly** — at most `block = ' + b + '` comparisons.'),
-             { c: [11, 12], java: [13, 14] });
+             { c: [{ n: 11, note: stepClamped ? T('step>n? evet', 'step>n? yes') : T('step>n? hayır', 'step>n? no') }, 12],
+               java: [{ n: 13, note: stepClamped ? T('step>n? evet', 'step>n? yes') : T('step>n? hayır', 'step>n? no') }, 14] });
 
       for (var i = prev; i < step; i++) {
         comp++;
@@ -183,21 +187,23 @@
           S.set('dec', { text: '= ' + target + ' found', style: 'new' });
           S.step(T('`arr[' + i + '] == ' + target + '`? Evet — indeks ' + i + '\'de bulundu, toplam ' + comp + ' karşılaştırma.',
                    '`arr[' + i + '] == ' + target + '`? Yes — found at index ' + i + ', ' + comp + ' comparisons in total.'),
-                 { c: [13, 14], java: [15, 16] });
+                 { c: [13, { n: 14, note: T('arr[i]==target? evet', 'arr[i]==target? yes') }], java: [15, { n: 16, note: T('arr[i]==target? evet', 'arr[i]==target? yes') }] });
           break;
         } else if (arr[i] > target) {
           S.set('h' + i, { style: 'del' });
           S.set('dec', { text: '> ' + target + ' stop', style: 'del' });
           S.step(T('`arr[' + i + '] = ' + arr[i] + ' > ' + target + '` — dizi sıralı olduğu için ' + target + ' daha ileride olamaz, tarama durur.',
                    '`arr[' + i + '] = ' + arr[i] + ' > ' + target + '` — since the array is sorted, ' + target + ' cannot be further ahead, the scan stops.'),
-                 { c: [13, 15], java: [15, 17] });
+                 { c: [13, { n: 14, note: T('arr[i]==target? hayır', 'arr[i]==target? no') }, { n: 15, note: T('arr[i]>target? evet', 'arr[i]>target? yes') }],
+                   java: [15, { n: 16, note: T('arr[i]==target? hayır', 'arr[i]==target? no') }, { n: 17, note: T('arr[i]>target? evet', 'arr[i]>target? yes') }] });
           break;
         } else {
           S.set('h' + i, { style: 'dim' });
           S.set('dec', { text: '< ' + target, style: 'normal' });
           S.step(T('`arr[' + i + '] = ' + arr[i] + ' < ' + target + '` — bu hücre değil, bir sonrakine geçeriz.',
                    '`arr[' + i + '] = ' + arr[i] + ' < ' + target + '` — not this cell, move to the next one.'),
-                 { c: [13, 14, 15], java: [15, 16, 17] });
+                 { c: [13, { n: 14, note: T('arr[i]==target? hayır', 'arr[i]==target? no') }, { n: 15, note: T('arr[i]>target? hayır', 'arr[i]>target? no') }],
+                   java: [15, { n: 16, note: T('arr[i]==target? hayır', 'arr[i]==target? no') }, { n: 17, note: T('arr[i]>target? hayır', 'arr[i]>target? no') }] });
         }
       }
       S.at(null);

@@ -106,7 +106,7 @@
       S.label('cnt', { x: X0, y: 68, text: T('karşılaştırma = 0', 'comparisons = 0'), style: 'dim', size: 14 });
       S.step(T('Bir dizimiz (array) var, ' + n + ' değerden oluşuyor: `target = ' + target + '`\'i arıyoruz. Doğrusal arama en baştan başlar, kutuları tek tek dener.',
                'We have an array of ' + n + ' values: we are looking for `target = ' + target + '`. Linear search starts at the front and tries boxes one at a time.'),
-             { c: [1], java: [1] });
+             { c: [1], java: [1, 2] });
       var comparisons = 0, index = -1, i;
       for (i = 0; i < n; i++) {
         point(S, 'ip', 'h' + i);
@@ -117,9 +117,10 @@
         var rowStart = Math.floor(i / ROW) * ROW;
         setBrace(S, 'scanned' + Math.floor(i / ROW), { from: 'h' + rowStart, to: 'h' + i, text: T('taranan', 'scanned'), side: 'bottom', dist: 14, style: 'dim' });
         if (i === 0) {
+          var loopNoteFirst = T('i < n? (0 < ' + n + ') evet', 'i < n? (0 < ' + n + ') yes');
           S.step(T('İlk kutuya bakıyoruz: `i = 0`. Her adımda önce karşılaştırma sayacı bir artar.',
                    'We look at the first box: `i = 0`. On every step, the comparison counter goes up by one first.'),
-                 { c: [2, 3], java: [3, 4] });
+                 { c: [{ n: 2, note: loopNoteFirst }, 3], java: [{ n: 3, note: loopNoteFirst }, 4] });
         }
         if (arr[i] === target) {
           index = i;
@@ -127,13 +128,19 @@
           S.set('dec', { text: T('= ' + target + ' bulundu', '= ' + target + ' found'), style: 'new' });
           S.step(T('`arr[' + i + '] == ' + target + '`? Evet — ' + comparisons + '. karşılaştırmada bulundu.',
                    '`arr[' + i + '] == ' + target + '`? Yes — found on comparison ' + comparisons + '.'),
-                 { c: [4, 5], java: [5, 6] });
+                 { c: [{ n: 2, note: T('i < n? (' + i + ' < ' + n + ') evet', 'i < n? (' + i + ' < ' + n + ') yes') }, 3,
+                        { n: 4, note: T('arr[' + i + '] == ' + target + '? evet', 'arr[' + i + '] == ' + target + '? yes') }, 5],
+                   java: [{ n: 3, note: T('i < n? (' + i + ' < ' + n + ') evet', 'i < n? (' + i + ' < ' + n + ') yes') }, 4,
+                          { n: 5, note: T('arr[' + i + '] == ' + target + '? evet', 'arr[' + i + '] == ' + target + '? yes') }, 6] });
           break;
         }
         S.set('dec', { text: '≠ ' + target, style: 'dim' });
         S.step(T('`arr[' + i + '] == ' + target + '`? Hayır (' + arr[i] + ' ≠ ' + target + ') — bir sonraki kutuya geç.',
                  '`arr[' + i + '] == ' + target + '`? No (' + arr[i] + ' ≠ ' + target + ') — move to the next box.'),
-               { c: [2, 3, 4], java: [3, 4, 5] });
+               { c: [{ n: 2, note: T('i < n? (' + i + ' < ' + n + ') evet', 'i < n? (' + i + ' < ' + n + ') yes') }, 3,
+                      { n: 4, note: T('arr[' + i + '] == ' + target + '? hayır (' + arr[i] + ' ≠ ' + target + ')', 'arr[' + i + '] == ' + target + '? no (' + arr[i] + ' ≠ ' + target + ')') }, { n: 5, skip: true }],
+                 java: [{ n: 3, note: T('i < n? (' + i + ' < ' + n + ') evet', 'i < n? (' + i + ' < ' + n + ') yes') }, 4,
+                        { n: 5, note: T('arr[' + i + '] == ' + target + '? hayır (' + arr[i] + ' ≠ ' + target + ')', 'arr[' + i + '] == ' + target + '? no (' + arr[i] + ' ≠ ' + target + ')') }, { n: 6, skip: true }] });
         S.set('h' + i, { style: 'dim' });
       }
       S.remove('ip');

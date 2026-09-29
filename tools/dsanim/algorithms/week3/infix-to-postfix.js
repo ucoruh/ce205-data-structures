@@ -151,6 +151,18 @@
         S.box(oid, { x: X0 + out.length * DX, y: Y0 + 230, w: 36, h: 38, text: c, style: 'new', size: 18 });
         out.push(oid);
       }
+      // Prefix lines for the if/elseif/elseif/else chain that decides which branch a character takes: only the
+      // conditions that really get evaluated before the taken branch (short-circuit — later elseif/else
+      // conditions are never reached in C once an earlier one matches, so they are not listed at all).
+      function chainNote(target) {
+        if (target === 'operand') return [{ n: 5, note: T('işlenen mi? evet', 'operand? yes') }];
+        var arr = [{ n: 5, note: T('işlenen mi? hayır', 'operand? no') }, { n: 6, skip: true }];
+        if (target === 'open') { arr.push({ n: 7, note: T("'('? evet", "'('? yes") }); return arr; }
+        arr.push({ n: 7, note: T("'('? hayır", "'('? no") }, { n: 8, skip: true });
+        if (target === 'close') { arr.push({ n: 9, note: T("')'? evet", "')'? yes") }); return arr; }
+        arr.push({ n: 9, note: T("')'? hayır", "')'? no") }, { n: 10, skip: true }, { n: 11, skip: true }, { n: 12, skip: true }, 13);
+        return arr;
+      }
 
       for (var i2 = 0; i2 < n; i2++) {
         var c = text[i2];
@@ -158,26 +170,30 @@
         if (isOperand(c)) {
           emit(c);
           decide('output', 'new');
-          S.step(T('`' + c + '` bir işlenen: doğrudan çıktıya yazılır.', '`' + c + '` is an operand: it goes straight to the output.'), { c: [5, 6], java: [5, 6] });
+          var lop = chainNote('operand').concat([6]);
+          S.step(T('`' + c + '` bir işlenen: doğrudan çıktıya yazılır.', '`' + c + '` is an operand: it goes straight to the output.'), { c: lop, java: lop });
           S.set(out[out.length - 1], { style: 'normal' });
           continue;
         }
         if (c === '(') {
           push(c);
           decide('push', 'active');
-          S.step(T('`(` işleç yığınına itilir: burada yeni bir grup başlıyor.', '`(` is pushed onto the operator stack: a new group starts here.'), { c: [7, 8], java: [7, 8] });
+          var lopen = chainNote('open').concat([8]);
+          S.step(T('`(` işleç yığınına itilir: burada yeni bir grup başlıyor.', '`(` is pushed onto the operator stack: a new group starts here.'), { c: lopen, java: lopen });
           S.set(st[st.length - 1].id, { style: 'normal' });
           continue;
         }
         if (c === ')') {
-          var found = false;
+          var found = false, flushIdx = 0;
           while (st.length) {
             var top = st.pop();
             if (top.ch === '(') { found = true; S.remove(top.id); break; }
             S.set(top.id, { style: 'hl' });
             decide('flush', 'hl');
+            var lclose = (flushIdx === 0 ? chainNote('close') : []).concat([{ n: 10, note: T("ops[top] == '('? hayır", "ops[top] == '('? no") }, 11]);
             S.step(T('`)` geldi: eşleşen `(` bulunana dek yığındaki işleçler çıktıya aktarılır → `' + top.ch + '`.',
-                     '`)` arrives: operators are flushed to the output until the matching `(` is found → `' + top.ch + '`.'), { c: [9, 10, 11], java: [9, 10, 11] });
+                     '`)` arrives: operators are flushed to the output until the matching `(` is found → `' + top.ch + '`.'), { c: lclose, java: lclose });
+            flushIdx++;
             S.remove(top.id);
             emit(top.ch);
           }
@@ -185,29 +201,35 @@
             S.set('t' + i2, { style: 'del' });
             result = { error: { kind: 'unbalanced', at: i2 } };
             decide('unbalanced!', 'del');
+            var lunb = (flushIdx === 0 ? chainNote('close') : []).concat([{ n: 10, note: T('yığın boşaldı: eşleşen ( yok', 'stack exhausted: no matching (') }]);
             S.step(T('`)` geldi ama yığında eşleşecek `(` yok → **dengesiz parantez**. Dönüştürme durur.',
-                     '`)` arrives but there is no matching `(` on the stack → **unbalanced parentheses**. Conversion stops.'), { c: [9, 10, 11], java: [9, 10, 11] });
+                     '`)` arrives but there is no matching `(` on the stack → **unbalanced parentheses**. Conversion stops.'), { c: lunb, java: lunb });
             break;
           }
           decide('( discarded )', 'dim');
-          S.step(T('`(` de yığından atılır (çıktıya yazılmaz); grup kapandı.', 'The `(` itself is discarded too (not written to the output); the group is closed.'), { c: 12, java: 12 });
+          var ldisc = (flushIdx === 0 ? chainNote('close') : []).concat([{ n: 10, note: T("ops[top] == '('? evet", "ops[top] == '('? yes") }, 12]);
+          S.step(T('`(` de yığından atılır (çıktıya yazılmaz); grup kapandı.', 'The `(` itself is discarded too (not written to the output); the group is closed.'), { c: ldisc, java: ldisc });
           continue;
         }
+        var flushIdx2 = 0;
         while (st.length && st[st.length - 1].ch !== '(' &&
                (PREC[st[st.length - 1].ch] > PREC[c] || (PREC[st[st.length - 1].ch] === PREC[c] && !RIGHT[c]))) {
           var top2 = st.pop();
           S.set(top2.id, { style: 'hl' });
           decide('flush', 'hl');
+          var lother = (flushIdx2 === 0 ? chainNote('other') : []).concat([{ n: 14, note: T('tepe daha güçlü ya da eşit? evet', 'top stronger or equal? yes') }, 15]);
           S.step(T('`' + c + '` geldi. Tepedeki `' + top2.ch + '` önceliği düşürmüyor (' + (RIGHT[c] ? 'sağdan birleşen `' + c + '` eşiti bile beklemez' : 'eşit ya da daha güçlü') + ') → çıktıya aktar.',
                    '`' + c + '` arrives. `' + top2.ch + '` on top does not give way (' + (RIGHT[c] ? 'right-associative `' + c + '` does not even wait for a tie' : 'equal or stronger') + ') → move it to the output.'),
-                 { c: [13, 14], java: [13, 14] });
+                 { c: lother, java: lother });
+          flushIdx2++;
           S.remove(top2.id);
           emit(top2.ch);
         }
         push(c);
         decide('push', 'active');
+        var lpush = (flushIdx2 === 0 ? chainNote('other') : []).concat([{ n: 14, note: T('tepe daha güçlü ya da eşit? hayır', 'top stronger or equal? no') }, 16]);
         S.step(T('`' + c + '` işleç yığınına itilir' + (st.length > 1 ? ': tepedeki işleç artık ondan zayıf ya da o daha yeni.' : '.'),
-                 '`' + c + '` is pushed onto the operator stack' + (st.length > 1 ? ': the operator now on top is weaker, or it just arrived.' : '.')), { c: 15, java: 15 });
+                 '`' + c + '` is pushed onto the operator stack' + (st.length > 1 ? ': the operator now on top is weaker, or it just arrived.' : '.')), { c: lpush, java: lpush });
         S.set(st[st.length - 1].id, { style: 'normal' });
       }
       if (!result) {
@@ -221,13 +243,14 @@
         }
         if (bad) {
           decide('unbalanced!', 'del');
-          S.step(T('Girdi bitti ama yığında hâlâ `(` var → **dengesiz parantez**.', 'The input is over but a `(` is still on the stack → **unbalanced parentheses**.'), { c: 18, java: 18 });
+          S.step(T('Girdi bitti ama yığında hâlâ `(` var → **dengesiz parantez**.', 'The input is over but a `(` is still on the stack → **unbalanced parentheses**.'),
+                 { c: { n: 19, note: T('kalan işleç == (? evet', 'remaining operator == (? yes') }, java: { n: 19, note: T('kalan işleç == (? evet', 'remaining operator == (? yes') } });
         } else {
           for (var k3 = 0; k3 < out.length; k3++) S.set(out[k3], { style: 'new' });
           result = { postfix: out.map(function (id) { return S.get(id).text; }).join(' ') };
           decide('done', 'new');
           S.step(T('Girdi bitti: yığında kalan işleçler sırayla çıktıya boşaltılır. Sonuç: `' + result.postfix + '`. Her karakter bir kez itilir, bir kez çekilir: O(n).',
-                   'The input is over: the operators left on the stack are flushed to the output in order. Result: `' + result.postfix + '`. Each character is pushed and popped once: O(n).'), { c: 18, java: 18 });
+                   'The input is over: the operators left on the stack are flushed to the output in order. Result: `' + result.postfix + '`. Each character is pushed and popped once: O(n).'), { c: [19, 20], java: [19, 20] });
         }
       }
       S.result = result;

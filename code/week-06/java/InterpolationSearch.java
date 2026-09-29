@@ -17,7 +17,11 @@ public class InterpolationSearch {
                 System.out.println("  probe " + probes + ": arr[hi] == arr[lo] (" + arr[lo] + "), guard triggered");
                 return lo;                            // target must equal arr[lo] here
             }
-            int pos = lo + (int) ((double) (target - arr[lo]) * (hi - lo) / (arr[hi] - arr[lo]));
+            // widen to long: target-arr[lo] and arr[hi]-arr[lo] can overflow a 32-bit int
+            // when the array spans values near Integer.MIN_VALUE and Integer.MAX_VALUE at once
+            long span = (long) arr[hi] - (long) arr[lo];
+            long num = (long) target - (long) arr[lo];
+            int pos = lo + (int) ((double) num * (hi - lo) / (double) span);
             System.out.println("  probe " + probes + ": lo=" + lo + " hi=" + hi + " pos=" + pos + " arr[pos]=" + arr[pos]);
             if (arr[pos] == target) return pos;
             if (arr[pos] < target) lo = pos + 1;

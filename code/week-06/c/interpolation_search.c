@@ -16,7 +16,11 @@ int interpolation_search(const int arr[], int n, int target, int *probes) {
             *probes = p;
             return lo;                            /* target must equal arr[lo] here */
         }
-        int pos = lo + (int) ((double) (target - arr[lo]) * (hi - lo) / (arr[hi] - arr[lo]));
+        /* widen to long long: target-arr[lo] and arr[hi]-arr[lo] can overflow a 32-bit int
+           when the array spans values near INT_MIN and INT_MAX at once */
+        long long span = (long long) arr[hi] - (long long) arr[lo];
+        long long num = (long long) target - (long long) arr[lo];
+        int pos = lo + (int) ((double) num * (hi - lo) / (double) span);
         printf("  probe %d: lo=%d hi=%d pos=%d arr[pos]=%d\n", p, lo, hi, pos, arr[pos]);
         if (arr[pos] == target) { *probes = p; return pos; }
         if (arr[pos] < target) lo = pos + 1;

@@ -98,12 +98,12 @@
         decide('n <= 0', 'hl');
         S.step(T('`countdown(' + n + ')`: n zaten sıfır ya da negatif. Doğru temel durum `n <= 0`\'dır (yanlış olan `n == 0`, negatif girdide hiç durmazdı) — bu yüzden ilk çağrı zaten temel durumdur.',
                  '`countdown(' + n + ')`: n is already zero or negative. The correct base case is `n <= 0` (the buggy version, `n == 0`, would never stop on negative input) — so the very first call already is the base case.'),
-               { c: [1, 2], java: [1, 2] });
+               { c: [1, { n: 2, note: T('n <= 0? evet', 'n <= 0? yes') }], java: [1, { n: 2, note: T('n <= 0? evet', 'n <= 0? yes') }] });
         S.set('f0', { style: 'hl' });
         printLine('Liftoff!', 'hl');
         S.step(T('`countdown(' + n + ')`: **temel durum**. "Liftoff!" yazar ve döner; hiç kendini çağırmaz.',
                  '`countdown(' + n + ')`: the **base case**. It prints "Liftoff!" and returns; it never calls itself.'),
-               { c: [2, 3, 4], java: [2, 3, 4] });
+               { c: [{ n: 2, note: T('n <= 0? evet', 'n <= 0? yes') }, 3, 4], java: [{ n: 2, note: T('n <= 0? evet', 'n <= 0? yes') }, 3, 4] });
         S.remove('f0');
         S.step(T('`countdown(' + n + ')` biter; tek çerçevesi yığından çekilir.', '`countdown(' + n + ')` finishes; its one frame is popped.'), { c: 8, java: 8 });
       } else {
@@ -113,14 +113,15 @@
             pushFrame(k, 'countdown(n = ' + v + ')', 'new');
             printLine(String(v));
             decide('n > 0', 'active');
+            var lrec = [1, { n: 2, note: T('n <= 0? hayır', 'n <= 0? no') }, { n: 3, skip: true }, { n: 4, skip: true }, 6, 7];
             if (detailed) {
               S.step(T('`countdown(' + v + ')`: n sıfırdan büyük → önce ' + v + ' yazdır, sonra `countdown(' + (v - 1) + ')` çağır. Yeni bir çerçeve yığına itilir.',
                        '`countdown(' + v + ')`: n is greater than zero → print ' + v + ', then call `countdown(' + (v - 1) + ')`. A new frame is pushed.'),
-                     { c: [1, 6, 7], java: [1, 6, 7] });
+                     { c: lrec, java: lrec });
             } else {
               S.step(T('`countdown(' + v + ')` çağrılır: ' + v + ' yazdırılır, çerçeve yığına eklenir.',
                        '`countdown(' + v + ')` is called: ' + v + ' is printed, a frame is pushed.'),
-                     { c: [1, 6, 7], java: [1, 6, 7] });
+                     { c: lrec, java: lrec });
             }
           } else {
             pushFrame(k, 'countdown(n = ' + v + ')', 'new');
@@ -129,7 +130,7 @@
             decide('n <= 0', 'hl');
             S.step(T('`countdown(' + v + ')`: `n <= 0` artık doğru → **temel durum**. "Liftoff!" yazar ve döner; artık kendini çağırmaz. Temel durum olmasaydı çağrılar hiç bitmezdi.',
                      '`countdown(' + v + ')`: `n <= 0` now holds → the **base case**. It prints "Liftoff!" and returns; no more self-calls. Without it the calls would never end.'),
-                   { c: [1, 2, 3, 4], java: [1, 2, 3, 4] });
+                   { c: [1, { n: 2, note: T('n <= 0? evet', 'n <= 0? yes') }, 3, 4], java: [1, { n: 2, note: T('n <= 0? evet', 'n <= 0? yes') }, 3, 4] });
           }
         }
         decide('', 'normal');

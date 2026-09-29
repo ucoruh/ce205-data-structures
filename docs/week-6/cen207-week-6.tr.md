@@ -167,6 +167,11 @@ hedefin olması gereken yeri geçtiğimiz anda, yalnızca o bir bloğu düz bir 
 bu **sıçramalı arama (jump search)**: ikili aramadan daha basit aritmetik, her blok içinde sıralı bellek
 erişimi, karşılığında ikili aramadan asimptotik olarak yavaş olmak (yine de doğrusal aramadan çok daha hızlı).
 
+Bu blok tarzı arama, Donald Knuth'un *The Art of Computer Programming, Volume 3: Sorting and Searching*
+(1973) kitabında ikili aramaya bir alternatif olarak yer alır — özellikle, basit bir kalkülüs argümanının
+(iki maliyetin toplamını en aza indirmenin) algoritmanın tek serbest parametresini, blok boyutunu, belirlediği
+bir örnek olarak sunulur.
+
 ### 2.2 Fikir ve doğru blok boyutu
 
 Bir blok boyutu `b` seçin. `arr[b-1]`, `arr[2b-1]`, `arr[3b-1]`, … kontrol edin, `target`'tan `>=` olan bir
@@ -503,6 +508,12 @@ dair iyi bir tahmine doğrudan zıplıyorsunuzdur. **Enterpolasyon araması**, b
 dizide tam olarak yapar: her zaman ortadakine bakmak yerine, `target`'ın mevcut aralıktaki en küçük ve en
 büyük değerler arasında ne kadar ileride durduğunu kullanarak, bir formülle tahmini bir konum hesaplar.
 
+Sıralı veride arama için bu konum-tahmin etme fikri, W. W. Peterson'ın 1957 tarihli *Addressing for
+Random-Access Storage* (IBM Journal of Research and Development) makalesinde görülür — bu haftanın ileride
+hash'leme bölümlerinin de dayandığı, rastgele erişimli depolamayı düzenlemeye dair temel fikirleri ortaya
+koyan aynı erken makale — ve daha sonra **enterpolasyon araması (interpolation search)** adı altında
+biçimselleştirilip analiz edilmiştir.
+
 ### 3.2 Formül
 
 Mevcut `[lo..hi]` aralığında, değerlerin `arr[lo]` ile `arr[hi]` arasında kabaca eşit aralıklarla dağıldığını
@@ -543,7 +554,11 @@ okumaları, zaman damgaları) büyük kazanır, çarpık ya da düşmanca veride
                 *probes = p;
                 return lo;                            /* target must equal arr[lo] here */
             }
-            int pos = lo + (int) ((double) (target - arr[lo]) * (hi - lo) / (arr[hi] - arr[lo]));
+            /* widen to long long: target-arr[lo] and arr[hi]-arr[lo] can overflow a 32-bit int
+               when the array spans values near INT_MIN and INT_MAX at once */
+            long long span = (long long) arr[hi] - (long long) arr[lo];
+            long long num = (long long) target - (long long) arr[lo];
+            int pos = lo + (int) ((double) num * (hi - lo) / (double) span);
             if (arr[pos] == target) { *probes = p; return pos; }
             if (arr[pos] < target) lo = pos + 1;
             else hi = pos - 1;
@@ -564,7 +579,11 @@ okumaları, zaman damgaları) büyük kazanır, çarpık ya da düşmanca veride
             if (arr[hi] == arr[lo]) {                 // guard: avoid division by zero
                 return lo;                            // target must equal arr[lo] here
             }
-            int pos = lo + (int) ((double) (target - arr[lo]) * (hi - lo) / (arr[hi] - arr[lo]));
+            // widen to long: target-arr[lo] and arr[hi]-arr[lo] can overflow a 32-bit int
+            // when the array spans values near Integer.MIN_VALUE and Integer.MAX_VALUE at once
+            long span = (long) arr[hi] - (long) arr[lo];
+            long num = (long) target - (long) arr[lo];
+            int pos = lo + (int) ((double) num * (hi - lo) / (double) span);
             if (arr[pos] == target) return pos;
             if (arr[pos] < target) lo = pos + 1;
             else hi = pos - 1;
@@ -608,7 +627,11 @@ devreye girer**, ve **hedef aralığın tamamen dışında: tek bakışta redded
                     *probes = p;
                     return lo;                            /* target must equal arr[lo] here */
                 }
-                int pos = lo + (int) ((double) (target - arr[lo]) * (hi - lo) / (arr[hi] - arr[lo]));
+                /* widen to long long: target-arr[lo] and arr[hi]-arr[lo] can overflow a 32-bit int
+                   when the array spans values near INT_MIN and INT_MAX at once */
+                long long span = (long long) arr[hi] - (long long) arr[lo];
+                long long num = (long long) target - (long long) arr[lo];
+                int pos = lo + (int) ((double) num * (hi - lo) / (double) span);
                 printf("  probe %d: lo=%d hi=%d pos=%d arr[pos]=%d\n", p, lo, hi, pos, arr[pos]);
                 if (arr[pos] == target) { *probes = p; return pos; }
                 if (arr[pos] < target) lo = pos + 1;
@@ -672,7 +695,11 @@ devreye girer**, ve **hedef aralığın tamamen dışında: tek bakışta redded
                         System.out.println("  probe " + probes + ": arr[hi] == arr[lo] (" + arr[lo] + "), guard triggered");
                         return lo;                            // target must equal arr[lo] here
                     }
-                    int pos = lo + (int) ((double) (target - arr[lo]) * (hi - lo) / (arr[hi] - arr[lo]));
+                    // widen to long: target-arr[lo] and arr[hi]-arr[lo] can overflow a 32-bit int
+                    // when the array spans values near Integer.MIN_VALUE and Integer.MAX_VALUE at once
+                    long span = (long) arr[hi] - (long) arr[lo];
+                    long num = (long) target - (long) arr[lo];
+                    int pos = lo + (int) ((double) num * (hi - lo) / (double) span);
                     System.out.println("  probe " + probes + ": lo=" + lo + " hi=" + hi + " pos=" + pos + " arr[pos]=" + arr[pos]);
                     if (arr[pos] == target) return pos;
                     if (arr[pos] < target) lo = pos + 1;
@@ -809,6 +836,12 @@ kapsadığı garanti edilen bir **sınır (bound)** bulun, ikiye katlayarak (`1,
 sonra o sınırın içinde sıradan ikili arama çalıştırın. Sınır bulma aşaması yalnızca `O(log index)`'e mal olur
 — hedefin gerçekte ne kadar ileride olduğuyla orantılı — `O(log n)`'e değil.
 
+Jon Bentley ve Andrew Yao bu tekniği, 1976 tarihli *An Almost Optimal Algorithm for Unbounded Searching*
+(Information Processing Letters) makalelerinde yayımladı. **Sınırsız arama (unbounded search)** ya da
+**dörtnala arama (galloping search)** olarak da anılır — "dörtnala", sınır bulma aşamasının küçükten büyüğe
+büyüyen adımları için canlı bir benzetmedir, tıpkı hızlanan bir atın adımları gibi — ve bugün birçok
+birleştirme (merge) ve küme-kesişimi algoritmasının içinde kullanılır.
+
 ### 4.2 Fikir: aşana kadar ikiye katla, sonra ikili arama yap
 
 Önce `arr[0]`'ı kontrol edin (karşılaştırma #1). Hedef değilse, `bound`'u ikiye katlayarak büyütün — `1, 2, 4,
@@ -822,6 +855,7 @@ sınır kontrol edilmiş ve `< target` bulunmuştur. Sıradan ikili aramayı tam
 
     ```c
     int exponential_search(const int arr[], int n, int target, int *comparisons) {
+        if (n <= 0) { *comparisons = 0; return -1; }    /* nothing to search */
         int comp = 1;                    /* the arr[0] check below counts as comparison #1 */
         if (arr[0] == target) { *comparisons = comp; return 0; }
         int bound = 1;
@@ -848,6 +882,7 @@ sınır kontrol edilmiş ve `< target` bulunmuştur. Sıradan ikili aramayı tam
     ```java
     static int exponentialSearch(int[] arr, int target) {
         int n = arr.length;
+        if (n <= 0) { comparisons = 0; return -1; }  // nothing to search
         comparisons = 1;                 // the arr[0] check below counts as comparison #1
         if (arr[0] == target) return 0;
         int bound = 1;
@@ -894,6 +929,7 @@ dizide yok** — ya da rastgele veri için 🎲'ye basın, ya da kendi sıralı 
         #include <stdio.h>
 
         int exponential_search(const int arr[], int n, int target, int *comparisons) {
+            if (n <= 0) { *comparisons = 0; return -1; }    /* nothing to search */
             int comp = 1;                    /* the arr[0] check below counts as comparison #1 */
             printf("  check arr[0] = %d\n", arr[0]);
             if (arr[0] == target) { *comparisons = comp; return 0; }
@@ -963,6 +999,7 @@ dizide yok** — ya da rastgele veri için 🎲'ye basın, ya da kendi sıralı 
 
             static int exponentialSearch(int[] arr, int target) {
                 int n = arr.length;
+                if (n <= 0) { comparisons = 0; return -1; }  // nothing to search
                 comparisons = 1;                 // the arr[0] check below counts as comparison #1
                 System.out.println("  check arr[0] = " + arr[0]);
                 if (arr[0] == target) return 0;
@@ -4004,3 +4041,7 @@ bir durum.
   çözme teknikleri için adım adım tanıtımlar.
 - J. Kiefer, "Sequential Minimax Search for a Maximum", *Proceedings of the American Mathematical Society*,
   4(3), 1953 — Fibonacci-sayısı arama stratejilerinin kökeni.
+- J. L. Bentley, A. C-C. Yao, "An Almost Optimal Algorithm for Unbounded Searching", *Information Processing
+  Letters*, 1976 — üstel (sınırsız/dörtnala) aramanın kökeni.
+- W. W. Peterson, "Addressing for Random-Access Storage", *IBM Journal of Research and Development*, 1957 —
+  bu haftanın hem enterpolasyon araması hem de hash'leme bölümlerinin dayandığı erken çalışma.

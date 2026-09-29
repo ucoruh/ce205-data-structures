@@ -170,8 +170,10 @@
       var root = buildTree(arr);
       if (!root) {
         S.label('empty', { x: 60, y: 50, text: T('Boş ağaç: gezilecek düğüm yok.', 'Empty tree: there is nothing to traverse.'), anchor: 'start', size: 16 });
-        S.step(T('Ağaç boş (`tree = []`): `inorder(NULL)` doğrudan temel duruma (`base case`) düşer, hiçbir şey ziyaret edilmez.',
-                 'The tree is empty (`tree = []`): `inorder(NULL)` hits the base case right away, nothing is visited.'), { c: [1, 2], java: [1, 2] });
+        S.step(T('Ağaç boş (`tree = []`): `inorder(NULL)` doğrudan temel duruma (`base case`) düşer, hiçbir şey ziyaret edilmez. Fonksiyonun geri kalanı (3-6. satırlar) hiç çalışmaz.',
+                 'The tree is empty (`tree = []`): `inorder(NULL)` hits the base case right away, nothing is visited. The rest of the function (lines 3-6) never runs.'),
+               { c: [1, { n: 2, note: T('node == NULL? evet', 'node == NULL? yes') }, { n: 3, skip: true }, { n: 4, skip: true }, { n: 5, skip: true }, { n: 6, skip: true }],
+                 java: [1, { n: 2, note: T('node == NULL? evet', 'node == NULL? yes') }, { n: 3, skip: true }, { n: 4, skip: true }, { n: 5, skip: true }, { n: 6, skip: true }] });
         S.result = [];
         return;
       }
@@ -183,6 +185,10 @@
       S.step(T('Inorder dolaşma kuralı: her düğümde önce SOL alt ağacı gez, sonra düğümü ziyaret et, sonra SAĞ alt ağacı gez (kısaca: sol, ziyaret, sağ). `inorder(root)` ile başlıyoruz; etkin (turuncu değil, mavi `active`) kenarlar kökten şu anki çağrıya giden yolu (call path) gösterecek.',
                'Inorder rule: at every node, visit the LEFT subtree, then the node itself, then the RIGHT subtree (short form: left, visit, right). We start with `inorder(root)`; the active (blue) edges will show the call path from the root down to the current call.'),
              { c: [1], java: [1] });
+      S.step(T('Temel durum (base case): eğer bir çocuk göstericisi NULL ise, `inorder(NULL)` 2. satırdaki kontrolde hemen `return` eder — fonksiyonun geri kalanı (3-6. satırlar) hiç çalışmaz. Aşağıdaki adımlarda, var olmayan bir çocuğa yapılan her çağrı bu şekilde anında biter.',
+               'Base case: if a child pointer is NULL, `inorder(NULL)` returns immediately at the check on line 2 — the rest of the function (lines 3-6) never runs. In the steps below, every call on a missing child ends this way instantly.'),
+             { c: [{ n: 2, note: T('node == NULL? evet', 'node == NULL? yes') }, { n: 3, skip: true }, { n: 4, skip: true }, { n: 5, skip: true }, { n: 6, skip: true }],
+               java: [{ n: 2, note: T('node == NULL? evet', 'node == NULL? yes') }, { n: 3, skip: true }, { n: 4, skip: true }, { n: 5, skip: true }, { n: 6, skip: true }] });
 
       function setNodeStyle(idx, style) { var id = 'n' + idx; if (S.get(id).style !== 'dim') S.set(id, { style: style }); }
       function clearPath() {
@@ -214,13 +220,21 @@
         outputBox(node.val);
         order.push(node.val);
         var soFar = order.join(', ');
+        /* This step stands for `inorder(node)`'s whole call frame: the base-case check (2, always false
+         * here — a real node), the call into the left subtree (3, already fully traced by the preceding
+         * steps, or an instant no-op if node.left is NULL, as shown once in the base-case demo above),
+         * the visit itself (4, 5), and the call into the right subtree (6, traced by the steps that
+         * follow, or an instant no-op if node.right is NULL). Every line listed here really executes for
+         * this node; only their exact interleaving with the (separately shown) child recursions is
+         * grouped into one step, the same way the heap files group repeated loop iterations. */
+        var lines = [{ n: 2, note: T('node == NULL? hayır', 'node == NULL? no') }, 3, 4, 5, 6];
         if (first) {
-          S.step(T('`inorder(' + node.val + ')`: sol alt ağaç bitti (ya da yoktu), şimdi düğümün KENDİSİ ziyaret ediliyor — `printf`/kayıt satırları. Çıkış listesine `' + node.val + '` eklenir: ' + soFar + '.',
-                   '`inorder(' + node.val + ')`: the left subtree is done (or was absent), now the node ITSELF is visited — the print/record lines. `' + node.val + '` is appended to the output list: ' + soFar + '.'),
-                 { c: [3, 4, 5], java: [3, 4, 5] });
+          S.step(T('`inorder(' + node.val + ')`: sol alt ağaç bitti (ya da yoktu), şimdi düğümün KENDİSİ ziyaret ediliyor — `printf`/kayıt satırları, sonra sağ alt ağaç için çağrı. Çıkış listesine `' + node.val + '` eklenir: ' + soFar + '.',
+                   '`inorder(' + node.val + ')`: the left subtree is done (or was absent), now the node ITSELF is visited — the print/record lines, then the call into the right subtree. `' + node.val + '` is appended to the output list: ' + soFar + '.'),
+                 { c: lines, java: lines });
           first = false;
         } else {
-          S.step(T('Ziyaret: `' + node.val + '`. Şimdiye kadar: ' + soFar + '.', 'Visit: `' + node.val + '`. So far: ' + soFar + '.'), { c: [4, 5], java: [4, 5] });
+          S.step(T('Ziyaret: `' + node.val + '`. Şimdiye kadar: ' + soFar + '.', 'Visit: `' + node.val + '`. So far: ' + soFar + '.'), { c: lines, java: lines });
         }
         setNodeStyle(node.idx, 'dim');
         inorder(node.right);

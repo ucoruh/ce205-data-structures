@@ -187,7 +187,7 @@
       function doHead(v, detailed) {
         var nid = 'n' + (seq++);
         S.node(nid, { x: X0, y: Y0 - 90, value: '?', style: 'new' });
-        if (detailed) S.step(T('`insert_head(' + v + ')`: `malloc(sizeof(Node))` -- yeni bir düğüm ayrılır.', '`insert_head(' + v + ')`: `malloc(sizeof(Node))` allocates a new node.'), { c: 7, java: 7 });
+        if (detailed) S.step(T('`insert_head(' + v + ')`: `malloc(sizeof(Node))` -- yeni bir düğüm ayrılır.', '`insert_head(' + v + ')`: `malloc(sizeof(Node))` allocates a new node.'), { c: 7, java: 8 });
         S.set(nid, { value: String(v) });
         list.unshift(nid);
         if (list.length > 1) S.arrow('o' + nid, { from: nid, to: list[1], kind: 'next', style: 'new' }); else S.set(nid, { isNull: true });
@@ -203,19 +203,25 @@
         if (!list.length) {
           S.node(nid, { x: X0, y: Y0, value: String(v), style: 'new', isNull: true });
           list.push(nid); relayout(); pointHead(); clean();
-          S.step(T('`insert_tail(' + v + ')`: liste boştu (`head == NULL`) -- yeni düğüm doğrudan başa dönüyor.',
-                   '`insert_tail(' + v + ')`: the list was empty (`head == NULL`) -- the new node is simply returned as the head.'), { c: [16, 17], java: [14, 15] });
+          S.step(T('`insert_tail(' + v + ')`: `malloc` ile düğüm ayrılır; liste boştu (`head == NULL`) -- yeni düğüm doğrudan başa dönüyor.',
+                   '`insert_tail(' + v + ')`: `malloc` allocates the node; the list was empty (`head == NULL`) -- the new node is simply returned as the head.'),
+                 { c: [14, 15, 16, { n: 17, note: T('head == NULL? evet', 'head == NULL? yes') }, 18],
+                   java: [14, { n: 15, note: T('head == null? evet', 'head == null? yes') }, 16] });
           return;
         }
         S.node(nid, { x: X0 + (ROWCAP + 1) * DX, y: Y0, value: String(v), style: 'new', isNull: true });
         if (detailed) {
-          S.step(T('`insert_tail(' + v + ')`: liste boş değil, `cur = head` ile başlayıp sona kadar yürüyeceğiz.',
-                   '`insert_tail(' + v + ')`: the list is not empty, so `cur = head` and we walk to the end.'), { c: 19, java: 17 });
+          S.step(T('`insert_tail(' + v + ')`: `malloc` ile düğüm ayrılır; liste boş değil (`head != NULL`), `cur = head` ile başlayıp sona kadar yürüyeceğiz.',
+                   '`insert_tail(' + v + ')`: `malloc` allocates the node; the list is not empty (`head != NULL`), so `cur = head` and we walk to the end.'),
+                 { c: [14, 15, 16, { n: 17, note: T('head == NULL? hayır', 'head == NULL? no') }, { n: 18, skip: true }, 19],
+                   java: [14, { n: 15, note: T('head == null? hayır', 'head == null? no') }, { n: 16, skip: true }, 17] });
           for (var i = 0; i < list.length; i++) {
             clean(); S.set(list[i], { style: 'active' });
-            S.step(T('`cur` düğüm ' + (i + 1) + '\'de: ' + (i === list.length - 1 ? '`cur->next == NULL` -- son düğüm bulundu.' : '`cur->next != NULL`, bir ileri gidiyoruz.'),
-                     '`cur` is at node ' + (i + 1) + ': ' + (i === list.length - 1 ? '`cur->next == NULL` -- the last node is found.' : '`cur->next != NULL`, so we move one further.')),
-                   { c: 20, java: 18 });
+            var atEnd = i === list.length - 1;
+            S.step(T('`cur` düğüm ' + (i + 1) + '\'de: ' + (atEnd ? '`cur->next == NULL` -- son düğüm bulundu.' : '`cur->next != NULL`, bir ileri gidiyoruz.'),
+                     '`cur` is at node ' + (i + 1) + ': ' + (atEnd ? '`cur->next == NULL` -- the last node is found.' : '`cur->next != NULL`, so we move one further.')),
+                   { c: [{ n: 20, note: T(atEnd ? 'cur->next == NULL? evet' : 'cur->next != NULL? evet', atEnd ? 'cur->next == NULL? yes' : 'cur->next != NULL? yes') }].concat(atEnd ? [{ n: 21, skip: true }] : [21]),
+                     java: [{ n: 18, note: T(atEnd ? 'cur.next == null? evet' : 'cur.next != null? evet', atEnd ? 'cur.next == null? yes' : 'cur.next != null? yes') }].concat(atEnd ? [{ n: 19, skip: true }] : [19]) });
           }
         }
         list.push(nid);
@@ -228,24 +234,31 @@
       function doAfter(target, v, detailed) {
         var idx = -1;
         for (var i = 0; i < list.length; i++) {
-          if (detailed) { clean(); S.set(list[i], { style: 'active' }); S.step(T('`find(' + target + ')`: düğüm ' + (i + 1) + ', değer = ' + S.get(list[i]).value + '?', '`find(' + target + ')`: node ' + (i + 1) + ', value = ' + S.get(list[i]).value + '?'), { c: 31, java: 27 }); }
-          if (Number(S.get(list[i]).value) === target) { idx = i; break; }
+          var isMatch = Number(S.get(list[i]).value) === target;
+          if (detailed) {
+            clean(); S.set(list[i], { style: 'active' });
+            S.step(T('`find(' + target + ')`: düğüm ' + (i + 1) + ', değer = ' + S.get(list[i]).value + '? ' + (isMatch ? 'eşleşti!' : 'hayır, devam.'),
+                     '`find(' + target + ')`: node ' + (i + 1) + ', value = ' + S.get(list[i]).value + '? ' + (isMatch ? 'match!' : 'no, keep going.')),
+                   { c: [{ n: 35, note: T(isMatch ? 'cur->data == ' + target + '? evet' : 'cur->data == ' + target + '? hayır', isMatch ? 'cur->data == ' + target + '? yes' : 'cur->data == ' + target + '? no') }].concat(isMatch ? [36] : [{ n: 36, skip: true }]),
+                     java: [{ n: 32, note: T(isMatch ? 'cur.data == ' + target + '? evet' : 'cur.data == ' + target + '? hayır', isMatch ? 'cur.data == ' + target + '? yes' : 'cur.data == ' + target + '? no') }].concat(isMatch ? [33] : [{ n: 33, skip: true }]) });
+          }
+          if (isMatch) { idx = i; break; }
         }
         clean(); S.set(list[idx], { style: 'hl' });
         var prevId = list[idx];
-        if (detailed) S.step(T('`prev` bulundu: değer ' + target + '. Şimdi `insert_after(prev, ' + v + ')` çağrılıyor.', '`prev` is found: value ' + target + '. Now `insert_after(prev, ' + v + ')` is called.'), { c: 25, java: 21 });
+        if (detailed) S.step(T('`find` `prev`\'i buldu ve döndürdü: değer ' + target + '. Şimdi `insert_after(prev, ' + v + ')` çağrılıyor.', '`find` has found and returned `prev`: value ' + target + '. Now `insert_after(prev, ' + v + ')` is called.'), { c: [35, 36], java: [32, 33] });
         var nid = 'n' + (seq++);
         var oldNext = idx + 1 < list.length ? list[idx + 1] : null;
         S.node(nid, { x: X0, y: Y0 - 90, value: '?', style: 'new' });
         S.set(nid, { value: String(v) });
         if (oldNext) { S.arrow('o' + nid, { from: nid, to: oldNext, kind: 'next', style: 'new' }); } else S.set(nid, { isNull: true });
         S.step(T('STEP 1 -- `n->next = prev->next`: yeni düğüm önce eski bir sonrakini gösterir (' + (oldNext ? S.get(oldNext).value : 'NULL') + '). Sıra önemli: bu adım henüz `prev`\'e dokunmadı.',
-                 'STEP 1 -- `n->next = prev->next`: the new node points at the old next first (' + (oldNext ? S.get(oldNext).value : 'NULL') + '). Order matters: this step has not touched `prev` yet.'), { c: 28, java: 24 });
+                 'STEP 1 -- `n->next = prev->next`: the new node points at the old next first (' + (oldNext ? S.get(oldNext).value : 'NULL') + '). Order matters: this step has not touched `prev` yet.'), { c: [27, 28, 29], java: [25, 26] });
         list.splice(idx + 1, 0, nid);
         wireArrow(idx);
         relayout(); pointHead(); clean();
         S.step(T('STEP 2 -- `prev->next = n`: şimdi `prev` yeni düğümü gösterir. Yeni düğüm ' + target + ' değerinden hemen sonra (konum k = ' + (idx + 1) + ') listeye girdi.',
-                 'STEP 2 -- `prev->next = n`: now `prev` points at the new node. The new node is in the list right after ' + target + ' (position k = ' + (idx + 1) + ').'), { c: 29, java: 25 });
+                 'STEP 2 -- `prev->next = n`: now `prev` points at the new node. The new node is in the list right after ' + target + ' (position k = ' + (idx + 1) + ').'), { c: 30, java: 27 });
       }
 
       function doBug(target, fakeValue) {
@@ -256,24 +269,24 @@
         S.set(prevId, { style: 'active' });
         var lostIds = list.slice(idx + 1);
         S.step(T('Şimdi iki satırı KASITLI olarak ters sırayla deneyelim -- yalnız gösterim, gerçek listeye uygulanmayacak: `prev->next = n` ÖNCE.',
-                 'Now let us deliberately try the two lines in the wrong order -- illustration only, never applied to the real list: `prev->next = n` FIRST.'), { c: 29, java: 25 });
+                 'Now let us deliberately try the two lines in the wrong order -- illustration only, never applied to the real list: `prev->next = n` FIRST.'), { c: [29, 30], java: [26, 27] });
         var bugId = 'bug' + (seq++);
         S.node(bugId, { x: X0 - 10, y: Y0 - 160, value: String(fakeValue), style: 'del' });
         if (oldNextId) S.set('o' + prevId, { style: 'del' });
         S.arrow('obugA', { from: prevId, to: bugId, kind: 'next', style: 'del' });
         S.step(T('Yanlış adım 1: `prev->next = n`. `prev` artık yeni düğümü gösteriyor; eski bağlantı (' + (oldNextId ? S.get(oldNextId).value : 'NULL') + '\'e) koptu.',
-                 'Wrong step 1: `prev->next = n`. `prev` now points at the new node; the old link (to ' + (oldNextId ? S.get(oldNextId).value : 'NULL') + ') is gone.'), { c: 30, java: 26 });
+                 'Wrong step 1: `prev->next = n`. `prev` now points at the new node; the old link (to ' + (oldNextId ? S.get(oldNextId).value : 'NULL') + ') is gone.'), { c: 30, java: 27 });
         S.label('buglbl', { x: X0 - 10, y: Y0 - 205, text: T('`n->next = prev->next` -> `n->next = n` (öz-döngü!)', '`n->next = prev->next` -> `n->next = n` (self-loop!)'), style: 'del', size: 13, bold: true });
         lostIds.forEach(function (id) { S.set(id, { style: 'del' }); });
         if (oldNextId) S.label('lostlbl', { x: S.get(oldNextId).x + 20, y: Y0 - 40, text: T('erişilemez oldu', 'now unreachable'), style: 'del', size: 13, bold: true });
         S.step(T('Yanlış adım 2: `n->next = prev->next` -- ama `prev->next` artık `n`\'in kendisi! Yeni düğüm kendini gösterir ve ' + target + '\'dan sonraki HER ŞEY listeden kopar.',
-                 'Wrong step 2: `n->next = prev->next` -- but `prev->next` is now `n` itself! The new node points at itself, and EVERYTHING after ' + target + ' is cut off the list.'), { c: 28, java: 24 });
+                 'Wrong step 2: `n->next = prev->next` -- but `prev->next` is now `n` itself! The new node points at itself, and EVERYTHING after ' + target + ' is cut off the list.'), { c: 29, java: 26 });
         S.remove(bugId, 'obugA', 'buglbl'); if (S.has('lostlbl')) S.remove('lostlbl');
         if (oldNextId) S.set('o' + prevId, { style: 'normal' });
         lostIds.forEach(function (id) { S.set(id, { style: 'normal' }); });
         S.set(prevId, { style: 'normal' });
         S.step(T('Bu yüzden gerçek kod tam tersini yapar: önce `n->next = prev->next`, sonra `prev->next = n`. Hiçbir şey gerçek listeye uygulanmadı -- her şey eskisi gibi.',
-                 'That is why the real code does the opposite: `n->next = prev->next` first, then `prev->next = n`. Nothing was actually applied to the real list -- it is exactly as it was.'), { c: [28, 29], java: [24, 25] });
+                 'That is why the real code does the opposite: `n->next = prev->next` first, then `prev->next = n`. Nothing was actually applied to the real list -- it is exactly as it was.'), { c: [29, 30], java: [26, 27] });
       }
 
       d.ops.forEach(function (tok) {

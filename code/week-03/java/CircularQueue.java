@@ -81,5 +81,15 @@ public class CircularQueue {
             new Op(false, 2), new Op(false, 17), new Op(false, 29), new Op(false, 41), new Op(false, 50)
         };
         s.runScenario("edge: completely full, a real overflow (cap 8)", 8, edge);
+
+        // abnormal: drain to empty (underflow), then refill past the wrap to full again --
+        // front and rear coincide at both the "just emptied" and "just filled" moments;
+        // count is what tells the two apart.
+        Op[] abnormal = {
+            new Op(false, 11), new Op(false, 22), new Op(false, 33),
+            new Op(true, 0), new Op(true, 0), new Op(true, 0), new Op(true, 0),
+            new Op(false, 44), new Op(false, 55), new Op(false, 66), new Op(false, 77), new Op(false, 88), new Op(false, 99)
+        };
+        s.runScenario("abnormal: drain to empty, then refill past the wrap to full (cap 5)", 5, abnormal);
     }
 }

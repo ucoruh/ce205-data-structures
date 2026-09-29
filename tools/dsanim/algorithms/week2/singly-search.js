@@ -114,7 +114,9 @@
         S.label('cnt', { x: X0 + Math.min(ROWCAP, Math.max(ids.length, 1)) * DX + 30, y: 30, text: T('karşılaştırma: 0', 'comparisons: 0'), style: 'dim', size: 15, bold: true });
         var detailed = qi === 0;
         var comparisons = 0, foundIdx = -1;
-        S.step(T((qi + 1) + '. `search(head, ' + q + ')`: `index = 0`, `cur = head`.', (qi + 1) + '. `search(head, ' + q + ')`: `index = 0`, `cur = head`.'), { c: [7, 8], java: [8, 9] });
+        var startNote = ids.length ? T('cur != NULL? evet', 'cur != NULL? yes') : T('cur != NULL? hayır (liste boş)', 'cur != NULL? no (list is empty)');
+        S.step(T((qi + 1) + '. `search(head, ' + q + ')`: `index = 0`, `cur = head`.', (qi + 1) + '. `search(head, ' + q + ')`: `index = 0`, `cur = head`.'),
+               { c: [7, { n: 8, note: startNote }], java: [8, { n: 9, note: startNote }] });
         for (var i = 0; i < ids.length; i++) {
           comparisons++;
           S.set(ids[i], { style: 'active' });
@@ -122,17 +124,23 @@
           if (d.list[i] === q) {
             foundIdx = i;
             S.set(ids[i], { style: 'hl' });
-            S.step(T('`cur->data` (' + d.list[i] + ') == ' + q + ': bulundu, konum ' + i + ' döner.', '`cur->data` (' + d.list[i] + ') == ' + q + ': found, returns position ' + i + '.'), { c: [9, 10], java: [10, 11] });
+            S.step(T('`cur->data` (' + d.list[i] + ') == ' + q + ': bulundu, konum ' + i + ' döner.', '`cur->data` (' + d.list[i] + ') == ' + q + ': found, returns position ' + i + '.'),
+                   { c: [{ n: 9, note: T('cur->data == ' + q + '? evet', 'cur->data == ' + q + '? yes') }, 10],
+                     java: [{ n: 10, note: T('cur.data == ' + q + '? evet', 'cur.data == ' + q + '? yes') }, 11] });
             break;
           }
           if (detailed || i === ids.length - 1) {
-            S.step(T('`cur->data` (' + d.list[i] + ') != ' + q + ': `index++`, `cur = cur->next`.', '`cur->data` (' + d.list[i] + ') != ' + q + ': `index++`, `cur = cur->next`.'), { c: [9, 11], java: [10, 12] });
+            S.step(T('`cur->data` (' + d.list[i] + ') != ' + q + ': `index++`, `cur = cur->next`.', '`cur->data` (' + d.list[i] + ') != ' + q + ': `index++`, `cur = cur->next`.'),
+                   { c: [{ n: 9, note: T('cur->data == ' + q + '? hayır', 'cur->data == ' + q + '? no') }, 11],
+                     java: [{ n: 10, note: T('cur.data == ' + q + '? hayır', 'cur.data == ' + q + '? no') }, 12] });
           }
           S.set(ids[i], { style: 'dim' });
         }
         if (foundIdx < 0) {
           S.step(T('`cur == NULL`: liste bitti, `' + q + '` bulunamadı. `-1` döner. Toplam ' + comparisons + ' karşılaştırma.',
-                   '`cur == NULL`: the list is over, `' + q + '` was not found. It returns `-1`. ' + comparisons + ' comparisons in total.'), { c: 12, java: 13 });
+                   '`cur == NULL`: the list is over, `' + q + '` was not found. It returns `-1`. ' + comparisons + ' comparisons in total.'),
+                 { c: [{ n: 8, note: T('cur != NULL? hayır (liste bitti)', 'cur != NULL? no (the list is over)') }, 13],
+                   java: [{ n: 9, note: T('cur != null? hayır (liste bitti)', 'cur != null? no (the list is over)') }, 14] });
         }
         results.push({ index: foundIdx, comparisons: comparisons });
       });

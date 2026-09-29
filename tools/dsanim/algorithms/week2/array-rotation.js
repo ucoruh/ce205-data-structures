@@ -17,6 +17,8 @@
     '}',
     '',
     'void rotate_left(int arr[], int n, int d) {',
+    '    if (n == 0)',
+    '        return;                     /* empty array: nothing to rotate */',
     '    d = d % n;',
     '    reverse(arr, 0, d - 1);        /* reverse the first d elements */',
     '    reverse(arr, d, n - 1);        /* reverse the remaining n-d elements */',
@@ -36,17 +38,20 @@
     '',
     'static void rotateLeft(int[] arr, int d) {',
     '    int n = arr.length;',
+    '    if (n == 0)',
+    '        return;                     // empty array: nothing to rotate',
     '    d = d % n;',
     '    reverse(arr, 0, d - 1);        // reverse the first d elements',
     '    reverse(arr, d, n - 1);        // reverse the remaining n-d elements',
     '    reverse(arr, 0, n - 1);        // reverse the whole array',
     '}'
   ];
-  var L_LOOP = { c: [2, 3, 4, 5, 6, 7], java: [2, 3, 4, 5, 6, 7] };
-  var L_MOD = { c: [12], java: [13] };
-  var L_P1 = { c: [13], java: [14] };
-  var L_P2 = { c: [14], java: [15] };
-  var L_P3 = { c: [15], java: [16] };
+  var L_MOD = { c: [{ n: 12, note: T('n == 0? hayır', 'n == 0? no') }, 14], java: [{ n: 13, note: T('n == 0? hayır', 'n == 0? no') }, 15] };
+  var L_CALL = { c: { 1: 15, 2: 16, 3: 17 }, java: { 1: 16, 2: 17, 3: 18 } };
+  /** reverse()'s own body -- shared by every phase, since it is the same function executing each time. */
+  var L_REV_EMPTY = { c: { n: 2, note: T('lo < hi? hayır', 'lo < hi? no') }, java: { n: 2, note: T('lo < hi? hayır', 'lo < hi? no') } };
+  var L_REV_ENTER = { c: [{ n: 2, note: T('lo < hi? evet', 'lo < hi? yes') }, 3], java: [{ n: 2, note: T('lo < hi? evet', 'lo < hi? yes') }, 3] };
+  var L_REV_SWAP = { c: [4, 5, 6, 7], java: [4, 5, 6, 7] };
 
   D.define({
     id: 'array-rotation',
@@ -122,12 +127,14 @@
         if (lo <= hi) S.brace('seg', { from: 'a' + lo, to: 'a' + hi, text: text, side: 'bottom', dist: 14, style: 'active' });
       }
 
-      function reverseRange(lo, hi, lines, phaseName, rowLabel) {
+      function reverseRange(lo, hi, phase, phaseName, rowLabel) {
+        var callLine = { c: L_CALL.c[phase], java: L_CALL.java[phase] };
         markRegion(lo, hi, phaseName);
         var pairs = lo < hi ? Math.floor((hi - lo + 1) / 2) : 0;
         if (lo >= hi) {
           S.set('note', { text: T('değişiklik yok', 'no change') });
-          S.step(T('`' + phaseName + '`: `lo >= hi`, ters çevrilecek bir şey yok.', '`' + phaseName + '`: `lo >= hi`, there is nothing to reverse.'), lines);
+          S.step(T('`' + phaseName + '`: `lo >= hi`, ters çevrilecek bir şey yok.', '`' + phaseName + '`: `lo >= hi`, there is nothing to reverse.'),
+                 { c: [callLine.c, L_REV_EMPTY.c], java: [callLine.java, L_REV_EMPTY.java] });
         } else {
           var lo2 = lo, hi2 = hi;
           while (lo2 < hi2) {
@@ -136,14 +143,15 @@
             swapSeen++;
             if (swapSeen === 1) {
               S.set('note', { text: T(lo2 + ' ↔ ' + hi2, lo2 + ' ↔ ' + hi2) });
-              S.step(T('`' + phaseName + '`: `arr[' + lo2 + ']` ve `arr[' + hi2 + ']` takas edilecek.', '`' + phaseName + '`: `arr[' + lo2 + ']` and `arr[' + hi2 + ']` are about to swap.'), lines);
+              S.step(T('`' + phaseName + '`: `arr[' + lo2 + ']` ve `arr[' + hi2 + ']` takas edilecek.', '`' + phaseName + '`: `arr[' + lo2 + ']` and `arr[' + hi2 + ']` are about to swap.'),
+                     { c: [callLine.c].concat(L_REV_ENTER.c), java: [callLine.java].concat(L_REV_ENTER.java) });
             }
             var tmp = arr[lo2]; arr[lo2] = arr[hi2]; arr[hi2] = tmp;
             S.set('a' + lo2, { text: String(arr[lo2]), style: 'new' });
             S.set('a' + hi2, { text: String(arr[hi2]), style: 'new' });
             totalSwaps++;
             S.set('note', { text: T(lo2 + ' ↔ ' + hi2 + ' tamam', lo2 + ' ↔ ' + hi2 + ' done') });
-            S.step(T('takas edildi: `arr[' + lo2 + '] = ' + arr[lo2] + '`, `arr[' + hi2 + '] = ' + arr[hi2] + '`.', 'swapped: `arr[' + lo2 + '] = ' + arr[lo2] + '`, `arr[' + hi2 + '] = ' + arr[hi2] + '`.'), lines);
+            S.step(T('takas edildi: `arr[' + lo2 + '] = ' + arr[lo2] + '`, `arr[' + hi2 + '] = ' + arr[hi2] + '`.', 'swapped: `arr[' + lo2 + '] = ' + arr[lo2] + '`, `arr[' + hi2 + '] = ' + arr[hi2] + '`.'), L_REV_SWAP);
             lo2++; hi2--;
           }
           for (var z = lo; z <= hi; z++) S.set('a' + z, { style: 'normal' });
@@ -151,12 +159,13 @@
         S.at(null);
         snap(rowLabel);
         S.set('note', { text: T(pairs + ' takas', pairs + ' swap' + (pairs === 1 ? '' : 's')) });
-        S.step(T('`' + phaseName + '` bitti: ' + pairs + ' takas. Bu durumu aşağıda yeni bir satır olarak tutuyoruz.', '`' + phaseName + '` is done: ' + pairs + ' swap' + (pairs === 1 ? '' : 's') + '. We keep this state as a new row below.'), lines);
+        S.step(T('`' + phaseName + '` bitti: ' + pairs + ' takas. Bu durumu aşağıda yeni bir satır olarak tutuyoruz.', '`' + phaseName + '` is done: ' + pairs + ' swap' + (pairs === 1 ? '' : 's') + '. We keep this state as a new row below.'),
+               { c: callLine.c, java: callLine.java });
       }
 
-      reverseRange(0, dd - 1, L_P1, 'reverse(0,' + (dd - 1) + ')', T('reverse(0,' + (dd - 1) + ') sonrası', 'after reverse(0,' + (dd - 1) + ')'));
-      reverseRange(dd, n - 1, L_P2, 'reverse(' + dd + ',' + (n - 1) + ')', T('reverse(' + dd + ',' + (n - 1) + ') sonrası', 'after reverse(' + dd + ',' + (n - 1) + ')'));
-      reverseRange(0, n - 1, L_P3, 'reverse(0,' + (n - 1) + ')', T('reverse(0,' + (n - 1) + ') sonrası = final', 'after reverse(0,' + (n - 1) + ') = final'));
+      reverseRange(0, dd - 1, 1, 'reverse(0,' + (dd - 1) + ')', T('reverse(0,' + (dd - 1) + ') sonrası', 'after reverse(0,' + (dd - 1) + ')'));
+      reverseRange(dd, n - 1, 2, 'reverse(' + dd + ',' + (n - 1) + ')', T('reverse(' + dd + ',' + (n - 1) + ') sonrası', 'after reverse(' + dd + ',' + (n - 1) + ')'));
+      reverseRange(0, n - 1, 3, 'reverse(0,' + (n - 1) + ')', T('reverse(0,' + (n - 1) + ') sonrası = final', 'after reverse(0,' + (n - 1) + ') = final'));
 
       if (S.has('seg')) S.remove('seg');
       S.set('note', { text: '' });

@@ -110,11 +110,129 @@
     '    return 1 + Math.max(hl, hr);',
     '}'
   ];
-  var LINES_FULL = { c: [2, 3, 4, 5, 6, 7], java: [2, 3, 4, 5, 6, 7] };
-  var LINES_COMPLETE = { c: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21], java: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] };
-  var LINES_PERFECT = { c: [24, 25, 26, 27, 28, 29, 30, 31, 32], java: [23, 24, 25, 26, 27, 28, 29, 30, 31] };
-  var LINES_DEGENERATE = { c: [35, 36, 37, 38, 39], java: [34, 35, 36, 37, 38] };
-  var LINES_BALANCED = { c: [42, 43, 44, 45, 46, 47, 48, 49, 50], java: [41, 42, 43, 44, 45, 46, 47, 48, 49] };
+  /* Every one of the five predicate functions below is line-for-line identical between C and Java (only
+   * the comment/keyword spelling differs, exactly like every other week-4 file), so one line array is
+   * reused for both languages throughout this file — verified by scratchpad/check_parallel.js. */
+
+  /** When several node visits (or recursive calls) are concatenated into one S.step, the same source line
+   *  can be "run" at one node and "the side not taken" (skip) at another — the player highlights by line
+   *  NUMBER for the whole step, so a line that really ran at least once must never also carry a skip
+   *  mark. Drop the conflicting skip entries; the run occurrence still shows it. */
+  function dedupeSkip(lines) {
+    var ran = {};
+    lines.forEach(function (x) {
+      var n = x && typeof x === 'object' ? x.n : x;
+      var isSkip = !!(x && typeof x === 'object' && x.skip);
+      if (!isSkip) ran[n] = true;
+    });
+    return lines.filter(function (x) {
+      var n = x && typeof x === 'object' ? x.n : x;
+      var isSkip = !!(x && typeof x === 'object' && x.skip);
+      return !(isSkip && ran[n]);
+    });
+  }
+  /** `is_full`'s real recursive trace: base case (3), the "exactly one child" guard (5, single-line
+   *  `if (...) return false;` — note only, nothing else to mark skip on ITS line), then either the guard
+   *  fires (6 never runs — skip) or it doesn't and (6) recurses into both children. */
+  function fullTrace(n) {
+    if (!n) return [{ n: 3, note: T('n == NULL? evet', 'n == NULL? yes') }];
+    var hasL = !!n.left, hasR = !!n.right, violated = hasL !== hasR;
+    var lines = [{ n: 3, note: T('n == NULL? hayır', 'n == NULL? no') }, 4,
+      { n: 5, note: violated ? T('hasL != hasR? evet', 'hasL != hasR? yes') : T('hasL != hasR? hayır', 'hasL != hasR? no') }];
+    if (violated) { lines.push({ n: 6, skip: true }); return lines; }
+    lines.push(6);
+    return lines.concat(fullTrace(n.left)).concat(fullTrace(n.right));
+  }
+  /** `is_complete`'s real BFS trace: the while check (14), one queue pop (15), the null check (16, single-
+   *  line `if (...) { ...; continue; }` — note only), then either a gap is recorded and 17-19 are skipped
+   *  (the `continue` jumps past them), or (for a real node) the gap check (17, single-line `if (...)
+   *  return false;`) decides whether we stop here or push both children (18, 19) and keep going. */
+  function completeTrace(root) {
+    var queue = [root], seenGap = false, lines = [11, 12, 13];
+    while (queue.length) {
+      lines.push({ n: 14, note: T('front < rear? evet', 'front < rear? yes') });
+      var cur = queue.shift();
+      lines.push(15);
+      if (cur === null) {
+        lines.push({ n: 16, note: T('n == NULL? evet', 'n == NULL? yes') });
+        if (!seenGap) seenGap = true;
+        lines.push({ n: 17, skip: true }, { n: 18, skip: true }, { n: 19, skip: true });
+        continue;
+      }
+      lines.push({ n: 16, note: T('n == NULL? hayır', 'n == NULL? no') });
+      if (seenGap) {
+        lines.push({ n: 17, note: T('seenGap? evet', 'seenGap? yes') });
+        return { lines: dedupeSkip(lines), offender: cur };
+      }
+      lines.push({ n: 17, note: T('seenGap? hayır', 'seenGap? no') }, 18, 19);
+      queue.push(cur.left); queue.push(cur.right);
+    }
+    lines.push({ n: 14, note: T('front < rear? hayır', 'front < rear? no') }, 21);
+    return { lines: dedupeSkip(lines), offender: null };
+  }
+  /** `is_perfect`'s real recursive trace: base case (26), the leaf check (27, single-line `if (...) {`),
+   *  and — only at a leaf — the "first leaf seen" check (28) and the depth-match check (29); a non-leaf
+   *  instead takes the "not full" guard (31, single-line `if (...) return false;`) and, if it survives,
+   *  recurses into both children (32). */
+  function perfectTrace(n, depth, leafDepthRef) {
+    if (!n) return [{ n: 26, note: T('n == NULL? evet', 'n == NULL? yes') }];
+    var isLeaf = !n.left && !n.right;
+    var lines = [{ n: 26, note: T('n == NULL? hayır', 'n == NULL? no') }];
+    if (isLeaf) {
+      lines.push({ n: 27, note: T('yaprak mı? evet', 'is a leaf? yes') });
+      var wasUnset = leafDepthRef.v === -1;
+      lines.push({ n: 28, note: wasUnset ? T('leafDepth == -1? evet', 'leafDepth == -1? yes') : T('leafDepth == -1? hayır', 'leafDepth == -1? no') });
+      if (wasUnset) leafDepthRef.v = depth;
+      var matches = depth === leafDepthRef.v;
+      lines.push({ n: 29, note: matches ? T('depth == leafDepth? evet', 'depth == leafDepth? yes') : T('depth == leafDepth? hayır', 'depth == leafDepth? no') });
+      lines.push({ n: 31, skip: true });
+      return lines;
+    }
+    lines.push({ n: 27, note: T('yaprak mı? hayır', 'is a leaf? no') });
+    var missing = !n.left || !n.right;
+    lines.push({ n: 31, note: missing ? T('tek çocuk eksik? evet', 'a child is missing? yes') : T('tek çocuk eksik? hayır', 'a child is missing? no') });
+    if (missing) return lines;
+    lines.push(32);
+    return lines.concat(perfectTrace(n.left, depth + 1, leafDepthRef)).concat(perfectTrace(n.right, depth + 1, leafDepthRef));
+  }
+  /** `is_degenerate`'s real recursive trace: base case (37), the "two children" guard (38, single-line
+   *  `if (...) return false;` — note only), then either it fires (39 never runs — skip) or it doesn't and
+   *  (39) recurses into both children. */
+  function degenerateTrace(n) {
+    if (!n) return [{ n: 37, note: T('n == NULL? evet', 'n == NULL? yes') }];
+    var hasL = !!n.left, hasR = !!n.right, twoKids = hasL && hasR;
+    var lines = [{ n: 37, note: T('n == NULL? hayır', 'n == NULL? no') },
+      { n: 38, note: twoKids ? T('2 çocuk var mı? evet', '2 children? yes') : T('2 çocuk var mı? hayır', '2 children? no') }];
+    if (twoKids) { lines.push({ n: 39, skip: true }); return lines; }
+    lines.push(39);
+    return lines.concat(degenerateTrace(n.left)).concat(degenerateTrace(n.right));
+  }
+  /** `check_balance`'s real recursive (post-order) trace: base case (44), then the left subtree's height
+   *  (45 calls in, its own trace follows), the "left already unbalanced" check (46, single-line `if (...)
+   *  return -1;` — note only, and if it fires the right subtree is never even visited: 47-50 skip), then
+   *  the same for the right subtree (47, 48), and finally the balance check itself (49) and the height
+   *  formula (50) — this mirrors the SHOWN code's early-exit recursion, independently of the iterative
+   *  bottom-up height map `build()` also keeps (for the on-tree "h=" annotations, a different technique). */
+  function balanceTrace(n) {
+    if (!n) return { lines: [{ n: 44, note: T('n == NULL? evet', 'n == NULL? yes') }], h: 0 };
+    var lines = [{ n: 44, note: T('n == NULL? hayır', 'n == NULL? no') }, 45];
+    var l = balanceTrace(n.left);
+    lines = lines.concat(l.lines);
+    var hlBad = l.h === -1;
+    lines.push({ n: 46, note: hlBad ? T('hl == -1? evet', 'hl == -1? yes') : T('hl == -1? hayır', 'hl == -1? no') });
+    if (hlBad) { lines.push({ n: 47, skip: true }, { n: 48, skip: true }, { n: 49, skip: true }, { n: 50, skip: true }); return { lines: dedupeSkip(lines), h: -1 }; }
+    lines.push(47);
+    var r = balanceTrace(n.right);
+    lines = lines.concat(r.lines);
+    var hrBad = r.h === -1;
+    lines.push({ n: 48, note: hrBad ? T('hr == -1? evet', 'hr == -1? yes') : T('hr == -1? hayır', 'hr == -1? no') });
+    if (hrBad) { lines.push({ n: 49, skip: true }, { n: 50, skip: true }); return { lines: dedupeSkip(lines), h: -1 }; }
+    var diffBad = Math.abs(l.h - r.h) > 1;
+    lines.push({ n: 49, note: diffBad ? T('|hl-hr| > 1? evet', '|hl-hr| > 1? yes') : T('|hl-hr| > 1? hayır', '|hl-hr| > 1? no') });
+    if (diffBad) { lines.push({ n: 50, skip: true }); return { lines: dedupeSkip(lines), h: -1 }; }
+    lines.push(50);
+    return { lines: dedupeSkip(lines), h: 1 + Math.max(l.h, r.h) };
+  }
 
   /* ---- helpers local to build(); reference() works only on the flat array, never calls these ---- */
   function buildTree(arr) {
@@ -426,34 +544,30 @@
         findFull(n.left); findFull(n.right);
       })(root);
       var full = fullViolator === null;
+      var fullLines = dedupeSkip(fullTrace(root));
       if (full) {
         for (var fi = 0; fi < arr.length; fi++) if (arr[fi] !== null) hi(fi, 'new');
         S.step(T('DOLU (full): her düğümün 0 ya da 2 çocuğu var, hiçbiri tam 1 çocuklu değil. FULL: EVET.',
-                 'FULL: every node has 0 or 2 children, none has exactly 1. FULL: YES.'), LINES_FULL);
+                 'FULL: every node has 0 or 2 children, none has exactly 1. FULL: YES.'), { c: fullLines, java: fullLines });
       } else {
         hi(fullViolator.idx, 'del');
         S.step(T('DOLU (full): `' + fullViolator.val + '` düğümünün tam olarak ' + (fullViolator.left ? '1 (sadece sol)' : '1 (sadece sağ)') + ' çocuğu var — bu yüzden ağaç FULL DEĞİL.',
-                 'FULL: node `' + fullViolator.val + '` has exactly ' + (fullViolator.left ? '1 child (left only)' : '1 child (right only)') + ' — so the tree is NOT full.'), LINES_FULL);
+                 'FULL: node `' + fullViolator.val + '` has exactly ' + (fullViolator.left ? '1 child (left only)' : '1 child (right only)') + ' — so the tree is NOT full.'), { c: fullLines, java: fullLines });
       }
       clearHi();
 
       /* ---- complete: real BFS with null placeholders, no real node may follow a gap ---- */
-      var queueC = [root], seenGap = false, gapAt = null, offenderAt = null;
-      while (queueC.length && offenderAt === null) {
-        var cur = queueC.shift();
-        if (cur === null) { if (!seenGap) { seenGap = true; } continue; }
-        if (seenGap) { offenderAt = cur; break; }
-        queueC.push(cur.left); queueC.push(cur.right);
-      }
+      var completeResult = completeTrace(root);
+      var offenderAt = completeResult.offender;
       var complete = offenderAt === null;
       if (complete) {
         for (var ci = 0; ci < arr.length; ci++) if (arr[ci] !== null) hi(ci, 'new');
         S.step(T('TAM (complete): seviye sıralı taramada bir BOŞLUKTAN SONRA hiçbir gerçek düğüm görünmüyor. COMPLETE: EVET.',
-                 'COMPLETE: scanning level by level, no real node ever appears after a gap. COMPLETE: YES.'), LINES_COMPLETE);
+                 'COMPLETE: scanning level by level, no real node ever appears after a gap. COMPLETE: YES.'), { c: completeResult.lines, java: completeResult.lines });
       } else {
         hi(offenderAt.idx, 'del');
         S.step(T('TAM (complete): seviye sıralı taramada bir boşluktan SONRA `' + offenderAt.val + '` gerçek düğümü görünüyor — COMPLETE DEĞİL.',
-                 'COMPLETE: scanning level by level, real node `' + offenderAt.val + '` appears AFTER a gap — NOT complete.'), LINES_COMPLETE);
+                 'COMPLETE: scanning level by level, real node `' + offenderAt.val + '` appears AFTER a gap — NOT complete.'), { c: completeResult.lines, java: completeResult.lines });
       }
       clearHi();
 
@@ -471,10 +585,11 @@
       var perfect = full && leavesSameLevel;
       var perfectCount = arr.filter(function (v) { return v !== null; }).length;
       var perfectHeight = leafDepth === null ? 0 : leafDepth;
+      var perfectLines = dedupeSkip(perfectTrace(root, 0, { v: -1 }));
       if (perfect) {
         for (var pi = 0; pi < arr.length; pi++) if (arr[pi] !== null) hi(pi, 'new');
         S.step(T('MÜKEMMEL (perfect): dolu VE her yaprak aynı seviyede (derinlik ' + perfectHeight + '). Sayım kontrolü: ' + perfectCount + ' == 2^(' + perfectHeight + '+1)-1. PERFECT: EVET.',
-                 'PERFECT: full AND every leaf is on the same level (depth ' + perfectHeight + '). Count check: ' + perfectCount + ' == 2^(' + perfectHeight + '+1)-1. PERFECT: YES.'), LINES_PERFECT);
+                 'PERFECT: full AND every leaf is on the same level (depth ' + perfectHeight + '). Count check: ' + perfectCount + ' == 2^(' + perfectHeight + '+1)-1. PERFECT: YES.'), { c: perfectLines, java: perfectLines });
       } else {
         var reasonsTr = [], reasonsEn = [];
         if (!full && fullViolator) {
@@ -489,7 +604,7 @@
         }
         if (!reasonsTr.length) { reasonsTr.push('koşullar sağlanmıyor'); reasonsEn.push('the conditions do not hold'); }
         S.step(T('MÜKEMMEL (perfect): ' + reasonsTr.join(' ve ') + ' — bu yüzden mükemmel değil. PERFECT: HAYIR.',
-                 'PERFECT: ' + reasonsEn.join(' and ') + ' — so it cannot be perfect. PERFECT: NO.'), LINES_PERFECT);
+                 'PERFECT: ' + reasonsEn.join(' and ') + ' — so it cannot be perfect. PERFECT: NO.'), { c: perfectLines, java: perfectLines });
       }
       clearHi();
 
@@ -497,14 +612,15 @@
       var twoChildNode = null;
       (function findTwo(n) { if (!n || twoChildNode) return; if (n.left && n.right) { twoChildNode = n; return; } findTwo(n.left); findTwo(n.right); })(root);
       var degenerate = twoChildNode === null;
+      var degenerateLines = dedupeSkip(degenerateTrace(root));
       if (degenerate) {
         for (var di = 0; di < arr.length; di++) if (arr[di] !== null) hi(di, 'new');
         S.step(T('DEJENERE: hiçbir düğümün 2 çocuğu yok, her düğüm zincirin bir halkası. DEGENERATE: EVET.',
-                 'DEGENERATE: no node has 2 children, every node is a single link in a chain. DEGENERATE: YES.'), LINES_DEGENERATE);
+                 'DEGENERATE: no node has 2 children, every node is a single link in a chain. DEGENERATE: YES.'), { c: degenerateLines, java: degenerateLines });
       } else {
         hi(twoChildNode.idx, 'del');
         S.step(T('DEJENERE: `' + twoChildNode.val + '` düğümünün 2 çocuğu var — ağaç bir zincir değil, DEGENERATE DEĞİL.',
-                 'DEGENERATE: node `' + twoChildNode.val + '` has 2 children — the tree is not a chain, NOT degenerate.'), LINES_DEGENERATE);
+                 'DEGENERATE: node `' + twoChildNode.val + '` has 2 children — the tree is not a chain, NOT degenerate.'), { c: degenerateLines, java: degenerateLines });
       }
       clearHi();
 
@@ -522,17 +638,22 @@
         });
       }
       for (var hIdx = 0; hIdx < arr.length; hIdx++) if (arr[hIdx] !== null) annotate(S, hIdx, slots[hIdx], 'h=' + heightAt[hIdx]);
+      /* This first step's own bottom-up, level-by-level height pass is a different technique from the
+       * recursive `check_balance` shown in the code panel (same idea, computed the other way round, purely
+       * for the "h=" annotations) — so it references only the function signature for orientation; the
+       * verdict step below runs a REAL trace of the shown recursive code (see balanceTrace above). */
       S.step(T('DENGELİ (balanced) için önce her düğümün alt-ağaç yüksekliğini en alttan yukarı hesaplıyoruz (yapraklar h=0).',
-               'For BALANCED we first compute each node\'s subtree height bottom-up (leaves get h=0).'), LINES_BALANCED);
-      var balanced = firstUnbalanced === null;
+               'For BALANCED we first compute each node\'s subtree height bottom-up (leaves get h=0).'), { c: [43], java: [43] });
+      var balanceResult = balanceTrace(root);
+      var balanced = balanceResult.h !== -1;
       if (balanced) {
         S.step(T('Her düğümde |sol yükseklik - sağ yükseklik| <= 1. BALANCED: EVET.',
-                 'At every node, |left height - right height| <= 1. BALANCED: YES.'), LINES_BALANCED);
+                 'At every node, |left height - right height| <= 1. BALANCED: YES.'), { c: balanceResult.lines, java: balanceResult.lines });
       } else {
         hi(firstUnbalanced.idx, 'del');
         var hl2 = firstUnbalanced.left ? heightAt[firstUnbalanced.left.idx] : -1, hr2 = firstUnbalanced.right ? heightAt[firstUnbalanced.right.idx] : -1;
         S.step(T('`' + firstUnbalanced.val + '` düğümünde sol yükseklik ' + hl2 + ', sağ yükseklik ' + hr2 + ' — fark 1\'den büyük. BALANCED DEĞİL.',
-                 'At node `' + firstUnbalanced.val + '` the left height is ' + hl2 + ' and the right height is ' + hr2 + ' — the difference exceeds 1. NOT balanced.'), LINES_BALANCED);
+                 'At node `' + firstUnbalanced.val + '` the left height is ' + hl2 + ' and the right height is ' + hr2 + ' — the difference exceeds 1. NOT balanced.'), { c: balanceResult.lines, java: balanceResult.lines });
       }
       for (var hIdx2 = 0; hIdx2 < arr.length; hIdx2++) if (arr[hIdx2] !== null) { S.set('n' + hIdx2, { style: 'normal' }); clearAnnotate(S, hIdx2); }
 

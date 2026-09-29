@@ -24,8 +24,8 @@ public class DebugAverage {
         for (int v : arr) sb.append(' ').append(v);
         sb.append("  (n = ").append(arr.length).append(')');
         System.out.println(sb);
-        System.out.println("averageBuggy  -> " + averageBuggy(arr));
-        System.out.printf("averageFixed  -> %.2f%n%n", averageFixed(arr));
+        System.out.println("average_buggy  -> " + averageBuggy(arr));
+        System.out.printf("average_fixed  -> %.2f%n%n", averageFixed(arr));
     }
 
     public static void main(String[] args) {

@@ -49,8 +49,24 @@
     '    cur = cur.right;               // then walk into the right subtree',
     '}'
   ];
-  var LINES_PUSH = { c: [12, 13, 14], java: [12, 13, 14] };
-  var LINES_POP = { c: [16, 17, 18], java: [16, 17, 18] };
+  /** The inner `while (cur != NULL)` spine-push loop can push several nodes in a single visit to this
+   *  branch (e.g. the whole left-skewed chain at once) — trace one group per node actually pushed, in
+   *  order, preceded once by the outer loop's own check (12) and followed by the inner loop's final
+   *  (now-false) re-check (13). Each `push(cur)` call (14) is a call into the separate `push` helper: the
+   *  call line, then the callee's own body (2, 3 — its signature and closing brace are not executable
+   *  statements), then the line after the call (15), per the calling convention. */
+  function pushStepLines(count) {
+    var lines = [{ n: 12, note: T('cur != NULL || !boş mu? evet', 'cur != NULL || !is_empty()? yes') }];
+    for (var i = 0; i < count; i++) lines.push({ n: 13, note: T('cur != NULL? evet', 'cur != NULL? yes') }, 14, 2, 3, 15);
+    lines.push({ n: 13, note: T('cur != NULL? hayır', 'cur != NULL? no') });
+    return { c: lines, java: lines };
+  }
+  /** Every pop-and-visit round starts a fresh pass of the outer loop (12, still true) whose inner spine
+   *  loop finds `cur` already NULL (13, false — nothing left to push this round). `cur = pop()` (17) is a
+   *  call into the separate `pop` helper: the call line, then the callee's own body (7, 8, 9), then the
+   *  lines after the call (18, 19, 20), per the calling convention. */
+  var LINES_POP = { c: [{ n: 12, note: T('cur != NULL || !boş mu? evet', 'cur != NULL || !is_empty()? yes') }, { n: 13, note: T('cur != NULL? hayır', 'cur != NULL? no') }, 17, 7, 8, 9, 18, 19, 20],
+    java: [{ n: 12, note: T('cur != NULL || !boş mu? evet', 'cur != NULL || !is_empty()? yes') }, { n: 13, note: T('cur != NULL? hayır', 'cur != NULL? no') }, 17, 7, 8, 9, 18, 19, 20] };
 
   /* ---- tree helpers (local to this file; build() uses these, reference() does not) ---- */
   function buildTree(arr) {
@@ -187,7 +203,14 @@
       var root = buildTree(arr);
       if (!root) {
         S.label('empty', { x: 60, y: 50, text: T('Boş ağaç: yığına hiçbir şey itilmez.', 'Empty tree: nothing is ever pushed.'), anchor: 'start', size: 16 });
-        S.step(T('Ağaç boş (`tree = []`): `cur` baştan `NULL`, döngü hiç çalışmaz.', 'The tree is empty (`tree = []`): `cur` is `NULL` from the start, the loop never runs.'), { c: [11], java: [11] });
+        S.step(T('Ağaç boş (`tree = []`): `cur` baştan `NULL` ve yığın da boş, döngü koşulu baştan yanlış — gövdesi (13-20. satırlar) hiç çalışmaz.',
+                 'The tree is empty (`tree = []`): `cur` is `NULL` from the start and the stack is empty too, the loop condition is false from the outset — its body (lines 13-20) never runs.'),
+               { c: [{ n: 12, note: T('cur != NULL || !boş mu? hayır', 'cur != NULL || !is_empty()? no') },
+                     { n: 13, skip: true }, { n: 14, skip: true }, { n: 15, skip: true }, { n: 16, skip: true },
+                     { n: 17, skip: true }, { n: 18, skip: true }, { n: 19, skip: true }, { n: 20, skip: true }],
+                 java: [{ n: 12, note: T('cur != NULL || !boş mu? hayır', 'cur != NULL || !is_empty()? no') },
+                        { n: 13, skip: true }, { n: 14, skip: true }, { n: 15, skip: true }, { n: 16, skip: true },
+                        { n: 17, skip: true }, { n: 18, skip: true }, { n: 19, skip: true }, { n: 20, skip: true }] });
         S.result = [];
         return;
       }
@@ -234,10 +257,10 @@
           updateStack(stack);
           if (firstPush) {
             S.step(T('İç `while (cur != NULL)`: mümkün olduğunca sola git, geçtiğimiz HER düğümü yığına it (`push`). Bu sefer itilenler: ' + pushedVals.join(', ') + '.',
-                     'Inner `while (cur != NULL)`: go as far left as possible, `push`-ing EVERY node we pass. This time we pushed: ' + pushedVals.join(', ') + '.'), LINES_PUSH);
+                     'Inner `while (cur != NULL)`: go as far left as possible, `push`-ing EVERY node we pass. This time we pushed: ' + pushedVals.join(', ') + '.'), pushStepLines(pushedVals.length));
             firstPush = false;
           } else {
-            S.step(T('Yine sola gidip itiyoruz: ' + pushedVals.join(', ') + '.', 'Going left and pushing again: ' + pushedVals.join(', ') + '.'), LINES_PUSH);
+            S.step(T('Yine sola gidip itiyoruz: ' + pushedVals.join(', ') + '.', 'Going left and pushing again: ' + pushedVals.join(', ') + '.'), pushStepLines(pushedVals.length));
           }
         } else {
           var n = stack.pop();

@@ -895,7 +895,8 @@ Yalnız `n == 0`: negatif bir başlangıç değeri onu
 ```c
 int fact(int n) {
     if (n == 0) return 1;
-    return n * fact(n - 1);
+    /* unsigned multiply: defined wraparound, not signed-overflow UB */
+    return (int) ((unsigned) n * (unsigned) fact(n - 1));
 }
 ```
 
@@ -1254,7 +1255,7 @@ hiç bakmaz. Gerçek çözüm sırada: diziyi bir **halka** gibi düşünün.
 
 - Son indisten sonra yine ilk indis gelir
 - `(indis + 1) % CAP`, ileri yürür, başa döner
-- `front == rear` artık belirsiz (boş mu, dolu mu?)
+- `front == (rear + 1) % CAP` artık belirsiz (boş mu, dolu mu?)
 - Bunu çözmek için bir alan daha tut: `count`
 
 <!-- Konuşma notu: Boşa giden yer, yalnızca diziyi düz bir çizgi olarak düşündüğümüz için boşa gidiyordu. -->
@@ -1303,9 +1304,9 @@ bool dequeue(int *out) {
 
 # Neden `count`'a da ihtiyacımız var
 
-`front == rear`, "tek eleman", "boş" ya da
-**"tamamen dolu"** anlamına gelebilir — düz bir
-indis karşılaştırması artık bunları ayırt edemez.
+`front == (rear + 1) % CAP`, hem kuyruk boşken
+hem de **tamamen doluyken** doğrudur — düz bir
+indis karşılaştırması artık bu iki durumu ayırt edemez.
 
 <!-- Konuşma notu: count, akıllı indis hilelerine güvenmek yerine belirsizliği doğrudan çözer. -->
 
@@ -1323,7 +1324,7 @@ kalktı, ve her işlem hâlâ **O(1)**.
 
 # Sık yapılan hatalar (dairesel kuyruk)
 
-- Yalnız `front == rear`'ı "boş" anlamına kullanmak
+- `count` yerine bir indis karşılaştırmasını "boş"/"dolu" için kullanmak
 - İki indisten **birinde** modu unutmak
 - İkisi de halkayı bir başa dönüşten sonra bozar
 
@@ -1333,18 +1334,19 @@ kalktı, ve her işlem hâlâ **O(1)**.
 
 # Mini soru
 
-`count`, `CAP`'e ulaştıktan sonra, `front == rear`
-şimdi ne anlama gelir, boşken ne anlama geldiğine kıyasla?
+Kuyruk az önce boşaldığı anda VE az önce dolduğu
+anda hangi indis ilişkisi doğru olur — ve indisler
+tek başına bu ikisini neden ayırt edemez?
 
-<!-- Konuşma notu: Hem "az önce boşaldı" hem "az önce doldu" durumları front == rear gösterebilir. -->
+<!-- Konuşma notu: Hem "az önce boşaldı" hem "az önce doldu" durumları front == (rear + 1) % CAP gösterir. -->
 
 ---
 
 # Yanıt
 
-Her iki durum da `front == rear` gösterebilir;
-ikisini ayıran tam olarak **`count`**'tur, çünkü
-indisler tek başına belirsizdir.
+Her iki durum da `front == (rear + 1) % CAP`
+gösterir; ikisini ayıran tam olarak **`count`**'tur,
+çünkü indis ilişkisi tek başına ikisinde de aynıdır.
 
 <!-- Konuşma notu: count'un isteğe bağlı bir kayıt değil, belirsizliği çözen tek şey olmasının nedeni bu. -->
 
@@ -1658,11 +1660,11 @@ iki uç (kuyruk/deque), ya da birkaç paralel kuyruk (çok seviyeli).
 
 - Bugünün her konusu için alıştırmalar hafta
   notlarında: `docs/week-3/cen207-week-3.tr.md`
-- Peek, dengesiz parantez denetimi, prefix'siz
-  infix-prefix çevirisi, count'suz dairesel kuyruk,
-  palindrom denetimi, daha adil çok seviyeli zamanlama
+- Peek, dengesiz parantez hatasının *nerede* olduğunu
+  bulma, prefix'siz infix-prefix çevirisi, count'suz
+  dairesel kuyruk, palindrom denetimi, daha adil zamanlama
 
-<!-- Konuşma notu: Bunlar, yazılı notların sonunda listelenen, çözüm taslaklı aynı beş alıştırma. -->
+<!-- Konuşma notu: Bunlar, yazılı notların sonunda listelenen, çözüm taslaklı aynı altı alıştırma. -->
 
 ---
 
@@ -1737,13 +1739,13 @@ görünmeden önce düşünün.
 
 # 6. Dairesel kuyruk, `front`/`rear`'ın ötesinde hangi ekstra duruma ihtiyaç duyar?
 
-<!-- Konuşma notu: front == rear belirsizliğini düşünün. -->
+<!-- Konuşma notu: front == (rear + 1) % CAP belirsizliğini düşünün. -->
 
 ---
 
 # Şu anki eleman sayısını tutan bir `count` — indisler tek başına boşu doludan ayıramaz.
 
-<!-- Konuşma notu: Bir başa dönüşten sonra, front == rear artık soruyu tek başına çözemez. -->
+<!-- Konuşma notu: Bir başa dönüşten sonra, front == (rear + 1) % CAP artık soruyu tek başına çözemez. -->
 
 ---
 

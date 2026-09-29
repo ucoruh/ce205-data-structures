@@ -135,7 +135,8 @@
           var sid = 's' + i2;
           S.box(sid, { x: X0 + Math.min(ROWCAP, n) * DX + 45, y: Y0 + 170 - stack.length * 42, w: 90, h: 38, text: String(t), style: 'new', size: 18 });
           stack.push({ v: t, id: sid });
-          S.step(T('`' + t + '` bir sayı: yığına it.', '`' + t + '` is a number: push it.'), { c: [5, 6], java: [5, 6] });
+          S.step(T('`' + t + '` bir sayı: yığına it.', '`' + t + '` is a number: push it.'),
+                 { c: [{ n: 5, note: T('sayı mı? evet', 'a number? yes') }, 6], java: [{ n: 5, note: T('sayı mı? evet', 'a number? yes') }, 6] });
           S.set(sid, { style: 'normal' });
           continue;
         }
@@ -144,19 +145,24 @@
           result = { error: { kind: 'too-few', at: i2 } };
           decide('too few!', 'del');
           S.step(T('`' + t + '` bir işleç ama yığında iki işlenenden az var → **çok az işlenen**. Hesaplama durur.',
-                   '`' + t + '` is an operator but the stack has fewer than two operands → **too few operands**. Evaluation stops.'), { c: 8, java: 8 });
+                   '`' + t + '` is an operator but the stack has fewer than two operands → **too few operands**. Evaluation stops.'),
+                 { c: [{ n: 5, note: T('sayı mı? hayır', 'a number? no') }, 7, { n: 8, note: T('top < 1? evet', 'top < 1? yes') }],
+                   java: [{ n: 5, note: T('sayı mı? hayır', 'a number? no') }, 7, { n: 8, note: T('top < 1? evet', 'top < 1? yes') }] });
           break;
         }
         var ao = stack.pop(), bo = stack.pop();
         S.set(ao.id, { style: 'hl' }); S.set(bo.id, { style: 'hl' });
         S.step(T('`' + t + '` bir işleç. Postfix\'in tersine, ilk çekilen **sol** işlenendir (a = ' + ao.v + '), ikincisi sağ (b = ' + bo.v + ').',
-                 '`' + t + '` is an operator. Unlike postfix, the first value popped is the **left** operand (a = ' + ao.v + '), the second is the right one (b = ' + bo.v + ').'), { c: [9, 10], java: [9, 10] });
+                 '`' + t + '` is an operator. Unlike postfix, the first value popped is the **left** operand (a = ' + ao.v + '), the second is the right one (b = ' + bo.v + ').'),
+               { c: [{ n: 5, note: T('sayı mı? hayır', 'a number? no') }, 7, { n: 8, note: T('top < 1? hayır', 'top < 1? no') }, 9, 10],
+                 java: [{ n: 5, note: T('sayı mı? hayır', 'a number? no') }, 7, { n: 8, note: T('top < 1? hayır', 'top < 1? no') }, 9, 10] });
         if (t === '/' && bo.v === 0) {
           S.remove(ao.id, bo.id);
           result = { error: { kind: 'div-zero', at: i2 } };
           decide(ao.v + ' / 0!', 'del');
           S.step(T('`' + ao.v + ' / 0`: sıfıra bölme → **hata**. Hesaplama hemen durur, `false` döner.',
-                   '`' + ao.v + ' / 0`: division by zero → **error**. Evaluation stops right away and returns `false`.'), { c: 11, java: 11 });
+                   '`' + ao.v + ' / 0`: division by zero → **error**. Evaluation stops right away and returns `false`.'),
+                 { c: { n: 11, note: T('/ ve b==0? evet', '/ and b==0? yes') }, java: { n: 11, note: T('/ ve b==0? evet', '/ and b==0? yes') } });
           break;
         }
         var v = apply(t, ao.v, bo.v);
@@ -166,7 +172,8 @@
         stack.push({ v: v, id: rid });
         decide(ao.v + ' ' + SIGN[t] + ' ' + bo.v + ' = ' + v, 'new');
         S.step(T(ao.v + ' ' + SIGN[t] + ' ' + bo.v + ' = ' + v + '. Sonuç yığına geri itilir.',
-                 ao.v + ' ' + SIGN[t] + ' ' + bo.v + ' = ' + v + '. The result is pushed back.'), { c: 12, java: 12 });
+                 ao.v + ' ' + SIGN[t] + ' ' + bo.v + ' = ' + v + '. The result is pushed back.'),
+               { c: [{ n: 11, note: T('/ ve b==0? hayır', '/ and b==0? no') }, 12], java: [{ n: 11, note: T('/ ve b==0? hayır', '/ and b==0? no') }, 12] });
         S.set(rid, { style: 'normal' });
       }
       if (!result) {
@@ -174,13 +181,15 @@
           result = { error: { kind: 'too-many', at: 0 } };
           decide('too many!', 'del');
           S.step(T('Girdi bitti ama yığında ' + stack.length + ' değer kaldı (bir olmalıydı) → **çok fazla işlenen**.',
-                   'The input is over but ' + stack.length + ' values are left on the stack (should be one) → **too many operands**.'), { c: 15, java: 15 });
+                   'The input is over but ' + stack.length + ' values are left on the stack (should be one) → **too many operands**.'),
+                 { c: { n: 15, note: T('top != 0? evet', 'top != 0? yes') }, java: { n: 15, note: T('top != 0? evet', 'top != 0? yes') } });
         } else {
           S.set(stack[0].id, { style: 'hl' });
           result = { value: stack[0].v };
           decide('= ' + stack[0].v, 'new');
           S.step(T('Girdi bitti; yığında tek değer kaldı: **' + stack[0].v + '**. Prefix ve postfix aynı fikrin iki yönüdür; ikisi de O(n).',
-                   'The input is over; one value is left on the stack: **' + stack[0].v + '**. Prefix and postfix are the same idea in two directions; both run in O(n).'), { c: 16, java: 16 });
+                   'The input is over; one value is left on the stack: **' + stack[0].v + '**. Prefix and postfix are the same idea in two directions; both run in O(n).'),
+                 { c: [{ n: 15, note: T('top != 0? hayır', 'top != 0? no') }, 16], java: [{ n: 15, note: T('top != 0? hayır', 'top != 0? no') }, 16] });
         }
       }
       S.result = result;

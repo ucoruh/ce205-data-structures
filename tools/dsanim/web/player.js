@@ -14,13 +14,13 @@
     tr: { play: 'Oynat', pause: 'Duraklat', next: 'Sonraki adım', prev: 'Önceki adım', first: 'Başa dön', last: 'Sona git',
           speed: 'Hız', voice: 'Sesli anlatım', step: 'Adım', example: 'Örnek', level: 'Zorluk', random: 'Rastgele',
           own: 'Kendi değerlerin', apply: 'Uygula', custom: 'Kendi değerleri', randomName: 'Rastgele',
-          input: 'Girdi', upNext: 'Sıradaki →', lastStep: 'Son adım.', faster: 'Hızlandır (+)', slower: 'Yavaşlat (−)',
+          zoomIn: 'Yakınlaştır (Ctrl+tekerlek)', zoomOut: 'Uzaklaştır', zoomFit: 'Sığdır (0)', full: 'Tam ekran (f)', input: 'Girdi', upNext: 'Sıradaki →', lastStep: 'Son adım.', faster: 'Hızlandır (+)', slower: 'Yavaşlat (−)',
           levels: { easy: 'kolay', normal: 'normal', hard: 'zor', extreme: 'uç' },
           groups: { normal: 'Normal', hard: 'Zor', edge: 'Uç ve anormal durumlar' } },
     en: { play: 'Play', pause: 'Pause', next: 'Next step', prev: 'Previous step', first: 'First step', last: 'Last step',
           speed: 'Speed', voice: 'Narration', step: 'Step', example: 'Example', level: 'Difficulty', random: 'Random',
           own: 'Your values', apply: 'Apply', custom: 'Your values', randomName: 'Random',
-          input: 'Input', upNext: 'Next →', lastStep: 'Last step.', faster: 'Faster (+)', slower: 'Slower (−)',
+          zoomIn: 'Zoom in (Ctrl+wheel)', zoomOut: 'Zoom out', zoomFit: 'Fit (0)', full: 'Full screen (f)', input: 'Input', upNext: 'Next →', lastStep: 'Last step.', faster: 'Faster (+)', slower: 'Slower (−)',
           levels: { easy: 'easy', normal: 'normal', hard: 'hard', extreme: 'extreme' },
           groups: { normal: 'Normal', hard: 'Hard', edge: 'Edge and abnormal cases' } }
   };
@@ -28,7 +28,7 @@
   var SPEEDS = [0.5, 0.75, 1, 1.5, 2, 3, 4];
   function savedSpeed() { try { var v = +window.localStorage.getItem('dsanim-speed'); return SPEEDS.indexOf(v) >= 0 ? v : 1; } catch (e) { return 1; } }
   function saveSpeed(v) { try { window.localStorage.setItem('dsanim-speed', String(v)); } catch (e) { /* private mode */ } }
-  function plain(s) { return String(s || '').replace(/[`*]/g, ''); }
+  function plain(s) { return String(s || '').replace(/\*\*/g, '').replace(/`/g, ''); }   // drop bold markers and backticks, keep a lone * (it is an operator)
 
   function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
   function nums(s) { return (s || '').match(NUMS) || []; }
@@ -179,6 +179,17 @@
     this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     this.svg.setAttribute('role', 'img');
     stage.appendChild(this.svg);
+    // zoom / pan / full screen: + − fit ⤢ ; Ctrl+wheel (or wheel when zoomed) zooms at the cursor, drag pans,
+    // double-click zooms in (or back to fit), two-finger pinch on touch screens
+    var zb = el('div', 'dsa-zoom');
+    [['+', y.zoomIn, function () { self.zoomBy(1.4); }], ['−', y.zoomOut, function () { self.zoomBy(1 / 1.4); }],
+     ['↺', y.zoomFit, function () { self.resetView(); }], ['⤢', y.full, function () { self.fullScreen(); }]].forEach(function (b) {
+      var x = el('button', 'dsa-zb', b[0]); x.type = 'button'; x.title = b[1]; x.setAttribute('aria-label', b[1]);
+      x.addEventListener('click', b[2]); zb.appendChild(x);
+    });
+    stage.appendChild(zb);
+    this.stage = stage;
+    this.bindZoom(stage);
     body.appendChild(stage);
     if (Object.keys(this.code).length) {
       var box = el('div', 'dsa-kod'), tabs = el('div', 'dsa-sekme');
@@ -214,6 +225,8 @@
       else if (e.key === 'ArrowLeft' || e.key === 'j') { e.preventDefault(); self.stop(); self.go(self.i - 1, true); }
       else if (e.key === 'Home') { e.preventDefault(); self.stop(); self.go(0, true); }
       else if (e.key === 'End') { e.preventDefault(); self.stop(); self.go(self.frames.length - 1, true); }
+      else if (e.key === 'f') { e.preventDefault(); self.fullScreen(); }
+      else if (e.key === '0') { e.preventDefault(); self.resetView(); }
       else if (e.key === '+' || e.key === '=') { e.preventDefault(); var k1 = SPEEDS.indexOf(self.speed); if (k1 < SPEEDS.length - 1) self.setSpeed(SPEEDS[k1 + 1]); }
       else if (e.key === '-' || e.key === '_') { e.preventDefault(); var k2 = SPEEDS.indexOf(self.speed); if (k2 > 0) self.setSpeed(SPEEDS[k2 - 1]); }
     });
@@ -229,7 +242,7 @@
     this.data = data;
     if (typeof this.spec.code === 'function') { this.code = this.codeOf(data); this.drawCode(); }
     this.vb = window.DSAnim.viewBox(this.frames);
-    this.svg.setAttribute('viewBox', this.vb.join(' '));
+    this.resetView();
     this.svg.innerHTML = window.DSAnim.defs() + '<g class="kat kat-arka"></g><g class="kat kat-ok"></g><g class="kat kat-sekil"></g><g class="kat kat-etiket"></g>';
     this.inner = this.frames.map(function (f) { return window.DSAnim.render(f.state, f.order, null); });
     if (this.sel && id && id.indexOf('__') !== 0) this.sel.value = id;
@@ -249,6 +262,71 @@
     if (this.levelSel) this.levelSel.value = level;
   };
 
+  /** View = base view box scaled by zoom z around centre (cx, cy). */
+  Player.prototype.resetView = function () {
+    var b = this.vb; this.view = { z: 1, cx: b[0] + b[2] / 2, cy: b[1] + b[3] / 2 }; this.applyView();
+  };
+  Player.prototype.applyView = function () {
+    var b = this.vb, v = this.view, w = b[2] / v.z, h = b[3] / v.z;
+    this.svg.setAttribute('viewBox', [v.cx - w / 2, v.cy - h / 2, w, h].map(function (x) { return Math.round(x * 10) / 10; }).join(' '));
+    if (this.stage) this.stage.classList.toggle('dsa-zoomed', v.z > 1.001);
+  };
+  /** Zoom by factor f keeping the scene point under (px, py) (client coords) fixed; default: the centre. */
+  Player.prototype.zoomBy = function (f, px, py) {
+    var v = this.view, b = this.vb, z = Math.max(1, Math.min(8, v.z * f));
+    if (px !== undefined) {
+      var r = this.svg.getBoundingClientRect(), w = b[2] / v.z, h = b[3] / v.z;
+      var sx = v.cx - w / 2 + (px - r.left) / r.width * w, sy = v.cy - h / 2 + (py - r.top) / r.height * h, k = v.z / z;
+      v.cx = sx + (v.cx - sx) * k; v.cy = sy + (v.cy - sy) * k;
+    }
+    v.z = z; if (z === 1) { v.cx = b[0] + b[2] / 2; v.cy = b[1] + b[3] / 2; }
+    this.applyView();
+  };
+  Player.prototype.fullScreen = function () {
+    var r = this.root, d = document;
+    if (d.fullscreenElement) { d.exitFullscreen(); return; }
+    if (r.requestFullscreen) r.requestFullscreen().catch(function () { /* not allowed in this frame */ });
+  };
+  Player.prototype.bindZoom = function (stage) {
+    var self = this, drag = null, pinch = null;
+    stage.addEventListener('wheel', function (e) {
+      if (!e.ctrlKey && !(self.view && self.view.z > 1.001)) return;   // plain wheel keeps scrolling the page
+      e.preventDefault(); self.zoomBy(e.deltaY < 0 ? 1.15 : 1 / 1.15, e.clientX, e.clientY);
+    }, { passive: false });
+    stage.addEventListener('dblclick', function (e) {
+      if (e.target.closest && e.target.closest('.dsa-zoom')) return;
+      if (self.view.z > 1.001) self.resetView(); else self.zoomBy(2, e.clientX, e.clientY);
+    });
+    stage.addEventListener('pointerdown', function (e) {
+      if (e.target.closest && e.target.closest('.dsa-zoom')) return;
+      if (e.pointerType === 'touch') return;
+      if (self.view.z <= 1.001) return;
+      drag = { x: e.clientX, y: e.clientY, cx: self.view.cx, cy: self.view.cy };
+      stage.setPointerCapture(e.pointerId); stage.classList.add('dsa-drag');
+    });
+    stage.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var r = self.svg.getBoundingClientRect(), k = (self.vb[2] / self.view.z) / r.width;
+      self.view.cx = drag.cx - (e.clientX - drag.x) * k; self.view.cy = drag.cy - (e.clientY - drag.y) * k; self.applyView();
+    });
+    ['pointerup', 'pointercancel'].forEach(function (t) { stage.addEventListener(t, function () { drag = null; stage.classList.remove('dsa-drag'); }); });
+    stage.addEventListener('touchstart', function (e) {
+      if (e.touches.length === 2) { pinch = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); }
+      else if (e.touches.length === 1 && self.view.z > 1.001) { drag = { x: e.touches[0].clientX, y: e.touches[0].clientY, cx: self.view.cx, cy: self.view.cy }; }
+    }, { passive: true });
+    stage.addEventListener('touchmove', function (e) {
+      if (e.touches.length === 2 && pinch) {
+        e.preventDefault();
+        var d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+        self.zoomBy(d / pinch, (e.touches[0].clientX + e.touches[1].clientX) / 2, (e.touches[0].clientY + e.touches[1].clientY) / 2); pinch = d;
+      } else if (e.touches.length === 1 && drag) {
+        e.preventDefault();
+        var r = self.svg.getBoundingClientRect(), k = (self.vb[2] / self.view.z) / r.width;
+        self.view.cx = drag.cx - (e.touches[0].clientX - drag.x) * k; self.view.cy = drag.cy - (e.touches[0].clientY - drag.y) * k; self.applyView();
+      }
+    }, { passive: false });
+    stage.addEventListener('touchend', function () { pinch = null; drag = null; });
+  };
   Player.prototype.drawTape = function (data) {
     if (!this.tape || !this.spec.input) return;
     var inp = this.spec.input, toks = inp.tokens ? inp.tokens(data) : String(inp.format(data)).split(/\s+/).filter(Boolean);
@@ -276,20 +354,45 @@
     }).join('');
   };
 
-  Player.prototype.markCode = function () {
-    if (!this.pre) return;
-    var f = this.frames[this.i], hot = (f.lines && f.lines[this.codeLang]) || [], first = null;
-    Array.prototype.forEach.call(this.pre.children, function (s) {
-      var on = hot.indexOf(+s.getAttribute('data-n')) >= 0;
-      s.classList.toggle('vurgu', on);
-      if (on && !first) first = s;
+  /** Lines of the current step for the chosen language: run (in execution order), notes (branch results), skip. */
+  Player.prototype.hotLines = function () {
+    var f = this.frames[this.i], raw = (f && f.lines && f.lines[this.codeLang]) || [], h = { run: [], notes: {}, skip: {} };
+    raw.forEach(function (x) {
+      var n = x && typeof x === 'object' ? +x.n : +x;
+      if (x && typeof x === 'object' && x.note !== undefined) h.notes[n] = x.note;
+      if (x && typeof x === 'object' && x.skip) h.skip[n] = true; else h.run.push(n);
     });
-    if (first) {
-      var p = this.pre, top = first.offsetTop - p.offsetTop;
+    return h;
+  };
+  /** Highlight the step's lines; the program counter (▶) sits on run[pc] (default: the last line run). */
+  Player.prototype.markCode = function (pc) {
+    if (!this.pre) return;
+    var h = this.hotLines(), lang = this.lang, curEl = null;
+    var cur = h.run.length ? h.run[pc === undefined ? h.run.length - 1 : Math.min(pc, h.run.length - 1)] : null;
+    Array.prototype.forEach.call(this.pre.children, function (s) {
+      var n = +s.getAttribute('data-n'), old = s.querySelector('.dsa-not');
+      s.classList.toggle('vurgu', h.run.indexOf(n) >= 0);
+      s.classList.toggle('atla', !!h.skip[n]);
+      s.classList.toggle('pc', n === cur);
+      if (old) s.removeChild(old);
+      if (h.notes[n] !== undefined && (!h.run.length || h.run.indexOf(n) <= h.run.indexOf(cur) || h.skip[n])) {
+        var b = document.createElement('span'); b.className = 'dsa-not'; b.textContent = pick(h.notes[n], lang); s.appendChild(b);
+      }
+      if (n === cur) curEl = s;
+    });
+    if (curEl) {
+      var p = this.pre, top = curEl.offsetTop - p.offsetTop;
       if (top < p.scrollTop || top > p.scrollTop + p.clientHeight - 30) p.scrollTop = Math.max(0, top - 40);
     }
   };
-
+  /** Walk the program counter through the step's lines one by one within `total` ms. */
+  Player.prototype.walkPc = function (total) {
+    var self = this, n = this.hotLines().run.length, k = 0;
+    clearTimeout(this.pcTimer);
+    if (n <= 1) { this.markCode(); return; }
+    var dt = Math.max(110, Math.min(700, total / n));
+    (function tick() { self.markCode(k); k++; if (k < n) self.pcTimer = setTimeout(tick, dt); })();
+  };
   Player.prototype.go = function (target, animate) {
     var n = this.frames.length;
     if (target < 0 || target >= n) { if (target >= n) this.stop(); return; }
@@ -307,7 +410,8 @@
       this.nextEl.innerHTML = '<span class="dsa-sonraki-etk">' + esc(y2.upNext) + '</span> ' + esc(nc);
     } else this.nextEl.innerHTML = '<span class="dsa-sonraki-etk">' + esc(y2.lastStep) + '</span>';
     this.slider.value = target + 1;
-    this.markCode();
+    if (animate && !this.o.static) this.walkPc(this.playing ? this.wait() * 0.75 : 160 * this.hotLines().run.length / this.speed);
+    else this.markCode();
     if (this.voice) this.say();
   };
 
@@ -478,6 +582,11 @@
         if (!player.err.textContent) errors.push('bad own values were accepted');
       }
       player.go(0, false); player.go(1, true); player.go(2, true);   // animated transitions must not throw
+      var vbw = function () { return +player.svg.getAttribute('viewBox').split(' ')[2]; }, w0 = vbw();
+      player.zoomBy(2);
+      if (Math.abs(vbw() * 2 - w0) > 1) errors.push('zoom in did not halve the view width');
+      player.resetView();
+      if (Math.abs(vbw() - w0) > 1) errors.push('fit did not restore the view');
     } catch (e) { errors.push(String(e && e.stack || e)); }
     var out = document.createElement('pre');
     out.id = 'dsa-selftest';

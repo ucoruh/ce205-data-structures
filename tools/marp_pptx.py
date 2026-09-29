@@ -39,7 +39,7 @@ BODY_W = SLIDE_W - LEFT - RIGHT
 SOURCE_DIR = None      # set by convert(): folder holding the source .md (slides/week-N)
 CURRENT_LANG = 'en'    # set by convert(): language of the deck being rendered, used for anim GIFs
 
-_ANIM_IFRAME = re.compile(r'^<iframe\s+class="dsanim"\s+[^>]*\bsrc="([^"?]+?)(?:\?[^"]*)?"[^>]*>\s*</iframe>$')
+_ANIM_IFRAME = re.compile(r'^<iframe\s+class="dsanim"\s+[^>]*\bsrc="([^"]+?)"[^>]*>\s*</iframe>$')   # full src incl. query
 
 
 # ------------------------------------------------------------------ parsing
@@ -70,9 +70,14 @@ def split_slides(md):
     return [s for s in slides if s.strip()]
 
 
-def anim_gif_relpath(src, lang):
-    """'anim/hanoi.html' + 'tr' -> 'anim/hanoi.tr.gif' (name always derived from the iframe src)."""
-    p = pathlib.PurePosixPath(src)
+def anim_gif_relpath(src, lang, with_example=True):
+    """'anim/hanoi.html?...' + 'tr' -> 'anim/hanoi.tr.gif' (name always derived from the iframe src);
+    with &example=<preset> -> 'anim/hanoi--<preset>.tr.gif' (built by tools/dsanim for the presets decks use)."""
+    path, _, query = src.partition('?')
+    p = pathlib.PurePosixPath(path)
+    ex = re.search(r'(?:^|&|&amp;)example=([\w-]+)', query)
+    if with_example and ex:
+        return str(p.parent / f'{p.stem}--{ex.group(1)}.{lang}.gif')
     return str(p.parent / f'{p.stem}.{lang}.gif')
 
 
@@ -206,10 +211,10 @@ def resolve_anim_gif(src, lang):
     if SOURCE_DIR is None:
         return None
     root = pathlib.Path(SOURCE_DIR)
-    rel = anim_gif_relpath(src, lang)
-    for c in (root / rel, root.parent.parent / 'docs' / root.name / rel):
-        if c.exists():
-            return c
+    for rel in (anim_gif_relpath(src, lang), anim_gif_relpath(src, lang, False)):   # preset GIF, else default
+        for c in (root / rel, root.parent.parent / 'docs' / root.name / rel):
+            if c.exists():
+                return c
     return None
 
 

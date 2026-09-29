@@ -345,7 +345,7 @@ küçük bir fikirden gerçekten ne kadar yapı çıkar?
 
 ---
 
-# Uç durum — yönlü, iki döngü, bir öz-döngü
+# Uç durum — yönlü, birden çok döngü, bir öz-döngü
 
 <iframe class="dsanim" src="anim/graph-terminology.html?yer=slayt&lang=tr&example=hard" title="Çizge terimleri: yönlü, zor"></iframe>
 

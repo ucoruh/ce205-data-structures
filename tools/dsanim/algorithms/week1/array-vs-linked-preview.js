@@ -136,7 +136,8 @@
       S.label('acalc', { x: 700, y: 40, text: 'arr[' + k + ']: ' + base + ' + ' + k + '×4 = ' + arrAddr, size: 14, mono: true, bold: true });
       S.step(T('Dizide erişim (array access): `arr[' + k + ']`\'e ulaşmak TEK bir hesap — taban adres (base) + indis × eleman boyu = ' + arrAddr + '. **1 adım, O(1)**.',
                'Array access: reaching `arr[' + k + ']` is a SINGLE calculation — base address + index × element size = ' + arrAddr + '. **1 step, O(1)**.'),
-             { c: [5, 6], java: [5, 6] });
+             { c: [{ n: 5, note: T('i < N? evet (dizi yazdırılırken)', 'i < N? yes (while printing the array)') }, 6],
+               java: [{ n: 5, note: T('i < N? evet (dizi yazdırılırken)', 'i < N? yes (while printing the array)') }, 6] });
       S.set('n0', { style: 'hl' });
       if (k === 0) {
         S.step(T('Bağlı listede erişim (linked-list access): `k = 0`, zaten baştayız (head) — **0 sıçrama (hop)** gerekiyor.',
@@ -145,16 +146,19 @@
         var grouped = 0, j;
         for (j = 1; j <= k; j++) {
           var detailed = j <= DETAIL_HOPS || j === k;
+          var hopNote = T('hop < k? (' + (j - 1) + ' < ' + k + ') evet', 'hop < k? (' + (j - 1) + ' < ' + k + ') yes');
           if (j === k && grouped > 0) {
             S.step(T(grouped + ' sıçrama daha aynı şekilde `next`\'i izleyerek geçildi.',
-                     grouped + ' more hops went by the same way, following `next`.'), { c: [17, 18], java: [17, 18] });
+                     grouped + ' more hops went by the same way, following `next`.'),
+                   { c: [{ n: 17, note: hopNote }, 18], java: [{ n: 17, note: hopNote }, 18] });
           }
           S.at(j);
           S.set('n' + (j - 1), { style: 'dim' });
           S.set('n' + j, { style: 'hl' });
           if (detailed) {
             S.step(T(j + '. sıçrama: `p = p->next` ile düğüm ' + (j - 1) + '\'den düğüm ' + j + '\'e geçiyoruz.',
-                     'Hop ' + j + ': `p = p->next` moves us from node ' + (j - 1) + ' to node ' + j + '.'), { c: [17, 18], java: [17, 18] });
+                     'Hop ' + j + ': `p = p->next` moves us from node ' + (j - 1) + ' to node ' + j + '.'),
+                   { c: [{ n: 17, note: hopNote }, 18], java: [{ n: 17, note: hopNote }, 18] });
           } else {
             grouped++;
           }

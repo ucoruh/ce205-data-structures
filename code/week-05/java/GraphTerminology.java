@@ -193,13 +193,13 @@ public class GraphTerminology {
         };
         runScenario("normal: 8 vertices, weighted, a cycle, a self-loop, a multi-edge and 2 components", false, normal);
 
-        // hard: 8 vertices, directed, two cycles, a self-loop, a multi-edge and 2 weak components
+        // hard: 8 vertices, directed, multiple cycles, a self-loop, a multi-edge and 2 weak components
         EdgeIn[] hard = {
             new EdgeIn("P", "Q", 3), new EdgeIn("Q", "R", 1), new EdgeIn("R", "P", 4), new EdgeIn("R", "S", 2),
             new EdgeIn("S", "T", 5), new EdgeIn("T", "U", 1), new EdgeIn("T", "U", 1), new EdgeIn("U", "U", 6),
             new EdgeIn("Q", "S", 2), new EdgeIn("S", "Q", 3), new EdgeIn("V", "W", 2), new EdgeIn("W", "V", 3)
         };
-        runScenario("hard: 8 vertices, directed, two cycles, a self-loop, a multi-edge and 2 weak components", true, hard);
+        runScenario("hard: 8 vertices, directed, multiple cycles, a self-loop, a multi-edge and 2 weak components", true, hard);
 
         // edge: an 11-vertex chain, no cycle, unweighted, connected
         EdgeIn[] noCycle = {

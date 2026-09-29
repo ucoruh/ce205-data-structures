@@ -34,10 +34,10 @@ public class BinarySearch {
         printArray(arr);
         int index = binarySearch(arr, target);
         if (index >= 0)
-            System.out.println("binarySearch(target=" + target + ") -> found at index " + index
+            System.out.println("binary_search(target=" + target + ") -> found at index " + index
                     + ", " + comparisons + " comparison" + (comparisons == 1 ? "" : "s"));
         else
-            System.out.println("binarySearch(target=" + target + ") -> not found, "
+            System.out.println("binary_search(target=" + target + ") -> not found, "
                     + comparisons + " comparisons");
         System.out.println();
     }

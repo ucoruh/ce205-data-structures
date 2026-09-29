@@ -8,6 +8,7 @@
 #include <stdio.h>
 
 int exponential_search(const int arr[], int n, int target, int *comparisons) {
+    if (n <= 0) { *comparisons = 0; return -1; }    /* nothing to search */
     int comp = 1;                    /* the arr[0] check below counts as comparison #1 */
     printf("  check arr[0] = %d\n", arr[0]);
     if (arr[0] == target) { *comparisons = comp; return 0; }

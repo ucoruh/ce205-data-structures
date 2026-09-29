@@ -160,6 +160,11 @@ you have jumped past where `target` must be, fall back to a plain linear scan of
 is **jump search**: simpler arithmetic than binary search, sequential memory access within each block, at the
 cost of being asymptotically slower than binary search (though still far faster than linear search).
 
+This block-style search appears in Donald Knuth's *The Art of Computer Programming, Volume 3: Sorting and
+Searching* (1973) as an alternative to binary search, presented specifically as a case where a simple
+calculus argument — minimizing the sum of two costs — determines the algorithm's one free parameter, the
+block size.
+
 ### 2.2 The idea and the right block size
 
 Pick a block size `b`. Check `arr[b-1]`, `arr[2b-1]`, `arr[3b-1]`, … until you find a boundary that is `>=
@@ -494,6 +499,11 @@ straight to a good estimate of the right page. **Interpolation search** does exa
 numbers: instead of always checking the middle, it computes an estimated position with a formula, using how
 far `target` sits between the smallest and largest values currently in range.
 
+This position-estimating idea for searching ordered data appears in W. W. Peterson's 1957 paper *Addressing
+for Random-Access Storage* (IBM Journal of Research and Development) — the same early paper that laid out
+foundational ideas for organizing random-access storage that this week's later sections on hashing also draw
+on — and was subsequently formalized and analyzed under the name **interpolation search**.
+
 ### 3.2 The formula
 
 Within the current range `[lo..hi]`, assume the values are roughly evenly spaced between `arr[lo]` and
@@ -534,7 +544,11 @@ loses badly on adversarial or heavily skewed data.
                 *probes = p;
                 return lo;                            /* target must equal arr[lo] here */
             }
-            int pos = lo + (int) ((double) (target - arr[lo]) * (hi - lo) / (arr[hi] - arr[lo]));
+            /* widen to long long: target-arr[lo] and arr[hi]-arr[lo] can overflow a 32-bit int
+               when the array spans values near INT_MIN and INT_MAX at once */
+            long long span = (long long) arr[hi] - (long long) arr[lo];
+            long long num = (long long) target - (long long) arr[lo];
+            int pos = lo + (int) ((double) num * (hi - lo) / (double) span);
             if (arr[pos] == target) { *probes = p; return pos; }
             if (arr[pos] < target) lo = pos + 1;
             else hi = pos - 1;
@@ -555,7 +569,11 @@ loses badly on adversarial or heavily skewed data.
             if (arr[hi] == arr[lo]) {                 // guard: avoid division by zero
                 return lo;                            // target must equal arr[lo] here
             }
-            int pos = lo + (int) ((double) (target - arr[lo]) * (hi - lo) / (arr[hi] - arr[lo]));
+            // widen to long: target-arr[lo] and arr[hi]-arr[lo] can overflow a 32-bit int
+            // when the array spans values near Integer.MIN_VALUE and Integer.MAX_VALUE at once
+            long span = (long) arr[hi] - (long) arr[lo];
+            long num = (long) target - (long) arr[lo];
+            int pos = lo + (int) ((double) num * (hi - lo) / (double) span);
             if (arr[pos] == target) return pos;
             if (arr[pos] < target) lo = pos + 1;
             else hi = pos - 1;
@@ -598,7 +616,11 @@ entirely outside the range: rejected on sight** — or press 🎲 for random dat
                     *probes = p;
                     return lo;                            /* target must equal arr[lo] here */
                 }
-                int pos = lo + (int) ((double) (target - arr[lo]) * (hi - lo) / (arr[hi] - arr[lo]));
+                /* widen to long long: target-arr[lo] and arr[hi]-arr[lo] can overflow a 32-bit int
+                   when the array spans values near INT_MIN and INT_MAX at once */
+                long long span = (long long) arr[hi] - (long long) arr[lo];
+                long long num = (long long) target - (long long) arr[lo];
+                int pos = lo + (int) ((double) num * (hi - lo) / (double) span);
                 printf("  probe %d: lo=%d hi=%d pos=%d arr[pos]=%d\n", p, lo, hi, pos, arr[pos]);
                 if (arr[pos] == target) { *probes = p; return pos; }
                 if (arr[pos] < target) lo = pos + 1;
@@ -662,7 +684,11 @@ entirely outside the range: rejected on sight** — or press 🎲 for random dat
                         System.out.println("  probe " + probes + ": arr[hi] == arr[lo] (" + arr[lo] + "), guard triggered");
                         return lo;                            // target must equal arr[lo] here
                     }
-                    int pos = lo + (int) ((double) (target - arr[lo]) * (hi - lo) / (arr[hi] - arr[lo]));
+                    // widen to long: target-arr[lo] and arr[hi]-arr[lo] can overflow a 32-bit int
+                    // when the array spans values near Integer.MIN_VALUE and Integer.MAX_VALUE at once
+                    long span = (long) arr[hi] - (long) arr[lo];
+                    long num = (long) target - (long) arr[lo];
+                    int pos = lo + (int) ((double) num * (hi - lo) / (double) span);
                     System.out.println("  probe " + probes + ": lo=" + lo + " hi=" + hi + " pos=" + pos + " arr[pos]=" + arr[pos]);
                     if (arr[pos] == target) return pos;
                     if (arr[pos] < target) lo = pos + 1;
@@ -799,6 +825,12 @@ Scanning the whole thing to find `n` first would be wasteful. **Exponential sear
 run ordinary binary search inside that bound. The bound-finding phase costs only `O(log index)` — proportional
 to how far in the target actually is — not `O(log n)`.
 
+Jon Bentley and Andrew Yao published this technique in their 1976 paper *An Almost Optimal Algorithm for
+Unbounded Searching* (Information Processing Letters). It is also called **unbounded search** or
+**galloping search** — "galloping" for the doubling bound-finding phase, small steps that grow larger and
+larger like a horse picking up speed — and variants of it are used today inside several merge and
+set-intersection algorithms.
+
 ### 4.2 The idea: double until you overshoot, then binary search
 
 Check `arr[0]` first (comparison #1). If it is not the target, grow a `bound` by doubling — `1, 2, 4, 8, …` —
@@ -812,6 +844,7 @@ present, must lie in `[bound/2, min(bound, n-1)]` — because the previous, smal
 
     ```c
     int exponential_search(const int arr[], int n, int target, int *comparisons) {
+        if (n <= 0) { *comparisons = 0; return -1; }    /* nothing to search */
         int comp = 1;                    /* the arr[0] check below counts as comparison #1 */
         if (arr[0] == target) { *comparisons = comp; return 0; }
         int bound = 1;
@@ -838,6 +871,7 @@ present, must lie in `[bound/2, min(bound, n-1)]` — because the previous, smal
     ```java
     static int exponentialSearch(int[] arr, int target) {
         int n = arr.length;
+        if (n <= 0) { comparisons = 0; return -1; }  // nothing to search
         comparisons = 1;                 // the arr[0] check below counts as comparison #1
         if (arr[0] == target) return 0;
         int bound = 1;
@@ -884,6 +918,7 @@ In the picker, also try **target near the end, the bound doubles several times**
         #include <stdio.h>
 
         int exponential_search(const int arr[], int n, int target, int *comparisons) {
+            if (n <= 0) { *comparisons = 0; return -1; }    /* nothing to search */
             int comp = 1;                    /* the arr[0] check below counts as comparison #1 */
             printf("  check arr[0] = %d\n", arr[0]);
             if (arr[0] == target) { *comparisons = comp; return 0; }
@@ -953,6 +988,7 @@ In the picker, also try **target near the end, the bound doubles several times**
 
             static int exponentialSearch(int[] arr, int target) {
                 int n = arr.length;
+                if (n <= 0) { comparisons = 0; return -1; }  // nothing to search
                 comparisons = 1;                 // the arr[0] check below counts as comparison #1
                 System.out.println("  check arr[0] = " + arr[0]);
                 if (arr[0] == target) return 0;
@@ -3970,3 +4006,7 @@ instance, to track "visited" status or edge weights for graphs whose vertices ar
   exponential search, hashing, and collision resolution techniques.
 - J. Kiefer, "Sequential Minimax Search for a Maximum", *Proceedings of the American Mathematical Society*,
   4(3), 1953 — the origin of Fibonacci-number search strategies.
+- J. L. Bentley, A. C-C. Yao, "An Almost Optimal Algorithm for Unbounded Searching", *Information Processing
+  Letters*, 1976 — the origin of exponential (unbounded/galloping) search.
+- W. W. Peterson, "Addressing for Random-Access Storage", *IBM Journal of Research and Development*, 1957 —
+  early work this week's interpolation search and hashing sections both draw on.

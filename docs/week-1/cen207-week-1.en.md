@@ -364,10 +364,10 @@ is not in the array**, **best case: target is in the first box (index 0)**, and 
                 printArray(arr);
                 int index = linearSearch(arr, target);
                 if (index >= 0)
-                    System.out.println("linearSearch(target=" + target + ") -> found at index " + index
+                    System.out.println("linear_search(target=" + target + ") -> found at index " + index
                             + ", " + comparisons + " comparison" + (comparisons == 1 ? "" : "s"));
                 else
-                    System.out.println("linearSearch(target=" + target + ") -> not found, "
+                    System.out.println("linear_search(target=" + target + ") -> not found, "
                             + comparisons + " comparisons");
                 System.out.println();
             }
@@ -439,23 +439,23 @@ is not in the array**, **best case: target is in the first box (index 0)**, and 
     ```text
     -- normal: 11 values, target in the middle --
     arr: 4 8 15 16 23 27 31 38 42 50 61  (n = 11)
-    linearSearch(target=27) -> found at index 5, 6 comparisons
+    linear_search(target=27) -> found at index 5, 6 comparisons
 
     -- hard: 20 values, duplicate target, first match --
     arr: 12 47 3 88 25 61 9 34 77 15 52 6 41 18 63 99 5 29 99 71  (n = 20)
-    linearSearch(target=99) -> found at index 15, 16 comparisons
+    linear_search(target=99) -> found at index 15, 16 comparisons
 
     -- edge: not found, target is not in the array --
     arr: 2 4 6 8 10 12 14 16 18 20  (n = 10)
-    linearSearch(target=7) -> not found, 10 comparisons
+    linear_search(target=7) -> not found, 10 comparisons
 
     -- edge: best case, target is in the first box (index 0) --
     arr: 5 13 21 34 42 55 67 78 89 91  (n = 10)
-    linearSearch(target=5) -> found at index 0, 1 comparison
+    linear_search(target=5) -> found at index 0, 1 comparison
 
     -- edge: one-element array --
     arr: 42  (n = 1)
-    linearSearch(target=42) -> found at index 0, 1 comparison
+    linear_search(target=42) -> found at index 0, 1 comparison
     ```
 
 Eleven values or twenty, the shape stays the same: `target = 27` sat at index 5, six comparisons in, and the hard
@@ -632,10 +632,10 @@ for random data at four difficulty levels, or type your own sorted array and tar
                 printArray(arr);
                 int index = binarySearch(arr, target);
                 if (index >= 0)
-                    System.out.println("binarySearch(target=" + target + ") -> found at index " + index
+                    System.out.println("binary_search(target=" + target + ") -> found at index " + index
                             + ", " + comparisons + " comparison" + (comparisons == 1 ? "" : "s"));
                 else
-                    System.out.println("binarySearch(target=" + target + ") -> not found, "
+                    System.out.println("binary_search(target=" + target + ") -> not found, "
                             + comparisons + " comparisons");
                 System.out.println();
             }
@@ -708,23 +708,23 @@ for random data at four difficulty levels, or type your own sorted array and tar
     ```text
     -- normal: 16 values, target found --
     arr: 3 7 11 15 19 23 29 34 41 47 53 60 68 75 83 90  (n = 16)
-    binarySearch(target=47) -> found at index 9, 3 comparisons
+    binary_search(target=47) -> found at index 9, 3 comparisons
 
     -- hard: 31 values, not found (lo > hi at the end) --
     arr: 2 6 10 14 18 22 26 30 34 38 42 46 50 54 58 62 66 70 74 78 82 86 90 94 98 102 106 110 114 118 122  (n = 31)
-    binarySearch(target=5) -> not found, 5 comparisons
+    binary_search(target=5) -> not found, 5 comparisons
 
     -- edge: target is smaller than every value --
     arr: 10 20 30 40 50 60 70 80 90 100  (n = 10)
-    binarySearch(target=1) -> not found, 3 comparisons
+    binary_search(target=1) -> not found, 3 comparisons
 
     -- edge: target is larger than every value --
     arr: 15 25 35 45 55 65 75 85 95 105  (n = 10)
-    binarySearch(target=999) -> not found, 4 comparisons
+    binary_search(target=999) -> not found, 4 comparisons
 
     -- edge: searching among duplicate values --
     arr: 5 5 5 10 15 20 20 25 30 35  (n = 10)
-    binarySearch(target=20) -> found at index 5, 3 comparisons
+    binary_search(target=20) -> found at index 5, 3 comparisons
     ```
 
 The same `target = 47` that took linear search 6 comparisons (Section 3.4's normal scenario used a different
@@ -1303,8 +1303,9 @@ one loops.
 ![Space complexity: recursive sum vs iterative sum — step by step](anim/space-recursive-vs-iterative.png)
 </div>
 
-In the picker, also try **20 values with mixed signs** (hard) and the edge cases **10 negative values** and **22
-values: deep recursion** — or press 🎲 for random data at four difficulty levels, or type your own array.
+In the picker, also try **20 values with mixed signs** (hard) and the edge cases **10 negative values**, **22
+values: deep recursion**, and **an empty array: the base case right away** — or press 🎲 for random data at four
+difficulty levels, or type your own array (leaving it empty is also a valid input here).
 
 === "C"
 
@@ -1438,8 +1439,8 @@ values: deep recursion** — or press 🎲 for random data at four difficulty le
                 System.out.println("-- " + label + " --");
                 printArray(arr);
                 int n = arr.length;
-                System.out.println("sumRecursive -> " + sumRecursive(arr, n) + " (uses O(n) stack space: " + n + " frames)");
-                System.out.println("sumIterative -> " + sumIterative(arr, n) + " (uses O(1) stack space: 1 frame, reused)");
+                System.out.println("sum_recursive -> " + sumRecursive(arr, n) + " (uses O(n) stack space: " + n + " frames)");
+                System.out.println("sum_iterative -> " + sumIterative(arr, n) + " (uses O(1) stack space: 1 frame, reused)");
                 System.out.println();
             }
 
@@ -1501,28 +1502,28 @@ values: deep recursion** — or press 🎲 for random data at four difficulty le
     javac -d /tmp/j SpaceRecursiveVsIterative.java && java -cp /tmp/j SpaceRecursiveVsIterative
     ```
 
-    Expected output (identical values, `sumRecursive`/`sumIterative` naming):
+    Expected output (identical to the C output above):
 
     ```text
     -- normal: 10 positive values --
     arr: 10 20 30 40 50 60 70 80 90 100  (n = 10)
-    sumRecursive -> 550 (uses O(n) stack space: 10 frames)
-    sumIterative -> 550 (uses O(1) stack space: 1 frame, reused)
+    sum_recursive -> 550 (uses O(n) stack space: 10 frames)
+    sum_iterative -> 550 (uses O(1) stack space: 1 frame, reused)
 
     -- hard: 20 values with mixed signs --
     arr: 5 -3 12 8 -7 15 22 -10 6 18 9 -4 11 27 -15 3 19 -8 14 7  (n = 20)
-    sumRecursive -> 129 (uses O(n) stack space: 20 frames)
-    sumIterative -> 129 (uses O(1) stack space: 1 frame, reused)
+    sum_recursive -> 129 (uses O(n) stack space: 20 frames)
+    sum_iterative -> 129 (uses O(1) stack space: 1 frame, reused)
 
     -- edge: 10 negative values --
     arr: -5 -10 -15 -20 -25 -30 -35 -40 -45 -50  (n = 10)
-    sumRecursive -> -275 (uses O(n) stack space: 10 frames)
-    sumIterative -> -275 (uses O(1) stack space: 1 frame, reused)
+    sum_recursive -> -275 (uses O(n) stack space: 10 frames)
+    sum_iterative -> -275 (uses O(1) stack space: 1 frame, reused)
 
     -- edge: 22 values, deep recursion --
     arr: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22  (n = 22)
-    sumRecursive -> 253 (uses O(n) stack space: 22 frames)
-    sumIterative -> 253 (uses O(1) stack space: 1 frame, reused)
+    sum_recursive -> 253 (uses O(n) stack space: 22 frames)
+    sum_iterative -> 253 (uses O(1) stack space: 1 frame, reused)
     ```
 
 Every scenario returns the same value from both functions. `sum_recursive` peaks at `n` simultaneous stack frames
@@ -2507,8 +2508,10 @@ values and `k`.
          * Preview of Week 2: the same values laid out as a contiguous array versus individually
          * allocated linked nodes; compare reaching element k: 1 step in the array vs k hops in the list.
          * Runs the same normal / hard / edge-case scenarios as the array-vs-linked-preview animation.
-         * Real addresses are printed (yours will differ) -- only the array's fixed 4-byte stride and the
-         * "1 step vs k hops" access-cost story are guaranteed to match.
+         * Real addresses vary from run to run (and between C and Java), so this prints a deterministic
+         * stand-in instead: the array's byte OFFSET from its base (base + i*4, the real formula the
+         * hardware uses) and the linked list's POSITION ("node #i"); the C and Java outputs are then
+         * byte-identical and testable. The point -- one index calculation vs k pointer hops -- still holds.
          * CEN207 Data Structures (CS50-style lecture notes)
          */
         #include <stdio.h>
@@ -2520,15 +2523,15 @@ values and `k`.
         } Node;
 
         static void run_scenario(const char *label, const int values[], int n, int k) {
-            printf("-- %s (k = %d) --\n", label, k);
+            printf("-- %s --\n", label);
 
             int arr[64];
             for (int i = 0; i < n; i++) arr[i] = values[i];
 
-            printf("array (contiguous):\n");
+            printf("array (contiguous, indexed access):\n");
             for (int i = 0; i < n; i++)
-                printf("  arr[%d] = %d at %p\n", i, arr[i], (void *) &arr[i]);
-            printf("array access: arr[%d] = %d, ONE calculation (base + %d*4). O(1).\n", k, arr[k], k);
+                printf("  arr[%d] = %d at base+%d\n", i, arr[i], (int) (i * sizeof arr[0]));
+            printf("array access: arr[%d] = %d, ONE index calculation (base + %d*4). O(1).\n", k, arr[k], k);
 
             Node *head = NULL;
             for (int i = n - 1; i >= 0; i--) {
@@ -2538,9 +2541,14 @@ values and `k`.
                 head = node;
             }
 
-            printf("linked list (scattered, connected by pointers):\n");
-            for (Node *p = head; p != NULL; p = p->next)
-                printf("  node at %p: data = %d, next = %p\n", (void *) p, p->data, (void *) p->next);
+            printf("linked list (separate nodes, connected by pointers):\n");
+            int idx = 0;
+            for (Node *p = head; p != NULL; p = p->next, idx++) {
+                if (p->next != NULL)
+                    printf("  node #%d: data = %d, next -> node #%d\n", idx, p->data, idx + 1);
+                else
+                    printf("  node #%d: data = %d, next -> NULL\n", idx, p->data);
+            }
 
             Node *reached = head;
             int hops = 0;
@@ -2583,8 +2591,10 @@ values and `k`.
          * Preview of Week 2: the same values laid out as a contiguous array versus individually
          * created linked nodes; compare reaching element k: 1 step in the array vs k hops in the list.
          * Runs the same normal / hard / edge-case scenarios as the array-vs-linked-preview animation.
-         * Java has no raw addresses, so per-object identity hashes stand in for "where it lives"
-         * (yours will differ) -- only the "1 step vs k hops" access-cost story is guaranteed to match.
+         * Real addresses vary from run to run (and between C and Java), so this prints a deterministic
+         * stand-in instead: the array's byte OFFSET from its base (base + i*4, the real formula the
+         * hardware uses) and the linked list's POSITION ("node #i"); the C and Java outputs are then
+         * byte-identical and testable. The point -- one index calculation vs k pointer hops -- still holds.
          * CEN207 Data Structures (CS50-style lecture notes)
          */
         public class ArrayVsLinkedPreview {
@@ -2595,21 +2605,26 @@ values and `k`.
             }
 
             static void runScenario(String label, int[] values, int k) {
-                System.out.println("-- " + label + " (k = " + k + ") --");
+                System.out.println("-- " + label + " --");
                 int n = values.length;
 
-                System.out.println("array (one contiguous block, indexed access):");
+                System.out.println("array (contiguous, indexed access):");
                 for (int i = 0; i < n; i++)
-                    System.out.println("  arr[" + i + "] = " + values[i]);
-                System.out.println("array access: arr[" + k + "] = " + values[k] + ", ONE index computation. O(1).");
+                    System.out.println("  arr[" + i + "] = " + values[i] + " at base+" + (i * 4));
+                System.out.println("array access: arr[" + k + "] = " + values[k] + ", ONE index calculation (base + " + k + "*4). O(1).");
 
                 Node head = null;
                 for (int i = n - 1; i >= 0; i--)
                     head = new Node(values[i], head);
 
-                System.out.println("linked list (separate objects, followed one .next at a time):");
-                for (Node p = head; p != null; p = p.next)
-                    System.out.println("  node@" + Integer.toHexString(System.identityHashCode(p)) + ": data = " + p.data);
+                System.out.println("linked list (separate nodes, connected by pointers):");
+                int idx = 0;
+                for (Node p = head; p != null; p = p.next, idx++) {
+                    if (p.next != null)
+                        System.out.println("  node #" + idx + ": data = " + p.data + ", next -> node #" + (idx + 1));
+                    else
+                        System.out.println("  node #" + idx + ": data = " + p.data + ", next -> NULL");
+                }
 
                 Node reached = head;
                 int hops = 0;
@@ -2647,127 +2662,127 @@ values and `k`.
     gcc -std=c11 -Wall -Wextra -o /tmp/x array_vs_linked_preview.c && /tmp/x
     ```
 
-    Expected output (your addresses will differ):
+    Expected output:
 
     ```text
-    -- normal: 10 values, k = 4 (in the middle) (k = 4) --
-    array (contiguous):
-      arr[0] = 10 at 00000010D7DFF5E0
-      arr[1] = 20 at 00000010D7DFF5E4
-      arr[2] = 30 at 00000010D7DFF5E8
-      arr[3] = 40 at 00000010D7DFF5EC
-      arr[4] = 50 at 00000010D7DFF5F0
-      arr[5] = 60 at 00000010D7DFF5F4
-      arr[6] = 70 at 00000010D7DFF5F8
-      arr[7] = 80 at 00000010D7DFF5FC
-      arr[8] = 90 at 00000010D7DFF600
-      arr[9] = 100 at 00000010D7DFF604
-    array access: arr[4] = 50, ONE calculation (base + 4*4). O(1).
-    linked list (scattered, connected by pointers):
-      node at 0000018A35373610: data = 10, next = 0000018A353735F0
-      node at 0000018A353735F0: data = 20, next = 0000018A353735D0
-      node at 0000018A353735D0: data = 30, next = 0000018A353735B0
-      node at 0000018A353735B0: data = 40, next = 0000018A35373590
-      node at 0000018A35373590: data = 50, next = 0000018A35373570
-      node at 0000018A35373570: data = 60, next = 0000018A35373550
-      node at 0000018A35373550: data = 70, next = 0000018A35373530
-      node at 0000018A35373530: data = 80, next = 0000018A35373510
-      node at 0000018A35373510: data = 90, next = 0000018A353734F0
-      node at 0000018A353734F0: data = 100, next = 0000000000000000
+    -- normal: 10 values, k = 4 (in the middle) --
+    array (contiguous, indexed access):
+      arr[0] = 10 at base+0
+      arr[1] = 20 at base+4
+      arr[2] = 30 at base+8
+      arr[3] = 40 at base+12
+      arr[4] = 50 at base+16
+      arr[5] = 60 at base+20
+      arr[6] = 70 at base+24
+      arr[7] = 80 at base+28
+      arr[8] = 90 at base+32
+      arr[9] = 100 at base+36
+    array access: arr[4] = 50, ONE index calculation (base + 4*4). O(1).
+    linked list (separate nodes, connected by pointers):
+      node #0: data = 10, next -> node #1
+      node #1: data = 20, next -> node #2
+      node #2: data = 30, next -> node #3
+      node #3: data = 40, next -> node #4
+      node #4: data = 50, next -> node #5
+      node #5: data = 60, next -> node #6
+      node #6: data = 70, next -> node #7
+      node #7: data = 80, next -> node #8
+      node #8: data = 90, next -> node #9
+      node #9: data = 100, next -> NULL
     linked access: reached node with data = 50 after 4 hops. O(n).
 
-    -- hard: 16 values, k = 13 (near the end) (k = 13) --
-    array (contiguous):
-      arr[0] = 11 at 00000010D7DFF5E0
-      arr[1] = 22 at 00000010D7DFF5E4
-      arr[2] = 33 at 00000010D7DFF5E8
-      arr[3] = 44 at 00000010D7DFF5EC
-      arr[4] = 55 at 00000010D7DFF5F0
-      arr[5] = 66 at 00000010D7DFF5F4
-      arr[6] = 77 at 00000010D7DFF5F8
-      arr[7] = 88 at 00000010D7DFF5FC
-      arr[8] = 99 at 00000010D7DFF600
-      arr[9] = 111 at 00000010D7DFF604
-      arr[10] = 122 at 00000010D7DFF608
-      arr[11] = 133 at 00000010D7DFF60C
-      arr[12] = 144 at 00000010D7DFF610
-      arr[13] = 155 at 00000010D7DFF614
-      arr[14] = 166 at 00000010D7DFF618
-      arr[15] = 177 at 00000010D7DFF61C
-    array access: arr[13] = 155, ONE calculation (base + 13*4). O(1).
-    linked list (scattered, connected by pointers):
-      node at 0000018A35373720: data = 11, next = 0000018A35373820
-      node at 0000018A35373820: data = 22, next = 0000018A35373690
-      node at 0000018A35373690: data = 33, next = 0000018A35373670
-      node at 0000018A35373670: data = 44, next = 0000018A35373650
-      node at 0000018A35373650: data = 55, next = 0000018A35373630
-      node at 0000018A35373630: data = 66, next = 0000018A35373610
-      node at 0000018A35373610: data = 77, next = 0000018A353735F0
-      node at 0000018A353735F0: data = 88, next = 0000018A353735D0
-      node at 0000018A353735D0: data = 99, next = 0000018A353735B0
-      node at 0000018A353735B0: data = 111, next = 0000018A35373590
-      node at 0000018A35373590: data = 122, next = 0000018A35373570
-      node at 0000018A35373570: data = 133, next = 0000018A35373550
-      node at 0000018A35373550: data = 144, next = 0000018A35373530
-      node at 0000018A35373530: data = 155, next = 0000018A35373510
-      node at 0000018A35373510: data = 166, next = 0000018A353734F0
-      node at 0000018A353734F0: data = 177, next = 0000000000000000
+    -- hard: 16 values, k = 13 (near the end) --
+    array (contiguous, indexed access):
+      arr[0] = 11 at base+0
+      arr[1] = 22 at base+4
+      arr[2] = 33 at base+8
+      arr[3] = 44 at base+12
+      arr[4] = 55 at base+16
+      arr[5] = 66 at base+20
+      arr[6] = 77 at base+24
+      arr[7] = 88 at base+28
+      arr[8] = 99 at base+32
+      arr[9] = 111 at base+36
+      arr[10] = 122 at base+40
+      arr[11] = 133 at base+44
+      arr[12] = 144 at base+48
+      arr[13] = 155 at base+52
+      arr[14] = 166 at base+56
+      arr[15] = 177 at base+60
+    array access: arr[13] = 155, ONE index calculation (base + 13*4). O(1).
+    linked list (separate nodes, connected by pointers):
+      node #0: data = 11, next -> node #1
+      node #1: data = 22, next -> node #2
+      node #2: data = 33, next -> node #3
+      node #3: data = 44, next -> node #4
+      node #4: data = 55, next -> node #5
+      node #5: data = 66, next -> node #6
+      node #6: data = 77, next -> node #7
+      node #7: data = 88, next -> node #8
+      node #8: data = 99, next -> node #9
+      node #9: data = 111, next -> node #10
+      node #10: data = 122, next -> node #11
+      node #11: data = 133, next -> node #12
+      node #12: data = 144, next -> node #13
+      node #13: data = 155, next -> node #14
+      node #14: data = 166, next -> node #15
+      node #15: data = 177, next -> NULL
     linked access: reached node with data = 155 after 13 hops. O(n).
 
-    -- edge: k = 0, the first element (k = 0) --
-    array (contiguous):
-      arr[0] = 7 at 00000010D7DFF5E0
-      arr[1] = 14 at 00000010D7DFF5E4
-      arr[2] = 21 at 00000010D7DFF5E8
-      arr[3] = 28 at 00000010D7DFF5EC
-      arr[4] = 35 at 00000010D7DFF5F0
-      arr[5] = 42 at 00000010D7DFF5F4
-      arr[6] = 49 at 00000010D7DFF5F8
-      arr[7] = 56 at 00000010D7DFF5FC
-      arr[8] = 63 at 00000010D7DFF600
-      arr[9] = 70 at 00000010D7DFF604
-    array access: arr[0] = 7, ONE calculation (base + 0*4). O(1).
-    linked list (scattered, connected by pointers):
-      node at 0000018A353738A0: data = 7, next = 0000018A35373980
-      node at 0000018A35373980: data = 14, next = 0000018A353737C0
-      node at 0000018A353737C0: data = 21, next = 0000018A35373700
-      node at 0000018A35373700: data = 28, next = 0000018A35373780
-      node at 0000018A35373780: data = 35, next = 0000018A35373740
-      node at 0000018A35373740: data = 42, next = 0000018A353739C0
-      node at 0000018A353739C0: data = 49, next = 0000018A35373840
-      node at 0000018A35373840: data = 56, next = 0000018A353737A0
-      node at 0000018A353737A0: data = 63, next = 0000018A353739A0
-      node at 0000018A353739A0: data = 70, next = 0000000000000000
+    -- edge: k = 0, the first element --
+    array (contiguous, indexed access):
+      arr[0] = 7 at base+0
+      arr[1] = 14 at base+4
+      arr[2] = 21 at base+8
+      arr[3] = 28 at base+12
+      arr[4] = 35 at base+16
+      arr[5] = 42 at base+20
+      arr[6] = 49 at base+24
+      arr[7] = 56 at base+28
+      arr[8] = 63 at base+32
+      arr[9] = 70 at base+36
+    array access: arr[0] = 7, ONE index calculation (base + 0*4). O(1).
+    linked list (separate nodes, connected by pointers):
+      node #0: data = 7, next -> node #1
+      node #1: data = 14, next -> node #2
+      node #2: data = 21, next -> node #3
+      node #3: data = 28, next -> node #4
+      node #4: data = 35, next -> node #5
+      node #5: data = 42, next -> node #6
+      node #6: data = 49, next -> node #7
+      node #7: data = 56, next -> node #8
+      node #8: data = 63, next -> node #9
+      node #9: data = 70, next -> NULL
     linked access: reached node with data = 7 after 0 hops. O(n).
 
-    -- edge: k = the last index, the most hops (k = 11) --
-    array (contiguous):
-      arr[0] = 3 at 00000010D7DFF5E0
-      arr[1] = 6 at 00000010D7DFF5E4
-      arr[2] = 9 at 00000010D7DFF5E8
-      arr[3] = 12 at 00000010D7DFF5EC
-      arr[4] = 15 at 00000010D7DFF5F0
-      arr[5] = 18 at 00000010D7DFF5F4
-      arr[6] = 21 at 00000010D7DFF5F8
-      arr[7] = 24 at 00000010D7DFF5FC
-      arr[8] = 27 at 00000010D7DFF600
-      arr[9] = 30 at 00000010D7DFF604
-      arr[10] = 33 at 00000010D7DFF608
-      arr[11] = 36 at 00000010D7DFF60C
-    array access: arr[11] = 36, ONE calculation (base + 11*4). O(1).
-    linked list (scattered, connected by pointers):
-      node at 0000018A35373960: data = 3, next = 0000018A353738C0
-      node at 0000018A353738C0: data = 6, next = 0000018A353739C0
-      node at 0000018A353739C0: data = 9, next = 0000018A35373740
-      node at 0000018A35373740: data = 12, next = 0000018A35373A00
-      node at 0000018A35373A00: data = 15, next = 0000018A35373800
-      node at 0000018A35373800: data = 18, next = 0000018A35373A80
-      node at 0000018A35373A80: data = 21, next = 0000018A353737C0
-      node at 0000018A353737C0: data = 24, next = 0000018A35373A60
-      node at 0000018A35373A60: data = 27, next = 0000018A35373840
-      node at 0000018A35373840: data = 30, next = 0000018A353739A0
-      node at 0000018A353739A0: data = 33, next = 0000018A35373900
-      node at 0000018A35373900: data = 36, next = 0000000000000000
+    -- edge: k = the last index, the most hops --
+    array (contiguous, indexed access):
+      arr[0] = 3 at base+0
+      arr[1] = 6 at base+4
+      arr[2] = 9 at base+8
+      arr[3] = 12 at base+12
+      arr[4] = 15 at base+16
+      arr[5] = 18 at base+20
+      arr[6] = 21 at base+24
+      arr[7] = 24 at base+28
+      arr[8] = 27 at base+32
+      arr[9] = 30 at base+36
+      arr[10] = 33 at base+40
+      arr[11] = 36 at base+44
+    array access: arr[11] = 36, ONE index calculation (base + 11*4). O(1).
+    linked list (separate nodes, connected by pointers):
+      node #0: data = 3, next -> node #1
+      node #1: data = 6, next -> node #2
+      node #2: data = 9, next -> node #3
+      node #3: data = 12, next -> node #4
+      node #4: data = 15, next -> node #5
+      node #5: data = 18, next -> node #6
+      node #6: data = 21, next -> node #7
+      node #7: data = 24, next -> node #8
+      node #8: data = 27, next -> node #9
+      node #9: data = 30, next -> node #10
+      node #10: data = 33, next -> node #11
+      node #11: data = 36, next -> NULL
     linked access: reached node with data = 36 after 11 hops. O(n).
     ```
 
@@ -2777,137 +2792,137 @@ values and `k`.
     javac -d /tmp/j ArrayVsLinkedPreview.java && java -cp /tmp/j ArrayVsLinkedPreview
     ```
 
-    Expected output (the `node@...` identifiers are Java's per-object identity hashes, not real addresses, and
-    will differ on your machine):
+    Expected output (identical to the C output above):
 
     ```text
-    -- normal: 10 values, k = 4 (in the middle) (k = 4) --
-    array (one contiguous block, indexed access):
-      arr[0] = 10
-      arr[1] = 20
-      arr[2] = 30
-      arr[3] = 40
-      arr[4] = 50
-      arr[5] = 60
-      arr[6] = 70
-      arr[7] = 80
-      arr[8] = 90
-      arr[9] = 100
-    array access: arr[4] = 50, ONE index computation. O(1).
-    linked list (separate objects, followed one .next at a time):
-      node@13221655: data = 10
-      node@2f2c9b19: data = 20
-      node@31befd9f: data = 30
-      node@1c20c684: data = 40
-      node@1fb3ebeb: data = 50
-      node@548c4f57: data = 60
-      node@1218025c: data = 70
-      node@816f27d: data = 80
-      node@87aac27: data = 90
-      node@3e3abc88: data = 100
+    -- normal: 10 values, k = 4 (in the middle) --
+    array (contiguous, indexed access):
+      arr[0] = 10 at base+0
+      arr[1] = 20 at base+4
+      arr[2] = 30 at base+8
+      arr[3] = 40 at base+12
+      arr[4] = 50 at base+16
+      arr[5] = 60 at base+20
+      arr[6] = 70 at base+24
+      arr[7] = 80 at base+28
+      arr[8] = 90 at base+32
+      arr[9] = 100 at base+36
+    array access: arr[4] = 50, ONE index calculation (base + 4*4). O(1).
+    linked list (separate nodes, connected by pointers):
+      node #0: data = 10, next -> node #1
+      node #1: data = 20, next -> node #2
+      node #2: data = 30, next -> node #3
+      node #3: data = 40, next -> node #4
+      node #4: data = 50, next -> node #5
+      node #5: data = 60, next -> node #6
+      node #6: data = 70, next -> node #7
+      node #7: data = 80, next -> node #8
+      node #8: data = 90, next -> node #9
+      node #9: data = 100, next -> NULL
     linked access: reached node with data = 50 after 4 hops. O(n).
 
-    -- hard: 16 values, k = 13 (near the end) (k = 13) --
-    array (one contiguous block, indexed access):
-      arr[0] = 11
-      arr[1] = 22
-      arr[2] = 33
-      arr[3] = 44
-      arr[4] = 55
-      arr[5] = 66
-      arr[6] = 77
-      arr[7] = 88
-      arr[8] = 99
-      arr[9] = 111
-      arr[10] = 122
-      arr[11] = 133
-      arr[12] = 144
-      arr[13] = 155
-      arr[14] = 166
-      arr[15] = 177
-    array access: arr[13] = 155, ONE index computation. O(1).
-    linked list (separate objects, followed one .next at a time):
-      node@6d311334: data = 11
-      node@682a0b20: data = 22
-      node@3d075dc0: data = 33
-      node@214c265e: data = 44
-      node@448139f0: data = 55
-      node@7cca494b: data = 66
-      node@7ba4f24f: data = 77
-      node@3b9a45b3: data = 88
-      node@7699a589: data = 99
-      node@58372a00: data = 111
-      node@4dd8dc3: data = 122
-      node@6d03e736: data = 133
-      node@568db2f2: data = 144
-      node@378bf509: data = 155
-      node@5fd0d5ae: data = 166
-      node@2d98a335: data = 177
+    -- hard: 16 values, k = 13 (near the end) --
+    array (contiguous, indexed access):
+      arr[0] = 11 at base+0
+      arr[1] = 22 at base+4
+      arr[2] = 33 at base+8
+      arr[3] = 44 at base+12
+      arr[4] = 55 at base+16
+      arr[5] = 66 at base+20
+      arr[6] = 77 at base+24
+      arr[7] = 88 at base+28
+      arr[8] = 99 at base+32
+      arr[9] = 111 at base+36
+      arr[10] = 122 at base+40
+      arr[11] = 133 at base+44
+      arr[12] = 144 at base+48
+      arr[13] = 155 at base+52
+      arr[14] = 166 at base+56
+      arr[15] = 177 at base+60
+    array access: arr[13] = 155, ONE index calculation (base + 13*4). O(1).
+    linked list (separate nodes, connected by pointers):
+      node #0: data = 11, next -> node #1
+      node #1: data = 22, next -> node #2
+      node #2: data = 33, next -> node #3
+      node #3: data = 44, next -> node #4
+      node #4: data = 55, next -> node #5
+      node #5: data = 66, next -> node #6
+      node #6: data = 77, next -> node #7
+      node #7: data = 88, next -> node #8
+      node #8: data = 99, next -> node #9
+      node #9: data = 111, next -> node #10
+      node #10: data = 122, next -> node #11
+      node #11: data = 133, next -> node #12
+      node #12: data = 144, next -> node #13
+      node #13: data = 155, next -> node #14
+      node #14: data = 166, next -> node #15
+      node #15: data = 177, next -> NULL
     linked access: reached node with data = 155 after 13 hops. O(n).
 
-    -- edge: k = 0, the first element (k = 0) --
-    array (one contiguous block, indexed access):
-      arr[0] = 7
-      arr[1] = 14
-      arr[2] = 21
-      arr[3] = 28
-      arr[4] = 35
-      arr[5] = 42
-      arr[6] = 49
-      arr[7] = 56
-      arr[8] = 63
-      arr[9] = 70
-    array access: arr[0] = 7, ONE index computation. O(1).
-    linked list (separate objects, followed one .next at a time):
-      node@16b98e56: data = 7
-      node@7ef20235: data = 14
-      node@27d6c5e0: data = 21
-      node@4f3f5b24: data = 28
-      node@15aeb7ab: data = 35
-      node@7b23ec81: data = 42
-      node@6acbcfc0: data = 49
-      node@5f184fc6: data = 56
-      node@3feba861: data = 63
-      node@5b480cf9: data = 70
+    -- edge: k = 0, the first element --
+    array (contiguous, indexed access):
+      arr[0] = 7 at base+0
+      arr[1] = 14 at base+4
+      arr[2] = 21 at base+8
+      arr[3] = 28 at base+12
+      arr[4] = 35 at base+16
+      arr[5] = 42 at base+20
+      arr[6] = 49 at base+24
+      arr[7] = 56 at base+28
+      arr[8] = 63 at base+32
+      arr[9] = 70 at base+36
+    array access: arr[0] = 7, ONE index calculation (base + 0*4). O(1).
+    linked list (separate nodes, connected by pointers):
+      node #0: data = 7, next -> node #1
+      node #1: data = 14, next -> node #2
+      node #2: data = 21, next -> node #3
+      node #3: data = 28, next -> node #4
+      node #4: data = 35, next -> node #5
+      node #5: data = 42, next -> node #6
+      node #6: data = 49, next -> node #7
+      node #7: data = 56, next -> node #8
+      node #8: data = 63, next -> node #9
+      node #9: data = 70, next -> NULL
     linked access: reached node with data = 7 after 0 hops. O(n).
 
-    -- edge: k = the last index, the most hops (k = 11) --
-    array (one contiguous block, indexed access):
-      arr[0] = 3
-      arr[1] = 6
-      arr[2] = 9
-      arr[3] = 12
-      arr[4] = 15
-      arr[5] = 18
-      arr[6] = 21
-      arr[7] = 24
-      arr[8] = 27
-      arr[9] = 30
-      arr[10] = 33
-      arr[11] = 36
-    array access: arr[11] = 36, ONE index computation. O(1).
-    linked list (separate objects, followed one .next at a time):
-      node@6f496d9f: data = 3
-      node@723279cf: data = 6
-      node@10f87f48: data = 9
-      node@b4c966a: data = 12
-      node@2f4d3709: data = 15
-      node@4e50df2e: data = 18
-      node@1d81eb93: data = 21
-      node@7291c18f: data = 24
-      node@34a245ab: data = 27
-      node@7cc355be: data = 30
-      node@6e8cf4c6: data = 33
-      node@12edcd21: data = 36
+    -- edge: k = the last index, the most hops --
+    array (contiguous, indexed access):
+      arr[0] = 3 at base+0
+      arr[1] = 6 at base+4
+      arr[2] = 9 at base+8
+      arr[3] = 12 at base+12
+      arr[4] = 15 at base+16
+      arr[5] = 18 at base+20
+      arr[6] = 21 at base+24
+      arr[7] = 24 at base+28
+      arr[8] = 27 at base+32
+      arr[9] = 30 at base+36
+      arr[10] = 33 at base+40
+      arr[11] = 36 at base+44
+    array access: arr[11] = 36, ONE index calculation (base + 11*4). O(1).
+    linked list (separate nodes, connected by pointers):
+      node #0: data = 3, next -> node #1
+      node #1: data = 6, next -> node #2
+      node #2: data = 9, next -> node #3
+      node #3: data = 12, next -> node #4
+      node #4: data = 15, next -> node #5
+      node #5: data = 18, next -> node #6
+      node #6: data = 21, next -> node #7
+      node #7: data = 24, next -> node #8
+      node #8: data = 27, next -> node #9
+      node #9: data = 30, next -> node #10
+      node #10: data = 33, next -> node #11
+      node #11: data = 36, next -> NULL
     linked access: reached node with data = 36 after 11 hops. O(n).
     ```
 
-Notice the array addresses in the normal scenario: `...5E0`, `...5E4`, `...5E8`, ... — each exactly 4 bytes after
-the previous one, always, guaranteed by the language, the same fixed stride Section 4.7 computed by hand. The
-linked list's node addresses have no such guarantee at all — only the `next` pointers, drawn as arrows above, are
-guaranteed to connect the right values in the right order. Every scenario tells the same story: the array reaches
-element `k` in one calculation; the linked list must walk `k` nodes to get there. Next week you will build, search,
-insert into and delete from exactly this structure.
+Notice the array offsets in the normal scenario: `base+0`, `base+4`, `base+8`, ... -- each exactly 4 bytes after the
+previous one, always, guaranteed by the language, the same fixed stride Section 4.7 computed by hand. The linked
+list's nodes have no such guarantee at all -- only the `next` links (`node #i -> node #(i+1)`), drawn as arrows above,
+are guaranteed to connect the right values in the right order; a real linked list's nodes can live anywhere in memory
+(Section 4.7 also printed real addresses to make that concrete). Every scenario tells the same story: the array
+reaches element `k` in one calculation; the linked list must walk `k` nodes to get there. Next week you will build,
+search, insert into and delete from exactly this structure.
 
 ## 6. ASN.1, BER TLV, and PER TLV: encoding data for the wire
 
@@ -3616,8 +3631,8 @@ double average_fixed(const int arr[], int n) {
                 for (int v : arr) sb.append(' ').append(v);
                 sb.append("  (n = ").append(arr.length).append(')');
                 System.out.println(sb);
-                System.out.println("averageBuggy  -> " + averageBuggy(arr));
-                System.out.printf("averageFixed  -> %.2f%n%n", averageFixed(arr));
+                System.out.println("average_buggy  -> " + averageBuggy(arr));
+                System.out.printf("average_fixed  -> %.2f%n%n", averageFixed(arr));
             }
 
             public static void main(String[] args) {
@@ -3677,7 +3692,7 @@ double average_fixed(const int arr[], int n) {
     javac -d /tmp/j DebugAverage.java && java -cp /tmp/j DebugAverage
     ```
 
-    Expected output: identical values to the C output above (`averageBuggy`/`averageFixed` naming).
+    Expected output: identical to the C output above.
 
 Now find the bug with a debugger instead of reading the source by eye. Build **with debug symbols** (`-g`), so gdb
 can show source lines and variable names instead of raw addresses:

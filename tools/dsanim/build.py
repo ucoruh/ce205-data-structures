@@ -13,6 +13,7 @@ Usage (repo root):  py -3.12 tools/dsanim/build.py <week> [id …] [--fast]     
 """
 import io
 import json
+import re
 import math
 import pathlib
 import subprocess
@@ -71,16 +72,17 @@ def raster(svg):
     return Image.open(io.BytesIO(cairosvg.svg2png(bytestring=svg.encode('utf-8')))).convert('RGB')
 
 
-def exports(algo_file, out_dir, spec_id):
+def exports(algo_file, out_dir, spec_id, preset='', suffix=''):
+    """suffix '' = the default export preset (all files); suffix '--<preset>' = only -son PNG and GIF of that preset."""
     from PIL import Image, ImageDraw
     tmp = pathlib.Path(tempfile.mkdtemp(prefix='dsanim-')) / 'out.json'
-    subprocess.run(['node', str(WEB / 'export.js'), str(algo_file), '', str(tmp)], check=True, cwd=str(WEB))
+    subprocess.run(['node', str(WEB / 'export.js'), str(algo_file), preset, str(tmp)], check=True, cwd=str(WEB))
     data = json.loads(tmp.read_text(encoding='utf-8'))
     for lang in ('tr', 'en'):
         caps = [c.get(lang, '') if isinstance(c, dict) else str(c) for c in data['caps']]
         # last frame (PDF slides)
         last = caption_band(raster(data['key'][lang][-1]), caps[-1], 1000)
-        last.save(out_dir / f'{spec_id}-son.{lang}.png', optimize=True)
+        last.save(out_dir / f'{spec_id}{suffix}-son.{lang}.png', optimize=True)
         # GIF (PowerPoint)
         frames, times = [], []
         for g in data['gif'][lang]:
@@ -94,8 +96,10 @@ def exports(algo_file, out_dir, spec_id):
                 p.paste(f, (0, 0))
                 f = p
             padded.append(f.convert('P', palette=Image.ADAPTIVE, colors=96))
-        padded[0].save(out_dir / f'{spec_id}.{lang}.gif', save_all=True, append_images=padded[1:], duration=times,
+        padded[0].save(out_dir / f'{spec_id}{suffix}.{lang}.gif', save_all=True, append_images=padded[1:], duration=times,
                        loop=0, optimize=True, disposal=1)
+        if suffix:
+            continue   # extra presets only need the slide images
         # numbered strip (printed notes); long animations keep at most 16 evenly spread steps
         keys = data['key'][lang]
         idx = list(range(len(keys)))
@@ -144,6 +148,14 @@ def main():
         if not fast:
             d = exports(f, out, spec_id)
             print(f'{spec_id}: {m["n"]} examples, export {d["preset"]}: {len(d["caps"])} steps')
+            # presets that slides open with &example=<id> get their own last-frame PNG and GIF for PDF/PPTX
+            wanted = set()
+            for deck in (ROOT / 'slides' / f'week-{week}').glob('*.md'):
+                wanted |= set(re.findall(r'anim/' + re.escape(spec_id) + r'\.html\?[^"\s]*?example=([\w-]+)',
+                                         deck.read_text(encoding='utf-8')))
+            for pr in sorted(wanted - {d['preset']}):
+                exports(f, out, spec_id, pr, '--' + pr)
+                print(f'   + slide preset {pr}')
         else:
             print(f'{spec_id}: {m["n"]} examples (pages only)')
 

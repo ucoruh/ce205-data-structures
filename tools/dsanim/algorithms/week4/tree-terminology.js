@@ -81,8 +81,59 @@
   var LINES_CHILDREN = { c: [5], java: [5] };
   var LINES_DEGREE = { c: [6], java: [6] };
   var LINES_LEAF = { c: [10, 11, 12], java: [10, 11, 12] };
-  var LINES_HEIGHT_FULL = { c: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19], java: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19] };
-  var LINES_DEPTH_FULL = { c: [21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34], java: [21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34] };
+  /* `height` and `computeDepths` are line-for-line identical between C and Java (verified by
+   * scratchpad/check_parallel.js), so one line array is reused for both throughout this file. */
+
+  /** When several node visits are concatenated into one S.step, the same source line can be "run" at one
+   *  node (or one child slot) and "the side not taken" (skip) at another — the player highlights by line
+   *  NUMBER for the whole step, so a line that really ran at least once must never also carry a skip mark. */
+  function dedupeSkip(lines) {
+    var ran = {};
+    lines.forEach(function (x) {
+      var n = x && typeof x === 'object' ? x.n : x;
+      var isSkip = !!(x && typeof x === 'object' && x.skip);
+      if (!isSkip) ran[n] = true;
+    });
+    return lines.filter(function (x) {
+      var n = x && typeof x === 'object' ? x.n : x;
+      var isSkip = !!(x && typeof x === 'object' && x.skip);
+      return !(isSkip && ran[n]);
+    });
+  }
+  /** One node's own contribution to `height`'s code-panel trace, for the "shown level by level" pacing:
+   *  the base case (11) decides everything for a leaf (12); a non-leaf's for-loop (14, once per child,
+   *  plus the final false re-check) calls into each child (15 — its own height was already traced in an
+   *  EARLIER, deeper step, so it is not re-expanded here, only the call itself) and compares (16, with a
+   *  note); heightOf gives every node's already-known height (computed by the untouched `computeHeights`
+   *  used for the annotations), so "did this child improve best" is real, not guessed. */
+  function heightNodeLines(n, heightOf) {
+    var isLeaf = n.children.length === 0;
+    if (isLeaf) return [{ n: 11, note: T('child_count == 0? evet', 'child_count == 0? yes') }, 12];
+    var lines = [{ n: 11, note: T('child_count == 0? hayır', 'child_count == 0? no') }, { n: 12, skip: true }, 13];
+    var best = -1;
+    n.children.forEach(function (c) {
+      lines.push({ n: 14, note: T('i < child_count? evet', 'i < child_count? yes') }, 15);
+      var improves = heightOf[c.label] > best;
+      lines.push({ n: 16, note: improves ? T('h > best? evet', 'h > best? yes') : T('h > best? hayır', 'h > best? no') });
+      if (improves) best = heightOf[c.label];
+    });
+    lines.push({ n: 14, note: T('i < child_count? hayır', 'i < child_count? no') }, 18);
+    return lines;
+  }
+  /** One BFS round's code-panel trace for `computeDepths`: the nodes just dequeued from the level ABOVE
+   *  (or, on the very first round, the setup (22-25) plus the root's own dequeue) each run the while check
+   *  (26), the dequeue (27), and their for-loop (28, once per child, assigning that child's depth and
+   *  pushing it — 29-31 — then the final false re-check). */
+  function depthRoundLines(parentsJustDequeued, isFirstRound) {
+    var lines = isFirstRound ? [22, 23, 24, 25] : [];
+    parentsJustDequeued.forEach(function (n) {
+      lines.push({ n: 26, note: T('front < rear? evet', 'front < rear? yes') }, 27);
+      if (!n.children.length) { lines.push({ n: 28, note: T('i < child_count? hayır (çocuk yok)', 'i < child_count? no (no children)') }); return; }
+      n.children.forEach(function () { lines.push({ n: 28, note: T('i < child_count? evet', 'i < child_count? yes') }, 29, 30, 31); });
+      lines.push({ n: 28, note: T('i < child_count? hayır', 'i < child_count? no') });
+    });
+    return lines;
+  }
 
   /* ---- helpers local to build(); reference() does NOT call any of these (see bottom of file) ---- */
   function buildTree(nodesArr) {
@@ -460,11 +511,17 @@
       var byDepth = nodesByDepth(depthMap), maxDepth = byDepth.length - 1;
       for (var dd = 0; dd <= maxDepth; dd++) {
         byDepth[dd].forEach(function (l) { S.set('n' + l, { style: 'hl' }); annotate(S, l, slots[l], 'd=' + dd); });
+        /* Depth-0's step is the setup plus the root's own dequeue; every later depth's step is the
+         * for-loop(s) that PRODUCE it, run by the parents just dequeued in the PREVIOUS step (the parents
+         * of level dd are exactly the nodes at level dd - 1). */
+        var parents = dd === 0 ? [tree.byLabel[byDepth[0][0]]] : byDepth[dd - 1].map(function (l) { return tree.byLabel[l]; });
+        var depthLines = dd === 0 ? [22, 23, 24, 25, { n: 26, note: T('front < rear? evet', 'front < rear? yes') }, 27]
+                                   : dedupeSkip(depthRoundLines(parents, false));
         S.step(dd === 0
           ? T('DERİNLİK (depth) 0: kökün derinliği her zaman 0\'dır (`' + byDepth[0][0] + '`).',
               'DEPTH 0: the root\'s depth is always 0 (`' + byDepth[0][0] + '`).')
           : T('Derinlik ' + dd + ': köke ' + dd + ' kenar uzaklıktaki düğümler (bir üst seviyenin derinliği + 1): ' + byDepth[dd].join(', ') + '.',
-              'Depth ' + dd + ': the nodes ' + dd + ' edges away from the root (parent\'s depth + 1): ' + byDepth[dd].join(', ') + '.'), LINES_DEPTH_FULL);
+              'Depth ' + dd + ': the nodes ' + dd + ' edges away from the root (parent\'s depth + 1): ' + byDepth[dd].join(', ') + '.'), { c: depthLines, java: depthLines });
       }
       /* Clear the "d=" depth tags before HEIGHT starts, so a number on screen always means only one thing
        * (otherwise B's leftover "d=1" next to E's new "h=1" reads as two different quantities with the same
@@ -475,19 +532,21 @@
       for (var dd2 = maxDepth; dd2 >= 0; dd2--) {
         byDepth[dd2].forEach(function (l) { S.set('n' + l, { style: 'active' }); annotate(S, l, slots[l], 'h=' + heightMap[l]); });
         var pairs = byDepth[dd2].map(function (l) { return l + '=' + heightMap[l]; }).join(', ');
+        var heightLines = dedupeSkip(byDepth[dd2].reduce(function (acc, l) { return acc.concat(heightNodeLines(tree.byLabel[l], heightMap)); }, []));
         S.step(dd2 === maxDepth
           ? T('YÜKSEKLİK (height), en alttan başlıyoruz: yapraklar yükseklik 0 alır: ' + pairs + '.',
               'HEIGHT, starting from the bottom: leaves get height 0: ' + pairs + '.')
           : T('Yükseklik ' + dd2 + '. seviyede: her düğümün yüksekliği = 1 + (çocuklarının en büyük yüksekliği): ' + pairs + '.',
-              'Height at level ' + dd2 + ': each node\'s height = 1 + (the tallest of its children): ' + pairs + '.'), LINES_HEIGHT_FULL);
+              'Height at level ' + dd2 + ': each node\'s height = 1 + (the tallest of its children): ' + pairs + '.'), { c: heightLines, java: heightLines });
       }
       d.nodes.forEach(function (n) { S.set('n' + n.label, { style: 'normal' }); });
 
       var height = heightMap[root.label];
       S.set('n' + root.label, { style: 'hl' });
       annotate(S, root.label, slots[root.label], 'h=' + height);
+      var rootHeightLines = dedupeSkip(heightNodeLines(root, heightMap));
       S.step(T('AĞACIN YÜKSEKLİĞİ = kökün yüksekliği = ' + height + '. (Eşdeğer olarak: en derin yaprağın derinliği.)',
-               'The HEIGHT OF THE TREE = the height of the root = ' + height + '. (Equivalently: the depth of the deepest leaf.)'), LINES_HEIGHT_FULL);
+               'The HEIGHT OF THE TREE = the height of the root = ' + height + '. (Equivalently: the depth of the deepest leaf.)'), { c: rootHeightLines, java: rootHeightLines });
       S.set('n' + root.label, { style: 'normal' });
       /* Clear the "h=" height tags before DEGREE starts, for the same reason: one number, one meaning. */
       d.nodes.forEach(function (n) { clearAnnotate(S, n.label); });

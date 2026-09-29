@@ -7,7 +7,11 @@
 int fact(int n) {
     if (n == 0)              /* base case */
         return 1;
-    return n * fact(n - 1);
+    /* Plain `n * fact(n - 1)` signed-overflows for n >= 13 -- undefined behavior in C, not just a
+     * wrong answer. Multiplying as `unsigned` gives the identical wraparound bit pattern with
+     * well-defined semantics, so the lesson (a silent wrong answer, no crash, no warning) still
+     * shows up exactly as described below, without triggering a sanitizer abort. */
+    return (int) ((unsigned) n * (unsigned) fact(n - 1));
 }
 
 static void run(const char *label, int n) {

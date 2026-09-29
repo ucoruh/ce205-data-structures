@@ -68,8 +68,18 @@
     '}'
   ];
   var LINES_STRUCT = { c: [4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], java: [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] };
-  var LINES_DEGREE = { c: [17, 18, 19, 20, 21], java: [16, 17, 18, 19, 20] };
-  var LINES_INDEG = { c: [24, 25, 26, 27, 28, 29], java: [23, 24, 25, 26, 27, 28] };
+  /** Definitional step showing the whole `out_degree` function: the `for` walks `v`'s adjacency list to its
+   *  end (each entry counted once, so list length IS the degree for an undirected graph). */
+  var LINES_DEGREE = { c: [17, 18, { n: 19, note: T('e != NULL? (liste bitene kadar say)', 'e != NULL? (count until the list ends)') }, 20, 21],
+                        java: [16, 17, { n: 18, note: T('e != null? (liste bitene kadar say)', 'e != null? (count until the list ends)') }, 19, 20] };
+  /** Definitional step showing the whole `in_degree` function: the outer `for` visits every vertex, the inner
+   *  `for` walks that vertex's whole adjacency list, and the `if` counts only the entries pointing AT `v`. */
+  var LINES_INDEG = { c: [24, 25, { n: 26, note: T('u < vertex_count? (her düğümü dene)', 'u < vertex_count? (try every vertex)') },
+                           { n: 27, note: T('e != NULL? (u\'nun listesini tara)', 'e != NULL? (scan u\'s whole list)') },
+                           { n: 28, note: T('e->to == v? (bu kenar v\'ye mi geliyor?)', 'e->to == v? (does this edge point at v?)') }, 29],
+                       java: [23, 24, { n: 25, note: T('u < vertexCount? (her düğümü dene)', 'u < vertexCount? (try every vertex)') },
+                              { n: 26, note: T('e != null? (u\'nun listesini tara)', 'e != null? (scan u\'s whole list)') },
+                              { n: 27, note: T('e.to == v? (bu kenar v\'ye mi geliyor?)', 'e.to == v? (does this edge point at v?)') }, 28] };
 
   /* ---- edge-list parsing / formatting, shared shape across every Week-5 file ---- */
   var EDGE_RE = /^([A-Za-z0-9]{1,3})(-|>)([A-Za-z0-9]{1,3})(?::(\d+))?$/;
@@ -115,7 +125,7 @@
           { a: 'D', b: 'E', w: 1 }, { a: 'E', b: 'F', w: 6 }, { a: 'E', b: 'F', w: 9 }, { a: 'D', b: 'D', w: 7 },
           { a: 'G', b: 'H', w: 2 }, { a: 'F', b: 'C', w: 8 }
         ] } },
-      { id: 'hard', level: 'hard', name: T('8 düğüm, yönlü: iki döngü, öz-döngü, çoklu kenar ve 2 zayıf bileşen', '8 vertices, directed: two cycles, a self-loop, a multi-edge and 2 weak components'),
+      { id: 'hard', level: 'hard', name: T('8 düğüm, yönlü: birden çok döngü, öz-döngü, çoklu kenar ve 2 zayıf bileşen', '8 vertices, directed: multiple cycles, a self-loop, a multi-edge and 2 weak components'),
         data: { directed: true, edges: [
           { a: 'P', b: 'Q', w: 3 }, { a: 'Q', b: 'R', w: 1 }, { a: 'R', b: 'P', w: 4 }, { a: 'R', b: 'S', w: 2 },
           { a: 'S', b: 'T', w: 5 }, { a: 'T', b: 'U', w: 1 }, { a: 'T', b: 'U', w: 1 }, { a: 'U', b: 'U', w: 6 },

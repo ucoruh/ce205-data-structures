@@ -202,7 +202,7 @@ animasyonu oynatın.
 ![Çizge terimleri: düğüm, kenar, derece, yol, döngü, bağlı bileşen — adım adım](anim/graph-terminology.png)
 </div>
 
-Oynatıcıda ayrıca **8 düğüm, yönlü: iki döngü, öz-döngü, çoklu kenar ve 2 zayıf bileşen** (zor) ile uç
+Oynatıcıda ayrıca **8 düğüm, yönlü: birden çok döngü, öz-döngü, çoklu kenar ve 2 zayıf bileşen** (zor) ile uç
 durumları da deneyin: **11 düğümlük zincir: döngüsüz, ağırlıksız, bağlı** ve **tek bir düğüm (bir öz-döngüyle
 gösterilir)** — ya da dört zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi çizgenizi kenar listesi
 olarak yazın (`A-B` yönsüz, `A>B` yönlü, `A-B:4` ağırlıklı).
@@ -498,13 +498,13 @@ kestirmesi yoktur ve `v`'ye inen kenarları ararken her *başka* düğümün lis
             };
             run_scenario("normal: 8 vertices, weighted, a cycle, a self-loop, a multi-edge and 2 components", 0, normal, 10);
 
-            /* hard: 8 vertices, directed, two cycles, a self-loop, a multi-edge and 2 weak components */
+            /* hard: 8 vertices, directed, multiple cycles, a self-loop, a multi-edge and 2 weak components */
             EdgeIn hard[] = {
                 {"P", "Q", 3}, {"Q", "R", 1}, {"R", "P", 4}, {"R", "S", 2},
                 {"S", "T", 5}, {"T", "U", 1}, {"T", "U", 1}, {"U", "U", 6},
                 {"Q", "S", 2}, {"S", "Q", 3}, {"V", "W", 2}, {"W", "V", 3}
             };
-            run_scenario("hard: 8 vertices, directed, two cycles, a self-loop, a multi-edge and 2 weak components", 1, hard, 12);
+            run_scenario("hard: 8 vertices, directed, multiple cycles, a self-loop, a multi-edge and 2 weak components", 1, hard, 12);
 
             /* edge: an 11-vertex chain, no cycle, unweighted, connected */
             EdgeIn no_cycle[] = {
@@ -719,13 +719,13 @@ kestirmesi yoktur ve `v`'ye inen kenarları ararken her *başka* düğümün lis
                 };
                 runScenario("normal: 8 vertices, weighted, a cycle, a self-loop, a multi-edge and 2 components", false, normal);
 
-                // hard: 8 vertices, directed, two cycles, a self-loop, a multi-edge and 2 weak components
+                // hard: 8 vertices, directed, multiple cycles, a self-loop, a multi-edge and 2 weak components
                 EdgeIn[] hard = {
                     new EdgeIn("P", "Q", 3), new EdgeIn("Q", "R", 1), new EdgeIn("R", "P", 4), new EdgeIn("R", "S", 2),
                     new EdgeIn("S", "T", 5), new EdgeIn("T", "U", 1), new EdgeIn("T", "U", 1), new EdgeIn("U", "U", 6),
                     new EdgeIn("Q", "S", 2), new EdgeIn("S", "Q", 3), new EdgeIn("V", "W", 2), new EdgeIn("W", "V", 3)
                 };
-                runScenario("hard: 8 vertices, directed, two cycles, a self-loop, a multi-edge and 2 weak components", true, hard);
+                runScenario("hard: 8 vertices, directed, multiple cycles, a self-loop, a multi-edge and 2 weak components", true, hard);
 
                 // edge: an 11-vertex chain, no cycle, unweighted, connected
                 EdgeIn[] noCycle = {
@@ -760,7 +760,7 @@ kestirmesi yoktur ve `v`'ye inen kenarları ararken her *başka* düğümün lis
     connected components: 2
     has cycle: yes
 
-    -- hard: 8 vertices, directed, two cycles, a self-loop, a multi-edge and 2 weak components --
+    -- hard: 8 vertices, directed, multiple cycles, a self-loop, a multi-edge and 2 weak components --
     directed, 8 vertices, 12 edges
     self-loop: U-U
     multi-edge: T>U (2 copies)
@@ -1228,7 +1228,7 @@ dört zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi kenarla
       F   0  0  1  0  1  0  1
       G   1  0  0  0  0  1  0
 
-    … (zor ve yoğun senaryolar burada atlandı; aynı örüntü, boş matris sonra her add_edge'den sonra bir matris)
+    …
 
     -- edge: a single vertex, shown with a self-loop -- a 1x1 matrix --
     1 vertices, empty matrix:
@@ -1654,7 +1654,7 @@ yukarıdaki komşuluk matrisi animasyonuyla aynı çizgeler, böylece iki göste
     F: -> E -> G -> C -> NULL
     G: -> F -> A -> NULL
 
-    … (zor ve yoğun senaryolar burada atlandı; aynı örüntü, boş listeler sonra her add_edge'den sonra tüm listeler)
+    …
 
     -- edge: a single vertex, shown with a self-loop -- a one-vertex list --
     1 vertices, empty lists:
@@ -1704,8 +1704,8 @@ seçim yapar; tam olarak bu yüzden bu haftanın geri kalanındaki her gezinme a
 !!! warning "Sık yapılan hatalar"
     - **Seyrek bir çizge için alışkanlıkla matrisi seçmek.** İki milyon kenarlı bir milyon düğümlük bir çizge
       (bir yol ağı için çok normal bir büyüklük), matris olarak `10^12` hücreye ihtiyaç duyar ama komşuluk
-      listesi olarak yalnızca yaklaşık `3 x 10^6` liste düğümüne — bir milyon kat fark, sabrınızdan çok önce
-      belleğinizi tüketir.
+      listesi olarak yalnızca yaklaşık `4 x 10^6` liste düğümüne (her yönsüz kenar iki listeye eklenir) —
+      kabaca 250.000 kat fark, sabrınızdan çok önce belleğinizi tüketir.
     - **Yönsüz bir kenarı aynalamayı unutmak.** Matriste `matrix[b][a] = weight`'i (ya da listede ikinci
       `append`'i) unutmak, yönsüz bir çizgeyi sessizce yalnızca `v_a` tarafından yönlü bir çizgeye dönüştürür —
       bu haftaki her gezinme algoritması, `b`'den bir arama başlatıldığında kenarları kaçırır.
@@ -4175,9 +4175,9 @@ uzunluğu)'dur, bu da en fazla O(V)'dir. Toplam: düz BFS ile aynı, **O(V + E)*
     - **Yeniden kurulan yolu ters çevirmeyi unutmak.** `parent_of`i `t`'den `s`'ye geriye yürümek zorunlu olarak
       düğümleri `t ... s` sırasında üretir; onları olduğu gibi yazdırmak yolu sessizce ters bildirir.
     - **BFS'in en kısa yolunun benzersiz olduğunu varsaymak.** Aynı minimum uzunlukta birkaç farklı en kısa yol
-      var olabilir (örneğin yukarıdaki "zor" senaryonun `P`'den `W`'ye 3 kenarlı birden fazla yolu vardır); bu
-      algoritma bunlardan *birini* bildirir — ebeveyn işaretçilerinin gerçekleştirdiği hangisiyse — elle
-      bulabileceğiniz belirli bir yol değil.
+      var olabilir — örneğin yukarıdaki "normal" senaryonun çizgesinde `A`'dan `C`'ye 2 kenarlı iki farklı yol
+      vardır, `A-B-C` ve `A-D-C`; bu algoritma bunlardan *birini* bildirir — ebeveyn işaretçilerinin
+      gerçekleştirdiği hangisiyse — elle bulabileceğiniz belirli bir yol değil.
     - **Bu algoritmayı *ağırlıklı* bir çizgede kullanmaya kalkışmak.** `bfs_shortest_path`, *kenarları* sayar,
       toplam ağırlığı değil; ağırlıklı bir çizgede en az kenarlı yol, mutlaka en düşük toplam maliyetli yol
       değildir. Hafta 9'un Dijkstra algoritması bu daha genel problemi çözer, tam olarak bu ebeveyn-işaretçisi

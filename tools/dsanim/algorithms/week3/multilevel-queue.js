@@ -178,7 +178,7 @@
       }
       S.step(T('Kabul bitti: sistem ' + counts[0] + ', etkileşimli ' + counts[1] + ', toplu iş ' + counts[2] + ' süreç kuyruklarında.' + noteTr,
                'Admission is done: system ' + counts[0] + ', interactive ' + counts[1] + ', batch ' + counts[2] + ' processes are queued.' + noteEn),
-             { c: [7, 8, 9, 10], java: [7, 8, 9, 10] });
+             { c: [3, 4], java: [3, 4] });
 
       var order = [], pick = 0, firstArrivalIndex = {};
       d.arrivals.forEach(function (a, i) { firstArrivalIndex[a.name] = i; });
@@ -198,9 +198,17 @@
         var mechEn2 = pick <= 2 ? 'The scheduler always starts at level 0 and returns the first non-empty queue it finds (`pick_next`). ' : '';
         var reasonTr = lvl2 === 0 ? '' : (lvl2 === 1 ? '`0`. seviye (sistem) şu an boş olduğu için, ' : '`0`. ve `1`. seviyeler şu an boş olduğu için, ');
         var reasonEn = lvl2 === 0 ? '' : (lvl2 === 1 ? 'because level `0` (system) is empty right now, ' : 'because levels `0` and `1` are both empty right now, ');
+        // pick_next()'s for-loop really visits lvl = 0 .. lvl2: every level below lvl2 was checked and found
+        // empty (is_empty true, loop continues); lvl2 itself is found non-empty and returned.
+        var pickLines = [];
+        for (var chk = 0; chk <= lvl2; chk++) {
+          var empty2 = chk < lvl2;
+          pickLines.push(8, { n: 9, note: T('is_empty(q[' + chk + '])? ' + (empty2 ? 'evet' : 'hayır'), 'is_empty(q[' + chk + '])? ' + (empty2 ? 'yes' : 'no')) });
+        }
+        pickLines.push(10);
         S.step(T(mechTr2 + '`' + name + '` seçildi: ' + reasonTr + AD[lvl2].tr + ' kuyruğunun önündeydi, CPU\'ya verilir. Sıra: ' + order.join(', ') + '.',
                  mechEn2 + '`' + name + '` is picked: ' + reasonEn + 'it was at the front of the ' + AD[lvl2].en + ' queue and gets the CPU. Order so far: ' + order.join(', ') + '.'),
-               { c: [7, 8, 9, 10], java: [7, 8, 9, 10] });
+               { c: pickLines, java: pickLines });
         S.remove(bid2);
       }
 

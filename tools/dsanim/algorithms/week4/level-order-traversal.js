@@ -49,8 +49,24 @@
     '    if (cur.right != null) enqueue(cur.right);',
     '}'
   ];
-  var LINES_ENQ_ROOT = { c: [14], java: [14] };
-  var LINES_STEP = { c: [16, 17, 18, 19, 20], java: [16, 17, 18, 19, 20] };
+  /** `enqueue(root)` (14) is a call into the separate `enqueue` helper: the call line, then the callee's
+   *  own body (2, 3, 4), then the line after the call (15, the loop's own check, shown by the step that
+   *  follows). */
+  var LINES_ENQ_ROOT = { c: [14, 2, 3, 4], java: [14, 2, 3, 4] };
+  /** One trip around the loop: 15 (still running), `cur = dequeue()` (16) is a call into `dequeue` — the
+   *  call line, then its callee body (8, 9, 10, 11) — then the visit (17, 18). Lines 19 and 20 are each a
+   *  single-line `if (cond) enqueue(...)`: the condition gets a note either way, and when it is true the
+   *  embedded `enqueue` call's callee body (2, 3, 4) follows right after it, per the calling convention;
+   *  when false there is nothing further on that line to mark, since the call is the entire "then" body. */
+  function stepLines(cur) {
+    var hasLeft = !!cur.left, hasRight = !!cur.right;
+    var lines = [{ n: 15, note: T('!is_empty()? evet', '!is_empty()? yes') }, 16, 8, 9, 10, 11, 17, 18];
+    lines.push({ n: 19, note: hasLeft ? T('cur->left != NULL? evet', 'cur->left != NULL? yes') : T('cur->left != NULL? hayır', 'cur->left != NULL? no') });
+    if (hasLeft) lines.push(2, 3, 4);
+    lines.push({ n: 20, note: hasRight ? T('cur->right != NULL? evet', 'cur->right != NULL? yes') : T('cur->right != NULL? hayır', 'cur->right != NULL? no') });
+    if (hasRight) lines.push(2, 3, 4);
+    return { c: lines, java: lines };
+  }
 
   /* ---- tree helpers (local to this file; build() uses these, reference() does not) ---- */
   function buildTree(arr) {
@@ -180,8 +196,12 @@
       var root = buildTree(arr);
       if (!root) {
         S.label('empty', { x: 60, y: 50, text: T('Boş ağaç: kuyruğa hiçbir şey konmaz.', 'Empty tree: nothing is ever enqueued.'), anchor: 'start', size: 16 });
-        S.step(T('Ağaç boş (`tree = []`): `enqueue(root)` bile çağrılmaz (kök yok), `is_empty()` baştan doğru.',
-                 'The tree is empty (`tree = []`): `enqueue(root)` is never even called (there is no root), `is_empty()` is true from the start.'), { c: [14, 15], java: [14, 15] });
+        S.step(T('Ağaç boş (`tree = []`): `enqueue(root)` bile çağrılmaz (kök yok), `is_empty()` baştan doğru — döngü gövdesi (16-20. satırlar) hiç çalışmaz.',
+                 'The tree is empty (`tree = []`): `enqueue(root)` is never even called (there is no root), `is_empty()` is true from the start — the loop body (lines 16-20) never runs.'),
+               { c: [{ n: 14, skip: true }, { n: 15, note: T('!is_empty()? hayır (kuyruk boş)', '!is_empty()? no (queue is empty)') },
+                     { n: 16, skip: true }, { n: 17, skip: true }, { n: 18, skip: true }, { n: 19, skip: true }, { n: 20, skip: true }],
+                 java: [{ n: 14, skip: true }, { n: 15, note: T('!is_empty()? hayır (kuyruk boş)', '!is_empty()? no (queue is empty)') },
+                        { n: 16, skip: true }, { n: 17, skip: true }, { n: 18, skip: true }, { n: 19, skip: true }, { n: 20, skip: true }] });
         S.result = [];
         return;
       }
@@ -234,14 +254,14 @@
         var soFar = order.join(', ');
         if (first) {
           S.step(T('`dequeue()` -> `' + cur.val + '`; ziyaret edilir (çıkış listesi: ' + soFar + '). Çocukları varsa kuyruğa eklenir (`enqueue`): ' + (kids.length ? kids.join(', ') : T('yok, bu bir yaprak', 'none, this is a leaf').tr) + '.',
-                   '`dequeue()` -> `' + cur.val + '`; it is visited (output list: ' + soFar + '). Its children, if any, are enqueued: ' + (kids.length ? kids.join(', ') : 'none, this is a leaf') + '.'), LINES_STEP);
+                   '`dequeue()` -> `' + cur.val + '`; it is visited (output list: ' + soFar + '). Its children, if any, are enqueued: ' + (kids.length ? kids.join(', ') : 'none, this is a leaf') + '.'), stepLines(cur));
           first = false;
         } else if (kids.length) {
           S.step(T('`dequeue()` -> `' + cur.val + '`; ziyaret edilir, çocukları (' + kids.join(', ') + ') kuyruğa eklenir. Şimdiye kadar: ' + soFar + '.',
-                   '`dequeue()` -> `' + cur.val + '`; it is visited, its children (' + kids.join(', ') + ') are enqueued. So far: ' + soFar + '.'), LINES_STEP);
+                   '`dequeue()` -> `' + cur.val + '`; it is visited, its children (' + kids.join(', ') + ') are enqueued. So far: ' + soFar + '.'), stepLines(cur));
         } else {
           S.step(T('`dequeue()` -> `' + cur.val + '`; ziyaret edilir. Yaprak olduğu için kuyruğa hiçbir şey eklenmez. Şimdiye kadar: ' + soFar + '.',
-                   '`dequeue()` -> `' + cur.val + '`; it is visited. It is a leaf, so nothing is enqueued. So far: ' + soFar + '.'), LINES_STEP);
+                   '`dequeue()` -> `' + cur.val + '`; it is visited. It is a leaf, so nothing is enqueued. So far: ' + soFar + '.'), stepLines(cur));
         }
         S.set('n' + cur.idx, { style: 'dim' });
       }
@@ -249,7 +269,9 @@
       arr.forEach(function (v, i) { if (v !== null) S.set('n' + i, { style: 'normal' }); });
       S.result = order;
       S.step(T('Kuyruk boş, bitti. Tam sıra: ' + order.join(', ') + ' — her seviyeyi soldan sağa tamamladıktan sonra bir alt seviyeye geçtik.',
-               'The queue is empty, done. Full sequence: ' + order.join(', ') + ' — we finished each level left to right before moving one level down.'));
+               'The queue is empty, done. Full sequence: ' + order.join(', ') + ' — we finished each level left to right before moving one level down.'),
+             { c: [{ n: 15, note: T('!is_empty()? hayır (kuyruk boş)', '!is_empty()? no (queue is empty)') }],
+               java: [{ n: 15, note: T('!is_empty()? hayır (kuyruk boş)', '!is_empty()? no (queue is empty)') }] });
     }
   });
 })(typeof DSAnim !== 'undefined' ? DSAnim : require('../../web/scene.js'));

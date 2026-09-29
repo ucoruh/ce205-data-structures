@@ -55,8 +55,33 @@
     '        append(b, a);',
     '}'
   ];
-  var LINES_APPEND = { c: [8, 9, 10, 11, 12, 13, 14, 15, 16], java: [7, 8, 9, 10, 11, 12, 13, 14, 15] };
-  var LINES_ADDEDGE = { c: [19, 20, 21, 22], java: [18, 19, 20, 21] };
+  /* NOTE: the Java code panel lines below were previously off by one throughout this file (e.g. LINES_ADDEDGE
+   * used to say java: [18, 19, 20, 21], which is the blank line before `void addEdge` plus its first three
+   * lines, missing `append(b, a);` entirely) -- JAVA_CODE has the exact same line layout as C_CODE (same
+   * blank-line placement), so every Java line number below is now identical to its C counterpart. */
+  var LINES_ADDEDGE = { c: [19, 20, 21, 22], java: [19, 20, 21, 22] };
+  /** `append`: line 12's early return (`if (adj[v] == NULL) { adj[v] = n; return; }`) and the walk-to-tail
+   *  while loop (13-16) are mutually exclusive -- the first append into a vertex's list takes the early
+   *  return and never reaches 13-16; every later append skips the return and walks past `existingCount`
+   *  nodes (one `{note}`'d loop check per hop) before writing the new tail pointer on line 16. Lines 13-16 are
+   *  simply OMITTED (not `{skip: true}`) when the early return is taken: this function is called twice and
+   *  concatenated for an undirected edge (once per endpoint, see the call site), and each call decides
+   *  independently whether its own list was empty -- a `{skip: true}` marked by one call for its early return
+   *  would incorrectly greyed out the OTHER call's genuine (non-skipped) use of the very same line numbers in
+   *  the merged step (branch_coverage.js's "both run and skipped" check). */
+  function appendLines(existingCount) {
+    var lines = [8, 9, 10, 11];
+    if (existingCount === 0) {
+      lines.push({ n: 12, note: T('adj[v] == NULL? evet (liste boş, erken dönüş)', 'adj[v] == NULL? yes (empty list, early return)') });
+    } else {
+      lines.push({ n: 12, note: T('adj[v] == NULL? hayır', 'adj[v] == NULL? no') });
+      lines.push(13);
+      for (var i = 0; i < existingCount - 1; i++) lines.push({ n: 14, note: T('cur->next != NULL? evet', 'cur->next != NULL? yes') }, 15);
+      lines.push({ n: 14, note: T('cur->next != NULL? hayır (kuyrukta)', 'cur->next != NULL? no (at the tail)') });
+      lines.push(16);
+    }
+    return { c: lines, java: lines };
+  }
 
   var EDGE_RE = /^([A-Za-z0-9]{1,3})(-|>)([A-Za-z0-9]{1,3})(?::(\d+))?$/;
   function parseGraph(text) {
@@ -173,9 +198,18 @@
 
       edges.forEach(function (e, idx) {
         S.at(idx);
+        var beforeA = count[e.a];
         appendNode(e.a, e.b);
         var alsoBack = !directed && e.a !== e.b;
-        if (alsoBack) appendNode(e.b, e.a);
+        var lines;
+        if (alsoBack) {
+          var beforeB = count[e.b];
+          appendNode(e.b, e.a);
+          var l1 = appendLines(beforeA), l2 = appendLines(beforeB);
+          lines = { c: l1.c.concat(l2.c), java: l1.java.concat(l2.java) };
+        } else {
+          lines = appendLines(beforeA);
+        }
         S.set('n_' + e.a + '_' + (count[e.a] - 1), { style: 'hl' });
         if (alsoBack) S.set('n_' + e.b + '_' + (count[e.b] - 1), { style: 'hl' });
         S.step(alsoBack
@@ -183,7 +217,7 @@
               'Edge `' + e.a + '-' + e.b + (e.w !== null ? ':' + e.w : '') + '` (undirected): `' + e.b + '` is appended to `' + e.a + '`\'s list, and `' + e.a + '` is appended to `' + e.b + '`\'s list -- two nodes, two lists.')
           : T('Kenar `' + e.a + (directed ? '>' : '-') + e.b + (e.w !== null ? ':' + e.w : '') + '`' + (e.a === e.b ? ' (öz-döngü)' : '') + ': `' + e.b + '` düğümü, `' + e.a + '`\'nin listesinin sonuna eklenir.',
               'Edge `' + e.a + (directed ? '>' : '-') + e.b + (e.w !== null ? ':' + e.w : '') + '`' + (e.a === e.b ? ' (a self-loop)' : '') + ': `' + e.b + '` is appended to the tail of `' + e.a + '`\'s list.'),
-          LINES_APPEND);
+          lines);
         S.set('n_' + e.a + '_' + (count[e.a] - 1), { style: 'normal' });
         if (alsoBack) S.set('n_' + e.b + '_' + (count[e.b] - 1), { style: 'normal' });
       });

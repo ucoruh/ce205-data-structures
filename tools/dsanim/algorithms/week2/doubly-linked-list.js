@@ -110,19 +110,24 @@
   ];
   var ROWCAP = 8, DX = 108, ROWH = 190, X0 = 120, Y0 = 130;
 
-  var L_INTRO = { c: 6, java: 3 };
-  var L_HEAD_SIG = { c: 8, java: 5 };
-  var L_TAIL_SIG = { c: 16, java: 12 };
-  var L_HEAD_LINK = { c: [9, 10, 11], java: [6, 7, 8] };
-  var L_TAIL_LINK = { c: [17, 18, 19], java: [13, 14, 15] };
-  var L_AFTER_SCAN = { c: [25, 26], java: [21, 22] };
-  var L_AFTER_LINK = { c: [27, 28, 29, 30], java: [23, 24, 25, 26] };
-  var L_AFTER_NOTFOUND = { c: 34, java: 30 };
-  var L_DEL_NOTFOUND = { c: 46, java: 41 };
-  var L_DEL_FOUND = { c: 39, java: 34 };
-  var L_DEL_RELINK = { c: [40, 41], java: [35, 36] };
-  var L_BACK_INTRO = { c: 48, java: 43 };
-  var L_BACK_WALK = { c: 49, java: 44 };
+  var L_INTRO = { c: 6, java: 2 };
+  var L_HEAD_SIG = { c: 9, java: 5 };
+  var L_TAIL_SIG = { c: 17, java: 13 };
+  var L_HEAD_LINK = { c: [10, 11, 12, 13], java: [6, 7, 8, 9] };
+  var L_TAIL_LINK = { c: [18, 19, 20, 21], java: [14, 15, 16, 17] };
+  var L_AFTER_SCAN = { c: [{ n: 25, note: T('cur != NULL? evet', 'cur != NULL? yes') }, { n: 26, note: T('cur->data == target? evet', 'cur->data == target? yes') }],
+                        java: [{ n: 21, note: T('cur != null? evet', 'cur != null? yes') }, { n: 22, note: T('cur.data == target? evet', 'cur.data == target? yes') }] };
+  var L_AFTER_NOTFOUND = { c: [{ n: 25, note: T('cur != NULL? hayır (tüm liste tarandı)', 'cur != NULL? no (the whole list was scanned)') }, 34],
+                            java: [{ n: 21, note: T('cur != null? hayır (tüm liste tarandı)', 'cur != null? no (the whole list was scanned)') }, 30] };
+  var L_DEL_NOTFOUND = { c: [{ n: 38, note: T('cur != NULL? hayır (tüm liste tarandı)', 'cur != NULL? no (the whole list was scanned)') }, 46],
+                          java: [{ n: 34, note: T('cur != null? hayır (tüm liste tarandı)', 'cur != null? no (the whole list was scanned)') }, 41] };
+  var L_DEL_FOUND = { c: [{ n: 39, note: T('cur->data == value? evet', 'cur->data == value? yes') }],
+                       java: [{ n: 35, note: T('cur.data == value? evet', 'cur.data == value? yes') }] };
+  var L_DEL_RELINK = { c: [40, 41, 42, 43], java: [36, 37, 38] };
+  var L_BACK_EMPTY = { c: [{ n: 50, note: T('cur != NULL? hayır (liste boş)', 'cur != NULL? no (the list is empty)') }],
+                        java: [{ n: 45, note: T('cur != null? hayır (liste boş)', 'cur != null? no (the list is empty)') }] };
+  var L_BACK_START = { c: { n: 50, note: T('cur != NULL? evet', 'cur != NULL? yes') }, java: { n: 45, note: T('cur != null? evet', 'cur != null? yes') } };
+  var L_BACK_WALK = { c: 50, java: 45 };
 
   function isDel(t) { return /^d(-?\d+)$/.test(t); }
   function delVal(t) { return +/^d(-?\d+)$/.exec(t)[1]; }
@@ -241,11 +246,20 @@
         S.node(nid, { x: X0, y: Y0 - 100, value: '?', style: 'new' });
         if (detailed) S.step(T((front ? '`insert_head(' : '`insert_tail(') + v + ')`: yeni düğüm ayrılır.', (front ? '`insertHead(' : '`insertTail(') + v + ')`: a new node is allocated.'), front ? L_HEAD_SIG : L_TAIL_SIG);
         S.set(nid, { value: String(v) });
+        var wasEmpty = list.length === 0;
         if (front) { list.unshift(nid); relayout(); wireAll(); }
         else { list.push(nid); relayout(); wireAll(); }
         pointHT(); clean();
+        var linkLines = front ? L_HEAD_LINK : L_TAIL_LINK;
+        var otherEnd = front ? 'head' : 'tail', thisEnd = front ? 'tail' : 'head';
+        var note1 = wasEmpty ? T((front ? 'list->head' : 'list->tail') + ' != NULL? hayır (liste boştu)', (front ? 'list.head' : 'list.tail') + ' != null? no (list was empty)')
+                              : T((front ? 'list->head' : 'list->tail') + ' != NULL? evet', (front ? 'list.head' : 'list.tail') + ' != null? yes');
+        var note2 = wasEmpty ? T('list->' + thisEnd + ' == NULL? evet (ilk düğüm)', 'list.' + thisEnd + ' == null? yes (first node)')
+                              : T('list->' + thisEnd + ' == NULL? hayır', 'list.' + thisEnd + ' == null? no');
+        var lines = { c: linkLines.c.map(function (n, idx) { return idx === 1 ? { n: n, note: note1 } : idx === 3 ? { n: n, note: note2 } : n; }),
+                      java: linkLines.java.map(function (n, idx) { return idx === 1 ? { n: n, note: note1 } : idx === 3 ? { n: n, note: note2 } : n; }) };
         S.step(T((front ? '`insert_head(' : '`insert_tail(') + v + ')`: `prev`/`next` bağlantıları kurulur, ' + (front ? '`head`' : '`tail`') + ' güncellenir. O(1).',
-                 (front ? '`insertHead(' : '`insertTail(') + v + ')`: the `prev`/`next` links are wired up, ' + (front ? '`head`' : '`tail`') + ' is updated. O(1).'), front ? L_HEAD_LINK : L_TAIL_LINK);
+                 (front ? '`insertHead(' : '`insertTail(') + v + ')`: the `prev`/`next` links are wired up, ' + (front ? '`head`' : '`tail`') + ' is updated. O(1).'), lines);
       }
 
       function doInsertAfter(target, v, detailed) {
@@ -266,7 +280,9 @@
         relayout(); wireAll(); pointHT(); clean();
         inserted++;
         S.step(T('`n->prev = cur`, `n->next = cur->next`' + (isTailNode ? ', `cur->next == NULL` oldugundan `list->tail = n`.' : ', `cur->next->prev = n`.') + ' `cur->next = n`.',
-                 '`n->prev = cur`, `n->next = cur->next`' + (isTailNode ? ', since `cur->next == NULL`, `list->tail = n`.' : ', `cur->next->prev = n`.') + ' `cur->next = n`.'), L_AFTER_LINK);
+                 '`n->prev = cur`, `n->next = cur->next`' + (isTailNode ? ', since `cur->next == NULL`, `list->tail = n`.' : ', `cur->next->prev = n`.') + ' `cur->next = n`.'),
+               { c: [27, 28, { n: 29, note: isTailNode ? T('cur->next != NULL? hayır', 'cur->next != NULL? no') : T('cur->next != NULL? evet', 'cur->next != NULL? yes') }, 30],
+                 java: [23, 24, { n: 25, note: isTailNode ? T('cur.next != null? hayır', 'cur.next != null? no') : T('cur.next != null? evet', 'cur.next != null? yes') }, 26] });
       }
 
       function doDelete(value) {
@@ -279,7 +295,8 @@
           return;
         }
         S.set(list[idx], { style: 'hl' });
-        var where = idx === 0 ? T('baştaki düğüm', 'the front node') : (idx === list.length - 1 ? T('sondaki düğüm', 'the back node') : T('ortadaki bir düğüm', 'a middle node'));
+        var isHeadNode = idx === 0, isTailNodeD = idx === list.length - 1;
+        var where = isHeadNode ? T('baştaki düğüm', 'the front node') : (isTailNodeD ? T('sondaki düğüm', 'the back node') : T('ortadaki bir düğüm', 'a middle node'));
         S.step(T('`delete_value(' + value + ')`: bulundu (' + where.tr + '). Solu ve sağı birbirine bağlayıp düğümü serbest bırakacağız.',
                  '`delete_value(' + value + ')`: found (' + where.en + '). We relink its left and right neighbours, then free it.'), L_DEL_FOUND);
         S.remove('nx' + list[idx], 'pv' + list[idx]);
@@ -287,20 +304,26 @@
         list.splice(idx, 1);
         relayout(); wireAll(); pointHT(); clean();
         removed++;
-        S.step(T('İki taraf birbirine bağlandı; ' + (idx === 0 ? '`head`' : (idx === list.length ? '`tail`' : 'aradaki bağlar')) + ' güncellendi. `free(cur)`, `true` döner.',
-                 'Both sides are relinked; ' + (idx === 0 ? '`head`' : (idx === list.length ? '`tail`' : 'the links in between')) + ' are updated. `free(cur)`, returns `true`.'), L_DEL_RELINK);
+        var relinkNote1 = isHeadNode ? T('cur->prev != NULL? hayır (baştaki düğüm)', 'cur->prev != NULL? no (front node)') : T('cur->prev != NULL? evet', 'cur->prev != NULL? yes');
+        var relinkNote2 = isTailNodeD ? T('cur->next != NULL? hayır (sondaki düğüm)', 'cur->next != NULL? no (back node)') : T('cur->next != NULL? evet', 'cur->next != NULL? yes');
+        S.step(T('İki taraf birbirine bağlandı; ' + (isHeadNode ? '`head`' : (isTailNodeD ? '`tail`' : 'aradaki bağlar')) + ' güncellendi. `free(cur)`, `true` döner.',
+                 'Both sides are relinked; ' + (isHeadNode ? '`head`' : (isTailNodeD ? '`tail`' : 'the links in between')) + ' are updated. `free(cur)`, returns `true`.'),
+               { c: [{ n: L_DEL_RELINK.c[0], note: relinkNote1 }, { n: L_DEL_RELINK.c[1], note: relinkNote2 }].concat(L_DEL_RELINK.c.slice(2)),
+                 java: [{ n: L_DEL_RELINK.java[0], note: relinkNote1 }, { n: L_DEL_RELINK.java[1], note: relinkNote2 }].concat(L_DEL_RELINK.java.slice(2)) });
       }
 
       function doBackward() {
         clean();
         if (!list.length) {
-          S.step(T('`print_backward`: `tail == NULL`, gösterilecek bir şey yok.', '`print_backward`: `tail == NULL`, there is nothing to print.'), L_BACK_INTRO);
+          S.step(T('`print_backward`: `tail == NULL`, gösterilecek bir şey yok.', '`print_backward`: `tail == NULL`, there is nothing to print.'), L_BACK_EMPTY);
           return;
         }
-        S.step(T('`print_backward`: `cur = tail`\'den başlayıp `cur->prev` ile geriye doğru gezilir.', '`print_backward`: starting at `cur = tail` and walking backward via `cur->prev`.'), L_BACK_INTRO);
+        S.step(T('`print_backward`: `cur = tail`\'den başlayıp `cur->prev` ile geriye doğru gezilir.', '`print_backward`: starting at `cur = tail` and walking backward via `cur->prev`.'), L_BACK_START);
         for (var i = list.length - 1; i >= 0; i--) {
           clean(); S.set(list[i], { style: 'active' }); if (S.has('pv' + list[i])) S.set('pv' + list[i], { style: 'hl' });
-          S.step(T('geriye gez: ' + S.get(list[i]).value + (i > 0 ? ' -- `cur = cur->prev`' : ' -- `cur->prev == NULL`, bitti'), 'backward: ' + S.get(list[i]).value + (i > 0 ? ' -- `cur = cur->prev`' : ' -- `cur->prev == NULL`, done')), L_BACK_WALK);
+          var backNote = i > 0 ? T('cur != NULL? evet', 'cur != NULL? yes') : T('cur != NULL? evet (son düğüm, sıradaki hayır)', 'cur != NULL? yes (last node, next is no)');
+          S.step(T('geriye gez: ' + S.get(list[i]).value + (i > 0 ? ' -- `cur = cur->prev`' : ' -- `cur->prev == NULL`, bitti'), 'backward: ' + S.get(list[i]).value + (i > 0 ? ' -- `cur = cur->prev`' : ' -- `cur->prev == NULL`, done')),
+                 { c: { n: L_BACK_WALK.c, note: backNote }, java: { n: L_BACK_WALK.java, note: backNote } });
         }
       }
 

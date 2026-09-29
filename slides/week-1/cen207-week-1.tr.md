@@ -424,9 +424,9 @@ else
 
 # Büyüme yarışı: hız değil, şekil kazanır
 
-n ikiye katlanırken üç fonksiyonu
-yarıştıralım: düz `n`, `n·log₂n` (en iyi
-sıralamalar), `n²` (basit sıralamalar, iç içe döngüler).
+n ikiye katlanırken beş fonksiyonu
+yarıştıralım: `log₂n`, düz `n`, `n·log₂n` (en iyi
+sıralamalar), `n²` (basit sıralamalar, iç içe döngüler) ve `2ⁿ` (üstel).
 
 <!-- Konuşma notu: Çok daha büyük bir ölçekte iki nokta — bu animasyon ölçeğin tamamını bir kerede gösteriyor. -->
 
@@ -467,10 +467,12 @@ for (int i = 0; i < count; i++) {
     long n = ns[i];
     double nlogn = (double) n * log2((double) n);
     double nsq = (double) n * (double) n;
+    char pow2n[MAX_DIGITS];
+    pow2_decimal((int) n, pow2n);
 }
 ```
 
-<!-- Konuşma notu: Bu, az önce gördüğünüz tabloyu beş gerçekçi büyüklük için üreten döngünün ta kendisi. -->
+<!-- Konuşma notu: Bu, az önce gördüğünüz tabloyu beş gerçekçi büyüklük için üreten döngünün ta kendisi; pow2_decimal, 2^n'in tam ondalık basamaklarını kurar (notların 3.6. bölümü), çünkü n kare ve n log n bir double'a sığar ama 2^n sığmaz. -->
 
 ---
 
@@ -1433,7 +1435,7 @@ ya da çürüt. Canlı, adım adım izleyin.
 # gdb oturumu
 
 ```console
-(gdb) break debug_average.c:11
+(gdb) break debug_average.c:14
 (gdb) run
 (gdb) print sum
 (gdb) print sum / n

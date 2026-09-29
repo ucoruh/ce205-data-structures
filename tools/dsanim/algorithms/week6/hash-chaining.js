@@ -187,31 +187,39 @@
           if (!chain.length) {
             S.step(T('`search(' + qkey + ')`: `h(' + qkey + ') = ' + qidx + '`. Hücre ' + qidx + ' boş (NULL) — döngüye hiç girmeden **bulunamadı**, 0 yoklama.',
                      '`search(' + qkey + ')`: `h(' + qkey + ') = ' + qidx + '`. Cell ' + qidx + ' is empty (NULL) — **not found** without entering the loop, 0 probes.'),
-                   { c: [13, 15], java: [10, 12] });
+                   { c: [13, 14, { n: 15, note: T('cur != NULL? hayır', 'cur != NULL? no') }], java: [10, 11, { n: 12, note: T('cur != null? hayır', 'cur != null? no') }] });
             searchResults.push({ key: qkey, found: false, probes: 0 });
           } else {
             var probes = 0, found = false;
             for (var ci = 0; ci < chain.length; ci++) {
               probes++;
               S.set(chain[ci], { style: 'hl' });
+              /* `p = 0;` / `probes = 0;` is a one-time entry line: shown only before the very first
+                 probe of this search() call, never repeated on later probes. */
+              var entryLine = ci === 0 ? { c: [14], java: [11] } : { c: [], java: [] };
               if (nodeKey[chain[ci]] === qkey) {
                 found = true;
                 S.set(chain[ci], { style: 'new' });
                 S.set('dec', { text: '= ' + qkey + ' found (' + probes + ')', style: 'new' });
                 S.step(T('`search(' + qkey + ')` — yoklama ' + probes + ': düğümün anahtarı ' + qkey + ' ile eşleşti — **bulundu**.',
-                         '`search(' + qkey + ')` — probe ' + probes + ': the node\'s key matches ' + qkey + ' — **found**.'), { c: [16, 17], java: [13, 14] });
+                         '`search(' + qkey + ')` — probe ' + probes + ': the node\'s key matches ' + qkey + ' — **found**.'),
+                       { c: entryLine.c.concat([{ n: 15, note: T('cur != NULL? evet', 'cur != NULL? yes') }, 16, { n: 17, note: T('cur->key==key? evet', 'cur->key==key? yes') }]),
+                         java: entryLine.java.concat([{ n: 12, note: T('cur != null? evet', 'cur != null? yes') }, 13, { n: 14, note: T('cur.key==key? evet', 'cur.key==key? yes') }]) });
                 break;
               } else {
                 S.set(chain[ci], { style: 'dim' });
                 S.set('dec', { text: '!= ' + qkey, style: 'normal' });
                 S.step(T('`search(' + qkey + ')` — yoklama ' + probes + ': düğümün anahtarı ' + qkey + ' değil, zincirde ilerleriz (`cur = cur->next`).',
-                         '`search(' + qkey + ')` — probe ' + probes + ': the node\'s key is not ' + qkey + ', we move along the chain (`cur = cur->next`).'), { c: [14, 15, 16], java: [12, 13, 14] });
+                         '`search(' + qkey + ')` — probe ' + probes + ': the node\'s key is not ' + qkey + ', we move along the chain (`cur = cur->next`).'),
+                       { c: entryLine.c.concat([{ n: 15, note: T('cur != NULL? evet', 'cur != NULL? yes') }, { n: 16, note: T('cur->key==key? hayır', 'cur->key==key? no') }]),
+                         java: entryLine.java.concat([{ n: 12, note: T('cur != null? evet', 'cur != null? yes') }, { n: 13, note: T('cur.key==key? hayır', 'cur.key==key? no') }]) });
               }
             }
             if (!found) {
               S.set('dec', { text: T('bulunamadı (' + probes + ')', 'not found (' + probes + ')'), style: 'del' });
               S.step(T('`cur == NULL`: zincirin sonuna geldik, ' + qkey + ' bu zincirde yok — **bulunamadı**, ' + probes + ' yoklama.',
-                       '`cur == NULL`: we reached the end of the chain, ' + qkey + ' is not in it — **not found**, ' + probes + ' probes.'), { c: [18, 19, 20], java: [16] });
+                       '`cur == NULL`: we reached the end of the chain, ' + qkey + ' is not in it — **not found**, ' + probes + ' probes.'),
+                     { c: [{ n: 15, note: T('cur != NULL? hayır', 'cur != NULL? no') }, 19, 20], java: [{ n: 12, note: T('cur != null? hayır', 'cur != null? no') }, 16] });
             }
             searchResults.push({ key: qkey, found: found, probes: probes });
           }

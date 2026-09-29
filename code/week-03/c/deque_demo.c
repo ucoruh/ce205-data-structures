@@ -97,5 +97,9 @@ int main(void) {
     const char *edge[] = {"10", "20", "pb", "30", "40", "pb", "50", "60", "pb", "70"};
     run_scenario("edge: only the back end (deque behaves like a stack)", edge, 10);
 
+    /* abnormal: pop at both ends while empty (underflow), then normal use resumes */
+    const char *abnormal[] = {"pb", "pf", "10", "20", "f5", "pb", "pf", "f-8", "30", "pb"};
+    run_scenario("abnormal: pop_back/pop_front on an empty deque, then normal use", abnormal, 10);
+
     return 0;
 }

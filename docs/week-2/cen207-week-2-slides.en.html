@@ -489,6 +489,7 @@ start, with only O(1) extra space allowed?</p>
 <header>CEN207 Data Structures · Week 2</header>
 <h1 id="code--rotate_left">Code — <code>rotate_left()</code></h1>
 <pre is="marp-pre" data-auto-scaling="downscale-only"><code class="language-c"><span class="hljs-type">void</span> <span class="hljs-title function_">rotate_left</span><span class="hljs-params">(<span class="hljs-type">int</span> arr[], <span class="hljs-type">int</span> n, <span class="hljs-type">int</span> d)</span> {
+    <span class="hljs-keyword">if</span> (n == <span class="hljs-number">0</span>) <span class="hljs-keyword">return</span>;        <span class="hljs-comment">/* empty: nothing to do */</span>
     d = d % n;
     reverse(arr, <span class="hljs-number">0</span>, d - <span class="hljs-number">1</span>);    <span class="hljs-comment">/* first d */</span>
     reverse(arr, d, n - <span class="hljs-number">1</span>);    <span class="hljs-comment">/* the rest */</span>

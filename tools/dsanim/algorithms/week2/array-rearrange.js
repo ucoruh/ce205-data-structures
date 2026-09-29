@@ -42,8 +42,8 @@
     '}'
   ];
   var L_DECL = { c: [1, 2], java: [1, 2] };
-  var L_ADV_L = { c: [4, 5], java: [4, 5] };
-  var L_ADV_R = { c: [6, 7], java: [6, 7] };
+  var L_ADV_L = { c: [{ n: 4, note: T('arr[left] < 0? evet', 'arr[left] < 0? yes') }, 5], java: [{ n: 4, note: T('arr[left] < 0? evet', 'arr[left] < 0? yes') }, 5] };
+  var L_ADV_R = { c: [{ n: 6, note: T('arr[right] >= 0? evet', 'arr[right] >= 0? yes') }, 7], java: [{ n: 6, note: T('arr[right] >= 0? evet', 'arr[right] >= 0? yes') }, 7] };
   var L_SWAP = { c: [8, 9, 10, 11, 12, 13], java: [8, 9, 10, 11, 12, 13] };
 
   D.define({

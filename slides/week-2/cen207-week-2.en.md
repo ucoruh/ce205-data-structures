@@ -485,6 +485,7 @@ void reverse(int arr[], int lo, int hi) {
 
 ```c
 void rotate_left(int arr[], int n, int d) {
+    if (n == 0) return;        /* empty: nothing to do */
     d = d % n;
     reverse(arr, 0, d - 1);    /* first d */
     reverse(arr, d, n - 1);    /* the rest */

@@ -166,30 +166,38 @@
         if (!list.length) {
           notFound++;
           S.step(T('`delete_value(' + value + ')`: `head == NULL`, silinecek bir şey yok. `removed = false` döner.',
-                   '`delete_value(' + value + ')`: `head == NULL`, there is nothing to delete. It returns `removed = false`.'), { c: [7, 8], java: [8, 9] });
+                   '`delete_value(' + value + ')`: `head == NULL`, there is nothing to delete. It returns `removed = false`.'),
+                 { c: [7, { n: 8, note: T('head == NULL? evet', 'head == NULL? yes') }, 9],
+                   java: [{ n: 8, note: T('head == null? evet', 'head == null? yes') }, 9] });
           return;
         }
         if (Number(S.get(list[0]).value) === value) {
           S.set(list[0], { style: 'del' }); S.set('head', { style: 'del' });
-          S.step(T('`delete_value(' + value + ')`: `head->data == ' + value + '`, başı siliyoruz. `tmp = head`.', '`delete_value(' + value + ')`: `head->data == ' + value + '`, we are deleting the head. `tmp = head`.'), { c: 10, java: 9 });
+          S.step(T('`delete_value(' + value + ')`: `head->data == ' + value + '`, başı siliyoruz. `tmp = head`.', '`delete_value(' + value + ')`: `head->data == ' + value + '`, we are deleting the head. `tmp = head`.'),
+                 { c: [{ n: 11, note: T('head->data == ' + value + '? evet', 'head->data == ' + value + '? yes') }, 12],
+                   java: [{ n: 11, note: T('head.data == ' + value + '? evet', 'head.data == ' + value + '? yes') }] });
           var doomed = list.shift();
           pointHead();
           S.remove(doomed);
           relayout(); clean();
           removed++;
           S.step(T('`head = head->next`; `free(tmp)`: eski baş bellekten geri verilir. O(1) -- listenin ortasına hiç bakmadık.',
-                   '`head = head->next`; `free(tmp)`: the old head is freed. O(1) -- we never looked at the rest of the list.'), { c: [12, 13], java: 10 });
+                   '`head = head->next`; `free(tmp)`: the old head is freed. O(1) -- we never looked at the rest of the list.'), { c: [13, 14, 15, 16], java: 12 });
           return;
         }
         S.pointer('prevP', { target: list[0], text: 'prev', side: 'bottom', dist: 24 });
         var curIdx = 1;
         S.pointer('curP', { target: list[curIdx], text: 'cur', side: 'top', dist: 24 });
-        S.step(T('`prev = head`; `cur = head->next`: silinecek düğümü ararken iki işaretçi birlikte ilerler.', '`prev = head`; `cur = head->next`: two pointers move together while we search for the node to delete.'), { c: [18, 19], java: [13, 14] });
+        S.step(T('`prev = head`; `cur = head->next`: silinecek düğümü ararken iki işaretçi birlikte ilerler.', '`prev = head`; `cur = head->next`: two pointers move together while we search for the node to delete.'),
+               { c: [{ n: 11, note: T('head->data == ' + value + '? hayır', 'head->data == ' + value + '? no') }, 19, 20],
+                 java: [{ n: 11, note: T('head.data == ' + value + '? hayır', 'head.data == ' + value + '? no') }, 14, 15] });
         var found = false;
         while (curIdx < list.length) {
           S.set(list[curIdx], { style: 'active' });
           if (Number(S.get(list[curIdx]).value) === value) { found = true; break; }
-          S.step(T('`cur->data` (' + S.get(list[curIdx]).value + ') != ' + value + ': `prev = cur`; `cur = cur->next`.', '`cur->data` (' + S.get(list[curIdx]).value + ') != ' + value + ': `prev = cur`; `cur = cur->next`.'), { c: [24, 25], java: [19, 20] });
+          S.step(T('`cur->data` (' + S.get(list[curIdx]).value + ') != ' + value + ': `prev = cur`; `cur = cur->next`.', '`cur->data` (' + S.get(list[curIdx]).value + ') != ' + value + ': `prev = cur`; `cur = cur->next`.'),
+                 { c: [{ n: 22, note: T('cur->data == ' + value + '? hayır', 'cur->data == ' + value + '? no') }, 28, 29],
+                   java: [{ n: 17, note: T('cur.data == ' + value + '? hayır', 'cur.data == ' + value + '? no') }, 21, 22] });
           S.set(list[curIdx], { style: 'normal' });
           curIdx++;
           S.set('prevP', { target: list[curIdx - 1] }); S.set('curP', { target: curIdx < list.length ? list[curIdx] : list[curIdx - 1] });
@@ -199,13 +207,17 @@
           S.remove('prevP', 'curP'); clean();
           notFound++;
           S.step(T('`cur == NULL`: `' + value + '` listede yok. `delete_value` listeyi değiştirmeden döner, `removed = false`.',
-                   '`cur == NULL`: `' + value + '` is not in the list. `delete_value` returns unchanged, `removed = false`.'), { c: 29, java: [22, 23] });
+                   '`cur == NULL`: `' + value + '` is not in the list. `delete_value` returns unchanged, `removed = false`.'),
+                 { c: [{ n: 21, note: T('cur != NULL? hayır', 'cur != NULL? no') }, 31],
+                   java: [{ n: 16, note: T('cur != null? hayır', 'cur != null? no') }, 24] });
           return;
         }
         S.set(list[curIdx], { style: 'hl' });
         var curId = list[curIdx], prevId = list[curIdx - 1];
         S.step(T('`cur->data == ' + value + '`: bulundu. `prev->next = cur->next` -- **bypass oku**: `prev` artık `cur`\'u atlayıp bir ilerideki düğümü gösterir.',
-                 '`cur->data == ' + value + '`: found. `prev->next = cur->next` -- the **bypass arrow**: `prev` now skips `cur` and points at the node after it.'), { c: 25, java: 15 });
+                 '`cur->data == ' + value + '`: found. `prev->next = cur->next` -- the **bypass arrow**: `prev` now skips `cur` and points at the node after it.'),
+               { c: [{ n: 22, note: T('cur->data == ' + value + '? evet', 'cur->data == ' + value + '? yes') }, 23],
+                 java: [{ n: 17, note: T('cur.data == ' + value + '? evet', 'cur.data == ' + value + '? yes') }, 18] });
         var nextId = curIdx + 1 < list.length ? list[curIdx + 1] : null;
         S.remove('o' + prevId);
         if (nextId) S.arrow('o' + prevId, { from: prevId, to: nextId, kind: 'next', style: 'new' }); else S.set(prevId, { isNull: true });
@@ -216,7 +228,7 @@
         S.remove(curId, 'o' + curId);
         relayout(); pointHead(); clean();
         removed++;
-        S.step(T('`free(cur)`: bellek geri verilir, `removed = true` döner.', '`free(cur)`: the memory is freed, it returns `removed = true`.'), { c: 26, java: 15 });
+        S.step(T('`free(cur)`: bellek geri verilir, `removed = true` döner.', '`free(cur)`: the memory is freed, it returns `removed = true`.'), { c: [24, 25, 26], java: 19 });
       }
 
       d.ops.forEach(function (t) { if (isDel(t)) doDelete(delVal(t)); else insert(Number(t)); });

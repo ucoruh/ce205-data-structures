@@ -138,7 +138,8 @@
       S.label('rowlbl', { x: X0 - 14, y: Y0 + 30 + BH / 2 + 5, text: 'bits =', anchor: 'end', size: 14, bold: true, mono: true });
       S.step(T('Her alanın bir aralığı ([min, max]) var. Genişlik = `ceil(log2(max - min + 1))` bit — ne kadar gerekiyorsa o kadar, ne bir bit fazla ne az.',
                'Every field has a range ([min, max]). Width = `ceil(log2(max - min + 1))` bits — exactly as many as needed, not one more.'),
-             { c: [12, 13, 14], java: [13, 14, 15] });
+             { c: [{ n: 15, note: T('max == min? alana göre değişir', 'max == min? depends on the field') }],
+               java: [{ n: 16, note: T('max == min? alana göre değişir', 'max == min? depends on the field') }] });
 
       var bits = '', first = true;
       d.fields.forEach(function (f, i) {
@@ -163,19 +164,21 @@
         var topNote = f.value === f.max && f.max !== f.min ? T(' (aralığın en üstünde)', ' (at the top of its range)') : { tr: '', en: '' };
         if (w === 0) S.label(rid + '_dec', { x: X0 + 10, y: y + BH / 2 + 5, text: T('0 bit!', '0 bits!'), size: 12, bold: true, anchor: 'start', style: 'dim' });
         else if (f.value === f.max && f.max !== f.min) S.label(rid + '_dec', { x: x + 10, y: y + BH / 2 + 5, text: T('tepe!', 'top!'), size: 12, bold: true, anchor: 'start', style: 'active' });
+        var widthNoteTrue = T('max == min? (' + f.min + ' == ' + f.max + ') evet -> genişlik = 0', 'max == min? (' + f.min + ' == ' + f.max + ') yes -> width = 0');
+        var widthNoteFalse = T('max == min? (' + f.min + ' == ' + f.max + ') hayır -> genişlik hesaplanır', 'max == min? (' + f.min + ' == ' + f.max + ') no -> width is computed');
         if (w === 0) {
           S.step(T('`' + f.name + '` [' + f.min + '..' + f.max + '] — aralık büyüklüğü 1: tek olası değer. **0 bit** gönderilir; alıcı bunu şemadan zaten bilir.',
                    '`' + f.name + '` [' + f.min + '..' + f.max + '] — range size 1: only one possible value. **0 bits** are sent; the receiver already knows it from the schema.'),
-                 { c: [12, 13], java: [13, 14] });
+                 { c: [{ n: 15, note: widthNoteTrue }], java: [{ n: 16, note: widthNoteTrue }] });
         } else if (first) {
           S.step(T('`' + f.name + '` [' + f.min + '..' + f.max + '] — aralık büyüklüğü ' + (f.max - f.min + 1) + ' -> genişlik = ' + w + ' bit. Değer ' + f.value + ' - ' + f.min + ' = ' + (f.value - f.min) + ', ikilik (binary) `' + fb + '` olarak yazılır' + topNote.tr + '.',
                    '`' + f.name + '` [' + f.min + '..' + f.max + '] — range size ' + (f.max - f.min + 1) + ' -> width = ' + w + ' bit' + (w > 1 ? 's' : '') + '. The value ' + f.value + ' - ' + f.min + ' = ' + (f.value - f.min) + ' is written as binary `' + fb + '`' + topNote.en + '.'),
-                 { c: [14, 15], java: [15, 16] });
+                 { c: [{ n: 15, note: widthNoteFalse }, 16], java: [{ n: 16, note: widthNoteFalse }, 17] });
           first = false;
         } else {
           S.step(T('`' + f.name + '` — ' + w + ' bit, `' + fb + '`' + topNote.tr + '.',
                    '`' + f.name + '` — ' + w + ' bit' + (w > 1 ? 's' : '') + ', `' + fb + '`' + topNote.en + '.'),
-                 { c: [15], java: [16] });
+                 { c: [{ n: 15, note: widthNoteFalse }, 16], java: [{ n: 16, note: widthNoteFalse }, 17] });
         }
       });
 
@@ -188,8 +191,7 @@
         S.label('pad_lbl', { x: 20, y: yPad + BH / 2 + 5, text: T('dolgu (padding)', 'padding'), size: 12, anchor: 'start', mono: true, style: 'dim' });
         for (var p = 0; p < pad; p++) { S.box('pad_' + p, { x: xPad, y: yPad, w: BW, h: BH, text: '0', style: 'dim', size: 13 }); xPad += BW + GAP; }
         S.step(T('Son bayta tamamlamak için ' + pad + ' kullanılmayan bit eklenir. PER çıktısı yalnızca EN SONDA bayta hizalanır, alanların her biri ayrı ayrı değil.',
-                 pad + ' unused bits are added to round up to a whole byte. PER output is only byte-aligned at the very END, not field by field.'),
-               { c: [12, 13], java: [13, 14] });
+                 pad + ' unused bits are added to round up to a whole byte. PER output is only byte-aligned at the very END, not field by field.'));
       }
       var tlvEstimateBytes = d.fields.reduce(function (s, f) { var w2 = f.max === f.min ? 0 : Math.ceil(Math.log2(f.max - f.min + 1)); return s + 2 + Math.max(1, Math.ceil(w2 / 8)); }, 0);
       S.result = { totalBits: totalBits, bytes: bytes, bitString: bits };

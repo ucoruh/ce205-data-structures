@@ -141,15 +141,23 @@
       });
       S.label('title', { x: 420, y: 34, text: 'n = ' + n0 + '  (' + SHAPE_NAME[shape].en + ')', size: 18, bold: true, mono: true });
       S.label('cnt', { x: 420, y: 60, text: T('çalıştırma: 0', 'operations: 0'), size: 14, mono: true });
+      var outerNote = T('i < n? evet (her i = 0..n-1 için)', 'i < n? yes (for every i = 0..n-1)');
+      var innerNote = !cells.length
+        ? T('j < n? (1 < ' + n0 + ') hayır — iç gövde hiç çalışmaz', 'j < n? (1 < ' + n0 + ') no — the inner body never runs')
+        : shape === 'triangle'
+          ? T('j < i? evet (her geçerli j için)', 'j < i? yes (for every valid j)')
+          : T('j < n? evet (her geçerli j için)', 'j < n? yes (for every valid j)');
       S.at(0);
       S.step(T('İç döngünün gövdesinin şekil "' + SHAPE_NAME[shape].tr + '" için `n = ' + n0 + '`\'de tam olarak kaç kez çalıştığını sayacağız: her `(i, j)` çifti bir çalıştırma.',
                'We will count exactly how many times the inner loop body runs for the "' + SHAPE_NAME[shape].en + '" shape at `n = ' + n0 + '`: one run per `(i, j)` pair.'),
-             { c: [3, 4], java: [4, 5] });
+             { c: [{ n: 3, note: outerNote }, { n: 4, note: innerNote }], java: [{ n: 4, note: outerNote }, { n: 5, note: innerNote }] });
       var op = 0;
       if (!cells.length) {
+        var loopNote = T('j < n? (1 < ' + n0 + ') hayır', 'j < n? (1 < ' + n0 + ') no');
         S.step(T('`n = ' + n0 + '` için iç döngünün koşulu (`j < ' + n0 + '`, `j = 1`\'den başlar) daha ilk turda yanlış: iç gövde hiç çalışmaz.',
                  'For `n = ' + n0 + '` the inner loop\'s condition (`j < ' + n0 + '`, starting at `j = 1`) is already false on the very first try: the inner body never runs.'),
-               { c: [4], java: [5] });
+               { c: [{ n: 4, note: loopNote }, { n: 5, skip: true }, { n: 6, skip: true }],
+                 java: [{ n: 5, note: loopNote }, { n: 6, skip: true }, { n: 7, skip: true }] });
       }
       cells.forEach(function (c) {
         op++;
@@ -172,9 +180,15 @@
         S.label('hist' + (idx + 1), { x: 640, y: 90 + (idx + 1) * 22, text: 'T(' + n + ') = ' + t, size: 13, mono: true,
                                        style: idx === ns.length - 2 ? 'hl' : 'normal' });
         S.set('title', { text: 'n = ' + n + '  (' + SHAPE_NAME[shape].en + ')' });
+        var cellsHere = cellsOf(shape, n);
+        var innerNoteHere = !cellsHere.length
+          ? T('j < n? (1 < ' + n + ') hayır — iç gövde hiç çalışmaz', 'j < n? (1 < ' + n + ') no — the inner body never runs')
+          : shape === 'triangle'
+            ? T('j < i? evet (her geçerli j için)', 'j < i? yes (for every valid j)')
+            : T('j < n? evet (her geçerli j için)', 'j < n? yes (for every valid j)');
         S.step(T('Artık her `(i, j)` çiftini tek tek saymıyoruz — kapalı formu doğrudan uyguluyoruz: `n = ' + n + '` için `T(' + n + ') = ' + FORMULA_TXT[shape] + ' = ' + t + '`.',
                  'We no longer count every `(i, j)` pair one by one — we apply the closed form directly: for `n = ' + n + '`, `T(' + n + ') = ' + FORMULA_TXT[shape] + ' = ' + t + '`.'),
-               { c: [3, 4, 9], java: [4, 5, 10] });
+               { c: [{ n: 3, note: outerNote }, { n: 4, note: innerNoteHere }, 9], java: [{ n: 4, note: outerNote }, { n: 5, note: innerNoteHere }, 10] });
       });
       S.at(null);
       S.result = { perN: results, total: results.reduce(function (a, b) { return a + b; }, 0) };

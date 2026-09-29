@@ -92,7 +92,9 @@
       S.pointer('head', { target: n ? ids[0] : 'anchor', text: 'head', side: 'top', dist: 44 });
       if (!n) {
         S.step(T('Liste boş: `head == NULL`. `reverse(NULL)`: döngü hiç çalışmaz, `prev` (`NULL`) doğrudan döner.',
-                 'The list is empty: `head == NULL`. `reverse(NULL)`: the loop never runs, `prev` (`NULL`) is returned right away.'), { c: [7, 8, 9, 15], java: [8, 9, 10, 16] });
+                 'The list is empty: `head == NULL`. `reverse(NULL)`: the loop never runs, `prev` (`NULL`) is returned right away.'),
+               { c: [7, 8, { n: 9, note: T('curr != NULL? hayır (döngü hiç çalışmaz)', 'curr != NULL? no (the loop never runs)') }, 15],
+                 java: [8, 9, { n: 10, note: T('curr != null? hayır (döngü hiç çalışmaz)', 'curr != null? no (the loop never runs)') }, 16] });
         S.result = { list: [] };
         return;
       }
@@ -127,7 +129,9 @@
       S.set('head', { target: ids[n - 1] });
       if (S.has('prevP')) S.remove('prevP');
       S.step(T('`curr == NULL`: döngü bitti. `prev`, yeni baş olan eski son düğümü gösteriyor; `head` de artık onu gösteriyor.',
-               '`curr == NULL`: the loop is done. `prev` points at the old last node, which is the new head; `head` now points there too.'), { c: [9, 15], java: [10, 16] });
+               '`curr == NULL`: the loop is done. `prev` points at the old last node, which is the new head; `head` now points there too.'),
+             { c: [{ n: 9, note: T('curr != NULL? hayır (döngü bitti)', 'curr != NULL? no (the loop is done)') }, 15],
+               java: [{ n: 10, note: T('curr != null? hayır (döngü bitti)', 'curr != null? no (the loop is done)') }, 16] });
       S.result = { list: ids.slice().reverse().map(function (id) { return Number(S.get(id).value); }) };
     }
   });

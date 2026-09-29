@@ -117,7 +117,7 @@
               '`h(' + key + ') = ' + idx + '` — cell ' + idx + ' was empty, the key settles there.')
           : T('`h(' + key + ') = ' + idx + '` — hücre ' + idx + ' zaten dolu (' + counts[idx] + '. anahtar burada) → **çakışma**.',
               '`h(' + key + ') = ' + idx + '` — cell ' + idx + ' is already occupied (key #' + counts[idx] + ' landing here) → **collision**.'),
-               key < 0 ? { c: [1, 3], java: [1, 3] } : { c: [3], java: [3] });
+               { c: [3], java: [3] });
         S.set('b' + idx, { style: counts[idx] > 1 ? 'del' : 'new' });
       });
 

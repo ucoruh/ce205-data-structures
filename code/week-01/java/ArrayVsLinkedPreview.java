@@ -2,8 +2,10 @@
  * Preview of Week 2: the same values laid out as a contiguous array versus individually
  * created linked nodes; compare reaching element k: 1 step in the array vs k hops in the list.
  * Runs the same normal / hard / edge-case scenarios as the array-vs-linked-preview animation.
- * Java has no raw addresses, so per-object identity hashes stand in for "where it lives"
- * (yours will differ) -- only the "1 step vs k hops" access-cost story is guaranteed to match.
+ * Real addresses vary from run to run (and between C and Java), so this prints a deterministic
+ * stand-in instead: the array's byte OFFSET from its base (base + i*4, the real formula the
+ * hardware uses) and the linked list's POSITION ("node #i"); the C and Java outputs are then
+ * byte-identical and testable. The point -- one index calculation vs k pointer hops -- still holds.
  * CEN207 Data Structures (CS50-style lecture notes)
  */
 public class ArrayVsLinkedPreview {
@@ -14,21 +16,26 @@ public class ArrayVsLinkedPreview {
     }
 
     static void runScenario(String label, int[] values, int k) {
-        System.out.println("-- " + label + " (k = " + k + ") --");
+        System.out.println("-- " + label + " --");
         int n = values.length;
 
-        System.out.println("array (one contiguous block, indexed access):");
+        System.out.println("array (contiguous, indexed access):");
         for (int i = 0; i < n; i++)
-            System.out.println("  arr[" + i + "] = " + values[i]);
-        System.out.println("array access: arr[" + k + "] = " + values[k] + ", ONE index computation. O(1).");
+            System.out.println("  arr[" + i + "] = " + values[i] + " at base+" + (i * 4));
+        System.out.println("array access: arr[" + k + "] = " + values[k] + ", ONE index calculation (base + " + k + "*4). O(1).");
 
         Node head = null;
         for (int i = n - 1; i >= 0; i--)
             head = new Node(values[i], head);
 
-        System.out.println("linked list (separate objects, followed one .next at a time):");
-        for (Node p = head; p != null; p = p.next)
-            System.out.println("  node@" + Integer.toHexString(System.identityHashCode(p)) + ": data = " + p.data);
+        System.out.println("linked list (separate nodes, connected by pointers):");
+        int idx = 0;
+        for (Node p = head; p != null; p = p.next, idx++) {
+            if (p.next != null)
+                System.out.println("  node #" + idx + ": data = " + p.data + ", next -> node #" + (idx + 1));
+            else
+                System.out.println("  node #" + idx + ": data = " + p.data + ", next -> NULL");
+        }
 
         Node reached = head;
         int hops = 0;

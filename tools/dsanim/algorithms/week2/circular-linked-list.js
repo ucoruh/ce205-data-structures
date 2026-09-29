@@ -109,14 +109,19 @@
     '}'
   ];
   var L_STRUCT = { c: [6], java: [3] };
-  var L_INSERT_SINGLE = { c: [10, 11, 12], java: [6, 7, 8] };
-  var L_INSERT_LINK = { c: [13, 14, 15], java: [10, 11, 12] };
-  var L_DELETE_EMPTY = { c: [21], java: [19] };
-  var L_DELETE_SCAN = { c: [23, 24, 25], java: [21, 22, 23] };
-  var L_DELETE_SINGLE = { c: [27, 28, 29], java: [25, 26, 27] };
-  var L_DELETE_UNLINK = { c: [31, 32, 33, 34], java: [28, 29] };
-  var L_DELETE_NOTFOUND = { c: [39], java: [33] };
-  var L_TRAVERSE = { c: [46, 47], java: [40, 41] };
+  var L_INSERT_SINGLE = { c: [{ n: 10, note: T('tail == NULL? evet', 'tail == NULL? yes') }, 11, 12], java: [{ n: 6, note: T('tail == null? evet', 'tail == null? yes') }, 7, 8] };
+  var L_INSERT_LINK = { c: [{ n: 10, note: T('tail == NULL? hayır', 'tail == NULL? no') }, { n: 11, skip: true }, { n: 12, skip: true }, 14, 15, 16],
+                         java: [{ n: 6, note: T('tail == null? hayır', 'tail == null? no') }, { n: 7, skip: true }, { n: 8, skip: true }, 10, 11, 12] };
+  var L_DELETE_EMPTY = { c: [22, { n: 23, note: T('tail == NULL? evet', 'tail == NULL? yes') }], java: [19, { n: 20, note: T('tail == null? evet', 'tail == null? yes') }] };
+  var L_DELETE_SCAN = { c: [{ n: 23, note: T('tail == NULL? hayır', 'tail == NULL? no') }, 24, 25, { n: 27, note: T('cur->data == value? evet (bulunana kadar tarar)', 'cur->data == value? yes (scans until found)') }],
+                         java: [{ n: 20, note: T('tail == null? hayır', 'tail == null? no') }, 21, 22, { n: 24, note: T('cur.data == value? evet (bulunana kadar tarar)', 'cur.data == value? yes (scans until found)') }] };
+  var L_DELETE_SINGLE = { c: [27, 28, { n: 29, note: T('cur == cur->next? evet', 'cur == cur->next? yes') }, 30, 31],
+                           java: [24, 25, { n: 26, note: T('cur == cur.next? evet', 'cur == cur.next? yes') }, 27] };
+  var L_DELETE_UNLINK = { c: [{ n: 29, note: T('cur == cur->next? hayır', 'cur == cur->next? no') }, 33, 34, 35, 36],
+                           java: [{ n: 26, note: T('cur == cur.next? hayır', 'cur == cur.next? no') }, 28, 29] };
+  var L_DELETE_NOTFOUND = { c: [{ n: 26, note: T('i < n? hayır (tüm liste tarandı)', 'i < n? no (the whole list was scanned)') }, 41],
+                             java: [{ n: 23, note: T('i < n? hayır (tüm liste tarandı)', 'i < n? no (the whole list was scanned)') }, 35] };
+  var L_TRAVERSE_STEP = { c: [49, 50], java: [42, 43] };
   var DX = 96, Y0 = 130, X0 = 130;
 
   function ins(v) { return v; }
@@ -299,7 +304,9 @@
 
       var n = ids.length;
       if (!n) {
-        S.step(T('`traverse(NULL, ' + d.laps + ')`: gösterilecek düğüm yok.', '`traverse(NULL, ' + d.laps + ')`: there is nothing to show.'), L_TRAVERSE);
+        /* the real program never calls traverse() on an empty list (the caller checks tail != NULL first),
+           so there is no delete_value/traverse line that actually executes here -- illustration only. */
+        S.step(T('`traverse(NULL, ' + d.laps + ')`: gösterilecek düğüm yok.', '`traverse(NULL, ' + d.laps + ')`: there is nothing to show.'), { c: [], java: [] });
         S.result = { values: [], traversal: [], removed: removed, notFound: notFound };
         return;
       }
@@ -311,14 +318,14 @@
         if (lap === 0) {
           clean(); if (n) S.set(ids[idx2], { style: 'active' });
           S.step(T('gez: `cur->data` = ' + finalValues[idx2] + (idx2 === n - 1 ? ' -- `cur = cur->next` sarılıp 1. düğüme döner.' : ' -- `cur = cur->next`.'),
-                   'walk: `cur->data` = ' + finalValues[idx2] + (idx2 === n - 1 ? ' -- `cur = cur->next` wraps back to node 1.' : ' -- `cur = cur->next`.')), L_TRAVERSE);
+                   'walk: `cur->data` = ' + finalValues[idx2] + (idx2 === n - 1 ? ' -- `cur = cur->next` wraps back to node 1.' : ' -- `cur = cur->next`.')), L_TRAVERSE_STEP);
           if (idx2 === n - 1 && d.laps > 1) {
             S.step(T('Bir tur tamamlandı: başa (' + finalValues[0] + ') geri dönüldü. Dairesel listede "son" yok -- gezinme `steps` kadar sürer.',
                      'One lap is complete: we are back at the start (' + finalValues[0] + '). There is no "end" in a circular list -- traversal runs for `steps` steps.'), { c: [], java: [] });
           }
         } else if (idx2 === 0) {
           clean(); S.set(ids[0], { style: 'active' });
-          S.step(T((lap + 1) + '. tur başlıyor: yine ' + finalValues[0] + '\'dan.', 'Lap ' + (lap + 1) + ' begins: back at ' + finalValues[0] + ' again.'), L_TRAVERSE);
+          S.step(T((lap + 1) + '. tur başlıyor: yine ' + finalValues[0] + '\'dan.', 'Lap ' + (lap + 1) + ' begins: back at ' + finalValues[0] + ' again.'), L_TRAVERSE_STEP);
         }
       }
       clean();

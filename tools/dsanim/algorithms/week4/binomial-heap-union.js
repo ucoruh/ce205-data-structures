@@ -193,34 +193,52 @@
       renderForest(initCombined);
       S.step(T('Binom öbeği B: ' + bItems.length + ' eleman, sıralar [' + ordersOf(fb).join(', ') + ']. `union(A, B)` kök listelerini ikilik toplama gibi birleştirir: aynı sıradan bir çift, bir sonraki sıraya ELDE (carry) olan bir ağaca link\'lenir.',
                'Binomial heap B: ' + bItems.length + ' elements, orders [' + ordersOf(fb).join(', ') + ']. `union(A, B)` merges the root lists like binary addition: a same-order pair links into a tree that CARRIES to the next order.'),
-             { c: [11, 12, 13], java: [11, 12, 13] });
+             { c: [12, 13], java: [12, 13] });
 
       function fromLabel(tag, lang) { return tag === 'CARRY' ? (lang === 'tr' ? 'elde' : 'the carry') : tag; }
 
+      /** Base check lines (16, 17, 18) for one order `k`: each is a single-line `if (...) group[g++] = ...;`
+       *  — decision and action fused, so a note on whether THAT source matched this order is enough, there
+       *  is no separate "action" line to mark skip. `T(...)` yes/no note helper shared by all three. */
+      function matchNote(label, matched) {
+        return matched ? T(label + ' bu sırada mı? evet', label + ' matches this order? yes')
+                       : T(label + ' bu sırada mı? hayır', label + ' matches this order? no');
+      }
+
       var i = 0, j = 0, carry = null, doneTrees = [], k = 0;
       while (i < fa.length || j < fb.length || carry) {
+        var matchedA = i < fa.length && fa[i].order === k;
+        var matchedB = j < fb.length && fb[j].order === k;
+        var matchedCarry = !!(carry && carry.order === k);
         var group = [];
-        if (i < fa.length && fa[i].order === k) { group.push({ tree: fa[i].tree, from: 'A' }); i++; }
-        if (j < fb.length && fb[j].order === k) { group.push({ tree: fb[j].tree, from: 'B' }); j++; }
-        if (carry && carry.order === k) { group.push({ tree: carry.tree, from: 'CARRY' }); carry = null; }
+        if (matchedA) { group.push({ tree: fa[i].tree, from: 'A' }); i++; }
+        if (matchedB) { group.push({ tree: fb[j].tree, from: 'B' }); j++; }
+        if (matchedCarry) { group.push({ tree: carry.tree, from: 'CARRY' }); carry = null; }
+        var baseLines = [{ n: 14, note: T('a || b || elde? evet', 'a || b || carry? yes') }, 15,
+          { n: 16, note: matchNote('A', matchedA) }, { n: 17, note: matchNote('B', matchedB) }, { n: 18, note: matchNote('carry', matchedCarry) }];
         if (group.length) {
           var hiIds = group.map(function (g) { return g.tree.id; });
+          /* Lines 19/20/21 are an if/else-if/else-if cascade: whichever one matches runs its (single-line,
+           * embedded) body; anything AFTER that point in the cascade is never even reached and is marked
+           * skip, not just "not taken" — the earlier match short-circuits the rest of the chain. */
           if (group.length === 1) {
             doneTrees.push({ order: k, tree: group[0].tree });
             var combined1 = doneTrees.concat(fa.slice(i)).concat(fb.slice(j)).sort(function (x, y) { return x.order - y.order; });
             renderForest(combined1, hiIds);
+            var lines1 = baseLines.concat([{ n: 19, note: T('g == 1? evet', 'g == 1? yes') }, { n: 20, skip: true }, { n: 21, skip: true }, 22]);
             S.step(T('Sıra ' + k + ': yalnızca ' + fromLabel(group[0].from, 'tr') + '\'dan bir ağaç var, eşi yok — doğrudan sonuca geçer.',
                      'Order ' + k + ': only a tree from ' + fromLabel(group[0].from, 'en') + ', no partner — it passes straight through to the result.'),
-                   { c: [15, 20], java: [15, 20] });
+                   { c: lines1, java: lines1 });
           } else if (group.length === 2) {
             cmp(group[0].tree.label + ' vs ' + group[1].tree.label + ' → link');
             var merged = link(group[0].tree, group[1].tree);
             carry = { order: k + 1, tree: merged };
             var combined2 = doneTrees.concat(fa.slice(i)).concat(fb.slice(j)).concat([carry]).sort(function (x, y) { return x.order - y.order; });
             renderForest(combined2, [merged.id]);
+            var lines2 = baseLines.concat([{ n: 19, note: T('g == 1? hayır', 'g == 1? no') }, { n: 20, note: T('g == 2? evet', 'g == 2? yes') }, 2, 3, 4, 5, 6, 7, { n: 21, skip: true }, 22]);
             S.step(T('Sıra ' + k + ': ' + fromLabel(group[0].from, 'tr') + ' ve ' + fromLabel(group[1].from, 'tr') + '\'den birer ağaç var — link edilirler (kök karşılaştırılır, iyi olan kazanır), sonuç sıra ' + (k + 1) + ' bir ağaç: bir sonraki sıraya ELDE olarak taşınır.',
                      'Order ' + k + ': one tree from ' + fromLabel(group[0].from, 'en') + ' and one from ' + fromLabel(group[1].from, 'en') + ' — they link (roots compared, the better one wins), producing an order-' + (k + 1) + ' tree: it CARRIES to the next order.'),
-                   { c: [2, 3, 4, 5, 6, 7, 21], java: [2, 3, 4, 5, 6, 7, 21] });
+                   { c: lines2, java: lines2 });
             cmp(null);
           } else {
             doneTrees.push({ order: k, tree: group[0].tree });
@@ -229,9 +247,10 @@
             carry = { order: k + 1, tree: merged3 };
             var combined3 = doneTrees.concat(fa.slice(i)).concat(fb.slice(j)).concat([carry]).sort(function (x, y) { return x.order - y.order; });
             renderForest(combined3, hiIds);
+            var lines3 = baseLines.concat([{ n: 19, note: T('g == 1? hayır', 'g == 1? no') }, { n: 20, note: T('g == 2? hayır', 'g == 2? no') }, { n: 21, note: T('g == 3? evet', 'g == 3? yes') }, 2, 3, 4, 5, 6, 7, 22]);
             S.step(T('Sıra ' + k + ': üç ağaç var (A, B ve gelen elde) — biri doğrudan sonuca geçer, diğer ikisi link\'lenip sıra ' + (k + 1) + '\'e yeni bir elde olarak taşınır.',
                      'Order ' + k + ': three trees meet (A, B, and an incoming carry) — one passes straight through, the other two link into a new carry for order ' + (k + 1) + '.'),
-                   { c: [15, 16, 17, 21, 22], java: [15, 16, 17, 21, 22] });
+                   { c: lines3, java: lines3 });
             cmp(null);
           }
         }
@@ -246,7 +265,9 @@
       info(T('Bitti: ' + totalCount + ' eleman', 'Done: ' + totalCount + ' elements'));
       S.result = { totalCount: totalCount, orders: ordersOf(doneTrees), best: best };
       S.step(T('Bitti: birleşmiş öbek, sıralar [' + ordersOf(doneTrees).join(', ') + '], toplam ' + totalCount + ' eleman. En iyi değer (' + best + ') bir kökte — her binom ağacının kökü, kendi alt ağacındaki en iyi değerdir. `union` maliyeti O(log n): en fazla log n sıra gezilir.',
-               'Done: the unioned heap, orders [' + ordersOf(doneTrees).join(', ') + '], ' + totalCount + ' elements total. The best value (' + best + ') sits at some root — every binomial tree\'s root is the best value in its own subtree. `union` costs O(log n): at most log n orders are visited.'));
+               'Done: the unioned heap, orders [' + ordersOf(doneTrees).join(', ') + '], ' + totalCount + ' elements total. The best value (' + best + ') sits at some root — every binomial tree\'s root is the best value in its own subtree. `union` costs O(log n): at most log n orders are visited.'),
+             { c: [{ n: 14, note: T('a || b || elde? hayır (hepsi tükendi)', 'a || b || carry? no (all exhausted)') }, 24],
+               java: [{ n: 14, note: T('a || b || elde? hayır (hepsi tükendi)', 'a || b || carry? no (all exhausted)') }, 24] });
     }
   });
 })(typeof DSAnim !== 'undefined' ? DSAnim : require('../../web/scene.js'));

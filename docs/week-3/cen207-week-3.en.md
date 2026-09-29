@@ -1745,7 +1745,9 @@ a second stack, this time holding *operators* rather than numbers, to resolve pr
 
 In the picker, also try **parenthesized, mixed-precedence, 16 characters** (hard) and the edge cases
 **unbalanced: a closing parenthesis is missing**, **unbalanced: an extra closing parenthesis**, **no operators at
-all, only operands**, and **a long chain of same-precedence operators** — or press 🎲 for random data at four
+all, only operands**, **a long chain of same-precedence operators**, and **a right-associative `^` chain mixed
+with other operators** (the animation supports `^`, a small extra beyond the C/Java program's `+ - * /`) — or
+press 🎲 for random data at four
 difficulty levels, or type in your own values.
 
 Every operand goes straight to the output. Every operator first pops (and outputs) any waiting operators that
@@ -1762,6 +1764,7 @@ grouping always is with a stack: `(` is simply pushed (it blocks nothing, and no
      * CEN207 Data Structures (CS50-style lecture notes)
      */
     #include <ctype.h>
+    #include <stdbool.h>
     #include <stdio.h>
 
     static int prec(char op) {
@@ -1770,7 +1773,9 @@ grouping always is with a stack: `(` is simply pushed (it blocks nothing, and no
         return 0;
     }
 
-    void to_postfix(const char *in, char *out) {
+    /* Returns false (leaving *out unspecified) when the input has unbalanced parentheses:
+     * an extra ')' with no '(' left to match, or a '(' that is never closed. */
+    bool to_postfix(const char *in, char *out) {
         char ops[100]; int top = -1, k = 0;
         for (int i = 0; in[i]; i++) {
             char c = in[i];
@@ -1779,8 +1784,9 @@ grouping always is with a stack: `(` is simply pushed (it blocks nothing, and no
             } else if (c == '(') {
                 ops[++top] = c;                /* opener: push */
             } else if (c == ')') {
-                while (ops[top] != '(')
+                while (top >= 0 && ops[top] != '(')
                     out[k++] = ops[top--];     /* flush to the matching ( */
+                if (top < 0) return false;     /* unbalanced: nothing left to match this ) */
                 top--;                          /* discard the ( itself */
             } else {
                 while (top >= 0 && ops[top] != '(' && prec(ops[top]) >= prec(c))
@@ -1788,14 +1794,18 @@ grouping always is with a stack: `(` is simply pushed (it blocks nothing, and no
                 ops[++top] = c;                /* push operator */
             }
         }
-        while (top >= 0) out[k++] = ops[top--]; /* flush what's left */
+        while (top >= 0) {
+            if (ops[top] == '(') return false;  /* unbalanced: this ( was never closed */
+            out[k++] = ops[top--];              /* flush what's left */
+        }
         out[k] = '\0';
+        return true;
     }
 
     static void run(const char *label, const char *expr) {
         char result[128];
-        to_postfix(expr, result);
-        printf("-- %s --\n%s -> %s\n\n", label, expr, result);
+        bool ok = to_postfix(expr, result);
+        printf("-- %s --\n%s -> %s\n\n", label, expr, ok ? result : "ERROR (unbalanced parentheses)");
     }
 
     int main(void) {
@@ -1807,6 +1817,12 @@ grouping always is with a stack: `(` is simply pushed (it blocks nothing, and no
 
         /* edge: a long chain of same-precedence operators (left-associativity) */
         run("edge: same-precedence chain (left-associativity)", "A+B+C+D+E+F+G+H+I+J");
+
+        /* abnormal: a closing parenthesis is missing -- the ( after C-( is never closed */
+        run("abnormal: unbalanced, a closing parenthesis is missing", "A+(B*C-(D+E)*F");
+
+        /* abnormal: an extra closing parenthesis -- no ( was ever pushed to match it */
+        run("abnormal: unbalanced, an extra closing parenthesis", "A+B*C)-D+E*F");
 
         return 0;
     }
@@ -1826,6 +1842,8 @@ grouping always is with a stack: `(` is simply pushed (it blocks nothing, and no
             return 0;
         }
 
+        // Returns null when the input has unbalanced parentheses: an extra ')' with no '('
+        // left to match, or a '(' that is never closed.
         String toPostfix(String in) {
             char[] ops = new char[100]; int top = -1; StringBuilder out = new StringBuilder();
             for (int i = 0; i < in.length(); i++) {
@@ -1835,8 +1853,9 @@ grouping always is with a stack: `(` is simply pushed (it blocks nothing, and no
                 } else if (c == '(') {
                     ops[++top] = c;                // opener: push
                 } else if (c == ')') {
-                    while (ops[top] != '(')
+                    while (top >= 0 && ops[top] != '(')
                         out.append(ops[top--]);    // flush to the matching (
+                    if (top < 0) return null;      // unbalanced: nothing left to match this )
                     top--;                          // discard the ( itself
                 } else {
                     while (top >= 0 && ops[top] != '(' && prec(ops[top]) >= prec(c))
@@ -1844,13 +1863,17 @@ grouping always is with a stack: `(` is simply pushed (it blocks nothing, and no
                     ops[++top] = c;                // push operator
                 }
             }
-            while (top >= 0) out.append(ops[top--]); // flush what's left
+            while (top >= 0) {
+                if (ops[top] == '(') return null;  // unbalanced: this ( was never closed
+                out.append(ops[top--]);            // flush what's left
+            }
             return out.toString();
         }
 
         void run(String label, String expr) {
             System.out.println("-- " + label + " --");
-            System.out.println(expr + " -> " + toPostfix(expr));
+            String result = toPostfix(expr);
+            System.out.println(expr + " -> " + (result != null ? result : "ERROR (unbalanced parentheses)"));
             System.out.println();
         }
 
@@ -1865,6 +1888,12 @@ grouping always is with a stack: `(` is simply pushed (it blocks nothing, and no
 
             // edge: a long chain of same-precedence operators (left-associativity)
             conv.run("edge: same-precedence chain (left-associativity)", "A+B+C+D+E+F+G+H+I+J");
+
+            // abnormal: a closing parenthesis is missing -- the ( after C-( is never closed
+            conv.run("abnormal: unbalanced, a closing parenthesis is missing", "A+(B*C-(D+E)*F");
+
+            // abnormal: an extra closing parenthesis -- no ( was ever pushed to match it
+            conv.run("abnormal: unbalanced, an extra closing parenthesis", "A+B*C)-D+E*F");
         }
     }
     ```
@@ -1888,6 +1917,12 @@ grouping always is with a stack: `(` is simply pushed (it blocks nothing, and no
 
     -- edge: same-precedence chain (left-associativity) --
     A+B+C+D+E+F+G+H+I+J -> AB+C+D+E+F+G+H+I+J+
+
+    -- abnormal: unbalanced, a closing parenthesis is missing --
+    A+(B*C-(D+E)*F -> ERROR (unbalanced parentheses)
+
+    -- abnormal: unbalanced, an extra closing parenthesis --
+    A+B*C)-D+E*F -> ERROR (unbalanced parentheses)
     ```
 
 === "Java"
@@ -1910,10 +1945,11 @@ grouping always is with a stack: `(` is simply pushed (it blocks nothing, and no
     - **Letting the precedence check pop through `(`.** The while-loop condition must stop at an opening
       parenthesis (`ops[top] != '('`) in addition to checking precedence, or a `(` would be silently popped and
       output as if it were an operator.
-    - **Edge cases.** A well-formed program should reject unbalanced parentheses (a missing `)`, or an extra one
-      with nothing left on the stack to match) rather than reading past the end of an empty stack; the minimal
-      version taught here does not defend against that on purpose, so as not to obscure the core algorithm —
-      treat it as the natural next exercise once the balanced case is solid.
+    - **Edge cases.** Unbalanced parentheses (a missing `)`, or an extra one with nothing left on the stack to
+      match) must be rejected instead of reading past the end of an empty stack — `to_postfix` checks `top < 0`
+      right before every place that would otherwise read `ops[top]`, and reports the two failures with the two
+      **abnormal** presets above rather than crashing. A version that skips this check reads memory that was
+      never written (out-of-bounds on `top == -1`), which is undefined behavior in C, not just a wrong answer.
 
 ### 2.6 Converting infix to prefix
 
@@ -1943,6 +1979,7 @@ all, only operands**, **a long chain of same-precedence operators**, and **paren
      * CEN207 Data Structures (CS50-style lecture notes)
      */
     #include <ctype.h>
+    #include <stdbool.h>
     #include <stdio.h>
     #include <string.h>
 
@@ -1971,7 +2008,9 @@ all, only operands**, **a long chain of same-precedence operators**, and **paren
         out[k] = '\0';
     }
 
-    void to_prefix(const char *in, char *out) {
+    /* Returns false (leaving *out unspecified) when the input has unbalanced parentheses:
+     * an extra ')' with no '(' left to match, or a '(' that is never closed. */
+    bool to_prefix(const char *in, char *out) {
         char rev[100];
         reverse_and_swap_parens(in, rev);       /* 1) reverse, ( <-> ) */
         char ops[100]; int top = -1, k = 0; char tmp[100];
@@ -1980,21 +2019,26 @@ all, only operands**, **a long chain of same-precedence operators**, and **paren
             if (isalnum(c)) { tmp[k++] = c; continue; }
             if (c == '(') { ops[++top] = c; continue; }
             if (c == ')') {
-                while (ops[top] != '(') tmp[k++] = ops[top--];
+                while (top >= 0 && ops[top] != '(') tmp[k++] = ops[top--];
+                if (top < 0) return false;      /* unbalanced: nothing left to match this ) */
                 top--; continue;
             }
             while (top >= 0 && ops[top] != '(' && prec(ops[top]) > prec(c))
                 tmp[k++] = ops[top--];           /* strictly stronger only */
             ops[++top] = c;
         }
-        while (top >= 0) tmp[k++] = ops[top--];
+        while (top >= 0) {
+            if (ops[top] == '(') return false;  /* unbalanced: this ( was never closed */
+            tmp[k++] = ops[top--];
+        }
         reverse(tmp, k, out);                    /* 3) reverse again */
+        return true;
     }
 
     static void run(const char *label, const char *expr) {
         char result[128];
-        to_prefix(expr, result);
-        printf("-- %s --\n%s -> %s\n\n", label, expr, result);
+        bool ok = to_prefix(expr, result);
+        printf("-- %s --\n%s -> %s\n\n", label, expr, ok ? result : "ERROR (unbalanced parentheses)");
     }
 
     int main(void) {
@@ -2006,6 +2050,12 @@ all, only operands**, **a long chain of same-precedence operators**, and **paren
 
         /* edge: a long chain of same-precedence operators (right-associativity check) */
         run("edge: same-precedence chain (right-associativity check)", "A+B+C+D+E+F+G+H+I+J");
+
+        /* abnormal: a closing parenthesis is missing -- the ( after C-( is never closed */
+        run("abnormal: unbalanced, a closing parenthesis is missing", "A+(B*C-(D+E)*F");
+
+        /* abnormal: an extra closing parenthesis -- no ( was ever pushed to match it */
+        run("abnormal: unbalanced, an extra closing parenthesis", "A+B*C)-D+E*F");
 
         return 0;
     }
@@ -2040,6 +2090,8 @@ all, only operands**, **a long chain of same-precedence operators**, and **paren
             return rev.toString();
         }
 
+        // Returns null when the input has unbalanced parentheses: an extra ')' with no '('
+        // left to match, or a '(' that is never closed.
         String toPrefix(String in) {
             String rev = reverseAndSwapParens(in);      // 1) reverse, ( <-> )
             char[] ops = new char[100]; int top = -1; StringBuilder tmp = new StringBuilder();
@@ -2048,20 +2100,25 @@ all, only operands**, **a long chain of same-precedence operators**, and **paren
                 if (Character.isLetterOrDigit(c)) { tmp.append(c); continue; }
                 if (c == '(') { ops[++top] = c; continue; }
                 if (c == ')') {
-                    while (ops[top] != '(') tmp.append(ops[top--]);
+                    while (top >= 0 && ops[top] != '(') tmp.append(ops[top--]);
+                    if (top < 0) return null;            // unbalanced: nothing left to match this )
                     top--; continue;
                 }
                 while (top >= 0 && ops[top] != '(' && prec(ops[top]) > prec(c))
                     tmp.append(ops[top--]);              // strictly stronger only
                 ops[++top] = c;
             }
-            while (top >= 0) tmp.append(ops[top--]);
+            while (top >= 0) {
+                if (ops[top] == '(') return null;        // unbalanced: this ( was never closed
+                tmp.append(ops[top--]);
+            }
             return tmp.reverse().toString();             // 3) reverse again
         }
 
         void run(String label, String expr) {
             System.out.println("-- " + label + " --");
-            System.out.println(expr + " -> " + toPrefix(expr));
+            String result = toPrefix(expr);
+            System.out.println(expr + " -> " + (result != null ? result : "ERROR (unbalanced parentheses)"));
             System.out.println();
         }
 
@@ -2076,6 +2133,12 @@ all, only operands**, **a long chain of same-precedence operators**, and **paren
 
             // edge: a long chain of same-precedence operators (right-associativity check)
             conv.run("edge: same-precedence chain (right-associativity check)", "A+B+C+D+E+F+G+H+I+J");
+
+            // abnormal: a closing parenthesis is missing -- the ( after C-( is never closed
+            conv.run("abnormal: unbalanced, a closing parenthesis is missing", "A+(B*C-(D+E)*F");
+
+            // abnormal: an extra closing parenthesis -- no ( was ever pushed to match it
+            conv.run("abnormal: unbalanced, an extra closing parenthesis", "A+B*C)-D+E*F");
         }
     }
     ```
@@ -2099,6 +2162,12 @@ all, only operands**, **a long chain of same-precedence operators**, and **paren
 
     -- edge: same-precedence chain (right-associativity check) --
     A+B+C+D+E+F+G+H+I+J -> +++++++++ABCDEFGHIJ
+
+    -- abnormal: unbalanced, a closing parenthesis is missing --
+    A+(B*C-(D+E)*F -> ERROR (unbalanced parentheses)
+
+    -- abnormal: unbalanced, an extra closing parenthesis --
+    A+B*C)-D+E*F -> ERROR (unbalanced parentheses)
     ```
 
 === "Java"
@@ -2120,8 +2189,9 @@ one entry per pending operator.
       only when it is *strictly* stronger than the incoming one; using `>=` here silently breaks the
       right-associativity that makes the final reversal correct.
     - **Edge cases.** Same-precedence chains are the sharpest check that the strict-`>` rule is implemented
-      correctly (compare the postfix and prefix outputs for `A+B+C+...` side by side); unbalanced parentheses
-      should be treated with the same caution noted for infix-to-postfix above.
+      correctly (compare the postfix and prefix outputs for `A+B+C+...` side by side); `to_prefix` defends
+      against unbalanced parentheses the same way `to_postfix` does — checking `top < 0` before every read of
+      `ops[top]`, demonstrated by the two **abnormal** presets above.
 
 ??? success "Test yourself: expressions"
     1. **Convert `A*B+C` to postfix by hand, then check it against the algorithm above.**
@@ -2326,7 +2396,11 @@ realistic depth.
     int fact(int n) {
         if (n == 0)              /* base case */
             return 1;
-        return n * fact(n - 1);
+        /* Plain `n * fact(n - 1)` signed-overflows for n >= 13 -- undefined behavior in C, not just a
+         * wrong answer. Multiplying as `unsigned` gives the identical wraparound bit pattern with
+         * well-defined semantics, so the lesson (a silent wrong answer, no crash, no warning) still
+         * shows up exactly as described below, without triggering a sanitizer abort. */
+        return (int) ((unsigned) n * (unsigned) fact(n - 1));
     }
 
     static void run(const char *label, int n) {
@@ -2420,7 +2494,11 @@ would use O(1) space. Recursion often reads more clearly than a loop, but it is 
     - **Edge cases.** `13! = 6227020800`, which no longer fits in a 32-bit `int` (max `2147483647`); the program
       above does not crash — it silently wraps around to `1932053504`, a wrong answer with no warning at all.
       This is exactly why the "hard" example stops at 12: one call short of the overflow. Always check the
-      range of your result type against your largest expected input.
+      range of your result type against your largest expected input. (One more trap hides here: writing the
+      multiplication as plain `n * fact(n - 1)` would technically be **undefined behavior** the instant it
+      overflows — C only guarantees silent wraparound for *unsigned* arithmetic, not signed. The version above
+      multiplies through `unsigned` on purpose, which is why the wraparound is a safe, well-defined "wrong
+      answer" here rather than a genuine crash risk.)
 
 ??? success "Test yourself: recursion"
     1. **How many frames are on the call stack the instant `fact(0)` is entered, when the original call was
@@ -2940,9 +3018,10 @@ work, but it turns O(1) dequeues into O(n) ones. The real fix is next.
 
 The wasted space in Section 5.2 is only wasted because we think of the array as a straight line. Think of it
 instead as a **ring**: after the last index comes the first one again. `(index + 1) % CAP` walks forward and
-wraps around automatically. Since `front == rear` could now mean either "one element" or "empty" or "completely
-full" (a straight-line index comparison can no longer tell these apart), we keep one more piece of state,
-`count`, to resolve the ambiguity directly.
+wraps around automatically. Once the indices wrap, no fixed relationship between `front` and `rear` reliably
+means "empty" or "full" by itself — in fact `front == (rear + 1) % CAP` is true in BOTH of those states (nothing
+about the two index values alone says which), so we keep one more piece of state, `count`, to resolve the
+ambiguity directly.
 
 <iframe class="dsanim" src="../anim/circular-queue.html" title="Circular queue" loading="lazy"></iframe>
 <div class="dsanim-baski" markdown>
@@ -3042,6 +3121,16 @@ turns over and over**, and **`front == rear` only ever means one element; the re
         };
         run_scenario("edge: completely full, a real overflow (cap 8)", 8, edge, 10);
 
+        /* abnormal: drain to empty (underflow), then refill past the wrap to full again --
+         * front and rear coincide at both the "just emptied" and "just filled" moments;
+         * count is what tells the two apart. */
+        Op abnormal[] = {
+            {false, 11}, {false, 22}, {false, 33},
+            {true, 0}, {true, 0}, {true, 0}, {true, 0},
+            {false, 44}, {false, 55}, {false, 66}, {false, 77}, {false, 88}, {false, 99}
+        };
+        run_scenario("abnormal: drain to empty, then refill past the wrap to full (cap 5)", 5, abnormal, 13);
+
         return 0;
     }
     ```
@@ -3132,6 +3221,16 @@ turns over and over**, and **`front == rear` only ever means one element; the re
                 new Op(false, 2), new Op(false, 17), new Op(false, 29), new Op(false, 41), new Op(false, 50)
             };
             s.runScenario("edge: completely full, a real overflow (cap 8)", 8, edge);
+
+            // abnormal: drain to empty (underflow), then refill past the wrap to full again --
+            // front and rear coincide at both the "just emptied" and "just filled" moments;
+            // count is what tells the two apart.
+            Op[] abnormal = {
+                new Op(false, 11), new Op(false, 22), new Op(false, 33),
+                new Op(true, 0), new Op(true, 0), new Op(true, 0), new Op(true, 0),
+                new Op(false, 44), new Op(false, 55), new Op(false, 66), new Op(false, 77), new Op(false, 88), new Op(false, 99)
+            };
+            s.runScenario("abnormal: drain to empty, then refill past the wrap to full (cap 5)", 5, abnormal);
         }
     }
     ```
@@ -3203,6 +3302,22 @@ turns over and over**, and **`front == rear` only ever means one element; the re
     enqueue(41) -> false
     enqueue(50) -> false
     front = 0, rear = 7, count = 8
+
+    -- abnormal: drain to empty, then refill past the wrap to full (cap 5) --
+    enqueue(11) -> true
+    enqueue(22) -> true
+    enqueue(33) -> true
+    dequeue() -> 11
+    dequeue() -> 22
+    dequeue() -> 33
+    dequeue() -> false (queue is empty)
+    enqueue(44) -> true
+    enqueue(55) -> true
+    enqueue(66) -> true
+    enqueue(77) -> true
+    enqueue(88) -> true
+    enqueue(99) -> false
+    front = 3, rear = 2, count = 5
     ```
 
 === "Java"
@@ -3218,10 +3333,18 @@ enqueues into a 10-cell ring): after reaching the last index it wraps back to `0
 that `dequeue` freed at the front. Every cell gets reused before the queue reports "full" — the drift problem
 from Section 5.2 is completely gone, and every operation is still O(1).
 
+Look closely at the **abnormal** run above: right after the three dequeues, `front = 3, rear = 2` with the
+queue completely empty. After the five enqueues that follow, with no further dequeues, `front` and `rear` end
+at **the exact same values** — `front = 3, rear = 2` — except now the queue is completely full. Identical
+indices, opposite states; only `count` (`0` versus `5`) tells you which one you are looking at. This is the
+`front == (rear + 1) % CAP` ambiguity from the paragraph above, caught in the act.
+
 !!! warning "Common mistakes"
-    - **Using `front == rear` to mean "empty," without tracking `count`.** `front == rear` is also true right
-      after the array becomes completely full (having wrapped around exactly once), so that comparison alone
-      cannot tell empty from full.
+    - **Using an index comparison instead of `count` to mean "empty" or "full."** `front == (rear + 1) % CAP` is
+      true both the instant the queue becomes empty and the instant it becomes full — that comparison alone
+      cannot tell the two apart. (`front == rear` itself is not the dangerous case here: with this
+      pre-increment-then-write `enqueue`, it briefly holds when the queue has exactly one element, not when it
+      is empty or full.)
     - **Forgetting the modulo on one of the two indices.** If only `rear` wraps but not `front` (or vice versa),
       the ring breaks and the queue corrupts itself after the first wrap-around.
     - **Edge cases.** Draining a completely full queue back down to empty, and cycling enqueue/dequeue many times
@@ -3643,6 +3766,10 @@ already provides exactly this ADT, so the Java version simply uses it.
         const char *edge[] = {"10", "20", "pb", "30", "40", "pb", "50", "60", "pb", "70"};
         run_scenario("edge: only the back end (deque behaves like a stack)", edge, 10);
 
+        /* abnormal: pop at both ends while empty (underflow), then normal use resumes */
+        const char *abnormal[] = {"pb", "pf", "10", "20", "f5", "pb", "pf", "f-8", "30", "pb"};
+        run_scenario("abnormal: pop_back/pop_front on an empty deque, then normal use", abnormal, 10);
+
         return 0;
     }
     ```
@@ -3710,6 +3837,10 @@ already provides exactly this ADT, so the Java version simply uses it.
             // edge: only the back end -- the deque behaves like a stack
             String[] edge = {"10", "20", "pb", "30", "40", "pb", "50", "60", "pb", "70"};
             demo.runScenario("edge: only the back end (deque behaves like a stack)", edge);
+
+            // abnormal: pop at both ends while empty (underflow), then normal use resumes
+            String[] abnormal = {"pb", "pf", "10", "20", "f5", "pb", "pf", "f-8", "30", "pb"};
+            demo.runScenario("abnormal: pop_back/pop_front on an empty deque, then normal use", abnormal);
         }
     }
     ```
@@ -3767,6 +3898,19 @@ already provides exactly this ADT, so the Java version simply uses it.
     pop_back() -> true, out = 60
     push_back(70)
     deque (front to back): 10 30 50 70
+
+    -- abnormal: pop_back/pop_front on an empty deque, then normal use --
+    pop_back() -> false (deque is empty)
+    pop_front() -> false (deque is empty)
+    push_back(10)
+    push_back(20)
+    push_front(5)
+    pop_back() -> true, out = 20
+    pop_front() -> true, out = 5
+    push_front(-8)
+    push_back(30)
+    pop_back() -> true, out = 30
+    deque (front to back): -8 10
     ```
 
 === "Java"
@@ -3856,6 +4000,8 @@ levels, or type in your own values.
     }
 
     static void enqueue(Queue *que, Process p) {
+        if (que->count == QCAP) return;   /* this priority level is full: refuse silently
+                                              rather than wrap rear onto an unread slot */
         que->rear = (que->rear + 1) % QCAP;
         que->items[que->rear] = p;
         que->count++;
@@ -4102,10 +4248,11 @@ reach, and you will meet its close relative, the **priority queue**, built on a 
 heap, in Week 4.
 
 ??? success "Test yourself: queues"
-    1. **In the circular queue, after `count` reaches `CAP`, what does `front == rear` mean now, compared to
-       what it meant when the queue was empty?** In both the "just became empty" and the "just became full"
-       states, `front` and `rear` can coincide; `count` is exactly what tells the two apart, since the indices
-       alone are ambiguous.
+    1. **In the circular queue, what index relationship holds at BOTH the instant the queue just became empty
+       and the instant it just became full — and why can't the indices alone tell the two states apart?**
+       `front == (rear + 1) % CAP` is true in both cases (nothing about that relationship says whether `dequeue`
+       just caught all the way up to `enqueue`, or `enqueue` just wrapped all the way around onto `front`); only
+       `count` tells them apart, since the index relationship alone is identical in both states.
     2. **Why does the linked-list queue need a `rear` pointer, while the linked-list stack does not need one?**
        The stack only ever adds and removes at the same end (`top`), so one pointer suffices. The queue adds at
        one end and removes at the other, so it needs a pointer to each end to keep both operations O(1) — without
@@ -4144,9 +4291,10 @@ heap, in Week 4.
 
 1. Extend the array stack (Section 1.5) with a `peek()` function that returns the top value without removing it.
    What check must it perform before reading `data[top]`?
-2. The infix-to-postfix converter in Section 2.5 does not defend against unbalanced parentheses (a missing `)`,
-   or an extra one with nothing on the stack to match). Add that check: `to_postfix` should report an error
-   instead of reading `ops[top]` when `top == -1`.
+2. The infix-to-postfix converter in Section 2.5 already reports unbalanced parentheses (a missing `)`, or an
+   extra one with nothing on the stack to match) as a clean failure instead of reading `ops[top]` at `top == -1`.
+   Extend it to say *where*: have `to_postfix` also return the index `i` of the offending character (the extra
+   `)`, or the never-closed `(`) so the caller can point the student at the exact spot in the expression.
 3. Write `to_prefix` a second way, **without** the reverse/shunting-yard/reverse trick from Section 2.6: scan the
    infix string once, right to left, keeping an operator stack exactly as `to_postfix` does but with the strict
    `>` precedence rule, and build the output by *prepending* each token instead of appending it.
@@ -4163,9 +4311,10 @@ heap, in Week 4.
 ??? success "Exercise answers (sketch)"
     1. Check `top == -1` (empty); if so, there is nothing to return. Otherwise return `data[top]` unchanged,
        without touching `top`.
-    2. Before popping in the `)` branch, check `top == -1` first; if the stack is already empty, there is no
-       matching `(` and the expression is unbalanced — return an error instead of executing
-       `while (ops[top] != '(')`, which would otherwise read `ops[-1]`.
+    2. For the extra-`)` case, `i` is simply the loop index at the moment `top < 0` is detected. For the
+       never-closed-`(` case, remember the input index at which each `(` was pushed (a parallel `int
+       open_at[100]` stack alongside `ops`) and report `open_at[top]` when the final flush finds a `(` still on
+       the stack — that is the position of the specific opener that was never matched.
     3. Scanning right to left with the strict `>` rule reproduces exactly the operator-popping order the
        reverse-based version computes, without ever reversing the input; prepending each operand and each popped
        operator (instead of appending) naturally builds the result in prefix order as the scan proceeds.
@@ -4202,8 +4351,9 @@ heap, in Week 4.
     array — the queue "drifts" to the right until it runs into the end of the array.
 
 ??? success "6. What extra piece of state does a circular queue need, beyond `front` and `rear`, and why?"
-    A `count` of the current number of elements, because after wraparound, `front == rear` alone cannot
-    distinguish an empty queue from a full one.
+    A `count` of the current number of elements, because after wraparound, `front == (rear + 1) % CAP` is true
+    both when the queue is empty and when it is full — the index relationship alone cannot distinguish the two
+    states.
 
 ??? success "7. What is the base case of the factorial recursion `fact(n) = n * fact(n - 1)`, and why is it
     required?"

@@ -223,7 +223,8 @@
             decide('full!', 'del');
             S.step(T('`enqueue(' + x + ')` — `count == CAP` (' + count + ' == ' + CAP + ') → **taşma (overflow)**, kuyruk gerçekten dolu. Hiçbir şey yazılmaz.',
                      '`enqueue(' + x + ')` — `count == CAP` (' + count + ' == ' + CAP + ') → **overflow**, the queue really is full. Nothing is written.'),
-                   { c: [6, 7], java: [6, 7] });
+                   { c: [{ n: 6, note: T(count + ' == ' + CAP + '? evet', count + ' == ' + CAP + '? yes') }, 7],
+                     java: [{ n: 6, note: T(count + ' == ' + CAP + '? evet', count + ' == ' + CAP + '? yes') }, 7] });
             return;
           }
           enqCount++;
@@ -231,7 +232,8 @@
             clean(); point(); label();
             S.step(T('`enqueue(' + x + ')` — önce sorulur, `count == CAP` mi? `count` (' + count + ') değil, yer var.',
                      '`enqueue(' + x + ')` — first we ask, is `count == CAP`? `count` (' + count + ') is not, so there is room.'),
-                   { c: [6], java: [6] });
+                   { c: [{ n: 6, note: T(count + ' == ' + CAP + '? hayır', count + ' == ' + CAP + '? no') }, { n: 7, skip: true }],
+                     java: [{ n: 6, note: T(count + ' == ' + CAP + '? hayır', count + ' == ' + CAP + '? no') }, { n: 7, skip: true }] });
             var r1 = applyEnqueue(x);
             S.set('h' + rear, { style: 'hl' }); point(); label();
             var wn1 = wrapNote(r1.wrapped);
@@ -241,7 +243,7 @@
             S.set('h' + rear, { text: String(x), style: 'new' });
             S.step(T('`q[' + rear + '] = ' + x + '`, `count` ' + count + ' olur. Sonraki enqueue\'ları hızlı gösteriyoruz.',
                      '`q[' + rear + '] = ' + x + '`, `count` becomes ' + count + '. The next enqueues are shown faster.'),
-                   { c: [9, 10], java: [9, 10] });
+                   { c: [9, 10, 11], java: [9, 10, 11] });
             return;
           }
           var r3 = applyEnqueue(x);
@@ -251,7 +253,8 @@
           if (r3.wrapped) decide('wrapped!', 'hl');
           S.step(T('`enqueue(' + x + ')` — yer var → `rear = (' + r3.oldRear + ' + 1) % ' + CAP + ' = ' + rear + '`' + wn3.tr + ', `q[' + rear + '] = ' + x + '`, `count = ' + count + '`.',
                    '`enqueue(' + x + ')` — there is room → `rear = (' + r3.oldRear + ' + 1) % ' + CAP + ' = ' + rear + '`' + wn3.en + ', `q[' + rear + '] = ' + x + '`, `count = ' + count + '`.'),
-                 { c: [6, 8, 9, 10], java: [6, 8, 9, 10] });
+                 { c: [{ n: 6, note: T((count - 1) + ' == ' + CAP + '? hayır', (count - 1) + ' == ' + CAP + '? no') }, { n: 7, skip: true }, 8, 9, 10, 11],
+                   java: [{ n: 6, note: T((count - 1) + ' == ' + CAP + '? hayır', (count - 1) + ' == ' + CAP + '? no') }, { n: 7, skip: true }, 8, 9, 10, 11] });
           return;
         }
         if (count === 0) {
@@ -260,7 +263,8 @@
           decide('empty!', 'del');
           S.step(T('`dequeue()` — `count == 0`, çıkaracak eleman yok → **alttan taşma (underflow)**. `false` döner.',
                    '`dequeue()` — `count == 0`, there is nothing to remove → **underflow**. It returns `false`.'),
-                 { c: [15, 16], java: [15, 16] });
+                 { c: [{ n: 15, note: T(count + ' == 0? evet', count + ' == 0? yes') }, 16],
+                   java: [{ n: 15, note: T(count + ' == 0? evet', count + ' == 0? yes') }, 16] });
           return;
         }
         deqCount++;
@@ -269,7 +273,8 @@
           S.set('h' + front, { style: 'hl' });
           S.step(T('`dequeue()` — kuyruk boş değil (`count > 0`). Baştaki değer (' + v1 + ') okunur: **İlk giren, İlk çıkar (FIFO)**.',
                    '`dequeue()` — the queue is not empty (`count > 0`). The value at the front (' + v1 + ') is read: **First In, First Out (FIFO)**.'),
-                 { c: [15, 17], java: [15, 17] });
+                 { c: [{ n: 15, note: T(count + ' == 0? hayır', count + ' == 0? no') }, { n: 16, skip: true }, 17],
+                   java: [{ n: 15, note: T(count + ' == 0? hayır', count + ' == 0? no') }, { n: 16, skip: true }, 17] });
           var rd1 = applyDequeue();
           dequeued.push(rd1.v);
           clean(); point(); label();
@@ -278,7 +283,7 @@
           if (rd1.wrapped) decide('wrapped!', 'hl');
           S.step(T('`front = (' + rd1.oldFront + ' + 1) % ' + CAP + ' = ' + front + '`' + wnd1.tr + ', `count` ' + count + ' olur. Sonraki dequeue\'ları hızlı gösteriyoruz.',
                    '`front = (' + rd1.oldFront + ' + 1) % ' + CAP + ' = ' + front + '`' + wnd1.en + ', `count` becomes ' + count + '. The next dequeues are shown faster.'),
-                 { c: [18, 19], java: [18, 19] });
+                 { c: [18, 19, 20], java: [18, 19, 20] });
           return;
         }
         var rd2 = applyDequeue();
@@ -289,7 +294,8 @@
         if (rd2.wrapped) decide('wrapped!', 'hl');
         S.step(T('`dequeue()` → ' + rd2.v + '; `front = (' + rd2.oldFront + ' + 1) % ' + CAP + ' = ' + front + '`' + wnd2.tr + ', `count = ' + count + '`.',
                  '`dequeue()` → ' + rd2.v + '; `front = (' + rd2.oldFront + ' + 1) % ' + CAP + ' = ' + front + '`' + wnd2.en + ', `count = ' + count + '`.'),
-               { c: [17, 18, 19], java: [17, 18, 19] });
+               { c: [{ n: 15, note: T((count + 1) + ' == 0? hayır', (count + 1) + ' == 0? no') }, { n: 16, skip: true }, 17, 18, 19, 20],
+                 java: [{ n: 15, note: T((count + 1) + ' == 0? hayır', (count + 1) + ' == 0? no') }, { n: 16, skip: true }, 17, 18, 19, 20] });
       });
 
       clean(); point(); label(); decide('', 'normal'); S.at(null);

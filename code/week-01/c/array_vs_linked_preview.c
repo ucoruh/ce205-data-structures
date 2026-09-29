@@ -2,8 +2,10 @@
  * Preview of Week 2: the same values laid out as a contiguous array versus individually
  * allocated linked nodes; compare reaching element k: 1 step in the array vs k hops in the list.
  * Runs the same normal / hard / edge-case scenarios as the array-vs-linked-preview animation.
- * Real addresses are printed (yours will differ) -- only the array's fixed 4-byte stride and the
- * "1 step vs k hops" access-cost story are guaranteed to match.
+ * Real addresses vary from run to run (and between C and Java), so this prints a deterministic
+ * stand-in instead: the array's byte OFFSET from its base (base + i*4, the real formula the
+ * hardware uses) and the linked list's POSITION ("node #i"); the C and Java outputs are then
+ * byte-identical and testable. The point -- one index calculation vs k pointer hops -- still holds.
  * CEN207 Data Structures (CS50-style lecture notes)
  */
 #include <stdio.h>
@@ -15,15 +17,15 @@ typedef struct Node {
 } Node;
 
 static void run_scenario(const char *label, const int values[], int n, int k) {
-    printf("-- %s (k = %d) --\n", label, k);
+    printf("-- %s --\n", label);
 
     int arr[64];
     for (int i = 0; i < n; i++) arr[i] = values[i];
 
-    printf("array (contiguous):\n");
+    printf("array (contiguous, indexed access):\n");
     for (int i = 0; i < n; i++)
-        printf("  arr[%d] = %d at %p\n", i, arr[i], (void *) &arr[i]);
-    printf("array access: arr[%d] = %d, ONE calculation (base + %d*4). O(1).\n", k, arr[k], k);
+        printf("  arr[%d] = %d at base+%d\n", i, arr[i], (int) (i * sizeof arr[0]));
+    printf("array access: arr[%d] = %d, ONE index calculation (base + %d*4). O(1).\n", k, arr[k], k);
 
     Node *head = NULL;
     for (int i = n - 1; i >= 0; i--) {
@@ -33,9 +35,14 @@ static void run_scenario(const char *label, const int values[], int n, int k) {
         head = node;
     }
 
-    printf("linked list (scattered, connected by pointers):\n");
-    for (Node *p = head; p != NULL; p = p->next)
-        printf("  node at %p: data = %d, next = %p\n", (void *) p, p->data, (void *) p->next);
+    printf("linked list (separate nodes, connected by pointers):\n");
+    int idx = 0;
+    for (Node *p = head; p != NULL; p = p->next, idx++) {
+        if (p->next != NULL)
+            printf("  node #%d: data = %d, next -> node #%d\n", idx, p->data, idx + 1);
+        else
+            printf("  node #%d: data = %d, next -> NULL\n", idx, p->data);
+    }
 
     Node *reached = head;
     int hops = 0;

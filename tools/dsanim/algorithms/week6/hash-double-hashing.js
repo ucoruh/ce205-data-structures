@@ -151,6 +151,17 @@
                'Double hashing: `h1(key) = key mod ' + m + '` gives the home cell; `h2(key) = ' + r + ' - (key mod ' + r + ')` (never 0) gives THIS key\'s own step. Two keys that collide usually take different paths from there.'),
              { c: [1, 2], java: [1, 2] });
 
+      /* Line positions into the C/JAVA arrays above (identical numbering in both languages). */
+      var L = { entry: 5, forchk: 6, ifchk: 7, place1: 8, place2: 9, ret: 10, adv: 12, full: 14 };
+      function insertLines(first, continuing) {
+        var c = [];
+        if (first) c.push(L.entry);
+        c.push({ n: L.forchk, note: T('i<M? evet', 'i<M? yes') }, { n: L.ifchk, note: continuing ? T('dolu mu? evet', 'occupied? yes') : T('dolu mu? hayır', 'occupied? no') });
+        if (continuing) c.push({ n: L.place1, skip: true }, { n: L.place2, skip: true }, { n: L.ret, skip: true }, L.adv);
+        else c.push(L.place1, L.place2, L.ret);
+        return c;
+      }
+
       var state = new Array(m).fill('E'), table = new Array(m).fill(null), insertResults = [];
       keys.forEach(function (key, k) {
         S.at(k);
@@ -165,16 +176,18 @@
             S.set('c' + idx, { text: String(key), style: 'new' });
             S.set('dec', { text: probes > 1 ? T('yerleşti (' + probes + '. yoklama)', 'placed (probe ' + probes + ')') : T('yerleşti', 'placed'), style: 'new' });
             placed = true;
+            var pl = insertLines(i2 === 0, false);
             S.step(probes > 1
               ? T('`insert(' + key + ')`: ev ' + home + ' dolu, adım ' + step + '. ' + (probes - 1) + ' sıçramadan sonra hücre ' + idx + ' boş bulundu: `' + seq.join(' → ') + '`.',
                   '`insert(' + key + ')`: home ' + home + ' is occupied, step ' + step + '. After ' + (probes - 1) + ' jump' + (probes - 1 > 1 ? 's' : '') + ', cell ' + idx + ' was found free: `' + seq.join(' → ') + '`.')
               : T('`insert(' + key + ')`: ev hücre ' + idx + ' boştu, doğrudan yerleşir.', '`insert(' + key + ')`: home cell ' + idx + ' was empty, it settles immediately.'),
-              { c: [4, 5, 6, 7, 8, 9], java: [4, 5, 6, 7, 8, 9] });
+              { c: pl, java: pl });
             break;
           } else {
             S.set('dec', { text: T('dolu, adımla ilerle', 'occupied, take the step'), style: 'hl' });
+            var cl = insertLines(i2 === 0, true);
             S.step(T('Hücre ' + idx + ' dolu — `idx = (' + idx + ' + ' + step + ') mod ' + m + '` = ' + ((idx + step) % m) + '.',
-                     'Cell ' + idx + ' is occupied — `idx = (' + idx + ' + ' + step + ') mod ' + m + '` = ' + ((idx + step) % m) + '.'), { c: [7, 11], java: [7, 11] });
+                     'Cell ' + idx + ' is occupied — `idx = (' + idx + ' + ' + step + ') mod ' + m + '` = ' + ((idx + step) % m) + '.'), { c: cl, java: cl });
             idx = (idx + step) % m;
             seq.push(idx);
           }
@@ -187,7 +200,7 @@
             ? T('`' + m + '` yoklama denendi ama aynı birkaç hücre tekrar tekrar ziyaret edildi — tablo dolu DEĞİL (' + (m - occupied) + ' hücre boş), fakat bu anahtarın adımı (`' + step + '`) `m = ' + m + '` ile ortak bir çarpan paylaşıyor, o yüzden döngü tüm tabloyu tarayamıyor — **işaretlendi**. Bu yüzden `m` asal seçilir.',
                 'All `' + m + '` probes were tried but the same few cells kept repeating — the table is NOT full (' + (m - occupied) + ' cells are empty), but this key\'s step (`' + step + '`) shares a common factor with `m = ' + m + '`, so the cycle can never scan the whole table — **flagged**. This is why `m` is chosen prime.')
             : T('`' + m + '` hücrenin hepsi yoklandı, hiçbiri boş değil — tablo gerçekten **dolu**.', 'All `' + m + '` cells were probed, none was free — the table is genuinely **full**.'),
-            { c: [13], java: [13] });
+            { c: [{ n: L.forchk, note: T('i<M? hayır', 'i<M? no') }, L.full], java: [{ n: L.forchk, note: T('i<M? hayır', 'i<M? no') }, L.full] });
         }
         insertResults.push({ key: key, placed: placed, probes: probes, cycled: !placed && (state.filter(function (s) { return s === 'O'; }).length) < m });
       });

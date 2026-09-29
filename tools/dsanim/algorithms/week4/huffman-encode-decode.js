@@ -75,6 +75,24 @@
     '}'
   ];
 
+  /** When several loop iterations are concatenated into one S.step, the same source line can be "run" in
+   *  one iteration (e.g. the bit that reaches a leaf) and "the side not taken" (skip) in another (an
+   *  earlier bit that does not) — the player highlights by line NUMBER for the whole step, so a line that
+   *  really executed at least once must never also carry a skip mark. */
+  function dedupeSkip(lines) {
+    var ran = {};
+    lines.forEach(function (x) {
+      var n = x && typeof x === 'object' ? x.n : x;
+      var isSkip = !!(x && typeof x === 'object' && x.skip);
+      if (!isSkip) ran[n] = true;
+    });
+    return lines.filter(function (x) {
+      var n = x && typeof x === 'object' ? x.n : x;
+      var isSkip = !!(x && typeof x === 'object' && x.skip);
+      return !(isSkip && ran[n]);
+    });
+  }
+
   function freqOf(text) {
     var map = {}, order = [];
     for (var i = 0; i < text.length; i++) {
@@ -130,7 +148,7 @@
     presets: [
       { id: 'normal', level: 'normal', name: T('Klasik örnek: "ABRACADABRA" (11 karakter)', 'The classic example: "ABRACADABRA" (11 characters)'),
         data: { text: 'ABRACADABRA' } },
-      { id: 'hard', level: 'hard', name: T('Daha çeşitli: "THEQUICKBROWNFOX" (17 karakter)', 'More variety: "THEQUICKBROWNFOX" (17 characters)'),
+      { id: 'hard', level: 'hard', name: T('Daha çeşitli: "THEQUICKBROWNFOX" (16 karakter)', 'More variety: "THEQUICKBROWNFOX" (16 characters)'),
         data: { text: 'THEQUICKBROWNFOX' } },
       { id: 'two-symbols', level: 'edge', name: T('Sadece 2 farklı sembol: 10 karakter', 'Only 2 distinct symbols: 10 characters'),
         data: { text: 'AAAAABBBBB' } },
@@ -243,9 +261,13 @@
         var detailed = ei < 3;
         if (detailed) {
           setPath(path, 'hl');
+          /* out[0]='\0' (14) and the signature (13) run ONCE, at function entry — only true for the very
+           * first character; repeating them for ei=1,2 would falsely claim the function re-entered. */
+          var forNote = { n: 15, note: T("text[i] != '\\0'? evet", "text[i] != '\\0'? yes") };
+          var pathLines = ei === 0 ? [13, 14, forNote] : [forNote];
           S.step(T('Karakter "' + ch + '": kökten ' + ch + ' yaprağına giden yol vurgulanır — kod = ' + code + '.',
                    'Character "' + ch + '": the root-to-leaf path for ' + ch + ' is highlighted — code = ' + code + '.'),
-                 { c: [11, 12, 13, 14, 15], java: [11, 12, 13, 14, 15] });
+                 { c: pathLines, java: pathLines });
           setPath(path, 'normal');
         }
         encoded += code;
@@ -253,14 +275,17 @@
         if (detailed) {
           S.step(T('`' + code + '` bitleri kodlanmış dizinin sonuna eklenir: şimdiye kadar `' + encoded + '`.',
                    'The bits `' + code + '` are appended to the encoded string: so far `' + encoded + '`.'),
-                 { c: [15], java: [15] });
+                 { c: [16], java: [16] });
         }
       }
       S.step(T('Kalan ' + (text.length - 3 > 0 ? text.length - 3 : 0) + ' karakter de aynı şekilde (yol vurgula, kod ekle) hızlıca kodlanır.',
                'The remaining ' + (text.length - 3 > 0 ? text.length - 3 : 0) + ' characters are encoded the same way (highlight the path, append the code), shown quickly.'),
-             { c: [12, 13, 14, 15], java: [12, 13, 14, 15] });
+             { c: [{ n: 15, note: T("text[i] != '\\0'? evet", "text[i] != '\\0'? yes") }, 16],
+               java: [{ n: 15, note: T("text[i] != '\\0'? evet", "text[i] != '\\0'? yes") }, 16] });
       S.step(T('Kodlama bitti: "' + text + '" (' + text.length + ' karakter) → `' + encoded + '` (' + encoded.length + ' bit). Düz ASCII ile ' + (text.length * 8) + ' bit gerekirdi.',
-               'Encoding done: "' + text + '" (' + text.length + ' characters) → `' + encoded + '` (' + encoded.length + ' bits). Plain ASCII would need ' + (text.length * 8) + ' bits.'));
+               'Encoding done: "' + text + '" (' + text.length + ' characters) → `' + encoded + '` (' + encoded.length + ' bits). Plain ASCII would need ' + (text.length * 8) + ' bits.'),
+             { c: [{ n: 15, note: T("text[i] != '\\0'? hayır (metin bitti)", "text[i] != '\\0'? no (out of text)") }, 17],
+               java: [{ n: 15, note: T("text[i] != '\\0'? hayır (metin bitti)", "text[i] != '\\0'? no (out of text)") }, 17] });
 
       S.at(null);
       var decoded = '', cur = tree.root, pos = 0, charCount = 0;
@@ -274,9 +299,25 @@
           var detailedD = charCount <= 3;
           if (detailedD) {
             setPath(pathAcc, 'hl');
+            /* Real trace: the loop condition (24), the child move (25) AND the leaf check (26) all run
+             * once per bit consumed (26 is inside the loop body, evaluated every iteration, not just the
+             * last one) — every bit before the leaf gets a "no" note and 27-28 (emit, reset) marked skip
+             * for that iteration; only the LAST bit's check comes back "yes" and really runs 27-28. Lines
+             * 22/23 (out/n and node=root) run once, at function entry — only true for the very first
+             * character decoded. */
+            var bitsWalked = bi - pos + 1, decLines = charCount === 1 ? [22, 23] : [];
+            for (var wb = 0; wb < bitsWalked; wb++) {
+              var isLastBit = wb === bitsWalked - 1, bitCh = encoded[pos + wb];
+              decLines.push({ n: 24, note: T("bits[i] != '\\0'? evet", "bits[i] != '\\0'? yes") });
+              decLines.push({ n: 25, note: bitCh === '0' ? T("bits[i] == '0'? evet (sola)", "bits[i] == '0'? yes (go left)") : T("bits[i] == '0'? hayır (sağa)", "bits[i] == '0'? no (go right)") });
+              decLines.push({ n: 26, note: isLastBit ? T('yaprak mı? evet', 'leaf? yes') : T('yaprak mı? hayır', 'leaf? no') });
+              if (isLastBit) decLines.push(27, 28);
+              else decLines.push({ n: 27, skip: true }, { n: 28, skip: true });
+            }
+            decLines = dedupeSkip(decLines);
             S.step(T('`decode`: bitler `' + encoded.slice(pos, bi + 1) + '` kökten yaprağa götürür — karakter "' + tree.nodes[cur].ch + '".',
                      '`decode`: bits `' + encoded.slice(pos, bi + 1) + '` walk from the root to a leaf — character "' + tree.nodes[cur].ch + '".'),
-                   { c: [20, 22, 23, 24, 25], java: [20, 22, 23, 24, 25] });
+                   { c: decLines, java: decLines });
             setPath(pathAcc, 'normal');
           }
           decoded += tree.nodes[cur].ch;
@@ -288,12 +329,23 @@
       }
       S.step(T('Kalan karakterler de aynı şekilde (kökten başla, bit tüket, yaprakta karakter üret, tekrar köke dön) hızlıca çözülür.',
                'The remaining characters are decoded the same way (start at the root, consume bits, emit a character at a leaf, restart at the root), shown quickly.'),
-             { c: [20, 21, 22, 23, 24, 25, 26, 27], java: [20, 21, 22, 23, 24, 25, 26] });
+             { c: [{ n: 24, note: T("bits[i] != '\\0'? evet", "bits[i] != '\\0'? yes") },
+                   { n: 25, note: T("bits[i] == '0'? evet/hayır (bite göre)", "bits[i] == '0'? yes/no (depends on the bit)") },
+                   { n: 26, note: T('yaprak mı? evet/hayır (bite göre)', 'leaf? yes/no (depends on the bit)') }, 27, 28],
+               java: [{ n: 24, note: T("bits[i] != '\\0'? evet", "bits[i] != '\\0'? yes") },
+                      { n: 25, note: T("bits[i] == '0'? evet/hayır (bite göre)", "bits[i] == '0'? yes/no (depends on the bit)") },
+                      { n: 26, note: T('yaprak mı? evet/hayır (bite göre)', 'leaf? yes/no (depends on the bit)') }, 27, 28] });
 
       var ok = decoded === text;
       S.result = { textLength: text.length, encodedBits: encoded.length, decodedMatchesOriginal: ok };
+      /* C's decode() has one extra tail statement Java doesn't need (`out[n] = '\0';`, line 31, to
+       * null-terminate the C string before `return out;` on 32) — StringBuilder needs no such line, so
+       * Java's `return out.toString();` is line 31. The two languages are NOT line-parallel here, unlike
+       * every other step in this file, so they get their own line lists. */
       S.step(T('Kod çözme bitti: `' + encoded + '` → "' + decoded + '". ' + (ok ? 'Özgün metinle BİREBİR aynı.' : 'UYUŞMUYOR (hata var)!') + ' Huffman kodu önek-özgür (prefix-free) olduğu için hiçbir kod bir başkasının başlangıcı değildir — bu yüzden tek geçişte, geri dönmeden çözülür.',
-               'Decoding done: `' + encoded + '` → "' + decoded + '". ' + (ok ? 'It matches the original text EXACTLY.' : 'It DOES NOT MATCH (a bug)!') + ' A Huffman code is prefix-free — no code is the start of another — so it decodes in a single left-to-right pass, with no backtracking.'));
+               'Decoding done: `' + encoded + '` → "' + decoded + '". ' + (ok ? 'It matches the original text EXACTLY.' : 'It DOES NOT MATCH (a bug)!') + ' A Huffman code is prefix-free — no code is the start of another — so it decodes in a single left-to-right pass, with no backtracking.'),
+             { c: [{ n: 24, note: T("bits[i] != '\\0'? hayır (bit kalmadı)", "bits[i] != '\\0'? no (out of bits)") }, 31, 32],
+               java: [{ n: 24, note: T("bits[i] != '\\0'? hayır (bit kalmadı)", "bits[i] != '\\0'? no (out of bits)") }, 31] });
     }
   });
 })(typeof DSAnim !== 'undefined' ? DSAnim : require('../../web/scene.js'));

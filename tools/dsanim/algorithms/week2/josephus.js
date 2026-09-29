@@ -126,7 +126,9 @@
 
       S.pointer('curP', { target: ids[0], text: 'cur', side: 'top', dist: 30 });
       S.step(T(n + ' kişi bir çemberde. `cur = head` (kişi 1). Her ' + k + '. kişi elenecek; `prev`, `cur`\'dan bir önceki kişiyi tutar.',
-               n + ' people stand in a circle. `cur = head` (person 1). Every ' + k + (k === 1 ? 'st' : (k === 2 ? 'nd' : (k === 3 ? 'rd' : 'th'))) + ' person is eliminated; `prev` holds the person right before `cur`.'), { c: [4, 5, 6, 7, 8], java: [4, 5, 6] });
+               n + ' people stand in a circle. `cur = head` (person 1). Every ' + k + (k === 1 ? 'st' : (k === 2 ? 'nd' : (k === 3 ? 'rd' : 'th'))) + ' person is eliminated; `prev` holds the person right before `cur`.'),
+             { c: [4, 5, { n: 6, note: T('prev->next != head? evet -> hayır olana kadar döner', 'prev->next != head? yes -> loops until no') }, 7, 8],
+               java: [4, 5, { n: 6, note: T('prev.next != head? evet -> hayır olana kadar döner', 'prev.next != head? yes -> loops until no') }, 7] });
 
       var curIdx = 0, order = [];
       var elimNo = 0;
@@ -140,14 +142,18 @@
             S.set('curP', { target: ids[target] });
             clean(); S.set(ids[target], { style: 'active' });
             S.step(T('say ' + step + '/' + (k - 1) + ': `prev = cur`; `cur = cur->next` -> kişi ' + S.get(ids[target]).value + '.',
-                     'count ' + step + '/' + (k - 1) + ': `prev = cur`; `cur = cur->next` -> person ' + S.get(ids[target]).value + '.'), { c: [12, 13, 14], java: [11, 12, 13] });
+                     'count ' + step + '/' + (k - 1) + ': `prev = cur`; `cur = cur->next` -> person ' + S.get(ids[target]).value + '.'),
+                   { c: [{ n: 12, note: T('step (' + step + ') < k (' + k + ')? evet', 'step (' + step + ') < k (' + k + ')? yes') }, 13, 14],
+                     java: [{ n: 12, note: T('step (' + step + ') < k (' + k + ')? evet', 'step (' + step + ') < k (' + k + ')? yes') }, 13, 14] });
           }
         } else {
           target = (curIdx + k - 1) % ids.length;
           S.set('curP', { target: ids[target] });
           clean(); S.set(ids[target], { style: 'active' });
           S.step(T((elimNo + 1) + '. eleme: ' + (k - 1) + ' adım sayılır, kişi ' + S.get(ids[target]).value + '\'e varılır.',
-                   'elimination ' + (elimNo + 1) + ': ' + (k - 1) + ' step' + (k === 2 ? '' : 's') + ' counted, arriving at person ' + S.get(ids[target]).value + '.'), { c: [12, 13, 14], java: [11, 12, 13] });
+                   'elimination ' + (elimNo + 1) + ': ' + (k - 1) + ' step' + (k === 2 ? '' : 's') + ' counted, arriving at person ' + S.get(ids[target]).value + '.'),
+                 { c: [{ n: 12, note: T('step < k (' + k + ')? ' + (k > 1 ? (k - 1) + ' kez evet, sonra hayır' : 'hayır (hiç dönmez)'), 'step < k (' + k + ')? ' + (k > 1 ? 'yes ' + (k - 1) + ' times, then no' : 'no (never loops)')) }, 13, 14],
+                   java: [{ n: 12, note: T('step < k (' + k + ')? ' + (k > 1 ? (k - 1) + ' kez evet, sonra hayır' : 'hayır (hiç dönmez)'), 'step < k (' + k + ')? ' + (k > 1 ? 'yes ' + (k - 1) + ' times, then no' : 'no (never loops)')) }, 13, 14] });
         }
         var victimValue = Number(S.get(ids[target]).value);
         S.set(ids[target], { style: 'del' });

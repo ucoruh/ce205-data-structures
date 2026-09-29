@@ -189,14 +189,14 @@
         S.set('dec', { text: 'insert(' + key + ') → idx ' + idx, style: 'new' });
         S.step(T('`insert(' + key + ')` — hücre ' + idx + '\'e yerleşti. `n = ' + n + '`, `α = ' + (n / m).toFixed(2) + '`.',
                  '`insert(' + key + ')` — settles at cell ' + idx + '. `n = ' + n + '`, `α = ' + (n / m).toFixed(2) + '`.'),
-               { c: [28, 29], java: [24, 25] });
+               { c: [31, 32], java: [29, 30] });
 
         if (n / m > threshold) {
           var newM = nextPrime(2 * m);
           S.set('dec', { text: T('α eşiği aştı!', 'α crossed the threshold!'), style: 'del' });
           S.step(T('`α = ' + (n / m).toFixed(2) + ' > ' + threshold + '` — **yeniden hash\'leme** tetiklenir. Yeni boyut: `next_prime(2 × ' + m + ') = ' + newM + '`.',
                    '`α = ' + (n / m).toFixed(2) + ' > ' + threshold + '` — **rehashing** is triggered. New size: `next_prime(2 × ' + m + ') = ' + newM + '`.'),
-                 { c: [30, 21], java: [26, 19] });
+                 { c: [{ n: 33, note: T('n/m>threshold? evet', 'n/m>threshold? yes') }, 21], java: [{ n: 31, note: T('n/m>threshold? evet', 'n/m>threshold? yes') }, 21] });
 
           S.styleAll('dim', 'box');
           var newY = curY + ROWGAP, newGen = gen + 1;
@@ -212,7 +212,8 @@
               S.set('dec', { text: oldKey + ': ' + i + ' → ' + newIdx, style: 'hl' });
               S.step(T('Anahtar `' + oldKey + '` taşınıyor: eski indeks ' + i + ' → yeni indeks ' + newIdx + ' (`' + oldKey + ' mod ' + newM + '` ile yeniden hesaplanır).',
                        'Key `' + oldKey + '` moves: old index ' + i + ' → new index ' + newIdx + ' (recomputed with `' + oldKey + ' mod ' + newM + '`).'),
-                     { c: [21, 22], java: [19, 20] });
+                     { c: [{ n: 24, note: T('i<m? evet', 'i<m? yes') }, { n: 25, note: T('state[i]==OCCUPIED? evet', 'state[i]==OCCUPIED? yes') }],
+                       java: [{ n: 23, note: T('i<m? evet', 'i<m? yes') }, { n: 24, note: T('state[i]==OCCUPIED? evet', 'state[i]==OCCUPIED? yes') }] });
               S.set('g' + gen + '_' + i, { style: 'dim', text: '' });
             }
           }
@@ -222,7 +223,7 @@
           S.set('dec', { text: '', style: 'normal' });
           S.step(T(moves + ' anahtarın hepsi yeni, `m = ' + m + '` hücrelik tabloya taşındı. Eski tablo artık kullanılmıyor (soluk gösterildi).',
                    'All ' + moves + ' keys were moved into the new, `m = ' + m + '`-cell table. The old table is no longer used (shown dimmed).'),
-                 { c: [23, 24, 25, 26], java: [21, 22] });
+                 { c: [26, 27], java: [25] });
         }
       });
 

@@ -196,12 +196,14 @@
                      (front > 0 ? '. Oysa `[0..' + (front - 1) + ']`, yani ' + front + ' hücre, boş duruyor!' : ', dizi gerçekten dolu.') + ' Hiçbir şey yazılmaz.',
                      '`enqueue(' + x + ')` — `rear == CAP - 1` (' + rear + ' == ' + (CAP - 1) + ') → **overflow**' +
                      (front > 0 ? '. Yet `[0..' + (front - 1) + ']`, ' + front + ' cells, sit empty!' : ', the array really is full.') + ' Nothing is written.'),
-                   { c: [6, 7], java: [6, 7] });
+                   { c: [{ n: 6, note: T(rear + ' == ' + (CAP - 1) + '? evet', rear + ' == ' + (CAP - 1) + '? yes') }, 7],
+                     java: [{ n: 6, note: T(rear + ' == ' + (CAP - 1) + '? evet', rear + ' == ' + (CAP - 1) + '? yes') }, 7] });
             if (front > 0) {
               clean(); braces();
               S.step(T('Bu tam da düz dizi tabanlı kuyruğun sorunu: `front` ve `rear` yalnız ileri gider, asla geri dönmez; boşalan hücreler bir daha kullanılamaz.',
                        'This is exactly the plain-array queue\'s problem: `front` and `rear` only ever move forward, never back; freed cells can never be reused.'),
-                     { c: [6], java: [6] });
+                     { c: [{ n: 6, note: T(rear + ' == ' + (CAP - 1) + '? evet', rear + ' == ' + (CAP - 1) + '? yes') }],
+                       java: [{ n: 6, note: T(rear + ' == ' + (CAP - 1) + '? evet', rear + ' == ' + (CAP - 1) + '? yes') }] });
             }
             return;
           }
@@ -209,7 +211,8 @@
           if (enqCount === 1) {
             S.step(T('`enqueue(' + x + ')` — önce sorulur, `rear` son indise (' + (CAP - 1) + ') eşit mi? `rear` (' + rear + ') değil, yer var.',
                      '`enqueue(' + x + ')` — first we ask, is `rear` at the last index (' + (CAP - 1) + ')? `rear` (' + rear + ') is not, so there is room.'),
-                   { c: [6], java: [6] });
+                   { c: [{ n: 6, note: T(rear + ' == ' + (CAP - 1) + '? hayır', rear + ' == ' + (CAP - 1) + '? no') }, { n: 7, skip: true }],
+                     java: [{ n: 6, note: T(rear + ' == ' + (CAP - 1) + '? hayır', rear + ' == ' + (CAP - 1) + '? no') }, { n: 7, skip: true }] });
             rear++; cell[rear] = x; point(); label(); braces();
             S.set('h' + rear, { style: 'hl' });
             S.step(T('`rear` bir artar ve ' + rear + ' olur: yeni eleman bir sonraki hücreye gidecek.', '`rear` goes up by one, to ' + rear + ': the new element goes into the next cell.'),
@@ -217,14 +220,15 @@
             S.set('h' + rear, { text: String(x), style: 'new' });
             S.step(T('`q[' + rear + '] = ' + x + '`. O(1): dizinin başındaki hücrelerle hiç ilgilenmiyoruz, yalnız `rear`\'e bakıyoruz. Sonraki enqueue\'ları hızlı gösteriyoruz.',
                      '`q[' + rear + '] = ' + x + '`. O(1): we never look at the cells near the front, only at `rear`. The next enqueues are shown faster.'),
-                   { c: [9], java: [9] });
+                   { c: [9, 10], java: [9, 10] });
             return;
           }
           rear++; cell[rear] = x; clean(); point(); label(); braces();
           S.set('h' + rear, { text: String(x), style: 'new' });
           S.step(T('`enqueue(' + x + ')` — yer var → `rear = ' + rear + '`, `q[' + rear + '] = ' + x + '`.',
                    '`enqueue(' + x + ')` — there is room → `rear = ' + rear + '`, `q[' + rear + '] = ' + x + '`.'),
-                 { c: [6, 8, 9], java: [6, 8, 9] });
+                 { c: [{ n: 6, note: T(rear + ' == ' + (CAP - 1) + '? hayır', rear + ' == ' + (CAP - 1) + '? no') }, { n: 7, skip: true }, 8, 9, 10],
+                   java: [{ n: 6, note: T(rear + ' == ' + (CAP - 1) + '? hayır', rear + ' == ' + (CAP - 1) + '? no') }, { n: 7, skip: true }, 8, 9, 10] });
           return;
         }
         if (front > rear) {
@@ -233,7 +237,8 @@
           decide('empty!', 'del');
           S.step(T('`dequeue()` — `front > rear` (' + front + ' > ' + rear + '), çıkaracak eleman yok → **alttan taşma (underflow)**. `false` döner; program çökmez.',
                    '`dequeue()` — `front > rear` (' + front + ' > ' + rear + '), there is nothing to remove → **underflow**. It returns `false`; the program does not crash.'),
-                 { c: [14, 15], java: [14, 15] });
+                 { c: [{ n: 14, note: T(front + ' > ' + rear + '? evet', front + ' > ' + rear + '? yes') }, 15],
+                   java: [{ n: 14, note: T(front + ' > ' + rear + '? evet', front + ' > ' + rear + '? yes') }, 15] });
           return;
         }
         deqCount++;
@@ -243,17 +248,20 @@
           S.set('h' + front, { style: 'hl' });
           S.step(T('`dequeue()` — kuyruk boş değil (`front <= rear`). Baştaki değer (' + v + ') okunur: **İlk giren, İlk çıkar**.',
                    '`dequeue()` — the queue is not empty (`front <= rear`). The value at the front (' + v + ') is read: **First In, First Out**.'),
-                 { c: [14, 16], java: [14, 16] });
+                 { c: [{ n: 14, note: T(front + ' > ' + rear + '? hayır', front + ' > ' + rear + '? no') }, { n: 15, skip: true }, 16],
+                   java: [{ n: 14, note: T(front + ' > ' + rear + '? hayır', front + ' > ' + rear + '? no') }, { n: 15, skip: true }, 16] });
           front++; clean(); point(); label(); braces();
           addDeq(v);
           S.step(T('`front` bir artar (' + front + '). ' + v + ' bellekte duruyor ama artık kuyruğun parçası değil; hücresi bir daha hiç kullanılmayacak.',
                    '`front` goes up by one (' + front + '). ' + v + ' is still in memory but no longer part of the queue; its cell will never be used again.'),
-                 { c: [17], java: [17] });
+                 { c: [17, 18], java: [17, 18] });
           return;
         }
         front++; clean(); point(); label(); braces();
         addDeq(v);
-        S.step(T('`dequeue()` → ' + v + '; `front = ' + front + '`.', '`dequeue()` → ' + v + '; `front = ' + front + '`.'), { c: [16, 17], java: [16, 17] });
+        S.step(T('`dequeue()` → ' + v + '; `front = ' + front + '`.', '`dequeue()` → ' + v + '; `front = ' + front + '`.'),
+               { c: [{ n: 14, note: T(front - 1 + ' > ' + rear + '? hayır', front - 1 + ' > ' + rear + '? no') }, { n: 15, skip: true }, 16, 17, 18],
+                 java: [{ n: 14, note: T(front - 1 + ' > ' + rear + '? hayır', front - 1 + ' > ' + rear + '? no') }, { n: 15, skip: true }, 16, 17, 18] });
       });
 
       clean(); point(); label(); braces(); decide('', 'normal'); S.at(null);

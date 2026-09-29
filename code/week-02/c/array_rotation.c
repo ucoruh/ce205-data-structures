@@ -17,6 +17,8 @@ void reverse(int arr[], int lo, int hi) {
 }
 
 void rotate_left(int arr[], int n, int d) {
+    if (n == 0)
+        return;                     /* empty array: nothing to rotate */
     d = d % n;
     reverse(arr, 0, d - 1);        /* reverse the first d elements */
     reverse(arr, d, n - 1);        /* reverse the remaining n-d elements */

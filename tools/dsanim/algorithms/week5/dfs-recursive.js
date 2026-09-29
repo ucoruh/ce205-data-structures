@@ -59,11 +59,20 @@
     '}'
   ];
   var LINES_VISIT = { c: [7, 8, 9], java: [7, 8, 9] };
-  var LINES_TREE = { c: [12], java: [12] };
-  var LINES_BACK = { c: [13], java: [13] };
+  /** `else if (color_of[v] == 1)`: true whenever this step exists at all -- a back edge is only ever reported
+   *  when that condition held (`v` is gray, still on the path). */
+  var LINES_BACK = { c: [{ n: 13, note: T('color_of[v] == 1? evet (gri, ata)', 'color_of[v] == 1? yes (gray, an ancestor)') }],
+                      java: [{ n: 13, note: T('colorOf[v] == 1? evet (gri, ata)', 'colorOf[v] == 1? yes (gray, an ancestor)') }] };
   var LINES_FWDCROSS = { c: [14], java: [14] };
   var LINES_FINISH = { c: [16, 17], java: [16, 17] };
-  var LINES_FOREST = { c: [21, 22, 23], java: [21, 22, 23] };
+  /** Intro step, shown once before any real traversal starts: `color_of[i] = 0` resets every vertex to WHITE,
+   *  and the driver loop starts `dfs_visit` from every vertex still white (one tree per component). */
+  var LINES_FOREST = { c: [{ n: 21, note: T('her i için: BEYAZ (0) ile sıfırla', 'for every i: reset to WHITE (0)') },
+                            { n: 22, note: T('her i için: hâlâ beyazsa başlat', 'for every i: start if still white') },
+                            { n: 23, note: T('color_of[i] == 0? (henüz keşfedilmedi mi?)', 'color_of[i] == 0? (not yet discovered?)') }],
+                        java: [{ n: 21, note: T('her i için: BEYAZ (0) ile sıfırla', 'for every i: reset to WHITE (0)') },
+                               { n: 22, note: T('her i için: hâlâ beyazsa başlat', 'for every i: start if still white') },
+                               { n: 23, note: T('colorOf[i] == 0? (henüz keşfedilmedi mi?)', 'colorOf[i] == 0? (not yet discovered?)') }] };
 
   var EDGE_RE = /^([A-Za-z0-9]{1,3})(-|>)([A-Za-z0-9]{1,3})(?::(\d+))?$/;
   function parseGraph(text) {

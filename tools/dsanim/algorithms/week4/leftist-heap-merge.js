@@ -141,19 +141,27 @@
         var dummy = { right: null }, cur = dummy, chain = [];
         while (t1 && t2) {
           var winner, loserKey = less(kind, t2.key, t1.key) ? t1.key : t2.key;
-          if (!less(kind, t2.key, t1.key)) { winner = t1; t1 = t1.right; } else { winner = t2; t2 = t2.right; }
+          var t1Wins = !less(kind, t2.key, t1.key);
+          if (t1Wins) { winner = t1; t1 = t1.right; } else { winner = t2; t2 = t2.right; }
           cur.right = winner; cur = winner; chain.push(winner);
           if (steps) {
             cmp(winner.key + ' ' + LT + ' ' + loserKey + ' → splice');
             renderForest([dummy.right], [winner.id]);
+            var whileNote = { n: 8, note: T('t1 && t2? evet', 't1 && t2? yes') };
             S.step(T('Sağ omurgaları karşılaştır: `' + winner.key + '` kazanır — zincire eklenir.',
                      'Compare the right spines: `' + winner.key + '` wins — it is spliced into the chain.'),
-                   { c: [8, 9, 10, 11, 12], java: [8, 9, 10, 11, 12] });
+                   { c: [whileNote, 9, t1Wins ? 10 : { n: 10, skip: true }, t1Wins ? { n: 11, skip: true } : 11, 12],
+                     java: [whileNote, 9, t1Wins ? 10 : { n: 10, skip: true }, t1Wins ? { n: 11, skip: true } : 11, 12] });
             cmp(null);
           }
         }
         cur.right = t1 || t2;
-        if (steps && chain.length) { renderForest([dummy.right]); S.step(T('Bir taraf tükendi: kalan alt ağaç doğrudan zincirin sonuna eklenir.', 'One side ran out: the remaining subtree is attached straight onto the end of the chain.'), { c: [14], java: [14] }); }
+        if (steps && chain.length) {
+          renderForest([dummy.right]);
+          var ranOutLines = [{ n: 8, note: T('t1 && t2? hayır (bir taraf bitti)', 't1 && t2? no (one side ran out)') },
+            { n: 14, note: t1 ? T('t1 ? t1 : t2 → t1', 't1 ? t1 : t2 → t1') : T('t1 ? t1 : t2 → t2', 't1 ? t1 : t2 → t2') }];
+          S.step(T('Bir taraf tükendi: kalan alt ağaç doğrudan zincirin sonuna eklenir.', 'One side ran out: the remaining subtree is attached straight onto the end of the chain.'), { c: ranOutLines, java: ranOutLines });
+        }
         for (var idx = chain.length - 1; idx >= 0; idx--) {
           var node = chain[idx];
           var swapped = npl(node.left) < npl(node.right);
@@ -162,9 +170,12 @@
           if (steps) {
             cmp(swapped ? ('npl(left) < npl(right) → swap') : ('npl(left) ≥ npl(right) → stop'));
             renderForest([dummy.right], [node.id]);
+            var nplNote = swapped ? T('npl(left) < npl(right)? evet', 'npl(left) < npl(right)? yes') : T('npl(left) < npl(right)? hayır', 'npl(left) < npl(right)? no');
+            var forNote = { n: 17, note: T('i >= 0? evet', 'i >= 0? yes') };
+            var fixLines = [forNote, 18, { n: 19, note: nplNote }, swapped ? 20 : { n: 20, skip: true }, 22];
             S.step(T('Yukarı doğru düzelt: `' + node.key + '` — ' + (swapped ? 'sol/sağ çocuklar yer değiştirir (sol daha uzundu)' : 'zaten sağ taraf kısa, değişiklik yok') + ', npl = ' + node.npl + '.',
                      'Fix bottom-up: `' + node.key + '` — ' + (swapped ? 'left/right children swap (the left side was longer)' : 'the right side is already the shorter one, no change') + ', npl = ' + node.npl + '.'),
-                   { c: [17, 18, 19, 20, 21], java: [17, 18, 19, 20, 21] });
+                   { c: fixLines, java: fixLines });
             cmp(null);
           }
         }
@@ -232,8 +243,7 @@
       info(T('A: ' + aItems.length + ' eleman, B: ' + bItems.length + ' eleman', 'A: ' + aItems.length + ' elements, B: ' + bItems.length + ' elements'));
       renderForest([heapA, heapB]);
       S.step(T('Solcu öbek B: ' + bItems.length + ' eleman. `merge(A, B)` iki adımda çalışır: (1) sağ omurgaları karşılaştıra karşılaştıra birleştir, (2) sonucu aşağıdan yukarı gezip kısa tarafı sağa al.',
-               'Leftist heap B: ' + bItems.length + ' elements. `merge(A, B)` works in two passes: (1) splice the right spines together by comparison, (2) walk the result bottom-up and keep the shorter side on the right.'),
-             { c: [4, 5, 6, 7, 15, 16], java: [4, 5, 6, 7, 15, 16] });
+               'Leftist heap B: ' + bItems.length + ' elements. `merge(A, B)` works in two passes: (1) splice the right spines together by comparison, (2) walk the result bottom-up and keep the shorter side on the right.'));
 
       var result = merge(heapA, heapB, true);
       info(T('Bitti', 'Done'));

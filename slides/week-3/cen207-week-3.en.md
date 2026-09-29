@@ -895,7 +895,8 @@ negative input stops on the very first call.
 ```c
 int fact(int n) {
     if (n == 0) return 1;
-    return n * fact(n - 1);
+    /* unsigned multiply: defined wraparound, not signed-overflow UB */
+    return (int) ((unsigned) n * (unsigned) fact(n - 1));
 }
 ```
 
@@ -1255,7 +1256,7 @@ The real fix is next: think of the array as a **ring**.
 
 - After the last index comes the first one again
 - `(index + 1) % CAP` walks forward, wraps around
-- `front == rear` is now ambiguous (empty? full?)
+- `front == (rear + 1) % CAP` is now ambiguous (empty? full?)
 - Keep one more field, `count`, to resolve it
 
 <!-- Speaker note: The wasted space was only wasted because we were thinking of the array as a straight line. -->
@@ -1304,9 +1305,10 @@ bool dequeue(int *out) {
 
 # Why we also need `count`
 
-`front == rear` could mean "one element",
-"empty", **or** "completely full" — a plain
-index comparison can no longer tell these apart.
+`front == (rear + 1) % CAP` is true both when
+the queue is empty and when it is completely
+full — a plain index comparison can no longer
+tell the two states apart.
 
 <!-- Speaker note: count resolves the ambiguity directly instead of relying on clever index tricks. -->
 
@@ -1324,7 +1326,7 @@ and every operation is still **O(1)**.
 
 # Common mistakes (circular queue)
 
-- Using `front == rear` alone to mean "empty"
+- Using an index comparison instead of `count` for "empty"/"full"
 - Forgetting the modulo on **one** of the two indices
 - Either mistake corrupts the ring after one wrap
 
@@ -1334,18 +1336,20 @@ and every operation is still **O(1)**.
 
 # Quick question
 
-After `count` reaches `CAP`, what does
-`front == rear` mean now, vs. when empty?
+What index relationship holds both right after
+the queue empties AND right after it fills —
+and why can't the indices alone tell which?
 
-<!-- Speaker note: Both "just became empty" and "just became full" can show front == rear. -->
+<!-- Speaker note: Both "just became empty" and "just became full" show front == (rear + 1) % CAP. -->
 
 ---
 
 # Answer
 
-Both states can show `front == rear`; **`count`**
-is exactly what tells them apart, since the
-indices alone are ambiguous.
+Both states show `front == (rear + 1) % CAP`;
+**`count`** is exactly what tells them apart,
+since the index relationship alone is identical
+in both states.
 
 <!-- Speaker note: This is why count is not optional bookkeeping — it is the only thing resolving the ambiguity. -->
 
@@ -1661,11 +1665,11 @@ or several parallel queues (multilevel).
 
 - Exercises for all of today's topics are in the
   week notes: `docs/week-3/cen207-week-3.en.md`
-- Peek, unbalanced-parens detection, prefix-free
-  infix-to-prefix, count-free circular queue,
-  palindrome check, fairer multilevel scheduling
+- Peek, pinpointing *where* an unbalanced-parens
+  error is, prefix-free infix-to-prefix, count-free
+  circular queue, palindrome check, fairer scheduling
 
-<!-- Speaker note: These are the same five exercises listed at the end of the written notes, with worked answer sketches. -->
+<!-- Speaker note: These are the same six exercises listed at the end of the written notes, with worked answer sketches. -->
 
 ---
 
@@ -1740,13 +1744,13 @@ appears on the next slide.
 
 # 6. What extra state does a circular queue need beyond `front`/`rear`?
 
-<!-- Speaker note: Think about the front == rear ambiguity. -->
+<!-- Speaker note: Think about the front == (rear + 1) % CAP ambiguity. -->
 
 ---
 
 # A `count` of current elements — indices alone cannot tell empty from full.
 
-<!-- Speaker note: After a wraparound, front == rear no longer decides the question by itself. -->
+<!-- Speaker note: After a wraparound, front == (rear + 1) % CAP no longer decides the question by itself. -->
 
 ---
 

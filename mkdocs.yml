@@ -255,16 +255,12 @@ nav:
     - Week-6 (Search and Hashing): week-6/cen207-week-6.md
     - Week-7 (Midterm Project Demos): week-7/cen207-week-7.md
     - "Week-8 (Midterm Exam Week: Quiz-1)": week-8/cen207-week-8.md
-    - Week-9 (Graph Algorithms): week-6-graph-algorithms/ce205-week-6-graph-algorithms.md
-    - Week-10 (Sorting): week-9-sorting/ce205-week-9-sorting.md
-    - Week-11 (Advanced Trees): week-10-advanced-tree-structures/ce205-week-10-advanced-tree-structures.md
-    - Week-12 (Strings):
-      - String Structures: week-11-string-structures/ce205-week-11-string-structures.md
-      - String Algorithms: week-12-string-algorithms/ce205-week-12-string-algorithms.md
-    - Week-13 (File Organisation I): week-13-direct-sequential-file/ce205-week-13-direct-sequential-file.md
-    - Week-14 (File Organisation II):
-      - Indexes and B-Trees for Files: week-14-direct-file-b-tree/ce205-week-14-direct-file-b-tree.md
-      - Extendible Hashing and File Sorting: week-15-hashing-trie/ce205-week-15-hashing-trie.md
+    - Week-9 (Graph Algorithms): week-9/cen207-week-9.md
+    - Week-10 (Sorting): week-10/cen207-week-10.md
+    - Week-11 (Advanced Trees): week-11/cen207-week-11.md
+    - Week-12 (Strings): week-12/cen207-week-12.md
+    - Week-13 (File Organisation I): week-13/cen207-week-13.md
+    - Week-14 (File Organisation II): week-14/cen207-week-14.md
     - Week-15 (Final Project Demos): week-15/cen207-week-15.md
     - "Week-16 (Final Exam Period: Quiz-2)": week-16/cen207-week-16.md
   - Project Guide: project-guide/index.md

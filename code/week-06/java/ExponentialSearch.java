@@ -10,6 +10,7 @@ public class ExponentialSearch {
 
     static int exponentialSearch(int[] arr, int target) {
         int n = arr.length;
+        if (n <= 0) { comparisons = 0; return -1; }  // nothing to search
         comparisons = 1;                 // the arr[0] check below counts as comparison #1
         System.out.println("  check arr[0] = " + arr[0]);
         if (arr[0] == target) return 0;

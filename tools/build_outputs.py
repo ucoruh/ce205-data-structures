@@ -353,17 +353,23 @@ def deck_html(week, lang):
 
 
 _ANIM_IFRAME_HTML = re.compile(
-    r'<iframe\s+class="dsanim"\s+[^>]*\bsrc="([^"?]+?)(?:\?[^"]*)?"[^>]*>\s*</iframe>')
+    r'<iframe\s+class="dsanim"\s+[^>]*\bsrc="([^"?]+?)(\?[^"]*)?"[^>]*>\s*</iframe>')
 
 
-def replace_anim_iframes(html, lang):
+def replace_anim_iframes(html, lang, base=None):
     """A slide's <iframe class="dsanim" src="anim/NAME.html?..."> cannot run inside a printed PDF, so it is
     replaced with the animation's last frame (anim/NAME-son.<lang>.png, already produced by tools/dsanim).
-    The animation name is always read from the iframe's own src -- never a hard-coded list."""
+    With &example=<preset> the last frame of that preset is used (anim/NAME--<preset>-son.<lang>.png, built by
+    tools/dsanim for every preset a deck asks for). The animation name is always read from the iframe's own src."""
     def replace(m):
         src = m.group(1)
         p = pathlib.PurePosixPath(src)
         image = p.parent / f'{p.stem}-son.{lang}.png'
+        ex = re.search(r'(?:&amp;|[?&])example=([\w-]+)', m.group(2) or '')
+        if ex and base is not None:
+            alt = p.parent / f'{p.stem}--{ex.group(1)}-son.{lang}.png'
+            if (pathlib.Path(base) / str(alt)).exists():
+                image = alt
         return f'<img class="dsanim" src="{image}" alt="animation">'
     return _ANIM_IFRAME_HTML.sub(replace, html)
 
@@ -381,7 +387,7 @@ def deck_pdf(week, lang):
     # are short here, so scaling is not needed) and with animation iframes swapped for their still image.
     html = source.read_text(encoding='utf-8')
     html = re.sub(r'<pre is="marp-pre"[^>]*>', '<pre>', html)
-    html = replace_anim_iframes(html, lang)
+    html = replace_anim_iframes(html, lang, source.parent)
     # The print copy is written NEXT TO the html (same folder) so relative image paths (assets/..., anim/...) resolve.
     printable = source.with_name(source.stem + '.print.html')
     try:

@@ -1352,6 +1352,8 @@ data at four difficulty levels, or type your own `d=N` plus an array.
     }
 
     void rotate_left(int arr[], int n, int d) {
+        if (n == 0)
+            return;                     /* empty array: nothing to rotate */
         d = d % n;
         reverse(arr, 0, d - 1);        /* reverse the first d elements */
         reverse(arr, d, n - 1);        /* reverse the remaining n-d elements */
@@ -1374,6 +1376,8 @@ data at four difficulty levels, or type your own `d=N` plus an array.
 
     static void rotateLeft(int[] arr, int d) {
         int n = arr.length;
+        if (n == 0)
+            return;                     // empty array: nothing to rotate
         d = d % n;
         reverse(arr, 0, d - 1);        // reverse the first d elements
         reverse(arr, d, n - 1);        // reverse the remaining n-d elements
@@ -1407,6 +1411,8 @@ data at four difficulty levels, or type your own `d=N` plus an array.
         }
 
         void rotate_left(int arr[], int n, int d) {
+            if (n == 0)
+                return;                     /* empty array: nothing to rotate */
             d = d % n;
             reverse(arr, 0, d - 1);        /* reverse the first d elements */
             reverse(arr, d, n - 1);        /* reverse the remaining n-d elements */
@@ -1475,6 +1481,8 @@ data at four difficulty levels, or type your own `d=N` plus an array.
 
             static void rotateLeft(int[] arr, int d) {
                 int n = arr.length;
+                if (n == 0)
+                    return;                     // empty array: nothing to rotate
                 d = d % n;
                 reverse(arr, 0, d - 1);        // reverse the first d elements
                 reverse(arr, d, n - 1);        // reverse the remaining n-d elements
@@ -3655,7 +3663,7 @@ compare each element, stop at the first match — except that "next element" now
 pointer instead of incrementing an index. There is no equivalent of Week 1's **binary search** here: binary
 search needs to jump straight to the middle element in O(1), and a linked list has no way to do that without
 walking there first, which defeats the whole point. (If you have not looked at `array_linear_search.c` and
-`array_binary_search.c` from Week 1 recently, section 11's table below revisits exactly this trade-off, and
+`array_binary_search.c` from Week 1 recently, section 12's table below revisits exactly this trade-off, and
 Exercise 1 asks you to re-run them side by side with this section's `singly_search.c`.)
 
 <iframe class="dsanim" src="../anim/singly-search.html" title="Singly linked list: linear search (with a comparison count)" loading="lazy"></iframe>

@@ -193,7 +193,7 @@ Play the animation to see every one of these terms pointed at on an actual graph
 ![Graph vocabulary: vertex, edge, degree, path, cycle, connected component — step by step](anim/graph-terminology.png)
 </div>
 
-In the picker, also try **8 vertices, directed: two cycles, a self-loop, a multi-edge and 2 weak components**
+In the picker, also try **8 vertices, directed: multiple cycles, a self-loop, a multi-edge and 2 weak components**
 (hard) and the edge cases **an 11-vertex chain: no cycle, unweighted, connected** and **a single vertex (shown
 with a self-loop)** — or press 🎲 for random data at four difficulty levels, or type your own graph as a list of
 edges (`A-B` undirected, `A>B` directed, `A-B:4` weighted).
@@ -489,13 +489,13 @@ other vertex's list looking for edges that land on `v`.
             };
             run_scenario("normal: 8 vertices, weighted, a cycle, a self-loop, a multi-edge and 2 components", 0, normal, 10);
 
-            /* hard: 8 vertices, directed, two cycles, a self-loop, a multi-edge and 2 weak components */
+            /* hard: 8 vertices, directed, multiple cycles, a self-loop, a multi-edge and 2 weak components */
             EdgeIn hard[] = {
                 {"P", "Q", 3}, {"Q", "R", 1}, {"R", "P", 4}, {"R", "S", 2},
                 {"S", "T", 5}, {"T", "U", 1}, {"T", "U", 1}, {"U", "U", 6},
                 {"Q", "S", 2}, {"S", "Q", 3}, {"V", "W", 2}, {"W", "V", 3}
             };
-            run_scenario("hard: 8 vertices, directed, two cycles, a self-loop, a multi-edge and 2 weak components", 1, hard, 12);
+            run_scenario("hard: 8 vertices, directed, multiple cycles, a self-loop, a multi-edge and 2 weak components", 1, hard, 12);
 
             /* edge: an 11-vertex chain, no cycle, unweighted, connected */
             EdgeIn no_cycle[] = {
@@ -710,13 +710,13 @@ other vertex's list looking for edges that land on `v`.
                 };
                 runScenario("normal: 8 vertices, weighted, a cycle, a self-loop, a multi-edge and 2 components", false, normal);
 
-                // hard: 8 vertices, directed, two cycles, a self-loop, a multi-edge and 2 weak components
+                // hard: 8 vertices, directed, multiple cycles, a self-loop, a multi-edge and 2 weak components
                 EdgeIn[] hard = {
                     new EdgeIn("P", "Q", 3), new EdgeIn("Q", "R", 1), new EdgeIn("R", "P", 4), new EdgeIn("R", "S", 2),
                     new EdgeIn("S", "T", 5), new EdgeIn("T", "U", 1), new EdgeIn("T", "U", 1), new EdgeIn("U", "U", 6),
                     new EdgeIn("Q", "S", 2), new EdgeIn("S", "Q", 3), new EdgeIn("V", "W", 2), new EdgeIn("W", "V", 3)
                 };
-                runScenario("hard: 8 vertices, directed, two cycles, a self-loop, a multi-edge and 2 weak components", true, hard);
+                runScenario("hard: 8 vertices, directed, multiple cycles, a self-loop, a multi-edge and 2 weak components", true, hard);
 
                 // edge: an 11-vertex chain, no cycle, unweighted, connected
                 EdgeIn[] noCycle = {
@@ -751,7 +751,7 @@ other vertex's list looking for edges that land on `v`.
     connected components: 2
     has cycle: yes
 
-    -- hard: 8 vertices, directed, two cycles, a self-loop, a multi-edge and 2 weak components --
+    -- hard: 8 vertices, directed, multiple cycles, a self-loop, a multi-edge and 2 weak components --
     directed, 8 vertices, 12 edges
     self-loop: U-U
     multi-edge: T>U (2 copies)
@@ -1219,7 +1219,7 @@ loop): a 1x1 matrix** — or press 🎲 for random data at four difficulty level
       F   0  0  1  0  1  0  1
       G   1  0  0  0  0  1  0
 
-    … (the hard and dense scenarios omitted here; same pattern, empty matrix then one matrix per add_edge)
+    …
 
     -- edge: a single vertex, shown with a self-loop -- a 1x1 matrix --
     1 vertices, empty matrix:
@@ -1646,7 +1646,7 @@ two representations directly.
     F: -> E -> G -> C -> NULL
     G: -> F -> A -> NULL
 
-    … (the hard and dense scenarios omitted here; same pattern, empty lists then all lists after each add_edge)
+    …
 
     -- edge: a single vertex, shown with a self-loop -- a one-vertex list --
     1 vertices, empty lists:
@@ -1697,8 +1697,8 @@ default choice, which is exactly why every traversal algorithm for the rest of t
 !!! warning "Common mistakes"
     - **Picking the matrix out of habit for a sparse graph.** A million-vertex graph with two million edges
       (very much a normal size for, say, a road network) needs `10^12` cells as a matrix but only about
-      `3 x 10^6` list nodes as an adjacency list — a million-fold difference that will exhaust memory long
-      before it exhausts your patience.
+      `4 x 10^6` list nodes as an adjacency list (each undirected edge appends to two lists) — a roughly
+      250,000-fold difference that will exhaust memory long before it exhausts your patience.
     - **Forgetting to mirror an undirected edge.** In the matrix, forgetting `matrix[b][a] = weight` (or in the
       list, forgetting the second `append`) silently turns an undirected graph into a directed one from `v_a`'s
       side only — every traversal algorithm this week will then miss edges when starting a search from `b`.
@@ -4157,9 +4157,9 @@ extra beyond finding out *that* a path exists.
     - **Forgetting to reverse the reconstructed path.** Walking `parent_of` from `t` back to `s` necessarily
       produces the vertices in `t ... s` order; printing them as-is silently reports the path backwards.
     - **Assuming BFS's shortest path is unique.** Several different shortest paths of the same minimum length
-      can exist (the "hard" scenario above, for instance, has more than one 3-edge path from `P` to `W`); this
-      algorithm reports *one* of them — whichever the parent pointers happen to trace — not necessarily the one
-      you might have found by hand.
+      can exist — in the "normal" scenario's graph above, for instance, `A` to `C` has two different 2-edge
+      paths, `A-B-C` and `A-D-C`; this algorithm reports *one* of them — whichever the parent pointers happen to
+      trace — not necessarily the one you might have found by hand.
     - **Reaching for this algorithm on a *weighted* graph.** `bfs_shortest_path` counts *edges*, not total
       weight; on a weighted graph the path with the fewest edges is not necessarily the path with the lowest
       total cost. Week 9's Dijkstra's algorithm solves that more general problem, reusing this same parent-

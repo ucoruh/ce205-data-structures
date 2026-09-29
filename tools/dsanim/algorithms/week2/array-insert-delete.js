@@ -63,12 +63,16 @@
     ];
   }
   var L_DECL = [1, 2, 3];
-  var L_FULL = [7, 8];
-  var L_SHIFT_R = [9, 10];
-  var L_INSERT = [9, 10, 11, 12, 13];
-  var L_EMPTY = [18, 19];
-  var L_SHIFT_L = [20, 21];
-  var L_DELETE = [20, 21, 22, 23];
+  var L_FULL = [{ n: 7, note: T('size == CAP? evet', 'size == CAP? yes') }, 8];
+  /** `for (i=size; i>k; i--)`: shifts once per i from the OLD size down to k+1, i.e. `shiftCount` times
+   *  (shiftCount = oldSize - k, already computed by the caller before size changes). */
+  function shiftRNote(shiftCount) { return shiftCount > 0 ? T('i > k? evet, ' + shiftCount + ' kez', 'i > k? yes, ' + shiftCount + ' time' + (shiftCount === 1 ? '' : 's')) : T('i > k? hayır (kaydırma yok)', 'i > k? no (no shift)'); }
+  function shiftLNote(shiftCount) { return shiftCount > 0 ? T('i < size-1? evet, ' + shiftCount + ' kez', 'i < size-1? yes, ' + shiftCount + ' time' + (shiftCount === 1 ? '' : 's')) : T('i < size-1? hayır (kaydırma yok)', 'i < size-1? no (no shift)'); }
+  function L_SHIFT_R(shiftCount) { return [{ n: 7, note: T('size == CAP? hayır', 'size == CAP? no') }, { n: 9, note: shiftRNote(shiftCount) }, 10]; }
+  function L_INSERT(shiftCount) { return [{ n: 9, note: shiftRNote(shiftCount) }, 10, 11, 12, 13]; }
+  var L_EMPTY = [{ n: 18, note: T('size == 0? evet', 'size == 0? yes') }, 19];
+  function L_SHIFT_L(shiftCount) { return [{ n: 18, note: T('size == 0? hayır', 'size == 0? no') }, { n: 20, note: shiftLNote(shiftCount) }, 21]; }
+  function L_DELETE(shiftCount) { return [{ n: 20, note: shiftLNote(shiftCount) }, 21, 22, 23]; }
 
   function ins(k, v) { return { op: 'i', k: k, v: v }; }
   function del(k) { return { op: 'd', k: k }; }
@@ -196,7 +200,7 @@
             for (var q2 = arr.length - 1; q2 >= k; q2--) S.set('c' + q2, { style: 'hl' });
             S.set('note', { text: T(shiftCount + ' kaydırma', shiftCount + ' shift' + (shiftCount === 1 ? '' : 's')) });
             S.step(T('`insert_at(' + k + ', ' + o.v + ')`: yer var. `k`\'den `size`\'e kadar olan hücreleri SONDAN BAŞLAYARAK bir sağa kaydıracağız (' + shiftCount + ' kaydırma).',
-                     '`insert_at(' + k + ', ' + o.v + ')`: there is room. We shift the cells from `k` to `size` one step right, STARTING FROM THE END (' + shiftCount + ' shift' + (shiftCount === 1 ? '' : 's') + ').'), { c: L_SHIFT_R, java: L_SHIFT_R });
+                     '`insert_at(' + k + ', ' + o.v + ')`: there is room. We shift the cells from `k` to `size` one step right, STARTING FROM THE END (' + shiftCount + ' shift' + (shiftCount === 1 ? '' : 's') + ').'), { c: L_SHIFT_R(shiftCount), java: L_SHIFT_R(shiftCount) });
           }
           for (var i2 = arr.length; i2 > k; i2--) S.set('c' + i2, { text: i2 - 1 < arr.length ? String(arr[i2 - 1]) : '', style: 'hl' });
           arr.splice(k, 0, o.v);
@@ -208,7 +212,7 @@
                  '`arr[' + k + '] = ' + o.v + '`, `size++` → ' + arr.length + '. `k = 0` is the worst case: ALL the old elements shifted.')
             : T('`arr[' + k + '] = ' + o.v + '`, `size++` → ' + arr.length + '. ' + (shiftCount === 0 ? '`k == size`: bu bir **ekleme (append)**, kaydırma yok.' : shiftCount + ' hücre kaydı.'),
                  '`arr[' + k + '] = ' + o.v + '`, `size++` → ' + arr.length + '. ' + (shiftCount === 0 ? '`k == size`: this is an **append**, no shifting.' : shiftCount + ' cell' + (shiftCount === 1 ? '' : 's') + ' shifted.')),
-            { c: L_INSERT, java: L_INSERT });
+            { c: L_INSERT(shiftCount), java: L_INSERT(shiftCount) });
         } else {
           delSeen++;
           if (!arr.length) {
@@ -225,14 +229,14 @@
           if (delSeen === 1) {
             S.set('note', { text: T(shiftCount2 + ' kaydırma', shiftCount2 + ' shift' + (shiftCount2 === 1 ? '' : 's')) });
             S.step(T('`delete_at(' + k3 + ')`: `arr[' + k3 + ']` (' + arr[k3] + ') kaldırılacak; ardından `k+1..size-1` bir sola kaydırılacak (' + shiftCount2 + ' kaydırma).',
-                     '`delete_at(' + k3 + ')`: `arr[' + k3 + ']` (' + arr[k3] + ') will be removed; then `k+1..size-1` shifts one step left (' + shiftCount2 + ' shift' + (shiftCount2 === 1 ? '' : 's') + ').'), { c: L_SHIFT_L, java: L_SHIFT_L });
+                     '`delete_at(' + k3 + ')`: `arr[' + k3 + ']` (' + arr[k3] + ') will be removed; then `k+1..size-1` shifts one step left (' + shiftCount2 + ' shift' + (shiftCount2 === 1 ? '' : 's') + ').'), { c: L_SHIFT_L(shiftCount2), java: L_SHIFT_L(shiftCount2) });
           }
           for (var i3 = k3; i3 < arr.length - 1; i3++) S.set('c' + i3, { text: String(arr[i3 + 1]), style: 'hl' });
           arr.splice(k3, 1);
           moves += shiftCount2;
           redraw(shiftCount2 === 0 ? T('son eleman', 'last element') : T(shiftCount2 + ' kaydırma', shiftCount2 + ' shift' + (shiftCount2 === 1 ? '' : 's')));
           S.step(T('`size--` → ' + arr.length + '. ' + (shiftCount2 === 0 ? 'Son elemanı sildik, kaydırma gerekmedi.' : shiftCount2 + ' hücre kaydı.'),
-                   '`size--` → ' + arr.length + '. ' + (shiftCount2 === 0 ? 'We deleted the last element, no shifting was needed.' : shiftCount2 + ' cell' + (shiftCount2 === 1 ? '' : 's') + ' shifted.')), { c: L_DELETE, java: L_DELETE });
+                   '`size--` → ' + arr.length + '. ' + (shiftCount2 === 0 ? 'We deleted the last element, no shifting was needed.' : shiftCount2 + ' cell' + (shiftCount2 === 1 ? '' : 's') + ' shifted.')), { c: L_DELETE(shiftCount2), java: L_DELETE(shiftCount2) });
         }
       });
       S.at(null);

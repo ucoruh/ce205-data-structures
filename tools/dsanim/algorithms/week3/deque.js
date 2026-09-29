@@ -165,15 +165,17 @@
           var idb = 'e' + (seq++);
           S.box(idb, { x: MID, y: Y, w: BW, h: BH, text: String(t.v), style: 'new', size: 20 });
           ids.push(idb); vals.push(t.v);
+          var hadRearB = ids.length > 1;
+          var relineB = { n: 7, note: T(hadRearB ? 'rear? evet' : 'rear? hayır', hadRearB ? 'rear? yes' : 'rear? no') };
           reflow(); count();
           if (pushBackN === 1) {
-            S.step(T('`push_back(' + t.v + ')` — yeni eleman arkaya eklenir.', '`push_back(' + t.v + ')` — the new element is added at the back.'), { c: [4, 5, 6, 7, 8], java: [3, 4] });
+            S.step(T('`push_back(' + t.v + ')` — yeni eleman arkaya eklenir.', '`push_back(' + t.v + ')` — the new element is added at the back.'), { c: [4, 5, 6, relineB, 8], java: [3, 4] });
             S.set(idb, { style: 'normal' });
             S.step(T('Arkaya ekleme her zaman O(1): dizinin başka hiçbir hücresi kaymaz, sadece `rear` güncellenir.',
                      'Adding at the back is always O(1): no other cell has to shift, only `rear` is updated.'), { c: 8, java: 4 });
           } else {
             S.set(idb, { style: 'normal' });
-            S.step(T('`push_back(' + t.v + ')` — arkaya eklendi.', '`push_back(' + t.v + ')` — added at the back.'), { c: [4, 5, 6, 7, 8], java: [3, 4] });
+            S.step(T('`push_back(' + t.v + ')` — arkaya eklendi.', '`push_back(' + t.v + ')` — added at the back.'), { c: [4, 5, 6, relineB, 8], java: [3, 4] });
           }
           return;
         }
@@ -183,16 +185,18 @@
           var idf = 'e' + (seq++);
           S.box(idf, { x: MID, y: Y, w: BW, h: BH, text: String(t.v), style: 'new', size: 20 });
           ids.unshift(idf); vals.unshift(t.v);
+          var hadFrontB = ids.length > 1;
+          var relineF = { n: 14, note: T(hadFrontB ? 'front? evet' : 'front? hayır', hadFrontB ? 'front? yes' : 'front? no') };
           reflow(); count();
           if (pushFrontN === 1) {
             S.step(T('`push_front(' + t.v + ')` — yeni eleman **öne** eklenir; sıradan bir kuyruk bunu yapamazdı.',
-                     '`push_front(' + t.v + ')` — the new element is added at the **front**; a plain queue could not do this.'), { c: [10, 11, 12, 13, 14], java: [6, 7] });
+                     '`push_front(' + t.v + ')` — the new element is added at the **front**; a plain queue could not do this.'), { c: [11, 12, 13, relineF, 15], java: [6, 7] });
             S.set(idf, { style: 'normal' });
             S.step(T('Öne ekleme de O(1)\'dir: deque her iki ucu da aynı hızda destekler.',
-                     'Adding at the front is also O(1): a deque supports both ends at the same speed.'), { c: 14, java: 7 });
+                     'Adding at the front is also O(1): a deque supports both ends at the same speed.'), { c: 15, java: 7 });
           } else {
             S.set(idf, { style: 'normal' });
-            S.step(T('`push_front(' + t.v + ')` — öne eklendi.', '`push_front(' + t.v + ')` — added at the front.'), { c: [10, 11, 12, 13, 14], java: [6, 7] });
+            S.step(T('`push_front(' + t.v + ')` — öne eklendi.', '`push_front(' + t.v + ')` — added at the front.'), { c: [11, 12, 13, relineF, 15], java: [6, 7] });
           }
           return;
         }
@@ -203,26 +207,33 @@
             underBack++;
             decide('empty (back)!', 'del');
             S.step(T('`pop_back()` — deque boş, arka uçta çıkaracak eleman yok. Çökme olmaz, sadece "yok" bildirilir.',
-                     '`pop_back()` — the deque is empty, there is nothing at the back end. It does not crash; it simply reports that.'), { c: 17, java: 9 });
+                     '`pop_back()` — the deque is empty, there is nothing at the back end. It does not crash; it simply reports that.'),
+                   { c: [18, { n: 19, note: T('rear == NULL? evet', 'rear == NULL? yes') }], java: [9, 10] });
             return;
           }
           var bid = ids[ids.length - 1], bv = vals[vals.length - 1];
           if (popBackN === 1) {
             S.set(bid, { style: 'hl' });
             S.step(T('`pop_back()` — arkadaki eleman (' + bv + ') okunur — bu, deque\'nin yığın gibi davrandığı yön.',
-                     '`pop_back()` — the element at the back (' + bv + ') is read — this is the direction where a deque behaves like a stack.'), { c: [18, 19], java: [8, 9] });
+                     '`pop_back()` — the element at the back (' + bv + ') is read — this is the direction where a deque behaves like a stack.'),
+                   { c: [18, { n: 19, note: T('rear == NULL? hayır', 'rear == NULL? no') }, 20], java: [9, 10] });
             ids.pop(); vals.pop(); poppedBack.push(bv);
+            var stillRear = ids.length > 0;
             S.remove(bid);
             reflow(); count();
             addPopped('back', bv);
             S.step(T('Eleman kaldırıldı, `rear` bir eleman içeri kayar. O(1): dizinin başka hiçbir hücresi taşınmaz.',
-                     'The element is removed, `rear` moves in by one. O(1): no other cell has to move.'), { c: 20, java: 9 });
+                     'The element is removed, `rear` moves in by one. O(1): no other cell has to move.'),
+                   { c: [21, { n: 22, note: T(stillRear ? 'rear? evet' : 'rear? hayır', stillRear ? 'rear? yes' : 'rear? no') }, 23], java: [10] });
           } else {
             ids.pop(); vals.pop(); poppedBack.push(bv);
+            var stillRear2 = ids.length > 0;
             S.remove(bid);
             reflow(); count();
             addPopped('back', bv);
-            S.step(T('`pop_back()` → ' + bv + '.', '`pop_back()` → ' + bv + '.'), { c: [18, 19, 20], java: [8, 9] });
+            S.step(T('`pop_back()` → ' + bv + '.', '`pop_back()` → ' + bv + '.'),
+                   { c: [18, { n: 19, note: T('rear == NULL? hayır', 'rear == NULL? no') }, 20, 21, { n: 22, note: T(stillRear2 ? 'rear? evet' : 'rear? hayır', stillRear2 ? 'rear? yes' : 'rear? no') }, 23],
+                     java: [9, 10] });
           }
           return;
         }
@@ -233,26 +244,33 @@
           underFront++;
           decide('empty (front)!', 'del');
           S.step(T('`pop_front()` — deque boş, ön uçta çıkaracak eleman yok. Çökme olmaz, sadece "yok" bildirilir.',
-                   '`pop_front()` — the deque is empty, there is nothing at the front end. It does not crash; it simply reports that.'), { c: 24, java: 11 });
+                   '`pop_front()` — the deque is empty, there is nothing at the front end. It does not crash; it simply reports that.'),
+                 { c: [26, { n: 27, note: T('front == NULL? evet', 'front == NULL? yes') }], java: [12, 13] });
           return;
         }
         var fid = ids[0], fv = vals[0];
         if (popFrontN === 1) {
           S.set(fid, { style: 'hl' });
           S.step(T('`pop_front()` — öndeki eleman (' + fv + ') okunur — bu, deque\'nin kuyruk gibi davrandığı yön.',
-                   '`pop_front()` — the element at the front (' + fv + ') is read — this is the direction where a deque behaves like a queue.'), { c: [25, 26], java: [10, 11] });
+                   '`pop_front()` — the element at the front (' + fv + ') is read — this is the direction where a deque behaves like a queue.'),
+                 { c: [26, { n: 27, note: T('front == NULL? hayır', 'front == NULL? no') }, 28], java: [12, 13] });
           ids.shift(); vals.shift(); poppedFront.push(fv);
+          var stillFront = ids.length > 0;
           S.remove(fid);
           reflow(); count();
           addPopped('front', fv);
           S.step(T('Eleman kaldırıldı, `front` bir eleman içeri kayar. Gerçek uygulamada bu da O(1): dairesel dizi ya da çift bağlı liste ile yapılır.',
-                   'The element is removed, `front` moves in by one. A real implementation keeps this O(1) too: with a circular array or a doubly linked list.'), { c: 27, java: 11 });
+                   'The element is removed, `front` moves in by one. A real implementation keeps this O(1) too: with a circular array or a doubly linked list.'),
+                 { c: [29, { n: 30, note: T(stillFront ? 'front? evet' : 'front? hayır', stillFront ? 'front? yes' : 'front? no') }, 31], java: [13] });
         } else {
           ids.shift(); vals.shift(); poppedFront.push(fv);
+          var stillFront2 = ids.length > 0;
           S.remove(fid);
           reflow(); count();
           addPopped('front', fv);
-          S.step(T('`pop_front()` → ' + fv + '.', '`pop_front()` → ' + fv + '.'), { c: [25, 26, 27], java: [10, 11] });
+          S.step(T('`pop_front()` → ' + fv + '.', '`pop_front()` → ' + fv + '.'),
+                 { c: [26, { n: 27, note: T('front == NULL? hayır', 'front == NULL? no') }, 28, 29, { n: 30, note: T(stillFront2 ? 'front? evet' : 'front? hayır', stillFront2 ? 'front? yes' : 'front? no') }, 31],
+                   java: [12, 13] });
         }
       });
       clean(); decide('', 'normal'); S.at(null);

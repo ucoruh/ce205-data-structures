@@ -170,8 +170,10 @@
       var root = buildTree(arr);
       if (!root) {
         S.label('empty', { x: 60, y: 50, text: T('Boş ağaç: gezilecek düğüm yok.', 'Empty tree: there is nothing to traverse.'), anchor: 'start', size: 16 });
-        S.step(T('Ağaç boş (`tree = []`): `postorder(NULL)` doğrudan temel duruma (`base case`) düşer, hiçbir şey ziyaret edilmez.',
-                 'The tree is empty (`tree = []`): `postorder(NULL)` hits the base case right away, nothing is visited.'), { c: [1, 2], java: [1, 2] });
+        S.step(T('Ağaç boş (`tree = []`): `postorder(NULL)` doğrudan temel duruma (`base case`) düşer, hiçbir şey ziyaret edilmez. Fonksiyonun geri kalanı (3-6. satırlar) hiç çalışmaz.',
+                 'The tree is empty (`tree = []`): `postorder(NULL)` hits the base case right away, nothing is visited. The rest of the function (lines 3-6) never runs.'),
+               { c: [1, { n: 2, note: T('node == NULL? evet', 'node == NULL? yes') }, { n: 3, skip: true }, { n: 4, skip: true }, { n: 5, skip: true }, { n: 6, skip: true }],
+                 java: [1, { n: 2, note: T('node == NULL? evet', 'node == NULL? yes') }, { n: 3, skip: true }, { n: 4, skip: true }, { n: 5, skip: true }, { n: 6, skip: true }] });
         S.result = [];
         return;
       }
@@ -183,6 +185,10 @@
       S.step(T('Postorder dolaşma kuralı: her düğümde önce SOL alt ağacı gez, sonra SAĞ alt ağacı gez, en son düğümün KENDİSİNİ ziyaret et (kısaca: sol, sağ, ziyaret). `postorder(root)` ile başlıyoruz; etkin (mavi `active`) kenarlar kökten şu anki çağrıya giden yolu (call path) gösterecek.',
                'Postorder rule: at every node, visit the LEFT subtree, then the RIGHT subtree, then the node itself LAST (short form: left, right, visit). We start with `postorder(root)`; the active (blue) edges will show the call path from the root down to the current call.'),
              { c: [1], java: [1] });
+      S.step(T('Temel durum (base case): eğer bir çocuk göstericisi NULL ise, `postorder(NULL)` 2. satırdaki kontrolde hemen `return` eder — fonksiyonun geri kalanı (3-6. satırlar) hiç çalışmaz. Aşağıdaki adımlarda, var olmayan bir çocuğa yapılan her çağrı bu şekilde anında biter.',
+               'Base case: if a child pointer is NULL, `postorder(NULL)` returns immediately at the check on line 2 — the rest of the function (lines 3-6) never runs. In the steps below, every call on a missing child ends this way instantly.'),
+             { c: [{ n: 2, note: T('node == NULL? evet', 'node == NULL? yes') }, { n: 3, skip: true }, { n: 4, skip: true }, { n: 5, skip: true }, { n: 6, skip: true }],
+               java: [{ n: 2, note: T('node == NULL? evet', 'node == NULL? yes') }, { n: 3, skip: true }, { n: 4, skip: true }, { n: 5, skip: true }, { n: 6, skip: true }] });
 
       function setNodeStyle(idx, style) { var id = 'n' + idx; if (S.get(id).style !== 'dim') S.set(id, { style: style }); }
       function clearPath() {
@@ -215,13 +221,19 @@
         outputBox(node.val);
         order.push(node.val);
         var soFar = order.join(', ');
+        /* This step stands for `postorder(node)`'s whole call frame: the base-case check (2, always
+         * false here — a real node), the calls into the left and right subtrees (3, 4 — each either an
+         * instant no-op if that child is NULL, as shown once in the base-case demo above, or fully
+         * traced by the preceding steps), and finally the visit itself (5, 6). Every line listed here
+         * really executes for this node. */
+        var lines = [{ n: 2, note: T('node == NULL? hayır', 'node == NULL? no') }, 3, 4, 5, 6];
         if (first) {
           S.step(T('`postorder(' + node.val + ')`: hem sol hem sağ alt ağaç bitti (ya da yoktu), ancak ŞİMDİ düğümün KENDİSİ ziyaret edilir — `printf`/kayıt satırları. Çıkış listesine `' + node.val + '` eklenir: ' + soFar + '.',
                    '`postorder(' + node.val + ')`: both the left and right subtrees are done (or were absent), only NOW is the node ITSELF visited — the print/record lines. `' + node.val + '` is appended to the output list: ' + soFar + '.'),
-                 { c: [5, 6], java: [5, 6] });
+                 { c: lines, java: lines });
           first = false;
         } else {
-          S.step(T('Ziyaret: `' + node.val + '`. Şimdiye kadar: ' + soFar + '.', 'Visit: `' + node.val + '`. So far: ' + soFar + '.'), { c: [5, 6], java: [5, 6] });
+          S.step(T('Ziyaret: `' + node.val + '`. Şimdiye kadar: ' + soFar + '.', 'Visit: `' + node.val + '`. So far: ' + soFar + '.'), { c: lines, java: lines });
         }
         setNodeStyle(node.idx, 'dim');
       }

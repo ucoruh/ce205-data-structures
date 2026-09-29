@@ -127,7 +127,7 @@
       S.label('gl', { x: X0 - 12, y: Y0 + 24, text: T('girdi =', 'input ='), style: 'dim', size: 14, anchor: 'end' });
       S.step(T('`' + text + '` (' + n + ' karakter) infix yazımdır. Hile: girdiyi ters çevirip parantezleri de takas ederiz, bildiğimiz yöntemi (tren makası) sıkı öncelik kuralıyla uygularız, sonra sonucu yine ters çeviririz.',
                '`' + text + '` (' + n + ' characters) is infix notation. The trick: reverse the input and swap its parentheses too, apply the method we know (shunting-yard) with a strict precedence rule, then reverse the result.'),
-             { c: [1, 2, 3], java: [1] });
+             { c: [1, 2], java: 1 });
 
       var rev = '';
       for (var ri = text.length - 1; ri >= 0; ri--) rev += swapParens(text[ri]);
@@ -161,6 +161,27 @@
         S.box(oid, { x: X0 + out.length * DX, y: Y2 + 170, w: 34, h: 38, text: c, style: 'new', size: 17 });
         out.push(oid);
       }
+      // Prefix lines for the three independent `if (...) { ...; continue; }` checks (operand / ( / )) that run
+      // before falling through to the operator handling: only the checks that really get evaluated before the
+      // taken one (a `continue` skips the rest of the loop body once one matches, so later checks never run).
+      function chainNote(target) {
+        if (target === 'operand') return [{ n: 7, note: T('işlenen mi? evet', 'operand? yes') }];
+        var arr = [{ n: 7, note: T('işlenen mi? hayır', 'operand? no') }];
+        if (target === 'open') { arr.push({ n: 8, note: T("'('? evet", "'('? yes") }); return arr; }
+        arr.push({ n: 8, note: T("'('? hayır", "'('? no") });
+        if (target === 'close') { arr.push({ n: 9, note: T("')'? evet", "')'? yes") }); return arr; }
+        arr.push({ n: 9, note: T("')'? hayır", "')'? no") }, { n: 10, skip: true }, { n: 11, skip: true });
+        return arr;
+      }
+      function javaChain(target) {
+        if (target === 'operand') return [{ n: 6, note: T('işlenen mi? evet', 'operand? yes') }];
+        var arr = [{ n: 6, note: T('işlenen mi? hayır', 'operand? no') }];
+        if (target === 'open') { arr.push({ n: 7, note: T("'('? evet", "'('? yes") }); return arr; }
+        arr.push({ n: 7, note: T("'('? hayır", "'('? no") });
+        if (target === 'close') { arr.push({ n: 8, note: T("')'? evet", "')'? yes") }); return arr; }
+        arr.push({ n: 8, note: T("')'? hayır", "')'? no") }, { n: 9, skip: true }, { n: 10, skip: true });
+        return arr;
+      }
 
       for (var i2 = 0; i2 < n; i2++) {
         var c = rev[i2];
@@ -168,26 +189,29 @@
         if (isOperand(c)) {
           emit(c);
           decide('output', 'new');
-          S.step(T('`' + c + '` bir işlenen: çıktıya.', '`' + c + '` is an operand: to the output.'), { c: 7, java: 6 });
+          S.step(T('`' + c + '` bir işlenen: çıktıya.', '`' + c + '` is an operand: to the output.'), { c: chainNote('operand'), java: javaChain('operand') });
           S.set(out[out.length - 1], { style: 'normal' });
           continue;
         }
         if (c === '(') {
           push(c);
           decide('push', 'active');
-          S.step(T('`(` (asıl girdide `)` idi) yığına itilir: yeni bir grup başlıyor.', '`(` (a `)` in the original input) is pushed: a new group starts here.'), { c: 8, java: 7 });
+          S.step(T('`(` (asıl girdide `)` idi) yığına itilir: yeni bir grup başlıyor.', '`(` (a `)` in the original input) is pushed: a new group starts here.'), { c: chainNote('open'), java: javaChain('open') });
           S.set(st[st.length - 1].id, { style: 'normal' });
           continue;
         }
         if (c === ')') {
-          var found = false;
+          var found = false, flushIdx = 0;
           while (st.length) {
             var top = st.pop();
             if (top.ch === '(') { found = true; S.remove(top.id); break; }
             S.set(top.id, { style: 'hl' });
             decide('flush', 'hl');
+            var lclose = (flushIdx === 0 ? chainNote('close') : []).concat([{ n: 10, note: T("ops[top] != '('? evet", "ops[top] != '('? yes") }]);
+            var jclose = (flushIdx === 0 ? javaChain('close') : []).concat([{ n: 9, note: T("ops[top] != '('? evet", "ops[top] != '('? yes") }]);
             S.step(T('`)` geldi: eşleşen `(` bulunana dek yığındaki işleçler çıktıya aktarılır → `' + top.ch + '`.',
-                     '`)` arrives: operators are flushed to the output until the matching `(` is found → `' + top.ch + '`.'), { c: [9, 10], java: [8, 9] });
+                     '`)` arrives: operators are flushed to the output until the matching `(` is found → `' + top.ch + '`.'), { c: lclose, java: jclose });
+            flushIdx++;
             S.remove(top.id);
             emit(top.ch);
           }
@@ -195,27 +219,37 @@
             S.set('t' + i2, { style: 'del' });
             result = { error: { kind: 'unbalanced', at: i2 } };
             decide('unbalanced!', 'del');
+            var lunb = (flushIdx === 0 ? chainNote('close') : []).concat([{ n: 10, note: T('yığın boşaldı: eşleşen ( yok', 'stack exhausted: no matching (') }]);
+            var junb = (flushIdx === 0 ? javaChain('close') : []).concat([{ n: 9, note: T('yığın boşaldı: eşleşen ( yok', 'stack exhausted: no matching (') }]);
             S.step(T('`)` geldi ama yığında eşleşecek `(` yok → **dengesiz parantez**. Dönüştürme durur.',
-                     '`)` arrives but there is no matching `(` on the stack → **unbalanced parentheses**. Conversion stops.'), { c: [9, 10], java: [8, 9] });
+                     '`)` arrives but there is no matching `(` on the stack → **unbalanced parentheses**. Conversion stops.'), { c: lunb, java: junb });
             break;
           }
           decide('( discarded )', 'dim');
-          S.step(T('`(` de yığından atılır; grup kapandı.', 'The `(` itself is discarded too; the group is closed.'), { c: 11, java: 10 });
+          var ldisc = (flushIdx === 0 ? chainNote('close') : []).concat([{ n: 10, note: T("ops[top] != '('? hayır", "ops[top] != '('? no") }, 11]);
+          var jdisc = (flushIdx === 0 ? javaChain('close') : []).concat([{ n: 9, note: T("ops[top] != '('? hayır", "ops[top] != '('? no") }, 10]);
+          S.step(T('`(` de yığından atılır; grup kapandı.', 'The `(` itself is discarded too; the group is closed.'), { c: ldisc, java: jdisc });
           continue;
         }
+        var flushIdx2 = 0;
         while (st.length && st[st.length - 1].ch !== '(' && PREC[st[st.length - 1].ch] > PREC[c]) {
           var top2 = st.pop();
           S.set(top2.id, { style: 'hl' });
           decide('flush', 'hl');
+          var lother = (flushIdx2 === 0 ? chainNote('other') : []).concat([{ n: 13, note: T('tepe kesinlikle daha güçlü? evet', 'top strictly stronger? yes') }, 14]);
+          var jother = (flushIdx2 === 0 ? javaChain('other') : []).concat([{ n: 12, note: T('tepe kesinlikle daha güçlü? evet', 'top strictly stronger? yes') }, 13]);
           S.step(T('`' + c + '` geldi; tepedeki `' + top2.ch + '` ondan **kesinlikle daha güçlü** → çıktıya. (Ters çevrilmiş girdide eşit öncelikli işleç çekilmez; işlenen sırası böyle korunur.)',
                    '`' + c + '` arrives; `' + top2.ch + '` on top is **strictly stronger** → to the output. (On the reversed input an operator of equal precedence is not popped, which keeps the operand order right.)'),
-                 { c: [13, 14], java: [12, 13] });
+                 { c: lother, java: jother });
+          flushIdx2++;
           S.remove(top2.id);
           emit(top2.ch);
         }
         push(c);
         decide('push', 'active');
-        S.step(T('`' + c + '` işleç yığınına itilir.', '`' + c + '` is pushed onto the operator stack.'), { c: 15, java: 14 });
+        var lpush = (flushIdx2 === 0 ? chainNote('other') : []).concat([{ n: 13, note: T('tepe kesinlikle daha güçlü? hayır', 'top strictly stronger? no') }, 15]);
+        var jpush = (flushIdx2 === 0 ? javaChain('other') : []).concat([{ n: 12, note: T('tepe kesinlikle daha güçlü? hayır', 'top strictly stronger? no') }, 14]);
+        S.step(T('`' + c + '` işleç yığınına itilir.', '`' + c + '` is pushed onto the operator stack.'), { c: lpush, java: jpush });
         S.set(st[st.length - 1].id, { style: 'normal' });
       }
       if (!result) {
@@ -229,17 +263,18 @@
         }
         if (bad) {
           decide('unbalanced!', 'del');
-          S.step(T('Girdi bitti ama yığında hâlâ `(` var → **dengesiz parantez**.', 'The input is over but a `(` is still on the stack → **unbalanced parentheses**.'), { c: 16, java: 15 });
+          S.step(T('Girdi bitti ama yığında hâlâ `(` var → **dengesiz parantez**.', 'The input is over but a `(` is still on the stack → **unbalanced parentheses**.'),
+                 { c: { n: 17, note: T('kalan işleç == (? evet', 'remaining operator == (? yes') }, java: { n: 16, note: T('kalan işleç == (? evet', 'remaining operator == (? yes') } });
         } else {
           decide('flushed', 'dim');
           S.step(T('2) Girdi bitti; kalan işleçler boşaltıldı. Ara sonuç (henüz ters): `' + out.map(function (id) { return S.get(id).text; }).join(' ') + '`.',
-                   '2) The input is over; the remaining operators are flushed. Intermediate result (still reversed): `' + out.map(function (id) { return S.get(id).text; }).join(' ') + '`.'), { c: 16, java: 15 });
+                   '2) The input is over; the remaining operators are flushed. Intermediate result (still reversed): `' + out.map(function (id) { return S.get(id).text; }).join(' ') + '`.'), { c: 17, java: 16 });
           var chars = out.map(function (id) { return S.get(id).text; }).reverse();
           for (var k3 = 0; k3 < out.length; k3++) S.set(out[k3], { text: chars[k3], style: 'new' });
           result = { prefix: chars.join(' ') };
           decide('done', 'new');
           S.step(T('3) Ara sonucu ters çevir: `' + result.prefix + '` — işte prefix. Her karakter bir kez itilir, bir kez çekilir: O(n).',
-                   '3) Reverse the intermediate result: `' + result.prefix + '` — that is the prefix form. Each character is pushed and popped once: O(n).'), { c: 17, java: 16 });
+                   '3) Reverse the intermediate result: `' + result.prefix + '` — that is the prefix form. Each character is pushed and popped once: O(n).'), { c: 18, java: 17 });
         }
       }
       S.result = result;

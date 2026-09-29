@@ -62,7 +62,35 @@
     '}'
   ];
   var LINES_START = { c: [10, 11, 12], java: [11, 12, 13] };
-  var LINES_STEP = { c: [15, 16, 17, 18, 19, 20, 21, 22, 23], java: [16, 17, 18, 19, 20, 21, 22, 23, 24] };
+  /** One `dequeue()`: lines 15-16 (c) / 16-17 (java) always run. Then, for every neighbour actually scanned by
+   *  the `for` loop (17/18), the `if (!visited[...])` check (18/19) gets a `{note}` with the true/false
+   *  answer; when it is true the enqueue body (19-22 / 20-23) follows right after it. When it is false those
+   *  four lines are simply NOT included for that neighbour -- they must stay out, not `{skip: true}`: within
+   *  ONE step the SAME line number can be genuinely run for one neighbour and not for another (mixed), and the
+   *  player's code panel merges a line's skip/run state by line number across the whole step, so marking it
+   *  `{skip: true}` for one neighbour would incorrectly grey out a later neighbour's real execution of that
+   *  same line (see test-checked by branch_coverage.js: "both run and skipped" is invalid). A vertex with no
+   *  neighbours at all shows the `for` check failing immediately (n == NULL). */
+  function dequeueLines(trace) {
+    var c = [15, 16], j = [16, 17];
+    if (!trace.length) {
+      c.push({ n: 17, note: T('n != NULL? hayır (komşu yok)', 'n != NULL? no (no neighbours)') });
+      j.push({ n: 18, note: T('n != null? hayır (komşu yok)', 'n != null? no (no neighbours)') });
+      return { c: c, java: j };
+    }
+    trace.forEach(function (t) {
+      var v = t.v, was = t.already;
+      c.push({ n: 17, note: T('n != NULL? evet (sıradaki: `' + v + '`)', 'n != NULL? yes (next: `' + v + '`)') });
+      c.push({ n: 18, note: was ? T('!visited[' + v + ']? hayır (zaten ziyaret edilmiş)', '!visited[' + v + ']? no (already visited)') : T('!visited[' + v + ']? evet', '!visited[' + v + ']? yes') });
+      if (!was) c.push(19, 20, 21, 22);
+      j.push({ n: 18, note: T('n != null? evet (sıradaki: `' + v + '`)', 'n != null? yes (next: `' + v + '`)') });
+      j.push({ n: 19, note: was ? T('!visited[' + v + ']? hayır (zaten ziyaret edilmiş)', '!visited[' + v + ']? no (already visited)') : T('!visited[' + v + ']? evet', '!visited[' + v + ']? yes') });
+      if (!was) j.push(20, 21, 22, 23);
+    });
+    c.push({ n: 17, note: T('n != NULL? hayır (komşu kalmadı)', 'n != NULL? no (no neighbours left)') });
+    j.push({ n: 18, note: T('n != null? hayır (komşu kalmadı)', 'n != null? no (no neighbours left)') });
+    return { c: c, java: j };
+  }
 
   var EDGE_RE = /^([A-Za-z0-9]{1,3})(-|>)([A-Za-z0-9]{1,3})(?::(\d+))?$/;
   function parseGraphStart(text) {
@@ -223,9 +251,11 @@
         var u = queue.shift();
         S.set('n' + u, { style: 'hl' });
         outputBox(u); order.push(u);
-        var kids = [];
+        var kids = [], trace = [];
         (adj[u] || []).forEach(function (v) {
-          if (!visited[v]) {
+          var was = !!visited[v];
+          trace.push({ v: v, already: was });
+          if (!was) {
             visited[v] = true; level[v] = level[u] + 1; queue.push(v); kids.push(v);
             S.set('n' + v, { style: 'active' }); setLevel(v, level[v]);
             for (var ei = 0; ei < edges.length; ei++) { var e = edges[ei]; if ((e.a === u && e.b === v) || (!directed && e.a === v && e.b === u)) { S.set('e' + ei, { style: 'new' }); break; } }
@@ -234,7 +264,7 @@
         updateQueue(queue);
         var soFar = order.join(', ');
         S.step(T('`dequeue()` → `' + u + '`; ziyaret edilir (sıra: ' + soFar + '). Komşuları (alfabetik) taranır; ziyaret edilmemiş olanlar kuyruğa eklenir: ' + (kids.length ? kids.join(', ') : T('yok', 'none').tr) + '.',
-                 '`dequeue()` → `' + u + '`; it is visited (order so far: ' + soFar + '). Its neighbours (alphabetical) are scanned; the unvisited ones are enqueued: ' + (kids.length ? kids.join(', ') : 'none') + '.'), LINES_STEP);
+                 '`dequeue()` → `' + u + '`; it is visited (order so far: ' + soFar + '). Its neighbours (alphabetical) are scanned; the unvisited ones are enqueued: ' + (kids.length ? kids.join(', ') : 'none') + '.'), dequeueLines(trace));
         S.set('n' + u, { style: 'dim' });
       }
 

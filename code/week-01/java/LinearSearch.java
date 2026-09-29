@@ -28,10 +28,10 @@ public class LinearSearch {
         printArray(arr);
         int index = linearSearch(arr, target);
         if (index >= 0)
-            System.out.println("linearSearch(target=" + target + ") -> found at index " + index
+            System.out.println("linear_search(target=" + target + ") -> found at index " + index
                     + ", " + comparisons + " comparison" + (comparisons == 1 ? "" : "s"));
         else
-            System.out.println("linearSearch(target=" + target + ") -> not found, "
+            System.out.println("linear_search(target=" + target + ") -> not found, "
                     + comparisons + " comparisons");
         System.out.println();
     }

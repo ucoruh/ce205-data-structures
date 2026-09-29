@@ -172,12 +172,19 @@
       S.set('s0', { text: students[0].id + ':' + students[0].grade, style: 'new' });
       S.step(T('`p->grade` — tam olarak aynı şey, sadece daha kısa yazım: ' + g0 + '. `->`, `(*p).`\'nin kestirmesidir.' + note0tr,
                '`p->grade` — exactly the same thing, just shorter to write: ' + g0 + '. `->` is shorthand for `(*p).`.' + note0en),
-             { c: upd.hasOwnProperty(0) ? [7, 8, 9] : [7], java: upd.hasOwnProperty(0) ? [6, 7, 8, 9] : [6, 7] });
+             upd.hasOwnProperty(0)
+               ? { c: [7, { n: 8, note: T('should_update(p)? evet', 'should_update(p)? yes') }, 9],
+                   java: [6, 7, { n: 8, note: T('shouldUpdate(i)? evet', 'shouldUpdate(i)? yes') }, 9] }
+               : { c: [7, { n: 8, note: T('should_update(p)? hayır', 'should_update(p)? no') }, { n: 9, skip: true }],
+                   java: [6, 7, { n: 8, note: T('shouldUpdate(i)? hayır', 'shouldUpdate(i)? no') }, { n: 9, skip: true }] });
       S.set('arrp', { to: n > 1 ? 's1' : 'end' });
       S.set('p', { text: n > 1 ? ('&students[1]') : ('students + ' + n) });
+      var afterFirstNote = n > 1
+        ? T('p != students + ' + n + '? evet (henüz bitmedi)', 'p != students + ' + n + '? yes (not done yet)')
+        : T('p != students + ' + n + '? hayır (döngü hemen biter)', 'p != students + ' + n + '? no (the loop ends right away)');
       S.step(T('`p++` — p bir sonraki kaydın adresine ilerler: yeni adres, eskisinden tam `sizeof(Student)` sonra gelir.',
                '`p++` — p advances to the address of the next record: the new address sits exactly `sizeof(Student)` after the old one.'),
-             { c: [5], java: [4] });
+             { c: [{ n: 5, note: afterFirstNote }], java: [{ n: 4, note: afterFirstNote }] });
 
       for (var i = 1; i < n; i++) {
         clean();
@@ -195,7 +202,11 @@
         }
         S.step(T('`' + idExpr + '` = ' + reads[i].id + ', `' + gExpr + '` = ' + reads[i].grade + '.' + upTxt + ' Sonra `p++`.',
                  '`' + idExpr + '` = ' + reads[i].id + ', `' + gExpr + '` = ' + reads[i].grade + '.' + upTxtEn + ' Then `p++`.'),
-               { c: upd.hasOwnProperty(i) ? [6, 7, 8, 9] : [6, 7], java: upd.hasOwnProperty(i) ? [6, 7, 8, 9] : [6, 7] });
+               upd.hasOwnProperty(i)
+                 ? { c: [6, 7, { n: 8, note: T('should_update(p)? evet', 'should_update(p)? yes') }, 9],
+                     java: [6, 7, { n: 8, note: T('shouldUpdate(i)? evet', 'shouldUpdate(i)? yes') }, 9] }
+                 : { c: [6, 7, { n: 8, note: T('should_update(p)? hayır', 'should_update(p)? no') }, { n: 9, skip: true }],
+                     java: [6, 7, { n: 8, note: T('shouldUpdate(i)? hayır', 'shouldUpdate(i)? no') }, { n: 9, skip: true }] });
         if (i + 1 < n) { S.set('arrp', { to: 's' + (i + 1) }); S.set('p', { text: '&students[' + (i + 1) + ']' }); }
         else { S.set('arrp', { to: 'end' }); S.set('p', { text: 'students + ' + n }); }
       }
@@ -207,7 +218,8 @@
       decide('p == students+' + n + ' -> stop', 'hl');
       S.step(T('Döngü koşulu `p != students + ' + n + '`, artık yanlış: `p` diziden HEMEN SONRAKİ adrese ulaştı. Bu adresi TUTMAK yasaldır (döngüyü bitirmek için kullanılır) — ama DEREFERANSLAMAK değil.',
                'The loop condition `p != students + ' + n + '` is now false: `p` reached the address right AFTER the array. HOLDING that address is legal (it is how the loop knows to stop) — DEREFERENCING it is not.'),
-             { c: [5, 11], java: [4, 11, 12] });
+             { c: [{ n: 5, note: T('p != students + ' + n + '? hayır (döngü biter)', 'p != students + ' + n + '? no (loop ends)') }, 11],
+               java: [{ n: 4, note: T('i < students.length? hayır (döngü biter)', 'i < students.length? no (loop ends)') }, 11, 12] });
       S.set('end', { style: 'del' });
       decide('*p -> UB!', 'del');
       S.step(T('`p->id` burada — yani dizinin dışında — **tanımsız davranış (UB)** olur. **Çalıştırılmaz**: hiçbir okuma yapılmaz.',

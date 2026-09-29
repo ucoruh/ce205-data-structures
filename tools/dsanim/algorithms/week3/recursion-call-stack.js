@@ -7,11 +7,11 @@
     'int fact(int n) {',
     '    if (n == 0)              /* base case */',
     '        return 1;',
-    '    return n * fact(n - 1);',
+    '    return (int) ((unsigned) n * (unsigned) fact(n - 1));',
     '}',
     '',
     'int main(void) {',
-    '    int result = fact(n);    /* WARNING: int overflows silently for n >= 13 */',
+    '    int result = fact(n);    /* WARNING: still wraps silently for n >= 13 */',
     '    printf("%d\\n", result);',
     '}'
   ];
@@ -122,19 +122,21 @@
           decide('base case!', 'hl');
           S.step(T('Çağrı #' + callNo + ': `fact(0)` — **temel durum**. `n == 0` olduğu için kendini yeniden çağırmaz, doğrudan `1` döner. Temel durum olmasaydı yığın sonsuza dek büyür, **stack overflow** olurdu.',
                    'Call #' + callNo + ': `fact(0)` — the **base case**. Since `n == 0` it does not call itself again; it returns `1` directly. Without a base case the stack would keep growing forever — a **stack overflow**.'),
-                 { c: [2, 3], java: [2, 3] });
+                 { c: [{ n: 2, note: T('n == 0? evet', 'n == 0? yes') }, 3], java: [{ n: 2, note: T('n == 0? evet', 'n == 0? yes') }, 3] });
         } else if (detailed) {
           decide('n != 0', 'active');
+          var lcall = (idx === 0 ? [7, 8] : []).concat([1, { n: 2, note: T('n == 0? hayır', 'n == 0? no') }, { n: 3, skip: true }, 4]);
           S.step(T('Çağrı #' + callNo + ': ' + (idx === 0 ? '`main()`, `fact(' + n + ')`\'i çağırır' : '`fact(' + (n + 1) + ')`, `fact(' + n + ')`\'i çağırır') +
                    '; yeni bir çerçeve yığına itilir. `n == 0` değil (`n = ' + n + '`), o yüzden önce `fact(' + (n - 1) + ')`\'in bitmesi beklenir.',
                    'Call #' + callNo + ': ' + (idx === 0 ? '`main()` calls `fact(' + n + ')`' : '`fact(' + (n + 1) + ')` calls `fact(' + n + ')`') +
                    '; a new frame is pushed onto the stack. `n` is not `0` (`n = ' + n + '`), so first we wait for `fact(' + (n - 1) + ')` to finish.'),
-                 { c: idx === 0 ? [7, 8, 1, 2, 4] : [1, 2, 4], java: idx === 0 ? [7, 8, 1, 2, 4] : [1, 2, 4] });
+                 { c: lcall, java: lcall });
         } else {
           decide('n != 0', 'active');
           S.step(T('Çağrı #' + callNo + ': `fact(' + n + ')` çağrılır, çerçeve itilir; `fact(' + (n - 1) + ')` beklenecek.',
                    'Call #' + callNo + ': `fact(' + n + ')` is called, its frame is pushed; `fact(' + (n - 1) + ')` is awaited.'),
-                 { c: [1, 4], java: [1, 4] });
+                 { c: [1, { n: 2, note: T('n == 0? hayır', 'n == 0? no') }, { n: 3, skip: true }, 4],
+                   java: [1, { n: 2, note: T('n == 0? hayır', 'n == 0? no') }, { n: 3, skip: true }, 4] });
         }
       });
 
@@ -169,8 +171,8 @@
         S.label('rightL', { x: LX, y: 182, anchor: 'start', mono: true, bold: true, size: 15, style: 'new',
                              text: T('long result = ' + info.value + '   // doğru', 'long result = ' + info.value + '   // correct') });
         decide('overflow!', 'del');
-        S.step(T('`fact(' + d.n + ')`\'in gerçek değeri `' + info.value + '`. Ama fonksiyon `int fact(int n)` diye yazılsaydı, 32 bitlik `int` sessizce taşar ve `' + info.wrongInt32 + '` döndürürdü — derleyici hata vermez, program çalışır ama yanlış sonuç verir.',
-                 'The real value of `fact(' + d.n + ')` is `' + info.value + '`. But if the function were written as `int fact(int n)`, the 32-bit `int` would silently overflow and return `' + info.wrongInt32 + '` instead — the compiler gives no error, the program simply runs with the wrong answer.'),
+        S.step(T('`fact(' + d.n + ')`\'in gerçek değeri `' + info.value + '`, ama 32 bitlik `int` bunu tutamaz: fonksiyon sessizce `' + info.wrongInt32 + '` döndürür — derleyici hata vermez, program çöküp durmaz, sadece yanlış sonuç verir. (Yukarıdaki `unsigned` çarpımı yalnızca gerçek bir tanımsız-davranış çökmesini önler; taşmanın kendisi hâlâ gerçekleşir.)',
+                 'The real value of `fact(' + d.n + ')` is `' + info.value + '`, but a 32-bit `int` cannot hold it: the function silently returns `' + info.wrongInt32 + '` instead — the compiler gives no error, the program does not crash, it just runs with the wrong answer. (The `unsigned` multiply above only prevents a crash from real undefined behavior; the overflow itself still happens.)'),
                { c: [4, 8], java: [4, 8] });
       }
 

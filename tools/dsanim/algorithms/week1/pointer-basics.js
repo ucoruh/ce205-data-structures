@@ -253,9 +253,11 @@
             flagged++;
             S.set('ptr_' + op.ptr, { style: 'del' });
             decide(op.ptr + ' == NULL -> flagged', 'del');
+            var ubNote = T(op.ptr + ' != NULL? hayır (' + op.ptr + ' = NULL)', op.ptr + ' != NULL? no (' + op.ptr + ' = NULL)');
             S.step(T('`' + expr + '` — `' + op.ptr + '` şu an NULL: bu bir NULL işaretçi dereferansı denemesi. **Çalıştırılmaz**: **tanımsız davranış (UB)** olarak işaretlenir.',
                      '`' + expr + '` — `' + op.ptr + '` is currently NULL: this is a NULL-pointer dereference attempt. **Not executed**: flagged as **undefined behavior (UB)**.'),
-                   { c: LINE.ub, java: LINE.ub });
+                   { c: [{ n: LINE.ub[0], note: ubNote }, { n: LINE.ub[1], skip: true }],
+                     java: [{ n: LINE.ub[0], note: ubNote }, { n: LINE.ub[1], skip: true }] });
           } else {
             var before = vals[target];
             if (op.t === 'set') vals[target] = op.value; else vals[target] += op.delta;

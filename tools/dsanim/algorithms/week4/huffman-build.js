@@ -140,9 +140,15 @@
         var detailed = mergeCounter <= 2;
         if (detailed) {
           S.set(a, { style: 'hl' }); S.set(b, { style: 'hl' });
+          /* The very first merge also shows `merge_id`'s declaration (8, runs once right before the loop)
+           * and the loop condition (9, with a note — the forest still has more than one root, so the loop
+           * body runs). */
+          var popLines = mergeCounter === 1
+            ? [8, { n: 9, note: T('heap_size > 1? evet', 'heap_size > 1? yes') }, 10, 11]
+            : [{ n: 9, note: T('heap_size > 1? evet', 'heap_size > 1? yes') }, 10, 11];
           S.step(T('En düşük öncelikli iki kök: ' + nodes[a].label + ' ve ' + nodes[b].label + '. İkisi de öbekten çıkarılır (pop).',
                    'The two lowest-priority roots: ' + nodes[a].label + ' and ' + nodes[b].label + '. Both are popped off the heap.'),
-                 { c: [9, 10], java: [9, 10] });
+                 { c: popLines, java: popLines });
         }
         forest = forest.slice(2);
         var sum = nodes[a].freq + nodes[b].freq;
@@ -158,17 +164,19 @@
         if (detailed) {
           S.step(T('Yeni bir ebeveyn düğüm oluşur (sıklık ' + sum + ' = ' + nodes[a].freq + ' + ' + nodes[b].freq + '); sol kenar "0", sağ kenar "1". Öncelik sırasındaki yerine geri konur.',
                    'A new parent node is created (frequency ' + sum + ' = ' + nodes[a].freq + ' + ' + nodes[b].freq + '); the left edge is "0", the right edge "1". It is reinserted at its priority-ordered spot.'),
-                 { c: [11, 12, 13], java: [11, 12, 13] });
+                 { c: [12, 13], java: [12, 13] });
         } else {
+          var fastLines = [{ n: 9, note: T('heap_size > 1? evet', 'heap_size > 1? yes') }, 10, 11, 12, 13];
           S.step(T('`merge`: iki en düşük öncelikli kök birleşir → yeni düğüm, sıklık ' + sum + '.',
                    '`merge`: the two lowest-priority roots combine → new node, frequency ' + sum + '.'),
-                 { c: [9, 10, 11, 12, 13], java: [9, 10, 11, 12, 13] });
+                 { c: fastLines, java: fastLines });
         }
       }
       S.result = { n: n0, totalCost: totalCost };
       S.step(T('Bitti: tek düğüm kaldı, bu Huffman ağacının kökü. Toplam birleştirme maliyeti (ağırlıklı yol uzunluğu) = ' + totalCost + '. Her kenar 0 ya da 1 — kökten bir yaprağa giden yol, o sembolün kodudur.',
                'Done: one node remains, the root of the Huffman tree. Total merge cost (weighted path length) = ' + totalCost + '. Every edge is 0 or 1 — the path from the root to a leaf is that symbol\'s code.'),
-             { c: [14], java: [14] });
+             { c: [{ n: 9, note: T('heap_size > 1? hayır (bir düğüm kaldı)', 'heap_size > 1? no (one node remains)') }, 15],
+               java: [{ n: 9, note: T('heap_size > 1? hayır (bir düğüm kaldı)', 'heap_size > 1? no (one node remains)') }, 15] });
     }
   });
 })(typeof DSAnim !== 'undefined' ? DSAnim : require('../../web/scene.js'));

@@ -71,10 +71,32 @@
   }
   var L_STRUCT = { c: [4, 5, 6], java: [4, 5, 6, 7] };
   var L_COUNT_INIT = { c: [10, 11], java: [9, 10] };
-  var L_COUNT_LOOP = { c: [13, 14], java: [12, 13] };
-  var L_POS_INIT = { c: [16], java: [15] };
-  var L_POS_LOOP = { c: [17, 18], java: [16, 17] };
-  var L_PLACE_LOOP = { c: [19, 20, 21, 22, 23, 24], java: [19, 20, 21, 22, 23] };
+  var L_COUNT_LOOP = { c: [14, 15], java: [13, 14] };
+  var L_POS_INIT = { c: [17], java: [16] };
+  var L_POS_LOOP = { c: [18, 19], java: [17, 18] };
+  var L_PLACE_LOOP = { c: [21, 22, 23, 24, 25, 26], java: [19, 20, 21, 22, 23] };
+
+  /** Build L_COUNT_LOOP/L_POS_LOOP/L_PLACE_LOOP with a dynamic note on the for-loop header, reflecting the
+   *  actual loop variable at this point (still inside the loop, or just past its last iteration). */
+  function countLoopLines(idx, running) {
+    var note = running ? T('i (' + idx + ') < nnz? evet', 'i (' + idx + ') < nnz? yes') : T('i (' + idx + ') < nnz? hayır (bitti)', 'i (' + idx + ') < nnz? no (done)');
+    return { c: [{ n: L_COUNT_LOOP.c[0], note: note }].concat(running ? L_COUNT_LOOP.c.slice(1) : []),
+             java: [{ n: L_COUNT_LOOP.java[0], note: note }].concat(running ? L_COUNT_LOOP.java.slice(1) : []) };
+  }
+  function posLoopLines(c, cols, running) {
+    var note = running ? T('c (' + c + ') < COLS (' + cols + ')? evet', 'c (' + c + ') < COLS (' + cols + ')? yes') : T('c (' + c + ') < COLS (' + cols + ')? hayır (bitti)', 'c (' + c + ') < COLS (' + cols + ')? no (done)');
+    return { c: [{ n: L_POS_LOOP.c[0], note: note }].concat(running ? L_POS_LOOP.c.slice(1) : []),
+             java: [{ n: L_POS_LOOP.java[0], note: note }].concat(running ? L_POS_LOOP.java.slice(1) : []) };
+  }
+  function placeLoopLines(idx, running) {
+    var note = running ? T('i (' + idx + ') < nnz? evet', 'i (' + idx + ') < nnz? yes') : T('i (' + idx + ') < nnz? hayır (bitti)', 'i (' + idx + ') < nnz? no (done)');
+    /* the for-loop header sits at a different ARRAY POSITION in c vs java (c: line 20 = index 0; java: line
+       21 = index 2, because java has two extra setup lines before its loop) -- find it by line NUMBER. */
+    function withNote(lines, forLoopLineNo) {
+      return lines.map(function (n) { return n === forLoopLineNo ? { n: n, note: note } : n; });
+    }
+    return { c: withNote(L_PLACE_LOOP.c, 21), java: withNote(L_PLACE_LOOP.java, 21) };
+  }
 
   D.define({
     id: 'sparse-matrix-transpose',
@@ -193,13 +215,13 @@
         count[t[1]]++;
         S.set('cnt' + t[1], { text: String(count[t[1]]), style: 'hl' });
         if (idx < 2) S.step(T('`count[a[' + idx + '].col] = count[' + t[1] + ']++`: sütun ' + t[1] + '\'de şimdiye kadar ' + count[t[1]] + ' sıfır olmayan var.',
-                              '`count[a[' + idx + '].col] = count[' + t[1] + ']++`: column ' + t[1] + ' has ' + count[t[1]] + ' nonzero' + (count[t[1]] === 1 ? '' : 's') + ' so far.'), L_COUNT_LOOP);
+                              '`count[a[' + idx + '].col] = count[' + t[1] + ']++`: column ' + t[1] + ' has ' + count[t[1]] + ' nonzero' + (count[t[1]] === 1 ? '' : 's') + ' so far.'), countLoopLines(idx, true));
         S.set('c' + t[0] + '_' + t[1], { style: 'dim' });
         S.set('ar' + idx, { style: 'dim' }); S.set('ac' + idx, { style: 'dim' }); S.set('av' + idx, { style: 'dim' });
       });
       S.at(null);
       for (var c2 = 0; c2 < cols; c2++) S.set('cnt' + c2, { style: 'normal' });
-      if (nnz > 2) S.step(T('İlk geçiş bitti: `count[]` = [' + count.join(', ') + '].', 'First pass done: `count[]` = [' + count.join(', ') + '].'), L_COUNT_LOOP);
+      if (nnz > 2) S.step(T('İlk geçiş bitti: `count[]` = [' + count.join(', ') + '].', 'First pass done: `count[]` = [' + count.join(', ') + '].'), countLoopLines(nnz, false));
 
       var pos = new Array(cols); pos[0] = 0;
       S.set('pos0', { text: '0', style: 'new' });
@@ -208,9 +230,10 @@
         pos[c3] = pos[c3 - 1] + count[c3 - 1];
         S.set('pos' + c3, { text: String(pos[c3]), style: 'new' });
         S.step(T('`pos[' + c3 + '] = pos[' + (c3 - 1) + '] + count[' + (c3 - 1) + ']` = ' + pos[c3 - 1] + ' + ' + count[c3 - 1] + ' = ' + pos[c3] + '.',
-                 '`pos[' + c3 + '] = pos[' + (c3 - 1) + '] + count[' + (c3 - 1) + ']` = ' + pos[c3 - 1] + ' + ' + count[c3 - 1] + ' = ' + pos[c3] + '.'), L_POS_LOOP);
+                 '`pos[' + c3 + '] = pos[' + (c3 - 1) + '] + count[' + (c3 - 1) + ']` = ' + pos[c3 - 1] + ' + ' + count[c3 - 1] + ' = ' + pos[c3] + '.'), posLoopLines(c3, cols, true));
       }
       for (var c4 = 0; c4 < cols; c4++) S.set('pos' + c4, { style: 'normal' });
+      S.step(T('Döngü bitti (`c == COLS`): `pos[]` tamam.', 'Loop done (`c == COLS`): `pos[]` is complete.'), posLoopLines(cols, cols, false));
 
       var cursor = pos.slice(), placed = new Array(nnz);
       orig.forEach(function (t, idx) {
@@ -222,10 +245,10 @@
         S.box('bv' + p, { x: BTX + 2 * (TW + TGAP), y: by, w: TW, h: TH, text: String(t[2]), style: 'new', size: 13 });
         placed[p] = [t[1], t[0], t[2]];
         if (idx < 2) S.step(T('`p = pos[' + c5 + ']++` = ' + p + ': `b[' + p + '] = (row=' + t[1] + ', col=' + t[0] + ', value=' + t[2] + ')` -- satır ve sütun YER DEĞİŞTİ.',
-                              '`p = pos[' + c5 + ']++` = ' + p + ': `b[' + p + '] = (row=' + t[1] + ', col=' + t[0] + ', value=' + t[2] + ')` -- row and col SWAPPED.'), L_PLACE_LOOP);
+                              '`p = pos[' + c5 + ']++` = ' + p + ': `b[' + p + '] = (row=' + t[1] + ', col=' + t[0] + ', value=' + t[2] + ')` -- row and col SWAPPED.'), placeLoopLines(idx, true));
       });
       S.at(null);
-      if (nnz > 2) S.step(T('İkinci geçiş bitti: `b[]` dolduruldu, hiçbir yeniden sıralama gerekmedi.', 'Second pass done: `b[]` is filled, no re-sorting was ever needed.'), L_PLACE_LOOP);
+      if (nnz > 2) S.step(T('İkinci geçiş bitti: `b[]` dolduruldu, hiçbir yeniden sıralama gerekmedi.', 'Second pass done: `b[]` is filled, no re-sorting was ever needed.'), placeLoopLines(nnz, false));
 
       S.result = { transposeTriplets: placed, count: nnz };
       S.step(T('Bitti: ' + nnz + ' üçlü, `b[]`\'ye tek bir ek geçişte (O(nnz + COLS)) yerleşti -- genel sıralamadan (O(nnz log nnz)) çok daha hızlı.',

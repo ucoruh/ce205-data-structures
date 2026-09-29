@@ -75,12 +75,20 @@
       ]
     };
   }
+  /* Java's resize() has no separate free() line (the GC handles it), so every line number in append()/
+     removeLast() is off by one relative to C from here on -- always {c, java} pairs, never shared numbers. */
   var L_STRUCT = [1, 2, 3, 4, 5];
-  var L_FULL_CHECK = [16, 17, 18];
+  var L_FULL_CHECK = { c: [16, { n: 17, note: T('size == cap? evet', 'size == cap? yes') }, 18,
+                            { n: 19, note: T('new_cap taştıysa (<= cap) cap+1\'e yükseltilir', 'if new_cap overflowed (<= cap), bump it to cap+1') }, 20],
+                        java: [15, { n: 16, note: T('size == cap? evet', 'size == cap? yes') }, 17,
+                               { n: 18, note: T('newCap taştıysa (<= cap) cap+1\'e yükseltilir', 'if newCap overflowed (<= cap), bump it to cap+1') }, 19] };
   var L_RESIZE = [7, 8, 9, 10, 11, 12, 13];
-  var L_WRITE = [16, 22];
-  var L_REMOVE = [24, 25, 26];
-  var L_SHRINK_CHECK = [27, 28];
+  var L_RESIZE_FREE = { c: [11, 12, 13], java: [11, 12] };
+  var L_WRITE = { c: [22], java: [21] };
+  var L_REMOVE_EMPTY = { c: { n: 26, note: T('size == 0? evet', 'size == 0? yes') }, java: { n: 25, note: T('size == 0? evet', 'size == 0? yes') } };
+  var L_REMOVE_OK = { c: [{ n: 26, note: T('size == 0? hayır', 'size == 0? no') }, 27], java: [{ n: 25, note: T('size == 0? hayır', 'size == 0? no') }, 26] };
+  var L_SHRINK_CHECK = { c: [{ n: 28, note: T('şart sağlandı mı? evet', 'condition met? yes') }, 29],
+                          java: [{ n: 27, note: T('şart sağlandı mı? evet', 'condition met? yes') }, 28] };
 
   function A(v) { return { op: 'a', v: v }; }
   var R = { op: 'r' };
@@ -208,7 +216,7 @@
           S.step(growing
             ? T('`size == cap` (' + size + ' == ' + cap + '): dizi dolu, yazmadan önce büyümesi gerekir.', '`size == cap` (' + size + ' == ' + cap + '): the array is full, it must grow before writing.')
             : T('`size <= cap / 4` (' + size + ' <= ' + cap + '/4): dizi dörtte bir dolu, belleği geri vermek için küçülür.', '`size <= cap / 4` (' + size + ' <= ' + cap + '/4): the array is only a quarter full, so it shrinks to give memory back.'),
-            { c: growing ? L_FULL_CHECK : L_SHRINK_CHECK, java: growing ? L_FULL_CHECK : L_SHRINK_CHECK });
+            growing ? L_FULL_CHECK : L_SHRINK_CHECK);
         }
         for (var j = 0; j < newCap; j++) S.box(newPrefix + j, { x: X0 + j * (W + GAP), y: Y0 + ROWGAP, w: W, h: H, text: '', style: 'empty', above: String(j), size: 15 });
         S.label(newPrefix + 'lbl', { x: X0 - 14, y: Y0 + ROWGAP + H / 2 + 6, text: T('yeni =', 'new ='), anchor: 'end', size: 16, bold: true, mono: true, style: 'dim' });
@@ -217,9 +225,11 @@
         if (growing) growths++; else shrinks++;
         if (detailed) {
           S.set('note', { text: T(size + ' kopya', size + ' cop' + (size === 1 ? 'y' : 'ies')) });
+          var resizeLines = L_RESIZE.slice();
+          resizeLines[2] = { n: resizeLines[2], note: T('i < size (' + size + ')? evet, ' + size + ' kez', 'i < size (' + size + ')? yes, ' + size + ' times') };
           S.step(T('`fresh[i] = a->data[i]` her `i` için: ' + size + ' eleman yeni, daha ' + (growing ? 'büyük' : 'küçük') + ' bloğa kopyalanır.',
                    '`fresh[i] = a->data[i]` for every `i`: ' + size + ' element' + (size === 1 ? '' : 's') + (size === 1 ? ' is' : ' are') + ' copied to the new, ' + (growing ? 'larger' : 'smaller') + ' block.'),
-                 { c: L_RESIZE, java: L_RESIZE });
+                 { c: resizeLines, java: resizeLines });
         }
         for (var i2 = 0; i2 < cap; i2++) S.remove(prefix + i2);
         S.remove(prefix + 'lbl');
@@ -229,7 +239,7 @@
         prefix = newPrefix; cap = newCap;
         updateRow(T((growing ? 'büyüdü → cap=' : 'küçüldü → cap=') + cap, (growing ? 'grew to cap=' : 'shrank to cap=') + cap));
         S.step(T('`free(a->data)`: eski blok serbest bırakıldı. `data` artık yeni, `cap`\'i ' + cap + ' olan bloğu gösteriyor.',
-                 '`free(a->data)`: the old block is freed. `data` now points at the new block, with `cap` = ' + cap + '.'), { c: growing ? L_RESIZE.slice(-2) : L_RESIZE.slice(-2), java: growing ? L_RESIZE.slice(-2) : L_RESIZE.slice(-2) });
+                 '`free(a->data)`: the old block is freed. `data` now points at the new block, with `cap` = ' + cap + '.'), L_RESIZE_FREE);
       }
 
       var growSeen = 0, shrinkSeen = 0;
@@ -245,17 +255,17 @@
           updateRow();
           S.set(prefix + (size - 1), { style: 'new' });
           S.step(T('`data[size++] = ' + o.v + '`: yer var, tek adımda yazıldı. `size = ' + size + '`.',
-                   '`data[size++] = ' + o.v + '`: there is room, written in one step. `size = ' + size + '`.'), { c: L_WRITE, java: L_WRITE });
+                   '`data[size++] = ' + o.v + '`: there is room, written in one step. `size = ' + size + '`.'), L_WRITE);
         } else {
           if (size === 0) {
-            S.step(T('`remove_last`: `size == 0`, çıkaracak eleman yok.', '`remove_last`: `size == 0`, there is nothing to remove.'), { c: L_REMOVE, java: L_REMOVE });
+            S.step(T('`remove_last`: `size == 0`, çıkaracak eleman yok.', '`remove_last`: `size == 0`, there is nothing to remove.'), L_REMOVE_EMPTY);
             return;
           }
           var out = arr[size - 1];
           S.set(prefix + (size - 1), { style: 'del' });
           arr.pop(); size--;
           updateRow();
-          S.step(T('`remove_last`: son eleman (' + out + ') çıkarıldı, `size = ' + size + '`.', '`remove_last`: the last element (' + out + ') is removed, `size = ' + size + '`.'), { c: L_REMOVE, java: L_REMOVE });
+          S.step(T('`remove_last`: son eleman (' + out + ') çıkarıldı, `size = ' + size + '`.', '`remove_last`: the last element (' + out + ') is removed, `size = ' + size + '`.'), L_REMOVE_OK);
           if (d.shrink) {
             var q = Math.floor(cap / 4);
             if (size <= q && Math.floor(cap / 2) >= d.cap0) {

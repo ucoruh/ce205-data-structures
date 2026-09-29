@@ -1751,8 +1751,10 @@ değil *işleçler* tutan ikinci bir yığın kullanır.
 </div>
 
 Seçicide ayrıca **parantezli, karışık öncelikli 16 karakter** (zor) ve uç durumlar **dengesiz: kapanan parantez
-eksik**, **dengesiz: fazladan kapanan parantez**, **hiç işleç yok, yalnız işlenenler** ve **uzun, hep aynı
-öncelikli işleç zinciri** örneklerini deneyin — ya da dört zorluk seviyesinde rastgele veri için 🎲 düğmesine
+eksik**, **dengesiz: fazladan kapanan parantez**, **hiç işleç yok, yalnız işlenenler**, **uzun, hep aynı
+öncelikli işleç zinciri** ve **diğer işleçlerle karışık, sağdan birleşen `^` zinciri** (animasyon `^`'yi de
+destekler, C/Java programının `+ - * /`'sinin ötesinde küçük bir ek) örneklerini deneyin — ya da dört zorluk
+seviyesinde rastgele veri için 🎲 düğmesine
 basın, ya da kendi değerlerinizi yazın.
 
 Her işlenen doğrudan çıktıya gider. Her işleç önce, kendisi *en az kendisi kadar güçlü* olan bekleyen işleçleri
@@ -1769,6 +1771,7 @@ kadar her şeyi çekip çıktıya yazar, sonra `(`'i hiç çıktıya yazmadan at
      * CEN207 Data Structures (CS50-style lecture notes)
      */
     #include <ctype.h>
+    #include <stdbool.h>
     #include <stdio.h>
 
     static int prec(char op) {
@@ -1777,7 +1780,9 @@ kadar her şeyi çekip çıktıya yazar, sonra `(`'i hiç çıktıya yazmadan at
         return 0;
     }
 
-    void to_postfix(const char *in, char *out) {
+    /* Returns false (leaving *out unspecified) when the input has unbalanced parentheses:
+     * an extra ')' with no '(' left to match, or a '(' that is never closed. */
+    bool to_postfix(const char *in, char *out) {
         char ops[100]; int top = -1, k = 0;
         for (int i = 0; in[i]; i++) {
             char c = in[i];
@@ -1786,8 +1791,9 @@ kadar her şeyi çekip çıktıya yazar, sonra `(`'i hiç çıktıya yazmadan at
             } else if (c == '(') {
                 ops[++top] = c;                /* opener: push */
             } else if (c == ')') {
-                while (ops[top] != '(')
+                while (top >= 0 && ops[top] != '(')
                     out[k++] = ops[top--];     /* flush to the matching ( */
+                if (top < 0) return false;     /* unbalanced: nothing left to match this ) */
                 top--;                          /* discard the ( itself */
             } else {
                 while (top >= 0 && ops[top] != '(' && prec(ops[top]) >= prec(c))
@@ -1795,14 +1801,18 @@ kadar her şeyi çekip çıktıya yazar, sonra `(`'i hiç çıktıya yazmadan at
                 ops[++top] = c;                /* push operator */
             }
         }
-        while (top >= 0) out[k++] = ops[top--]; /* flush what's left */
+        while (top >= 0) {
+            if (ops[top] == '(') return false;  /* unbalanced: this ( was never closed */
+            out[k++] = ops[top--];              /* flush what's left */
+        }
         out[k] = '\0';
+        return true;
     }
 
     static void run(const char *label, const char *expr) {
         char result[128];
-        to_postfix(expr, result);
-        printf("-- %s --\n%s -> %s\n\n", label, expr, result);
+        bool ok = to_postfix(expr, result);
+        printf("-- %s --\n%s -> %s\n\n", label, expr, ok ? result : "ERROR (unbalanced parentheses)");
     }
 
     int main(void) {
@@ -1814,6 +1824,12 @@ kadar her şeyi çekip çıktıya yazar, sonra `(`'i hiç çıktıya yazmadan at
 
         /* edge: a long chain of same-precedence operators (left-associativity) */
         run("edge: same-precedence chain (left-associativity)", "A+B+C+D+E+F+G+H+I+J");
+
+        /* abnormal: a closing parenthesis is missing -- the ( after C-( is never closed */
+        run("abnormal: unbalanced, a closing parenthesis is missing", "A+(B*C-(D+E)*F");
+
+        /* abnormal: an extra closing parenthesis -- no ( was ever pushed to match it */
+        run("abnormal: unbalanced, an extra closing parenthesis", "A+B*C)-D+E*F");
 
         return 0;
     }
@@ -1833,6 +1849,8 @@ kadar her şeyi çekip çıktıya yazar, sonra `(`'i hiç çıktıya yazmadan at
             return 0;
         }
 
+        // Returns null when the input has unbalanced parentheses: an extra ')' with no '('
+        // left to match, or a '(' that is never closed.
         String toPostfix(String in) {
             char[] ops = new char[100]; int top = -1; StringBuilder out = new StringBuilder();
             for (int i = 0; i < in.length(); i++) {
@@ -1842,8 +1860,9 @@ kadar her şeyi çekip çıktıya yazar, sonra `(`'i hiç çıktıya yazmadan at
                 } else if (c == '(') {
                     ops[++top] = c;                // opener: push
                 } else if (c == ')') {
-                    while (ops[top] != '(')
+                    while (top >= 0 && ops[top] != '(')
                         out.append(ops[top--]);    // flush to the matching (
+                    if (top < 0) return null;      // unbalanced: nothing left to match this )
                     top--;                          // discard the ( itself
                 } else {
                     while (top >= 0 && ops[top] != '(' && prec(ops[top]) >= prec(c))
@@ -1851,13 +1870,17 @@ kadar her şeyi çekip çıktıya yazar, sonra `(`'i hiç çıktıya yazmadan at
                     ops[++top] = c;                // push operator
                 }
             }
-            while (top >= 0) out.append(ops[top--]); // flush what's left
+            while (top >= 0) {
+                if (ops[top] == '(') return null;  // unbalanced: this ( was never closed
+                out.append(ops[top--]);            // flush what's left
+            }
             return out.toString();
         }
 
         void run(String label, String expr) {
             System.out.println("-- " + label + " --");
-            System.out.println(expr + " -> " + toPostfix(expr));
+            String result = toPostfix(expr);
+            System.out.println(expr + " -> " + (result != null ? result : "ERROR (unbalanced parentheses)"));
             System.out.println();
         }
 
@@ -1872,6 +1895,12 @@ kadar her şeyi çekip çıktıya yazar, sonra `(`'i hiç çıktıya yazmadan at
 
             // edge: a long chain of same-precedence operators (left-associativity)
             conv.run("edge: same-precedence chain (left-associativity)", "A+B+C+D+E+F+G+H+I+J");
+
+            // abnormal: a closing parenthesis is missing -- the ( after C-( is never closed
+            conv.run("abnormal: unbalanced, a closing parenthesis is missing", "A+(B*C-(D+E)*F");
+
+            // abnormal: an extra closing parenthesis -- no ( was ever pushed to match it
+            conv.run("abnormal: unbalanced, an extra closing parenthesis", "A+B*C)-D+E*F");
         }
     }
     ```
@@ -1895,6 +1924,12 @@ kadar her şeyi çekip çıktıya yazar, sonra `(`'i hiç çıktıya yazmadan at
 
     -- edge: same-precedence chain (left-associativity) --
     A+B+C+D+E+F+G+H+I+J -> AB+C+D+E+F+G+H+I+J+
+
+    -- abnormal: unbalanced, a closing parenthesis is missing --
+    A+(B*C-(D+E)*F -> ERROR (unbalanced parentheses)
+
+    -- abnormal: unbalanced, an extra closing parenthesis --
+    A+B*C)-D+E*F -> ERROR (unbalanced parentheses)
     ```
 
 === "Java"
@@ -1917,10 +1952,11 @@ kadar her şeyi çekip çıktıya yazar, sonra `(`'i hiç çıktıya yazmadan at
     - **Öncelik denetiminin `(`'in içinden çekmesine izin vermek.** While döngüsünün koşulu, önceliğe ek olarak
       açan bir parantezde durmalıdır (`ops[top] != '('`); yoksa bir `(` sessizce çekilip sanki bir işleçmiş gibi
       çıktıya yazılır.
-    - **Uç durumlar.** İyi biçimlendirilmiş bir program, dengesiz parantezleri (eksik bir `)`, ya da eşleşecek
-      hiçbir şey kalmamış bir yığında fazladan bir tane) boş bir yığının ötesini okumak yerine reddetmelidir;
-      burada öğretilen minimal sürüm bunu kasıtlı olarak savunmaz, ana algoritmayı gölgelememek için — dengeli
-      durum sağlamlaştıktan sonra doğal bir sonraki alıştırma olarak ele alın.
+    - **Uç durumlar.** Dengesiz parantezler (eksik bir `)`, ya da eşleşecek hiçbir şey kalmamış bir yığında
+      fazladan bir tane) boş bir yığının ötesini okumak yerine reddedilmelidir — `to_postfix`, `ops[top]`'ı
+      okuyacağı her yerden hemen önce `top < 0` denetimi yapar ve iki başarısızlığı da çökmek yerine yukarıdaki
+      iki **abnormal** örnekle bildirir. Bu denetimi atlayan bir sürüm, hiç yazılmamış bir belleği okur
+      (`top == -1` iken sınır dışı erişim), bu C'de tanımsız davranıştır, yalnızca yanlış bir cevap değil.
 
 ### 2.6 Infix'i prefix'e çevirme
 
@@ -1950,6 +1986,7 @@ için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
      * CEN207 Data Structures (CS50-style lecture notes)
      */
     #include <ctype.h>
+    #include <stdbool.h>
     #include <stdio.h>
     #include <string.h>
 
@@ -1978,7 +2015,9 @@ için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
         out[k] = '\0';
     }
 
-    void to_prefix(const char *in, char *out) {
+    /* Returns false (leaving *out unspecified) when the input has unbalanced parentheses:
+     * an extra ')' with no '(' left to match, or a '(' that is never closed. */
+    bool to_prefix(const char *in, char *out) {
         char rev[100];
         reverse_and_swap_parens(in, rev);       /* 1) reverse, ( <-> ) */
         char ops[100]; int top = -1, k = 0; char tmp[100];
@@ -1987,21 +2026,26 @@ için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
             if (isalnum(c)) { tmp[k++] = c; continue; }
             if (c == '(') { ops[++top] = c; continue; }
             if (c == ')') {
-                while (ops[top] != '(') tmp[k++] = ops[top--];
+                while (top >= 0 && ops[top] != '(') tmp[k++] = ops[top--];
+                if (top < 0) return false;      /* unbalanced: nothing left to match this ) */
                 top--; continue;
             }
             while (top >= 0 && ops[top] != '(' && prec(ops[top]) > prec(c))
                 tmp[k++] = ops[top--];           /* strictly stronger only */
             ops[++top] = c;
         }
-        while (top >= 0) tmp[k++] = ops[top--];
+        while (top >= 0) {
+            if (ops[top] == '(') return false;  /* unbalanced: this ( was never closed */
+            tmp[k++] = ops[top--];
+        }
         reverse(tmp, k, out);                    /* 3) reverse again */
+        return true;
     }
 
     static void run(const char *label, const char *expr) {
         char result[128];
-        to_prefix(expr, result);
-        printf("-- %s --\n%s -> %s\n\n", label, expr, result);
+        bool ok = to_prefix(expr, result);
+        printf("-- %s --\n%s -> %s\n\n", label, expr, ok ? result : "ERROR (unbalanced parentheses)");
     }
 
     int main(void) {
@@ -2013,6 +2057,12 @@ için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
 
         /* edge: a long chain of same-precedence operators (right-associativity check) */
         run("edge: same-precedence chain (right-associativity check)", "A+B+C+D+E+F+G+H+I+J");
+
+        /* abnormal: a closing parenthesis is missing -- the ( after C-( is never closed */
+        run("abnormal: unbalanced, a closing parenthesis is missing", "A+(B*C-(D+E)*F");
+
+        /* abnormal: an extra closing parenthesis -- no ( was ever pushed to match it */
+        run("abnormal: unbalanced, an extra closing parenthesis", "A+B*C)-D+E*F");
 
         return 0;
     }
@@ -2047,6 +2097,8 @@ için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
             return rev.toString();
         }
 
+        // Returns null when the input has unbalanced parentheses: an extra ')' with no '('
+        // left to match, or a '(' that is never closed.
         String toPrefix(String in) {
             String rev = reverseAndSwapParens(in);      // 1) reverse, ( <-> )
             char[] ops = new char[100]; int top = -1; StringBuilder tmp = new StringBuilder();
@@ -2055,20 +2107,25 @@ için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
                 if (Character.isLetterOrDigit(c)) { tmp.append(c); continue; }
                 if (c == '(') { ops[++top] = c; continue; }
                 if (c == ')') {
-                    while (ops[top] != '(') tmp.append(ops[top--]);
+                    while (top >= 0 && ops[top] != '(') tmp.append(ops[top--]);
+                    if (top < 0) return null;            // unbalanced: nothing left to match this )
                     top--; continue;
                 }
                 while (top >= 0 && ops[top] != '(' && prec(ops[top]) > prec(c))
                     tmp.append(ops[top--]);              // strictly stronger only
                 ops[++top] = c;
             }
-            while (top >= 0) tmp.append(ops[top--]);
+            while (top >= 0) {
+                if (ops[top] == '(') return null;        // unbalanced: this ( was never closed
+                tmp.append(ops[top--]);
+            }
             return tmp.reverse().toString();             // 3) reverse again
         }
 
         void run(String label, String expr) {
             System.out.println("-- " + label + " --");
-            System.out.println(expr + " -> " + toPrefix(expr));
+            String result = toPrefix(expr);
+            System.out.println(expr + " -> " + (result != null ? result : "ERROR (unbalanced parentheses)"));
             System.out.println();
         }
 
@@ -2083,6 +2140,12 @@ için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
 
             // edge: a long chain of same-precedence operators (right-associativity check)
             conv.run("edge: same-precedence chain (right-associativity check)", "A+B+C+D+E+F+G+H+I+J");
+
+            // abnormal: a closing parenthesis is missing -- the ( after C-( is never closed
+            conv.run("abnormal: unbalanced, a closing parenthesis is missing", "A+(B*C-(D+E)*F");
+
+            // abnormal: an extra closing parenthesis -- no ( was ever pushed to match it
+            conv.run("abnormal: unbalanced, an extra closing parenthesis", "A+B*C)-D+E*F");
         }
     }
     ```
@@ -2106,6 +2169,12 @@ için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
 
     -- edge: same-precedence chain (right-associativity check) --
     A+B+C+D+E+F+G+H+I+J -> +++++++++ABCDEFGHIJ
+
+    -- abnormal: unbalanced, a closing parenthesis is missing --
+    A+(B*C-(D+E)*F -> ERROR (unbalanced parentheses)
+
+    -- abnormal: unbalanced, an extra closing parenthesis --
+    A+B*C)-D+E*F -> ERROR (unbalanced parentheses)
     ```
 
 === "Java"
@@ -2127,8 +2196,9 @@ için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
       işleci yalnızca gelen işleçten *kesin biçimde* daha güçlüyse çeker; burada `>=` kullanmak, son ters
       çevirmeyi doğru kılan sağdan-birleşmeyi (right-associativity) sessizce bozar.
     - **Uç durumlar.** Aynı öncelikli zincirler, kesin-`>` kuralının doğru uygulandığının en keskin denetimidir
-      (`A+B+C+...` için postfix ve prefix çıktılarını yan yana karşılaştırın); dengesiz parantezler de
-      infix-postfix için belirtilen aynı dikkatle ele alınmalıdır.
+      (`A+B+C+...` için postfix ve prefix çıktılarını yan yana karşılaştırın); `to_prefix`, dengesiz parantezlere
+      karşı `to_postfix` ile tam olarak aynı şekilde savunur — `ops[top]`'ı okumadan hemen önce her yerde
+      `top < 0` denetimi yapar, bunu yukarıdaki iki **abnormal** örnek gösterir.
 
 ??? success "Kendini sına: ifadeler"
     1. **`A*B+C`'yi elle postfix'e çevirin, sonra yukarıdaki algoritmayla denetleyin.**
@@ -2337,7 +2407,11 @@ fikri gerçekçi bir derinlikte gösteriyor.
     int fact(int n) {
         if (n == 0)              /* base case */
             return 1;
-        return n * fact(n - 1);
+        /* Plain `n * fact(n - 1)` signed-overflows for n >= 13 -- undefined behavior in C, not just a
+         * wrong answer. Multiplying as `unsigned` gives the identical wraparound bit pattern with
+         * well-defined semantics, so the lesson (a silent wrong answer, no crash, no warning) still
+         * shows up exactly as described below, without triggering a sanitizer abort. */
+        return (int) ((unsigned) n * (unsigned) fact(n - 1));
     }
 
     static void run(const char *label, int n) {
@@ -2433,7 +2507,10 @@ anlaşılır okunur, ama bedava değildir.
     - **Uç durumlar.** `13! = 6227020800`, artık 32 bitlik bir `int`'e sığmaz (en fazla `2147483647`); yukarıdaki
       program çökmez — sessizce `1932053504`'e sarılır, hiçbir uyarı olmadan yanlış bir yanıt verir. "Zor" örnek
       tam olarak bu yüzden 12'de durur: taşmaya bir çağrı kala. Sonuç türünüzün aralığını her zaman en büyük
-      beklenen girdinize karşı denetleyin.
+      beklenen girdinize karşı denetleyin. (Burada bir tuzak daha gizlidir: çarpımı düz `n * fact(n - 1)` olarak
+      yazmak, taştığı an teknik olarak **tanımsız davranış** olurdu — C, sessiz sarmayı yalnızca *unsigned*
+      aritmetik için garanti eder, signed için değil. Yukarıdaki sürüm bilerek `unsigned` üzerinden çarpar; bu
+      yüzden sarma burada gerçek bir çökme riski değil, güvenli ve tanımlı bir "yanlış cevap"tır.)
 
 ??? success "Kendini sına: özyineleme"
     1. **Özgün çağrı `fact(3)` olduğunda, `fact(0)`'a girildiği anda çağrı yığınında kaç çerçeve vardır?**
@@ -2951,9 +3028,10 @@ Bunu her `dequeue`'dan sonra her elemanı bir aşağı kaydırarak düzeltmek ç
 
 Bölüm 5.2'deki boşa giden yer, yalnızca diziyi düz bir çizgi olarak düşündüğümüz için boşa gidiyor. Bunun yerine
 bir **halka** olarak düşünün: son indisten sonra yine ilk indis gelir. `(indis + 1) % CAP`, ileri yürür ve
-otomatik olarak başa döner. `front == rear` artık ya "tek eleman" ya "boş" ya da "tamamen dolu" anlamına
-gelebileceğinden (düz bir indis karşılaştırması artık bunları ayırt edemez), belirsizliği doğrudan çözmek için
-bir bilgi parçası daha, `count`, tutuyoruz.
+otomatik olarak başa döner. İndisler bir kez sarmaya başladıktan sonra, `front` ile `rear` arasında tek başına
+"boş" ya da "dolu" anlamına gelen sabit bir ilişki kalmaz — aslında `front == (rear + 1) % CAP` her iki durumda
+da (hem boşken hem doluyken) doğrudur; iki indis değeri tek başına hangisi olduğunu söylemez. Belirsizliği
+doğrudan çözmek için bir bilgi parçası daha, `count`, tutuyoruz.
 
 <iframe class="dsanim" src="../anim/circular-queue.html" title="Dairesel kuyruk" loading="lazy"></iframe>
 <div class="dsanim-baski" markdown>
@@ -3053,6 +3131,16 @@ seviyesinde rastgele veri için 🎲 düğmesine basın, ya da kendi değerlerin
         };
         run_scenario("edge: completely full, a real overflow (cap 8)", 8, edge, 10);
 
+        /* abnormal: drain to empty (underflow), then refill past the wrap to full again --
+         * front and rear coincide at both the "just emptied" and "just filled" moments;
+         * count is what tells the two apart. */
+        Op abnormal[] = {
+            {false, 11}, {false, 22}, {false, 33},
+            {true, 0}, {true, 0}, {true, 0}, {true, 0},
+            {false, 44}, {false, 55}, {false, 66}, {false, 77}, {false, 88}, {false, 99}
+        };
+        run_scenario("abnormal: drain to empty, then refill past the wrap to full (cap 5)", 5, abnormal, 13);
+
         return 0;
     }
     ```
@@ -3143,6 +3231,16 @@ seviyesinde rastgele veri için 🎲 düğmesine basın, ya da kendi değerlerin
                 new Op(false, 2), new Op(false, 17), new Op(false, 29), new Op(false, 41), new Op(false, 50)
             };
             s.runScenario("edge: completely full, a real overflow (cap 8)", 8, edge);
+
+            // abnormal: drain to empty (underflow), then refill past the wrap to full again --
+            // front and rear coincide at both the "just emptied" and "just filled" moments;
+            // count is what tells the two apart.
+            Op[] abnormal = {
+                new Op(false, 11), new Op(false, 22), new Op(false, 33),
+                new Op(true, 0), new Op(true, 0), new Op(true, 0), new Op(true, 0),
+                new Op(false, 44), new Op(false, 55), new Op(false, 66), new Op(false, 77), new Op(false, 88), new Op(false, 99)
+            };
+            s.runScenario("abnormal: drain to empty, then refill past the wrap to full (cap 5)", 5, abnormal);
         }
     }
     ```
@@ -3214,6 +3312,22 @@ seviyesinde rastgele veri için 🎲 düğmesine basın, ya da kendi değerlerin
     enqueue(41) -> false
     enqueue(50) -> false
     front = 0, rear = 7, count = 8
+
+    -- abnormal: drain to empty, then refill past the wrap to full (cap 5) --
+    enqueue(11) -> true
+    enqueue(22) -> true
+    enqueue(33) -> true
+    dequeue() -> 11
+    dequeue() -> 22
+    dequeue() -> 33
+    dequeue() -> false (queue is empty)
+    enqueue(44) -> true
+    enqueue(55) -> true
+    enqueue(66) -> true
+    enqueue(77) -> true
+    enqueue(88) -> true
+    enqueue(99) -> false
+    front = 3, rear = 2, count = 5
     ```
 
 === "Java"
@@ -3229,10 +3343,17 @@ halkaya on `enqueue`'dan sonra `0`'da biter): son indise ulaştıktan sonra `0`'
 boşalttığı hücreleri doldurmaya devam eder. Kuyruk "dolu" demeden önce her hücre yeniden kullanılır — Bölüm
 5.2'deki kayma sorunu tamamen ortadan kalkmıştır, ve her işlem hâlâ O(1)'dir.
 
+Yukarıdaki **abnormal** çalıştırmaya yakından bakın: üç `dequeue`'dan hemen sonra, kuyruk tamamen boşken
+`front = 3, rear = 2`. Ardından gelen beş `enqueue`'dan sonra, başka `dequeue` olmadan, `front` ve `rear`
+**tamamen aynı değerlerde** biter — yine `front = 3, rear = 2` — ama şimdi kuyruk tamamen dolu. Aynı indisler,
+zıt durumlar; hangisine baktığınızı yalnızca `count` (`0`'a karşı `5`) söyler. Bu, yukarıdaki paragraftaki
+`front == (rear + 1) % CAP` belirsizliğinin tam olarak canlı yakalanmış hâlidir.
+
 !!! warning "Sık yapılan hatalar"
-    - **`count` tutmadan `front == rear`'ı "boş" anlamına kullanmak.** `front == rear`, dizi (tam olarak bir kez
-      başa dönmüş biçimde) tamamen dolduktan hemen sonra da doğrudur, dolayısıyla bu karşılaştırma tek başına
-      boşu doludan ayırt edemez.
+    - **`count` yerine bir indis karşılaştırmasını "boş" ya da "dolu" anlamına kullanmak.** `front == (rear + 1)
+      % CAP`, hem kuyruk boşaldığı hem de dolduğu an doğrudur — bu karşılaştırma tek başına ikisini ayırt edemez.
+      (`front == rear`'ın kendisi burada tehlikeli durum değildir: önce artırıp sonra yazan bu `enqueue` ile, tam
+      olarak kuyrukta bir eleman varken kısaca doğru olur, boşken ya da doluyken değil.)
     - **İki indisten birinde modu (mod) unutmak.** Yalnızca `rear` başa dönüp `front` dönmezse (ya da tersi),
       halka bozulur ve kuyruk ilk başa dönüşten sonra kendini bozar.
     - **Uç durumlar.** Tamamen dolu bir kuyruğu tekrar boşalana kadar boşaltmak, ve enqueue/dequeue'yu art arda
@@ -3655,6 +3776,10 @@ ADT'yi zaten sağlar, bu yüzden Java sürümü doğrudan onu kullanır.
         const char *edge[] = {"10", "20", "pb", "30", "40", "pb", "50", "60", "pb", "70"};
         run_scenario("edge: only the back end (deque behaves like a stack)", edge, 10);
 
+        /* abnormal: pop at both ends while empty (underflow), then normal use resumes */
+        const char *abnormal[] = {"pb", "pf", "10", "20", "f5", "pb", "pf", "f-8", "30", "pb"};
+        run_scenario("abnormal: pop_back/pop_front on an empty deque, then normal use", abnormal, 10);
+
         return 0;
     }
     ```
@@ -3722,6 +3847,10 @@ ADT'yi zaten sağlar, bu yüzden Java sürümü doğrudan onu kullanır.
             // edge: only the back end -- the deque behaves like a stack
             String[] edge = {"10", "20", "pb", "30", "40", "pb", "50", "60", "pb", "70"};
             demo.runScenario("edge: only the back end (deque behaves like a stack)", edge);
+
+            // abnormal: pop at both ends while empty (underflow), then normal use resumes
+            String[] abnormal = {"pb", "pf", "10", "20", "f5", "pb", "pf", "f-8", "30", "pb"};
+            demo.runScenario("abnormal: pop_back/pop_front on an empty deque, then normal use", abnormal);
         }
     }
     ```
@@ -3779,6 +3908,19 @@ ADT'yi zaten sağlar, bu yüzden Java sürümü doğrudan onu kullanır.
     pop_back() -> true, out = 60
     push_back(70)
     deque (front to back): 10 30 50 70
+
+    -- abnormal: pop_back/pop_front on an empty deque, then normal use --
+    pop_back() -> false (deque is empty)
+    pop_front() -> false (deque is empty)
+    push_back(10)
+    push_back(20)
+    push_front(5)
+    pop_back() -> true, out = 20
+    pop_front() -> true, out = 5
+    push_front(-8)
+    push_back(30)
+    pop_back() -> true, out = 30
+    deque (front to back): -8 10
     ```
 
 === "Java"
@@ -3869,6 +4011,8 @@ veri için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
     }
 
     static void enqueue(Queue *que, Process p) {
+        if (que->count == QCAP) return;   /* this priority level is full: refuse silently
+                                              rather than wrap rear onto an unread slot */
         que->rear = (que->rear + 1) % QCAP;
         que->items[que->rear] = p;
         que->count++;
@@ -4116,10 +4260,11 @@ ve Hafta 4'te öbek (heap) denen farklı bir yapı üzerine kurulu yakın akraba
 ile tanışacaksınız.
 
 ??? success "Kendini sına: kuyruklar"
-    1. **Dairesel kuyrukta, `count` `CAP`'e ulaştıktan sonra, `front == rear` şimdi ne anlama gelir, kuyruk
-       boşken ne anlama geldiğiyle karşılaştırıldığında?** Hem "az önce boşaldı" hem "az önce doldu"
-       durumlarında `front` ve `rear` çakışabilir; ikisini birbirinden ayıran tam olarak `count`'tur, çünkü
-       indisler tek başına belirsizdir.
+    1. **Dairesel kuyrukta, kuyruk az önce boşaldığı anda VE az önce dolduğu anda hangi indis ilişkisi doğru
+       olur — ve indisler tek başına bu iki durumu neden ayırt edemez?** `front == (rear + 1) % CAP` her iki
+       durumda da doğrudur (bu ilişki, `dequeue`'nun `enqueue`'ya tam yetiştiğini mi, yoksa `enqueue`'nun
+       `front`'a tam sararak geri döndüğünü mü anlattığını söylemez); ikisini birbirinden ayıran tam olarak
+       `count`'tur, çünkü indis ilişkisi her iki durumda da aynıdır.
     2. **Bağlı liste ile kuyruk neden bir `rear` işaretçisine ihtiyaç duyarken, bağlı liste ile yığın neden
        duymaz?** Yığın yalnızca aynı uçtan (`top`) ekler ve çıkarır, bu yüzden tek işaretçi yeter. Kuyruk bir
        uçtan ekler, diğerinden çıkarır, bu yüzden her iki işlemi de O(1) tutmak için her iki uca da bir
@@ -4159,9 +4304,11 @@ ile tanışacaksınız.
 
 1. Dizi ile yığını (Bölüm 1.5), en üstteki değeri çıkarmadan döndüren bir `peek()` fonksiyonuyla genişletin.
    `data[top]`'u okumadan önce hangi denetimi yapmalıdır?
-2. Bölüm 2.5'teki infix-postfix dönüştürücü, dengesiz parantezlere (eksik bir `)`, ya da eşleşecek hiçbir şey
-   kalmamış bir yığında fazladan bir tane) karşı savunmasızdır. Bu denetimi ekleyin: `top == -1` iken
-   `to_postfix`, `ops[top]`'u okumak yerine bir hata bildirmelidir.
+2. Bölüm 2.5'teki infix-postfix dönüştürücü, dengesiz parantezleri (eksik bir `)`, ya da eşleşecek hiçbir şey
+   kalmamış bir yığında fazladan bir tane) `ops[top]`'u `top == -1` iken okumak yerine artık temiz bir hatayla
+   bildiriyor. Bunu bir adım öteye taşıyın: `to_postfix`'in, sorunlu karakterin `i` indisini de döndürmesini
+   sağlayın (fazladan `)` ya da hiç kapanmamış `(`), böylece çağıran taraf öğrenciye ifadedeki tam noktayı
+   gösterebilsin.
 3. `to_prefix`'i, Bölüm 2.6'daki ters-çevir/tren-makası/ters-çevir hilesi **olmadan**, ikinci bir yolla yazın:
    infix dizgisini bir kez, sağdan sola tarayın, `to_postfix`'in yaptığı gibi ama kesin `>` öncelik kuralıyla bir
    işleç yığını tutarak, ve çıktıyı her belirteci sona eklemek yerine **başa ekleyerek** kurun.
@@ -4178,9 +4325,10 @@ ile tanışacaksınız.
 ??? success "Alıştırma yanıtları (taslak)"
     1. `top == -1`'i (boş) denetleyin; öyleyse döndürecek bir şey yoktur. Aksi hâlde `top`'a dokunmadan
        `data[top]`'u olduğu gibi döndürün.
-    2. `)` dalında çekmeden önce, önce `top == -1`'i denetleyin; yığın zaten boşsa, eşleşecek bir `(` yoktur ve
-       ifade dengesizdir — `while (ops[top] != '(')`'i çalıştırmak yerine (ki bu `ops[-1]`'i okurdu) bir hata
-       döndürün.
+    2. Fazladan `)` durumunda, `i` basitçe `top < 0` fark edildiği andaki döngü indisidir. Hiç kapanmamış `(`
+       durumunda ise, her `(` itildiğinde hangi girdi indisinde itildiğini hatırlayın (`ops` ile paralel bir
+       `int open_at[100]` yığını) ve son boşaltma bir `(`'i yığında bulduğunda `open_at[top]`'u bildirin — bu,
+       eşleşmemiş belirli açıcının konumudur.
     3. Kesin `>` kuralıyla sağdan sola taramak, ters-çevirme tabanlı sürümün hesapladığı işleç-çekme sırasını
        ters çevirmeden birebir yeniden üretir; her işleneni ve her çekilen işleci (sona eklemek yerine) başa
        eklemek, tarama ilerledikçe sonucu doğal olarak prefix sırasında kurar.
@@ -4219,8 +4367,8 @@ ile tanışacaksınız.
     kullanmaz — kuyruk, dizinin sonuna çarpana kadar sağa doğru "kayar."
 
 ??? success "6. Dairesel kuyruk, `front` ve `rear`'ın ötesinde hangi ekstra bilgiye ihtiyaç duyar, ve neden?"
-    Şu anki eleman sayısını tutan bir `count`, çünkü başa dönüşten sonra yalnızca `front == rear`, boş bir
-    kuyruğu dolu bir kuyruktan ayırt edemez.
+    Şu anki eleman sayısını tutan bir `count`, çünkü başa dönüşten sonra `front == (rear + 1) % CAP` hem kuyruk
+    boşken hem de doluyken doğrudur — indis ilişkisi tek başına bu iki durumu ayırt edemez.
 
 ??? success "7. `fact(n) = n * fact(n - 1)` faktöriyel özyinelemesinin temel durumu nedir ve neden gereklidir?"
     `fact(0) = 1`. Bu olmadan, özyinelemeli çağrılar hiç durmaz ve sonunda çağrı yığınını taşırır.

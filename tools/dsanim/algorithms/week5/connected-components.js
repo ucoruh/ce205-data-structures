@@ -52,7 +52,28 @@
     '}'
   ];
   var LINES_COUNT = { c: [17, 18, 19], java: [17, 18, 19] };
-  var LINES_LABEL = { c: [5, 6, 7, 8, 9, 10, 11, 12], java: [5, 6, 7, 8, 9, 10, 11, 12] };
+  /** Starting a fresh `bfs_label`: only lines 5-6 have run so far (the label + the first enqueue); the while
+   *  loop below has not started iterating yet, so nothing past line 6 belongs in this step. */
+  var LINES_LABEL_START = { c: [5, 6], java: [5, 6] };
+  /** One dequeue inside `bfs_label`: line 8 always runs. For every neighbour the `for` loop (9) reaches, the
+   *  whole `if (comp_of[...] == -1) {...}` (10) is a single line, so a `{note}` says whether the vertex was
+   *  unlabelled (joins this component) or already labelled (untouched) -- there is no separate body line to
+   *  mark `{skip: true}`, the effects live inside that line's own braces. */
+  function bfsLabelLines(trace) {
+    var lines = [8];
+    if (!trace.length) {
+      lines.push({ n: 9, note: T('n != NULL? hayır (komşu yok)', 'n != NULL? no (no neighbours)') });
+      return { c: lines, java: lines };
+    }
+    trace.forEach(function (t) {
+      lines.push({ n: 9, note: T('n != NULL? evet (sıradaki: `' + t.v + '`)', 'n != NULL? yes (next: `' + t.v + '`)') });
+      lines.push({ n: 10, note: t.already
+        ? T('comp_of[' + t.v + ']==-1? hayır (zaten etiketli)', 'comp_of[' + t.v + ']==-1? no (already labelled)')
+        : T('comp_of[' + t.v + ']==-1? evet (bu bileşene eklenir)', 'comp_of[' + t.v + ']==-1? yes (joins this component)') });
+    });
+    lines.push({ n: 9, note: T('n != NULL? hayır (komşu kalmadı)', 'n != NULL? no (no neighbours left)') });
+    return { c: lines, java: lines };
+  }
 
   var EDGE_RE = /^([A-Za-z0-9]{1,3})(-|>)([A-Za-z0-9]{1,3})(?::(\d+))?$/;
   function parseGraph(text) {
@@ -198,11 +219,18 @@
         var root = g[0], col = PALETTE[gi % PALETTE.length];
         var visited = {}, queue = [root]; visited[root] = true;
         S.set('n' + root, { style: col });
-        S.step(T('Ziyaret edilmemiş `' + root + '`\'den yeni bir BFS: bileşen ' + (gi + 1) + ' başlıyor.', 'A new BFS from unvisited `' + root + '`: component ' + (gi + 1) + ' begins.'), LINES_LABEL);
+        S.step(T('Ziyaret edilmemiş `' + root + '`\'den yeni bir BFS: bileşen ' + (gi + 1) + ' başlıyor.', 'A new BFS from unvisited `' + root + '`: component ' + (gi + 1) + ' begins.'), LINES_LABEL_START);
         while (queue.length) {
-          var u = queue.shift(), kids = [];
-          uadj[u].forEach(function (v) { if (!visited[v]) { visited[v] = true; queue.push(v); kids.push(v); S.set('n' + v, { style: col }); } });
-          if (kids.length) S.step(T('`' + u + '`\'nin komşuları da bileşen ' + (gi + 1) + '\'e eklenir: ' + kids.join(', ') + '.', '`' + u + '`\'s neighbours join component ' + (gi + 1) + ' too: ' + kids.join(', ') + '.'), LINES_LABEL);
+          var u = queue.shift(), kids = [], trace = [];
+          uadj[u].forEach(function (v) {
+            var was = !!visited[v];
+            trace.push({ v: v, already: was });
+            if (!was) { visited[v] = true; queue.push(v); kids.push(v); S.set('n' + v, { style: col }); }
+          });
+          S.step(kids.length
+            ? T('`' + u + '`\'nin komşuları da bileşen ' + (gi + 1) + '\'e eklenir: ' + kids.join(', ') + '.', '`' + u + '`\'s neighbours join component ' + (gi + 1) + ' too: ' + kids.join(', ') + '.')
+            : T('`' + u + '`\'nin bütün komşuları zaten bileşen ' + (gi + 1) + '\'de: yeni eklenen yok.', '`' + u + '`\'s neighbours are all already in component ' + (gi + 1) + ': nothing new joins.'),
+            bfsLabelLines(trace));
         }
         var geo = geom[gi];
         S.region('grp' + gi, { x: geo.cx - geo.R - 22, y: geo.cy - geo.R - 30, w: 2 * geo.R + 44, h: 2 * geo.R + 50, title: T('bileşen ' + (gi + 1), 'component ' + (gi + 1)) });

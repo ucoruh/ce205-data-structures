@@ -46,7 +46,9 @@
       { id: 'all-negative', level: 'edge', name: T('10 negatif değer', '10 negative values'),
         data: { arr: [-5, -10, -15, -20, -25, -30, -35, -40, -45, -50] } },
       { id: 'deep', level: 'edge', name: T('22 değer: derin özyineleme', '22 values: deep recursion'),
-        data: { arr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22] } }
+        data: { arr: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22] } },
+      { id: 'empty', level: 'edge', small: true, name: T('Boş dizi: temel durum en baştan', 'Empty array: the base case right away'),
+        data: { arr: [] } }
     ],
     levels: ['easy', 'normal', 'hard', 'extreme'],
     size: function (d) { return d.arr.length; },
@@ -69,12 +71,11 @@
               'Example: 10 20 30 40 50 60 70 80 90 100  (integers to sum)'),
       parse: function (text) {
         var arr = D.parseInts(text);
-        if (!arr.length) throw T('En az bir sayı yazın.', 'Write at least one number.');
         if (arr.length > 40) throw T('En çok 40 sayı.', 'At most 40 numbers.');
         return { arr: arr };
       },
       format: function (d) { return d.arr.join(' '); },
-      bad: ['', '5 8 x 13', '5.5 8 13', new Array(41).fill('1').join(' '), '5,8.2,13']
+      bad: ['5 8 x 13', '5.5 8 13', new Array(41).fill('1').join(' '), '5,8.2,13']
     },
     build: function (S, d) {
       var arr = d.arr, n = arr.length;
@@ -98,17 +99,20 @@
           }
           S.set(fid, { style: 'hl' });
           S.step(T('`n = 0` — **temel durum (base case)**. Artık kendini çağırmaz, doğrudan 0 döner.',
-                   '`n = 0` — the **base case**. It no longer calls itself and returns 0 directly.'), { c: [2, 3], java: [2, 3] });
+                   '`n = 0` — the **base case**. It no longer calls itself and returns 0 directly.'),
+                 { c: [{ n: 2, note: T('n == 0? evet', 'n == 0? yes') }, 3, { n: 4, skip: true }],
+                   java: [{ n: 2, note: T('n == 0? evet', 'n == 0? yes') }, 3, { n: 4, skip: true }] });
         } else if (pushed <= DETAIL) {
           S.step(T('`n = ' + depth + '` sıfır değil, bu yüzden yeni bir çerçeve itilip `sum_recursive(arr, ' + (depth - 1) + ')` çağrılır — önce o dönmeli.',
                    '`n = ' + depth + '` is not zero, so a new frame is pushed and `sum_recursive(arr, ' + (depth - 1) + ')` is called — it must return first.'),
-                 { c: [2, 4], java: [2, 4] });
+                 { c: [{ n: 2, note: T('n == 0? hayır (n = ' + depth + ')', 'n == 0? no (n = ' + depth + ')') }, { n: 3, skip: true }, 4],
+                   java: [{ n: 2, note: T('n == 0? hayır (n = ' + depth + ')', 'n == 0? no (n = ' + depth + ')') }, { n: 3, skip: true }, 4] });
         } else {
           grouped++;
         }
       }
       S.step(T('Zincirin en derin noktasında **' + (n + 1) + ' çerçeve** aynı anda yığında duruyor — `n = ' + n + '` için `n + 1`. Bu O(n) EK bellek, dizinin kendisinin üstüne.',
-               'At the deepest point of the chain, **' + (n + 1) + ' frames** sit on the stack at once — `n + 1` for `n = ' + n + '`. That is O(n) EXTRA memory, on top of the array itself.'),
+               'At the deepest point of the chain, **' + (n + 1) + ' frame' + (n + 1 === 1 ? '' : 's') + '** sit' + (n + 1 === 1 ? 's' : '') + ' on the stack at once — `n + 1` for `n = ' + n + '`. That is O(n) EXTRA memory, on top of the array itself.'),
              { c: [4], java: [4] });
       for (depth = 0; depth <= n; depth++) S.remove('f' + depth);
       S.step(T('Her çağrı döndükçe çerçevesi yığından çekilir. Sonunda yalnızca `main` kalır — ama zirvede O(n) bellek gerçekten kullanılmıştı.',
@@ -124,15 +128,17 @@
         S.at(i);
         total += arr[i];
         if (i < DETAIL || i === n - 1) {
+          var iterLoopNote = T('i < n? (' + i + ' < ' + n + ') evet', 'i < n? (' + i + ' < ' + n + ') yes');
           if (i === n - 1 && groupedIter > 0) {
             S.step(T(groupedIter + ' adım daha aynı şekilde geçti — AYNI `total` ve `i` güncellendi, yeni çerçeve hiç açılmadı.',
-                     groupedIter + ' more steps went by the same way — the SAME `total` and `i` were updated, no new frame was ever opened.'), { c: [9, 10], java: [9, 10] });
+                     groupedIter + ' more steps went by the same way — the SAME `total` and `i` were updated, no new frame was ever opened.'),
+                   { c: [{ n: 9, note: iterLoopNote }, 10], java: [{ n: 9, note: iterLoopNote }, 10] });
           }
           S.set('total', { text: 'total = ' + total });
           S.set('iv', { text: 'i = ' + i });
           S.step(T('`i = ' + i + '` — `total += arr[' + i + ']` (' + arr[i] + '): AYNI `total` ve `i` değişkenleri güncellenir, yeni bir çerçeve AÇILMAZ.',
                    '`i = ' + i + '` — `total += arr[' + i + ']` (' + arr[i] + '): the SAME `total` and `i` are updated in place; no new frame is EVER opened.'),
-                 { c: [9, 10], java: [9, 10] });
+                 { c: [{ n: 9, note: iterLoopNote }, 10], java: [{ n: 9, note: iterLoopNote }, 10] });
         } else {
           groupedIter++;
         }

@@ -8,14 +8,17 @@
     '    long n = ns[i];',
     '    double nlogn = (double) n * log2((double) n);',
     '    double nsq = (double) n * (double) n;',
-    '    printf("%10ld %16.0f %18.0f\\n", n, nlogn, nsq);',
+    '    char pow2n[MAX_DIGITS];',
+    '    pow2_decimal((int) n, pow2n);',
+    '    printf("%10ld %16.0f %18.0f %s\\n", n, nlogn, nsq, pow2n);',
     '}'
   ];
   var JAVA = [
     'for (long n : ns) {',
     '    double nlogn = n * (Math.log(n) / Math.log(2));',
     '    double nsq = (double) n * (double) n;',
-    '    System.out.printf("%10d %16.0f %18.0f%n", n, nlogn, nsq);',
+    '    BigInteger pow2n = BigInteger.ONE.shiftLeft((int) n);',
+    '    System.out.printf("%10d %16.0f %18.0f %s%n", n, nlogn, nsq, pow2n);',
     '}'
   ];
   var BASE_Y = 260, BASE_PX = 200;
@@ -109,10 +112,14 @@
       });
       S.set('nsq', { style: 'active' });
       S.set('pow2n', { style: 'hl' });
-      S.label('nlbl', { x: 300, y: 30, text: 'n = ?', size: 22, bold: true, mono: true });
+      S.label('ntitle', { x: 300, y: 30, text: 'n = ?', size: 22, bold: true, mono: true });
+      S.region('chartTop', { x: XS.log2n - 10, y: BASE_Y - BASE_PX - 2, w: XS.pow2n + BARW - (XS.log2n - 10) + 10, h: 4,
+                              style: 'dim' });
+      var loopNoteC0 = T('i < count? (0 < ' + ns.length + ') evet', 'i < count? (0 < ' + ns.length + ') yes');
+      var loopNoteJ0 = T('daha n değeri var mı? evet (' + ns.length + ' tane)', 'more n values? yes (' + ns.length + ' total)');
       S.step(T('Beş fonksiyonu yarıştıralım: `log₂n`, `n`, `n·log₂n`, `n²` ve `2^n`. ' + ns.length + ' tane n değeri sırayla deneyeceğiz.',
                'Let us race five functions: `log2 n`, `n`, `n·log2 n`, `n²`, and `2^n`. We will try ' + ns.length + ' n values in order.'),
-             { c: [1, 2], java: [1] });
+             { c: [{ n: 1, note: loopNoteC0 }, 2], java: [{ n: 1, note: loopNoteJ0 }] });
       var results = [], first = true;
       ns.forEach(function (n, idx) {
         S.at(idx);
@@ -132,22 +139,30 @@
         S.set('nlognval', { y: BASE_Y - pxNlogn - 14, text: String(r.nlogn) });
         S.set('nsq', { y: BASE_Y - pxNsq, h: pxNsq });
         S.set('nsqval', { y: BASE_Y - pxNsq - 14, text: String(r.nsq) });
-        S.set('pow2n', { y: BASE_Y - pxPow2n, h: pxPow2n });
-        S.set('pow2nval', { y: BASE_Y - pxPow2n - 14, text: (overflow ? '× ' : '') + bigStr(r.pow2nBig) });
-        S.set('nlbl', { text: 'n = ' + n });
+        S.set('pow2n', { y: BASE_Y - pxPow2n, h: pxPow2n, style: overflow ? 'del' : 'hl' });
+        S.set('pow2nval', { y: BASE_Y - pxPow2n - 14, text: (overflow ? '× ' : '') + bigStr(r.pow2nBig), style: overflow ? 'del' : 'normal' });
+        if (overflow) {
+          if (!S.has('overflowArrow')) S.arrow('overflowArrow', { from: 'pow2n', to: 'pow2nval', kind: 'center', style: 'del', head: true });
+          else S.set('overflowArrow', { style: 'del' });
+        } else if (S.has('overflowArrow')) {
+          S.remove('overflowArrow');
+        }
+        S.set('ntitle', { text: 'n = ' + n });
         if (first) {
+          var loopNoteC1 = T('i < count? (0 < ' + ns.length + ') evet', 'i < count? (0 < ' + ns.length + ') yes');
+          var loopNoteJ1 = T('daha n değeri var mı? evet', 'more n values? yes');
           S.step(T('`n = ' + n + '` — `log₂(' + n + ') = ' + r.log2n + '`, `n·log₂n = ' + r.nlogn + '`, `n² = ' + r.nsq + '`, `2^n = ' + bigStr(r.pow2nBig) + '`.',
                    '`n = ' + n + '` — `log2(' + n + ') = ' + r.log2n + '`, `n·log2 n = ' + r.nlogn + '`, `n² = ' + r.nsq + '`, `2^n = ' + bigStr(r.pow2nBig) + '`.'),
-                 { c: [1, 2, 3, 4], java: [1, 2, 3] });
+                 { c: [{ n: 1, note: loopNoteC1 }, 2, 3, 4, 5, 6], java: [{ n: 1, note: loopNoteJ1 }, 2, 3, 4] });
           first = false;
         } else if (overflow) {
-          S.step(T('`n = ' + n + '` — `2^n` çubuğu artık grafiğin tepesini aşıyor — `×` işareti, gerçek değerin sığmadığını gösterir: `2^n = ' + bigStr(r.pow2nBig) + '`.',
-                   '`n = ' + n + '` — the `2^n` bar now overflows the top of the chart — the `×` mark shows the true value no longer fits: `2^n = ' + bigStr(r.pow2nBig) + '`.'),
-                 { c: [3, 4], java: [2, 3] });
+          S.step(T('`n = ' + n + '` — `2^n` çubuğu artık grafiğin üst sınırını (kesikli çizgi) kırarak aşıyor — ok ve `×` işareti, gerçek değerin çubuğa sığmadığını gösterir: `2^n = ' + bigStr(r.pow2nBig) + '`.',
+                   '`n = ' + n + '` — the `2^n` bar now breaks through the chart\'s top limit (dashed line) — the arrow and the `×` mark show the true value no longer fits in the bar: `2^n = ' + bigStr(r.pow2nBig) + '`.'),
+                 { c: [3, 4, 5, 6], java: [2, 3, 4] });
         } else {
           S.step(T('`n = ' + n + '` — `n² = ' + r.nsq + '`, `2^n = ' + bigStr(r.pow2nBig) + '`.',
                    '`n = ' + n + '` — `n² = ' + r.nsq + '`, `2^n = ' + bigStr(r.pow2nBig) + '`.'),
-                 { c: [3, 4], java: [2, 3] });
+                 { c: [3, 4, 5, 6], java: [2, 3, 4] });
         }
       });
       S.at(null);

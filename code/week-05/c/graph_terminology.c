@@ -203,13 +203,13 @@ int main(void) {
     };
     run_scenario("normal: 8 vertices, weighted, a cycle, a self-loop, a multi-edge and 2 components", 0, normal, 10);
 
-    /* hard: 8 vertices, directed, two cycles, a self-loop, a multi-edge and 2 weak components */
+    /* hard: 8 vertices, directed, multiple cycles, a self-loop, a multi-edge and 2 weak components */
     EdgeIn hard[] = {
         {"P", "Q", 3}, {"Q", "R", 1}, {"R", "P", 4}, {"R", "S", 2},
         {"S", "T", 5}, {"T", "U", 1}, {"T", "U", 1}, {"U", "U", 6},
         {"Q", "S", 2}, {"S", "Q", 3}, {"V", "W", 2}, {"W", "V", 3}
     };
-    run_scenario("hard: 8 vertices, directed, two cycles, a self-loop, a multi-edge and 2 weak components", 1, hard, 12);
+    run_scenario("hard: 8 vertices, directed, multiple cycles, a self-loop, a multi-edge and 2 weak components", 1, hard, 12);
 
     /* edge: an 11-vertex chain, no cycle, unweighted, connected */
     EdgeIn no_cycle[] = {

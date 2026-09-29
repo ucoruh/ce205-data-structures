@@ -165,12 +165,14 @@
         S.set('h0', { style: 'new' });
         S.set('dec', { text: '= ' + target + ' found', style: 'new' });
         S.step(T('`arr[0] == ' + target + '`? Evet — hedef ilk elemanda, tek karşılaştırmada bulundu.',
-                 '`arr[0] == ' + target + '`? Yes — the target is the first element, found in a single comparison.'), { c: [2, 3], java: [3, 4] });
+                 '`arr[0] == ' + target + '`? Yes — the target is the first element, found in a single comparison.'),
+               { c: [2, { n: 3, note: T('arr[0]==target? evet', 'arr[0]==target? yes') }], java: [3, { n: 4, note: T('arr[0]==target? evet', 'arr[0]==target? yes') }] });
       } else {
         S.set('h0', { style: 'dim' });
         S.set('dec', { text: '!= ' + target, style: 'normal' });
         S.step(T('`arr[0] == ' + target + '`? Hayır. Sınır bulma aşaması başlar: `bound = 1, 2, 4, 8, …` — her adımda `arr[bound]`\'a bakarız.',
-                 '`arr[0] == ' + target + '`? No. The bound-finding phase begins: `bound = 1, 2, 4, 8, …` — we check `arr[bound]` at each step.'), { c: [2, 3, 4], java: [3, 4, 5] });
+                 '`arr[0] == ' + target + '`? No. The bound-finding phase begins: `bound = 1, 2, 4, 8, …` — we check `arr[bound]` at each step.'),
+               { c: [2, { n: 3, note: T('arr[0]==target? hayır', 'arr[0]==target? no') }, 4], java: [3, { n: 4, note: T('arr[0]==target? hayır', 'arr[0]==target? no') }, 5] });
 
         var bound = 1, firstJump = true;
         while (bound < n) {
@@ -182,14 +184,16 @@
             S.set('dec', { text: '>= ' + target, style: 'hl' });
             S.step(T('`arr[' + bound + '] = ' + arr[bound] + ' >= ' + target + '` — sınır hedefi geçti ya da tuttu. Sınır bulma durur: `bound = ' + bound + '`.',
                      '`arr[' + bound + '] = ' + arr[bound] + ' >= ' + target + '` — the bound reached or passed the target. Bound-finding stops: `bound = ' + bound + '`.'),
-                   { c: [5, 6, 7], java: [6, 7, 8] });
+                   { c: [{ n: 5, note: T('bound<n? evet', 'bound<n? yes') }, 6, { n: 7, note: T('arr[bound]>=target? evet', 'arr[bound]>=target? yes') }],
+                     java: [{ n: 6, note: T('bound<n? evet', 'bound<n? yes') }, 7, { n: 8, note: T('arr[bound]>=target? evet', 'arr[bound]>=target? yes') }] });
             break;
           }
           S.set('h' + bound, { style: 'dim' });
           S.set('dec', { text: '< ' + target, style: 'normal' });
           S.step(T((firstJump ? '`arr[' + bound + '] = ' + arr[bound] + ' < ' + target + '` — sınır yetersiz, ikiye katlarız: ' : '`arr[' + bound + '] = ' + arr[bound] + ' < ' + target + '` — yine yetersiz, ikiye katlarız: ') + '`bound = ' + (bound * 2) + '`.',
                    (firstJump ? '`arr[' + bound + '] = ' + arr[bound] + ' < ' + target + '` — the bound is not far enough, we double it: ' : '`arr[' + bound + '] = ' + arr[bound] + ' < ' + target + '` — still not far enough, we double it again: ') + '`bound = ' + (bound * 2) + '`.'),
-                 { c: [5, 6, 7, 8], java: [6, 7, 8, 9] });
+                 { c: [{ n: 5, note: T('bound<n? evet', 'bound<n? yes') }, 6, { n: 7, note: T('arr[bound]>=target? hayır', 'arr[bound]>=target? no') }, 8],
+                   java: [{ n: 6, note: T('bound<n? evet', 'bound<n? yes') }, 7, { n: 8, note: T('arr[bound]>=target? hayır', 'arr[bound]>=target? no') }, 9] });
           firstJump = false;
           bound *= 2;
         }
@@ -197,7 +201,8 @@
         var lo = Math.floor(bound / 2), hi = bound < n ? bound : n - 1;
         S.step(T('Şimdi `[' + lo + '..' + hi + ']` aralığında sıradan **ikili arama** yaparız — sınır bulma sayesinde arama uzayı çok küçüldü.',
                  'Now we run ordinary **binary search** inside `[' + lo + '..' + hi + ']` — thanks to bound-finding, the search space is already small.'),
-               { c: [10, 11], java: [11, 12] });
+               { c: [{ n: 10, note: T('bound<n? hi hesapla', 'bound<n? computing hi') }, { n: 11, note: T('lo<=hi? evet', 'lo<=hi? yes') }],
+                 java: [{ n: 11, note: T('bound<n? hi hesapla', 'bound<n? computing hi') }, { n: 12, note: T('lo<=hi? evet', 'lo<=hi? yes') }] });
 
         var first = true;
         while (lo <= hi) {
@@ -220,20 +225,26 @@
             S.set('h' + mid, { style: 'new' });
             S.set('dec', { text: '= ' + target + ' found', style: 'new' });
             S.step(T('`arr[' + mid + '] == ' + target + '`? Evet — ' + comp + '. karşılaştırmada bulundu.',
-                     '`arr[' + mid + '] == ' + target + '`? Yes — found on comparison ' + comp + '.'), { c: [13, 14], java: [14, 15] });
+                     '`arr[' + mid + '] == ' + target + '`? Yes — found on comparison ' + comp + '.'),
+                   { c: [12, 13, { n: 14, note: T('arr[mid]==target? evet', 'arr[mid]==target? yes') }],
+                     java: [13, 14, { n: 15, note: T('arr[mid]==target? evet', 'arr[mid]==target? yes') }] });
             S.remove('lop'); S.remove('hip'); S.remove('mp');
             break;
           } else if (v < target) {
             S.set('h' + mid, { style: 'hl' });
             S.set('dec', { text: '< ' + target, style: 'hl' });
             S.step(T('`arr[' + mid + '] = ' + v + ' < ' + target + '` — sol yarıyı eleriz: `lo = ' + (mid + 1) + '`.',
-                     '`arr[' + mid + '] = ' + v + ' < ' + target + '` — we discard the left half: `lo = ' + (mid + 1) + '`.'), { c: [13, 14, 15], java: [14, 15, 16] });
+                     '`arr[' + mid + '] = ' + v + ' < ' + target + '` — we discard the left half: `lo = ' + (mid + 1) + '`.'),
+                   { c: [12, 13, { n: 14, note: T('arr[mid]==target? hayır', 'arr[mid]==target? no') }, { n: 15, note: T('arr[mid]<target? evet', 'arr[mid]<target? yes') }],
+                     java: [13, 14, { n: 15, note: T('arr[mid]==target? hayır', 'arr[mid]==target? no') }, { n: 16, note: T('arr[mid]<target? evet', 'arr[mid]<target? yes') }] });
             lo = mid + 1;
           } else {
             S.set('h' + mid, { style: 'hl' });
             S.set('dec', { text: '> ' + target, style: 'hl' });
             S.step(T('`arr[' + mid + '] = ' + v + ' > ' + target + '` — sağ yarıyı eleriz: `hi = ' + (mid - 1) + '`.',
-                     '`arr[' + mid + '] = ' + v + ' > ' + target + '` — we discard the right half: `hi = ' + (mid - 1) + '`.'), { c: [13, 14, 16], java: [14, 15, 17] });
+                     '`arr[' + mid + '] = ' + v + ' > ' + target + '` — we discard the right half: `hi = ' + (mid - 1) + '`.'),
+                   { c: [12, 13, { n: 14, note: T('arr[mid]==target? hayır', 'arr[mid]==target? no') }, { n: 16, note: T('arr[mid]<target? hayır', 'arr[mid]<target? no') }],
+                     java: [13, 14, { n: 15, note: T('arr[mid]==target? hayır', 'arr[mid]==target? no') }, { n: 17, note: T('arr[mid]<target? hayır', 'arr[mid]<target? no') }] });
             hi = mid - 1;
           }
         }

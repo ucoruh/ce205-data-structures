@@ -116,6 +116,58 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
 .dsa-slayt .dsa-sec, .dsa-slayt .dsa-zar { height: 26px; }
 .dsa-slayt .dsa-kendi, .dsa-slayt .dsa-ornek .dsa-etk { display: none; }
 .dsa-statik .dsa-ornek, .dsa-statik .dsa-kendi { display: none; }
+/* v2.1: input strip (every input value from the start; current = highlighted, done = faded, next = dashed),
+   up-next line, speed − / + ; the controls sit ABOVE the scene so a long caption never pushes them away */
+.dsa-serit { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; margin: 0 0 8px; font-size: .85rem; }
+.dsa-serit[hidden] { display: none; }
+.dsa-serit .dsa-etk { margin-right: 4px; }
+.dsa-jeton { font: 13px/1.2 'Cascadia Mono', Consolas, monospace; padding: 3px 7px; border-radius: 6px; border: 1px solid var(--dsa-cizgi);
+  background: var(--dsa-yuzey); color: var(--dsa-yazi); transition: background .3s, border-color .3s, opacity .3s; white-space: nowrap; }
+.dsa-jeton.bitti { opacity: .4; }
+.dsa-jeton.simdi { background: var(--dsa-vurgu); border-color: var(--dsa-vurgu-c); font-weight: 700; box-shadow: inset 0 0 0 1px var(--dsa-vurgu-c); }
+.dsa-jeton.sonra { border-color: var(--dsa-ana); border-style: dashed; }
+.dsa-denetim { margin: 0 0 8px; }
+.dsa-sonraki { margin-top: 6px; color: var(--dsa-soluk); font-size: .88rem; line-height: 1.35; }
+.dsa-sonraki-etk { font-weight: 700; color: var(--dsa-ana); }
+.dsa-statik .dsa-serit, .dsa-statik .dsa-sonraki { display: none; }
+@media print { .dsa-serit, .dsa-sonraki { display: none; } }
+/* slide mode: fill the iframe; scene and code take the free height, caption scrolls inside its own box */
+html.dsa-slayt, html.dsa-slayt body { height: 100%; }
+.dsa-slayt .dsa { display: flex; flex-direction: column; height: 100vh; }
+.dsa-slayt .dsa-ust, .dsa-slayt .dsa-ornek, .dsa-slayt .dsa-serit, .dsa-slayt .dsa-denetim { flex: 0 0 auto; }
+.dsa-slayt .dsa-govde { flex: 1 1 auto; min-height: 0; }
+.dsa-slayt .dsa-sahne { min-height: 0; height: 100%; }
+.dsa-slayt .dsa-sahne svg { height: 100%; max-height: 100%; }
+.dsa-slayt .dsa-kod { min-height: 0; height: 100%; }
+.dsa-slayt .dsa-pre { max-height: none; }
+.dsa-slayt .dsa-denetim { margin: 0 0 4px; }
+.dsa-slayt .dsa-serit { flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden; margin-bottom: 4px; scrollbar-width: none; }
+.dsa-slayt .dsa-serit::-webkit-scrollbar { display: none; }
+.dsa-slayt .dsa-jeton { font-size: 11.5px; padding: 2px 5px; flex: 0 0 auto; }
+.dsa-slayt .dsa-cap { flex: 0 0 auto; max-height: 4.4em; overflow-y: auto; }
+.dsa-slayt .dsa-sonraki { flex: 0 0 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: .8rem; margin-top: 3px; }
+/* v2.2: program counter (▶ on the line being executed), branch notes (true/false, → call), skipped branch dimmed */
+.dsa-sat.pc { background: var(--dsa-vurgu); border-left-color: var(--dsa-ana); box-shadow: inset 3px 0 0 var(--dsa-ana); font-weight: 600; }
+.dsa-sat.pc .dsa-no::before { content: '\25B6'; color: var(--dsa-ana); font-size: .8em; margin-right: 2px; }
+.dsa-sat.atla { opacity: .38; text-decoration: line-through; text-decoration-color: var(--dsa-soluk); }
+.dsa-not { display: inline-block; margin-left: 10px; padding: 0 6px; border-radius: 4px; font-size: .85em; font-weight: 700;
+  background: var(--dsa-ana); color: #fff; font-family: 'Segoe UI', Arial, sans-serif; }
+.dsa-sat.atla .dsa-not { background: var(--dsa-soluk); }
+/* v2.3: zoom / pan / full screen on the scene */
+.dsa-sahne { position: relative; touch-action: pan-y; }
+.dsa-sahne.dsa-zoomed { cursor: grab; touch-action: none; }
+.dsa-sahne.dsa-drag { cursor: grabbing; }
+.dsa-zoom { position: absolute; top: 6px; right: 6px; display: flex; gap: 3px; opacity: .55; transition: opacity .2s; z-index: 2; }
+.dsa-sahne:hover .dsa-zoom, .dsa-zoom:focus-within { opacity: 1; }
+.dsa-zb { width: 28px; height: 26px; border-radius: 6px; border: 1px solid var(--dsa-cizgi); background: var(--dsa-zemin);
+  color: var(--dsa-yazi); cursor: pointer; font-size: 15px; line-height: 1; padding: 0; }
+.dsa-zb:hover { border-color: var(--dsa-ana); color: var(--dsa-ana); }
+.dsa:fullscreen { background: var(--dsa-zemin); max-width: none; height: 100vh; display: flex; flex-direction: column; overflow: auto; }
+.dsa:fullscreen .dsa-govde { flex: 1 1 auto; min-height: 0; }
+.dsa:fullscreen .dsa-sahne svg { max-height: none; height: 100%; }
+.dsa:fullscreen .dsa-pre { max-height: none; }
+@media print { .dsa-zoom { display: none; } }
+.dsa-statik .dsa-zoom { display: none; }
 </style>
 </head>
 <body>
@@ -134,8 +186,18 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
  *   pointer(id, {target, text, side, style, dist})                     named pointer (top, head, front…) that follows its target
  *   arrow(id, {from, to, kind, style, text, bend, head})               kind 'next' (from a node's pointer cell) or 'center'
  *   region(id, {x, y, w, h, title, style})                             dashed background frame
+ *   brace(id, {from, to, text, side, style, dist})                     curly brace over the elements from … to (their
+ *                                                                      union), with a label: "already sorted", "< key"
  * Styles: normal, hl (highlight), new, del (removed), dim, active, empty.
  * Any text may be a plain string or {tr: '…', en: '…'}.
+ *
+ * Following the instructor's static drawings: name every array row on its left (label "A ="), put index numbers
+ * above the cells (box `above`), mark regions with braces, write the comparison on the right ("< 9"), and when the
+ * path matters (binary search, partition…) keep earlier states visible as rows with S.snapshot().
+ *   S.at(k)                          the input value with index k (in input.tokens / input.format order) is being
+ *                                    processed from the next step on; the player highlights it in the input strip
+ *   S.snapshot(prefix, ids, dx, dy, style)   copy elements (pointers/arrows/braces between them follow) to new ids
+ *                                    prefix+id, shifted by (dx, dy) — a "trace row" that stays on screen
  */
 (function (root) {
   'use strict';
@@ -171,7 +233,7 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
   function copy(o) { return JSON.parse(JSON.stringify(o)); }
 
   // ------------------------------------------------------------------ scene
-  function Scene() { this.el = {}; this.order = []; this.frames = []; }
+  function Scene() { this.el = {}; this.order = []; this.frames = []; this.cursor = undefined; }
 
   Scene.prototype._add = function (id, kind, p) {
     p = p || {};
@@ -188,6 +250,25 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
   Scene.prototype.pointer = function (id, p) { p = p || {}; p.side = p.side || 'top'; p.dist = p.dist === undefined ? 34 : p.dist; p.x = 0; p.y = 0; return this._add(id, 'pointer', p); };
   Scene.prototype.arrow = function (id, p) { p = p || {}; p.type = p.kind || 'next'; delete p.kind; p.bend = p.bend || 0; p.x = 0; p.y = 0; if (p.head === undefined) p.head = true; return this._add(id, 'arrow', p); };
   Scene.prototype.region = function (id, p) { return this._add(id, 'region', p || {}); };
+  Scene.prototype.brace = function (id, p) { p = p || {}; p.side = p.side || 'top'; p.dist = p.dist === undefined ? 8 : p.dist; p.x = 0; p.y = 0; if (!p.style) p.style = 'active'; return this._add(id, 'brace', p); };
+  /** From the next recorded step on, input value k is the one being processed (player: input strip). null = none. */
+  Scene.prototype.at = function (k) { this.cursor = k === null ? undefined : k; };
+  /** Copy elements to prefix+id, shifted by (dx, dy); links among the copied ids are re-pointed to the copies. */
+  Scene.prototype.snapshot = function (prefix, ids, dx, dy, style) {
+    var out = [], self = this;
+    ids.forEach(function (id) {
+      var o = self.el[id];
+      if (!o) return;
+      var c = copy(o), linked = ['target', 'from', 'to'].filter(function (k) { return c[k] !== undefined; });
+      if (linked.some(function (k) { return ids.indexOf(c[k]) < 0; })) return;   // would point outside the copy
+      linked.forEach(function (k) { c[k] = prefix + c[k]; });
+      if (c.kind !== 'pointer' && c.kind !== 'arrow' && c.kind !== 'brace') { c.x += dx || 0; c.y += dy || 0; }
+      if (style) c.style = style;
+      self._add(prefix + id, c.kind, c);
+      out.push(prefix + id);
+    });
+    return out;
+  };
 
   Scene.prototype.has = function (id) { return id in this.el; };
   Scene.prototype.get = function (id) { return this.el[id]; };
@@ -211,7 +292,7 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
     for (var k in (lines || {})) l[k] = Array.isArray(lines[k]) ? lines[k] : [lines[k]];
     var state = {};
     for (var i = 0; i < this.order.length; i++) state[this.order[i]] = copy(this.el[this.order[i]]);
-    this.frames.push({ state: state, order: this.order.slice(), cap: caption, lines: l });
+    this.frames.push({ state: state, order: this.order.slice(), cap: caption, lines: l, at: this.cursor });
   };
 
   // ------------------------------------------------------------------ geometry
@@ -240,6 +321,23 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
     var b = bbox(d, o.target), u = o.dist, isNode = d[o.target].kind === 'node';
     var cx = isNode ? b[0] + (b[2] - PW) / 2 : b[0] + b[2] / 2;
     return { top: [cx, b[1] - u], bottom: [cx, b[1] + b[3] + u], left: [b[0] - u - 14, b[1] + b[3] / 2], right: [b[0] + b[2] + u + 14, b[1] + b[3] / 2] }[o.side];
+  }
+  /** Brace over the union of `from` … `to`: {x1, x2, yb (base, next to the elements), yt (tip)} or null. */
+  function braceGeom(d, o) {
+    if (!(o.from in d) || !(o.to in d)) return null;
+    var a = bbox(d, o.from), b = bbox(d, o.to), top = o.side !== 'bottom';
+    var x1 = Math.min(a[0], b[0]), x2 = Math.max(a[0] + a[2], b[0] + b[2]);
+    var extra = function (e) { return top ? (e.above !== undefined && e.above !== null ? 18 : 0) : (e.below !== undefined && e.below !== null ? 18 : 0); };
+    var pad = o.dist + Math.max(extra(d[o.from]), extra(d[o.to]));
+    var yb = top ? Math.min(a[1], b[1]) - pad : Math.max(a[1] + a[3], b[1] + b[3]) + pad;
+    return { x1: x1 + 2, x2: x2 - 2, yb: yb, yt: top ? yb - 12 : yb + 12, top: top };
+  }
+  function bracePathD(g) {
+    var xm = (g.x1 + g.x2) / 2, ym = (g.yb + g.yt) / 2, r = Math.min(10, (g.x2 - g.x1) / 4);
+    return 'M' + num(g.x1) + ' ' + num(g.yb) + ' Q' + num(g.x1) + ' ' + num(ym) + ' ' + num(g.x1 + r) + ' ' + num(ym) +
+      ' L' + num(xm - r) + ' ' + num(ym) + ' Q' + num(xm) + ' ' + num(ym) + ' ' + num(xm) + ' ' + num(g.yt) +
+      ' Q' + num(xm) + ' ' + num(ym) + ' ' + num(xm + r) + ' ' + num(ym) + ' L' + num(g.x2 - r) + ' ' + num(ym) +
+      ' Q' + num(g.x2) + ' ' + num(ym) + ' ' + num(g.x2) + ' ' + num(g.yb);
   }
   function arrowPath(d, o) {
     var k = o.from, h = o.to;
@@ -295,6 +393,16 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
         }
         continue;
       }
+      if (o.kind === 'brace') {
+        var g = braceGeom(d, o);
+        if (!g) continue;
+        L.arrow.push('<path' + did + ' class="ok brc st-' + st + '"' + ops + ' d="' + bracePathD(g) + '" fill="none" stroke="' + line + '" stroke-width="2"/>');
+        if (o.text !== undefined && o.text !== null && o.text !== '') {
+          L.label.push('<g data-id="' + esc(id) + '~t" class="e lbl st-' + st + '"' + ops + ' transform="translate(' + num((g.x1 + g.x2) / 2) + ',' + num(g.top ? g.yt - 6 : g.yt + 17) + ')">' +
+            '<text x="0" y="0" text-anchor="middle" font-size="15" font-weight="700" font-family="' + FONT + '" fill="' + line + '">' + txt(o.text, lang) + '</text></g>');
+        }
+        continue;
+      }
       if (o.kind === 'pointer') {
         var pp = pointerPos(d, o), side = o.side, path, ty, anch, tx;
         if (side === 'top') { path = 'M0 6 L0 24'; ty = 0; anch = 'middle'; tx = 0; }
@@ -324,8 +432,8 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
         inner = '<rect x="0" y="0" width="' + num(o.w) + '" height="' + num(o.h) + '" rx="6" fill="' + fill + '" stroke="' + line + '" stroke-width="2"' + dash + '/>' +
           '<text x="' + num(o.w / 2) + '" y="' + num(o.h / 2 + o.size * 0.36) + '" text-anchor="middle" font-size="' + o.size + '" font-weight="600" font-family="' +
           (o.mono ? MONO : FONT) + '" fill="' + ink + '">' + txt(o.text, lang) + '</text>';
-        if (o.below !== undefined && o.below !== null) inner += '<text x="' + num(o.w / 2) + '" y="' + num(o.h + 16) + '" text-anchor="middle" font-size="12" font-family="' + MONO + '" fill="#868e96">' + txt(o.below, lang) + '</text>';
-        if (o.above !== undefined && o.above !== null) inner += '<text x="' + num(o.w / 2) + '" y="-7" text-anchor="middle" font-size="12" font-family="' + MONO + '" fill="#868e96">' + txt(o.above, lang) + '</text>';
+        if (o.below !== undefined && o.below !== null) inner += '<text x="' + num(o.w / 2) + '" y="' + num(o.h + 16) + '" text-anchor="middle" font-size="13" font-family="' + MONO + '" fill="#5c6770">' + txt(o.below, lang) + '</text>';
+        if (o.above !== undefined && o.above !== null) inner += '<text x="' + num(o.w / 2) + '" y="-7" text-anchor="middle" font-size="13" font-family="' + MONO + '" fill="#5c6770">' + txt(o.above, lang) + '</text>';
       } else if (o.kind === 'node') {
         inner = '<rect x="0" y="0" width="' + num(o.w + PW) + '" height="' + num(o.h) + '" rx="6" fill="' + fill + '" stroke="' + line + '" stroke-width="2"/>' +
           '<line x1="' + num(o.w) + '" y1="0" x2="' + num(o.w) + '" y2="' + num(o.h) + '" stroke="' + line + '" stroke-width="2"/>' +
@@ -333,11 +441,11 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
         inner += o.isNull
           ? '<line x1="' + num(o.w + 4) + '" y1="' + num(o.h - 4) + '" x2="' + num(o.w + PW - 4) + '" y2="4" stroke="' + line + '" stroke-width="2"/>'
           : '<circle cx="' + num(o.w + PW / 2) + '" cy="' + num(o.h / 2) + '" r="3.5" fill="' + line + '"/>';
-        if (o.below !== undefined && o.below !== null) inner += '<text x="' + num((o.w + PW) / 2) + '" y="' + num(o.h + 16) + '" text-anchor="middle" font-size="12" font-family="' + MONO + '" fill="#868e96">' + txt(o.below, lang) + '</text>';
+        if (o.below !== undefined && o.below !== null) inner += '<text x="' + num((o.w + PW) / 2) + '" y="' + num(o.h + 16) + '" text-anchor="middle" font-size="13" font-family="' + MONO + '" fill="#5c6770">' + txt(o.below, lang) + '</text>';
       } else if (o.kind === 'circle') {
         inner = '<circle cx="0" cy="0" r="' + num(o.r) + '" fill="' + fill + '" stroke="' + line + '" stroke-width="2"/>' +
           '<text x="0" y="6" text-anchor="middle" font-size="16" font-weight="600" font-family="' + MONO + '" fill="' + ink + '">' + txt(o.text, lang) + '</text>';
-        if (o.below !== undefined && o.below !== null) inner += '<text x="0" y="' + num(o.r + 16) + '" text-anchor="middle" font-size="12" font-family="' + MONO + '" fill="#868e96">' + txt(o.below, lang) + '</text>';
+        if (o.below !== undefined && o.below !== null) inner += '<text x="0" y="' + num(o.r + 16) + '" text-anchor="middle" font-size="13" font-family="' + MONO + '" fill="#5c6770">' + txt(o.below, lang) + '</text>';
       } else continue;
       L.shape.push('<g' + did + ' class="e shp st-' + st + '"' + ops + ' transform="translate(' + num(o.x) + ',' + num(o.y) + ')">' + inner + '</g>');
     }
@@ -356,6 +464,12 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
           var p = arrowPath(d, o);
           if (!p) continue;
           b = [Math.min(p[0], p[2], p[4], p[6]), Math.min(p[1], p[3], p[5], p[7]), Math.max(p[0], p[2], p[4], p[6]), Math.max(p[1], p[3], p[5], p[7])];
+        } else if (o.kind === 'brace') {
+          var g = braceGeom(d, o);
+          if (!g) continue;
+          var tw = longest(o.text).length * 8.7 + 8, xm = (g.x1 + g.x2) / 2;
+          b = g.top ? [Math.min(g.x1, xm - tw / 2), g.yt - 24, Math.max(g.x2, xm + tw / 2), g.yb]
+                    : [Math.min(g.x1, xm - tw / 2), g.yb, Math.max(g.x2, xm + tw / 2), g.yt + 24];
         } else if (o.kind === 'pointer') {
           var pp = pointerPos(d, o), w = longest(o.text).length * 9.5 + 8;
           b = { top: [pp[0] - w / 2, pp[1] - 18, pp[0] + w / 2, pp[1] + 26], bottom: [pp[0] - w / 2, pp[1] - 26, pp[0] + w / 2, pp[1] + 20],
@@ -560,7 +674,9 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
 
       S.pointer('curP', { target: ids[0], text: 'cur', side: 'top', dist: 30 });
       S.step(T(n + ' kişi bir çemberde. `cur = head` (kişi 1). Her ' + k + '. kişi elenecek; `prev`, `cur`\'dan bir önceki kişiyi tutar.',
-               n + ' people stand in a circle. `cur = head` (person 1). Every ' + k + (k === 1 ? 'st' : (k === 2 ? 'nd' : (k === 3 ? 'rd' : 'th'))) + ' person is eliminated; `prev` holds the person right before `cur`.'), { c: [4, 5, 6, 7, 8], java: [4, 5, 6] });
+               n + ' people stand in a circle. `cur = head` (person 1). Every ' + k + (k === 1 ? 'st' : (k === 2 ? 'nd' : (k === 3 ? 'rd' : 'th'))) + ' person is eliminated; `prev` holds the person right before `cur`.'),
+             { c: [4, 5, { n: 6, note: T('prev->next != head? evet -> hayır olana kadar döner', 'prev->next != head? yes -> loops until no') }, 7, 8],
+               java: [4, 5, { n: 6, note: T('prev.next != head? evet -> hayır olana kadar döner', 'prev.next != head? yes -> loops until no') }, 7] });
 
       var curIdx = 0, order = [];
       var elimNo = 0;
@@ -574,14 +690,18 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
             S.set('curP', { target: ids[target] });
             clean(); S.set(ids[target], { style: 'active' });
             S.step(T('say ' + step + '/' + (k - 1) + ': `prev = cur`; `cur = cur->next` -> kişi ' + S.get(ids[target]).value + '.',
-                     'count ' + step + '/' + (k - 1) + ': `prev = cur`; `cur = cur->next` -> person ' + S.get(ids[target]).value + '.'), { c: [12, 13, 14], java: [11, 12, 13] });
+                     'count ' + step + '/' + (k - 1) + ': `prev = cur`; `cur = cur->next` -> person ' + S.get(ids[target]).value + '.'),
+                   { c: [{ n: 12, note: T('step (' + step + ') < k (' + k + ')? evet', 'step (' + step + ') < k (' + k + ')? yes') }, 13, 14],
+                     java: [{ n: 12, note: T('step (' + step + ') < k (' + k + ')? evet', 'step (' + step + ') < k (' + k + ')? yes') }, 13, 14] });
           }
         } else {
           target = (curIdx + k - 1) % ids.length;
           S.set('curP', { target: ids[target] });
           clean(); S.set(ids[target], { style: 'active' });
           S.step(T((elimNo + 1) + '. eleme: ' + (k - 1) + ' adım sayılır, kişi ' + S.get(ids[target]).value + '\'e varılır.',
-                   'elimination ' + (elimNo + 1) + ': ' + (k - 1) + ' step' + (k === 2 ? '' : 's') + ' counted, arriving at person ' + S.get(ids[target]).value + '.'), { c: [12, 13, 14], java: [11, 12, 13] });
+                   'elimination ' + (elimNo + 1) + ': ' + (k - 1) + ' step' + (k === 2 ? '' : 's') + ' counted, arriving at person ' + S.get(ids[target]).value + '.'),
+                 { c: [{ n: 12, note: T('step < k (' + k + ')? ' + (k > 1 ? (k - 1) + ' kez evet, sonra hayır' : 'hayır (hiç dönmez)'), 'step < k (' + k + ')? ' + (k > 1 ? 'yes ' + (k - 1) + ' times, then no' : 'no (never loops)')) }, 13, 14],
+                   java: [{ n: 12, note: T('step < k (' + k + ')? ' + (k > 1 ? (k - 1) + ' kez evet, sonra hayır' : 'hayır (hiç dönmez)'), 'step < k (' + k + ')? ' + (k > 1 ? 'yes ' + (k - 1) + ' times, then no' : 'no (never loops)')) }, 13, 14] });
         }
         var victimValue = Number(S.get(ids[target]).value);
         S.set(ids[target], { style: 'del' });
@@ -623,15 +743,21 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
     tr: { play: 'Oynat', pause: 'Duraklat', next: 'Sonraki adım', prev: 'Önceki adım', first: 'Başa dön', last: 'Sona git',
           speed: 'Hız', voice: 'Sesli anlatım', step: 'Adım', example: 'Örnek', level: 'Zorluk', random: 'Rastgele',
           own: 'Kendi değerlerin', apply: 'Uygula', custom: 'Kendi değerleri', randomName: 'Rastgele',
+          zoomIn: 'Yakınlaştır (Ctrl+tekerlek)', zoomOut: 'Uzaklaştır', zoomFit: 'Sığdır (0)', full: 'Tam ekran (f)', input: 'Girdi', upNext: 'Sıradaki →', lastStep: 'Son adım.', faster: 'Hızlandır (+)', slower: 'Yavaşlat (−)',
           levels: { easy: 'kolay', normal: 'normal', hard: 'zor', extreme: 'uç' },
           groups: { normal: 'Normal', hard: 'Zor', edge: 'Uç ve anormal durumlar' } },
     en: { play: 'Play', pause: 'Pause', next: 'Next step', prev: 'Previous step', first: 'First step', last: 'Last step',
           speed: 'Speed', voice: 'Narration', step: 'Step', example: 'Example', level: 'Difficulty', random: 'Random',
           own: 'Your values', apply: 'Apply', custom: 'Your values', randomName: 'Random',
+          zoomIn: 'Zoom in (Ctrl+wheel)', zoomOut: 'Zoom out', zoomFit: 'Fit (0)', full: 'Full screen (f)', input: 'Input', upNext: 'Next →', lastStep: 'Last step.', faster: 'Faster (+)', slower: 'Slower (−)',
           levels: { easy: 'easy', normal: 'normal', hard: 'hard', extreme: 'extreme' },
           groups: { normal: 'Normal', hard: 'Hard', edge: 'Edge and abnormal cases' } }
   };
   var CODE_NAME = { c: 'C', java: 'Java', cpp: 'C++', py: 'Python', pseudo: 'Pseudocode' };
+  var SPEEDS = [0.5, 0.75, 1, 1.5, 2, 3, 4];
+  function savedSpeed() { try { var v = +window.localStorage.getItem('dsanim-speed'); return SPEEDS.indexOf(v) >= 0 ? v : 1; } catch (e) { return 1; } }
+  function saveSpeed(v) { try { window.localStorage.setItem('dsanim-speed', String(v)); } catch (e) { /* private mode */ } }
+  function plain(s) { return String(s || '').replace(/\*\*/g, '').replace(/`/g, ''); }   // drop bold markers and backticks, keep a lone * (it is an operator)
 
   function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
   function nums(s) { return (s || '').match(NUMS) || []; }
@@ -644,7 +770,7 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
   function Player(root, spec, opt) {
     this.root = root; this.spec = spec; this.o = opt || {};
     this.lang = this.o.lang === 'en' ? 'en' : 'tr';
-    this.i = 0; this.playing = false; this.speed = 1; this.voice = false; this.timer = null; this.anim = null;
+    this.i = 0; this.playing = false; this.speed = savedSpeed(); this.voice = false; this.timer = null; this.anim = null;
     // spec.code may be a function of the data (e.g. #define CAP follows the chosen example)
     this.codeOf = function (d) { return this.o.noCode ? {} : (typeof spec.code === 'function' ? spec.code(d || spec.presets[0].data) : (spec.code || {})); };
     this.code = this.codeOf(null);
@@ -741,11 +867,58 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
     }
     this.root.appendChild(this.ownRow);
 
+    // input strip: every input value from the first step on; the one being processed (frame.at) is highlighted
+    this.tape = el('div', 'dsa-serit');
+    this.tape.hidden = !s.input;
+    this.root.appendChild(this.tape);
+
+    var ctl = el('div', 'dsa-denetim');
+    function btn(html, title, fn) { var b = el('button', 'dsa-d', html); b.type = 'button'; b.title = title; b.setAttribute('aria-label', title); b.addEventListener('click', fn); ctl.appendChild(b); return b; }
+    btn('&#x23EE;', y.first, function () { self.stop(); self.go(0, true); });
+    btn('&#x25C0;', y.prev, function () { self.stop(); self.go(self.i - 1, true); });
+    this.playBtn = btn('&#x25B6;', y.play, function () { self.playing ? self.stop() : self.play(); });
+    this.playBtn.classList.add('dsa-ana');
+    btn('&#x25B6;&#x2759;', y.next, function () { self.stop(); self.go(self.i + 1, true); });
+    btn('&#x23ED;', y.last, function () { self.stop(); self.go(self.frames.length - 1, true); });
+    this.slider = el('input', 'dsa-cubuk');
+    this.slider.type = 'range'; this.slider.min = 1;
+    this.slider.setAttribute('aria-label', y.step);
+    this.slider.addEventListener('input', function () { self.stop(); self.go(+self.slider.value - 1, false); });
+    ctl.appendChild(this.slider);
+    var sp = el('select', 'dsa-hiz');
+    sp.title = y.speed; sp.setAttribute('aria-label', y.speed);
+    SPEEDS.forEach(function (h) { var op = el('option', '', h + '×'); op.value = h; if (h === self.speed) op.selected = true; sp.appendChild(op); });
+    this.setSpeed = function (v) { self.speed = v; sp.value = String(v); saveSpeed(v); };
+    sp.addEventListener('change', function () { self.setSpeed(+sp.value); });
+    btn('&minus;', y.slower, function () { var k = SPEEDS.indexOf(self.speed); if (k > 0) self.setSpeed(SPEEDS[k - 1]); });
+    ctl.appendChild(sp);
+    btn('+', y.faster, function () { var k = SPEEDS.indexOf(self.speed); if (k < SPEEDS.length - 1) self.setSpeed(SPEEDS[k + 1]); });
+    if ('speechSynthesis' in window) {
+      this.voiceBtn = btn('&#x1F507;', y.voice, function () {
+        self.voice = !self.voice; self.voiceBtn.innerHTML = self.voice ? '&#x1F50A;' : '&#x1F507;';
+        self.voiceBtn.classList.toggle('etkin', self.voice);
+        if (self.voice) self.say(); else window.speechSynthesis.cancel();
+      });
+    }
+    this.root.appendChild(ctl);
+
+
     var body = el('div', 'dsa-govde' + (Object.keys(this.code).length ? '' : ' dsa-kodsuz'));
     var stage = el('div', 'dsa-sahne');
     this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     this.svg.setAttribute('role', 'img');
     stage.appendChild(this.svg);
+    // zoom / pan / full screen: + − fit ⤢ ; Ctrl+wheel (or wheel when zoomed) zooms at the cursor, drag pans,
+    // double-click zooms in (or back to fit), two-finger pinch on touch screens
+    var zb = el('div', 'dsa-zoom');
+    [['+', y.zoomIn, function () { self.zoomBy(1.4); }], ['−', y.zoomOut, function () { self.zoomBy(1 / 1.4); }],
+     ['↺', y.zoomFit, function () { self.resetView(); }], ['⤢', y.full, function () { self.fullScreen(); }]].forEach(function (b) {
+      var x = el('button', 'dsa-zb', b[0]); x.type = 'button'; x.title = b[1]; x.setAttribute('aria-label', b[1]);
+      x.addEventListener('click', b[2]); zb.appendChild(x);
+    });
+    stage.appendChild(zb);
+    this.stage = stage;
+    this.bindZoom(stage);
     body.appendChild(stage);
     if (Object.keys(this.code).length) {
       var box = el('div', 'dsa-kod'), tabs = el('div', 'dsa-sekme');
@@ -768,33 +941,9 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
     this.cap = el('div', 'dsa-cap');
     this.cap.setAttribute('aria-live', 'polite');
     this.root.appendChild(this.cap);
+    this.nextEl = el('div', 'dsa-sonraki');
+    this.root.appendChild(this.nextEl);
 
-    var ctl = el('div', 'dsa-denetim');
-    function btn(html, title, fn) { var b = el('button', 'dsa-d', html); b.type = 'button'; b.title = title; b.setAttribute('aria-label', title); b.addEventListener('click', fn); ctl.appendChild(b); return b; }
-    btn('&#x23EE;', y.first, function () { self.stop(); self.go(0, true); });
-    btn('&#x25C0;', y.prev, function () { self.stop(); self.go(self.i - 1, true); });
-    this.playBtn = btn('&#x25B6;', y.play, function () { self.playing ? self.stop() : self.play(); });
-    this.playBtn.classList.add('dsa-ana');
-    btn('&#x25B6;&#x2759;', y.next, function () { self.stop(); self.go(self.i + 1, true); });
-    btn('&#x23ED;', y.last, function () { self.stop(); self.go(self.frames.length - 1, true); });
-    this.slider = el('input', 'dsa-cubuk');
-    this.slider.type = 'range'; this.slider.min = 1;
-    this.slider.setAttribute('aria-label', y.step);
-    this.slider.addEventListener('input', function () { self.stop(); self.go(+self.slider.value - 1, false); });
-    ctl.appendChild(this.slider);
-    var sp = el('select', 'dsa-hiz');
-    sp.title = y.speed;
-    [0.5, 0.75, 1, 1.5, 2].forEach(function (h) { var op = el('option', '', h + '×'); op.value = h; if (h === 1) op.selected = true; sp.appendChild(op); });
-    sp.addEventListener('change', function () { self.speed = +sp.value; });
-    ctl.appendChild(sp);
-    if ('speechSynthesis' in window) {
-      this.voiceBtn = btn('&#x1F507;', y.voice, function () {
-        self.voice = !self.voice; self.voiceBtn.innerHTML = self.voice ? '&#x1F50A;' : '&#x1F507;';
-        self.voiceBtn.classList.toggle('etkin', self.voice);
-        if (self.voice) self.say(); else window.speechSynthesis.cancel();
-      });
-    }
-    this.root.appendChild(ctl);
 
     this.root.tabIndex = 0;
     this.root.addEventListener('keydown', function (e) {
@@ -805,6 +954,10 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
       else if (e.key === 'ArrowLeft' || e.key === 'j') { e.preventDefault(); self.stop(); self.go(self.i - 1, true); }
       else if (e.key === 'Home') { e.preventDefault(); self.stop(); self.go(0, true); }
       else if (e.key === 'End') { e.preventDefault(); self.stop(); self.go(self.frames.length - 1, true); }
+      else if (e.key === 'f') { e.preventDefault(); self.fullScreen(); }
+      else if (e.key === '0') { e.preventDefault(); self.resetView(); }
+      else if (e.key === '+' || e.key === '=') { e.preventDefault(); var k1 = SPEEDS.indexOf(self.speed); if (k1 < SPEEDS.length - 1) self.setSpeed(SPEEDS[k1 + 1]); }
+      else if (e.key === '-' || e.key === '_') { e.preventDefault(); var k2 = SPEEDS.indexOf(self.speed); if (k2 > 0) self.setSpeed(SPEEDS[k2 - 1]); }
     });
     this.drawCode();
   };
@@ -818,11 +971,12 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
     this.data = data;
     if (typeof this.spec.code === 'function') { this.code = this.codeOf(data); this.drawCode(); }
     this.vb = window.DSAnim.viewBox(this.frames);
-    this.svg.setAttribute('viewBox', this.vb.join(' '));
+    this.resetView();
     this.svg.innerHTML = window.DSAnim.defs() + '<g class="kat kat-arka"></g><g class="kat kat-ok"></g><g class="kat kat-sekil"></g><g class="kat kat-etiket"></g>';
     this.inner = this.frames.map(function (f) { return window.DSAnim.render(f.state, f.order, null); });
     if (this.sel && id && id.indexOf('__') !== 0) this.sel.value = id;
     if (this.spec.input && this.ownInput) this.ownInput.value = this.spec.input.format(data);
+    this.drawTape(data);
     this.slider.max = this.frames.length;
     this.i = 0;
     if (reset) { this.stop(); this.go(0, false); }
@@ -837,6 +991,90 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
     if (this.levelSel) this.levelSel.value = level;
   };
 
+  /** View = base view box scaled by zoom z around centre (cx, cy). */
+  Player.prototype.resetView = function () {
+    var b = this.vb; this.view = { z: 1, cx: b[0] + b[2] / 2, cy: b[1] + b[3] / 2 }; this.applyView();
+  };
+  Player.prototype.applyView = function () {
+    var b = this.vb, v = this.view, w = b[2] / v.z, h = b[3] / v.z;
+    this.svg.setAttribute('viewBox', [v.cx - w / 2, v.cy - h / 2, w, h].map(function (x) { return Math.round(x * 10) / 10; }).join(' '));
+    if (this.stage) this.stage.classList.toggle('dsa-zoomed', v.z > 1.001);
+  };
+  /** Zoom by factor f keeping the scene point under (px, py) (client coords) fixed; default: the centre. */
+  Player.prototype.zoomBy = function (f, px, py) {
+    var v = this.view, b = this.vb, z = Math.max(1, Math.min(8, v.z * f));
+    if (px !== undefined) {
+      var r = this.svg.getBoundingClientRect(), w = b[2] / v.z, h = b[3] / v.z;
+      var sx = v.cx - w / 2 + (px - r.left) / r.width * w, sy = v.cy - h / 2 + (py - r.top) / r.height * h, k = v.z / z;
+      v.cx = sx + (v.cx - sx) * k; v.cy = sy + (v.cy - sy) * k;
+    }
+    v.z = z; if (z === 1) { v.cx = b[0] + b[2] / 2; v.cy = b[1] + b[3] / 2; }
+    this.applyView();
+  };
+  Player.prototype.fullScreen = function () {
+    var r = this.root, d = document;
+    if (d.fullscreenElement) { d.exitFullscreen(); return; }
+    if (r.requestFullscreen) r.requestFullscreen().catch(function () { /* not allowed in this frame */ });
+  };
+  Player.prototype.bindZoom = function (stage) {
+    var self = this, drag = null, pinch = null;
+    stage.addEventListener('wheel', function (e) {
+      if (!e.ctrlKey && !(self.view && self.view.z > 1.001)) return;   // plain wheel keeps scrolling the page
+      e.preventDefault(); self.zoomBy(e.deltaY < 0 ? 1.15 : 1 / 1.15, e.clientX, e.clientY);
+    }, { passive: false });
+    stage.addEventListener('dblclick', function (e) {
+      if (e.target.closest && e.target.closest('.dsa-zoom')) return;
+      if (self.view.z > 1.001) self.resetView(); else self.zoomBy(2, e.clientX, e.clientY);
+    });
+    stage.addEventListener('pointerdown', function (e) {
+      if (e.target.closest && e.target.closest('.dsa-zoom')) return;
+      if (e.pointerType === 'touch') return;
+      if (self.view.z <= 1.001) return;
+      drag = { x: e.clientX, y: e.clientY, cx: self.view.cx, cy: self.view.cy };
+      stage.setPointerCapture(e.pointerId); stage.classList.add('dsa-drag');
+    });
+    stage.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var r = self.svg.getBoundingClientRect(), k = (self.vb[2] / self.view.z) / r.width;
+      self.view.cx = drag.cx - (e.clientX - drag.x) * k; self.view.cy = drag.cy - (e.clientY - drag.y) * k; self.applyView();
+    });
+    ['pointerup', 'pointercancel'].forEach(function (t) { stage.addEventListener(t, function () { drag = null; stage.classList.remove('dsa-drag'); }); });
+    stage.addEventListener('touchstart', function (e) {
+      if (e.touches.length === 2) { pinch = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); }
+      else if (e.touches.length === 1 && self.view.z > 1.001) { drag = { x: e.touches[0].clientX, y: e.touches[0].clientY, cx: self.view.cx, cy: self.view.cy }; }
+    }, { passive: true });
+    stage.addEventListener('touchmove', function (e) {
+      if (e.touches.length === 2 && pinch) {
+        e.preventDefault();
+        var d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+        self.zoomBy(d / pinch, (e.touches[0].clientX + e.touches[1].clientX) / 2, (e.touches[0].clientY + e.touches[1].clientY) / 2); pinch = d;
+      } else if (e.touches.length === 1 && drag) {
+        e.preventDefault();
+        var r = self.svg.getBoundingClientRect(), k = (self.vb[2] / self.view.z) / r.width;
+        self.view.cx = drag.cx - (e.touches[0].clientX - drag.x) * k; self.view.cy = drag.cy - (e.touches[0].clientY - drag.y) * k; self.applyView();
+      }
+    }, { passive: false });
+    stage.addEventListener('touchend', function () { pinch = null; drag = null; });
+  };
+  Player.prototype.drawTape = function (data) {
+    if (!this.tape || !this.spec.input) return;
+    var inp = this.spec.input, toks = inp.tokens ? inp.tokens(data) : String(inp.format(data)).split(/\s+/).filter(Boolean);
+    this.tape.innerHTML = '<span class="dsa-etk">' + esc(TEXT[this.lang].input) + '</span>';
+    var self = this;
+    this.chips = toks.map(function (t) { var c = el('span', 'dsa-jeton', esc(t)); self.tape.appendChild(c); return c; });
+  };
+  Player.prototype.markTape = function (at) {
+    if (!this.chips) return;
+    var cur = null;
+    this.chips.forEach(function (c, k) {
+      var has = at !== undefined && at !== null;
+      c.classList.toggle('bitti', has && k < at);
+      c.classList.toggle('simdi', has && k === at);
+      c.classList.toggle('sonra', has && k === at + 1);
+      if (has && k === at) cur = c;
+    });
+    if (cur && this.tape.scrollWidth > this.tape.clientWidth) this.tape.scrollLeft = Math.max(0, cur.offsetLeft - this.tape.clientWidth / 3);
+  };
   Player.prototype.drawCode = function () {
     if (!this.pre) return;
     var lines = this.code[this.codeLang] || [];
@@ -845,20 +1083,45 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
     }).join('');
   };
 
-  Player.prototype.markCode = function () {
-    if (!this.pre) return;
-    var f = this.frames[this.i], hot = (f.lines && f.lines[this.codeLang]) || [], first = null;
-    Array.prototype.forEach.call(this.pre.children, function (s) {
-      var on = hot.indexOf(+s.getAttribute('data-n')) >= 0;
-      s.classList.toggle('vurgu', on);
-      if (on && !first) first = s;
+  /** Lines of the current step for the chosen language: run (in execution order), notes (branch results), skip. */
+  Player.prototype.hotLines = function () {
+    var f = this.frames[this.i], raw = (f && f.lines && f.lines[this.codeLang]) || [], h = { run: [], notes: {}, skip: {} };
+    raw.forEach(function (x) {
+      var n = x && typeof x === 'object' ? +x.n : +x;
+      if (x && typeof x === 'object' && x.note !== undefined) h.notes[n] = x.note;
+      if (x && typeof x === 'object' && x.skip) h.skip[n] = true; else h.run.push(n);
     });
-    if (first) {
-      var p = this.pre, top = first.offsetTop - p.offsetTop;
+    return h;
+  };
+  /** Highlight the step's lines; the program counter (▶) sits on run[pc] (default: the last line run). */
+  Player.prototype.markCode = function (pc) {
+    if (!this.pre) return;
+    var h = this.hotLines(), lang = this.lang, curEl = null;
+    var cur = h.run.length ? h.run[pc === undefined ? h.run.length - 1 : Math.min(pc, h.run.length - 1)] : null;
+    Array.prototype.forEach.call(this.pre.children, function (s) {
+      var n = +s.getAttribute('data-n'), old = s.querySelector('.dsa-not');
+      s.classList.toggle('vurgu', h.run.indexOf(n) >= 0);
+      s.classList.toggle('atla', !!h.skip[n]);
+      s.classList.toggle('pc', n === cur);
+      if (old) s.removeChild(old);
+      if (h.notes[n] !== undefined && (!h.run.length || h.run.indexOf(n) <= h.run.indexOf(cur) || h.skip[n])) {
+        var b = document.createElement('span'); b.className = 'dsa-not'; b.textContent = pick(h.notes[n], lang); s.appendChild(b);
+      }
+      if (n === cur) curEl = s;
+    });
+    if (curEl) {
+      var p = this.pre, top = curEl.offsetTop - p.offsetTop;
       if (top < p.scrollTop || top > p.scrollTop + p.clientHeight - 30) p.scrollTop = Math.max(0, top - 40);
     }
   };
-
+  /** Walk the program counter through the step's lines one by one within `total` ms. */
+  Player.prototype.walkPc = function (total) {
+    var self = this, n = this.hotLines().run.length, k = 0;
+    clearTimeout(this.pcTimer);
+    if (n <= 1) { this.markCode(); return; }
+    var dt = Math.max(110, Math.min(700, total / n));
+    (function tick() { self.markCode(k); k++; if (k < n) self.pcTimer = setTimeout(tick, dt); })();
+  };
   Player.prototype.go = function (target, animate) {
     var n = this.frames.length;
     if (target < 0 || target >= n) { if (target >= n) this.stop(); return; }
@@ -868,8 +1131,16 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
     var f = this.frames[target];
     this.cap.innerHTML = fmt(pick(f.cap, this.lang) || '');
     this.counter.textContent = TEXT[this.lang].step + ' ' + (target + 1) + ' / ' + n;
+    this.markTape(f.at);
+    var nf = this.frames[target + 1], y2 = TEXT[this.lang];
+    if (nf) {
+      var nc = plain(pick(nf.cap, this.lang)), cut = nc.search(/[.!?](\s|$)/);
+      if (cut > 20 && cut < 150) nc = nc.slice(0, cut + 1); else if (nc.length > 150) nc = nc.slice(0, 147) + '…';
+      this.nextEl.innerHTML = '<span class="dsa-sonraki-etk">' + esc(y2.upNext) + '</span> ' + esc(nc);
+    } else this.nextEl.innerHTML = '<span class="dsa-sonraki-etk">' + esc(y2.lastStep) + '</span>';
     this.slider.value = target + 1;
-    this.markCode();
+    if (animate && !this.o.static) this.walkPc(this.playing ? this.wait() * 0.75 : 160 * this.hotLines().run.length / this.speed);
+    else this.markCode();
     if (this.voice) this.say();
   };
 
@@ -913,7 +1184,7 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
       }); });
     });
     if (!jobs.length) return;
-    var dur = 650 / this.speed, t0 = null;
+    var dur = 480 / this.speed, t0 = null;
     this.finish = function () { jobs.forEach(function (j) { j.e.setAttribute(j.n, j.s); }); self.finish = null; };
     function tick(t) {
       if (t0 === null) t0 = t;
@@ -936,7 +1207,7 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
     }
   };
 
-  Player.prototype.wait = function () { var c = pick(this.frames[this.i].cap, this.lang) || ''; return (1300 + c.length * 38) / this.speed; };
+  Player.prototype.wait = function () { var c = pick(this.frames[this.i].cap, this.lang) || ''; return (700 + c.length * 20) / this.speed; };
   Player.prototype.play = function () {
     var self = this;
     if (this.i >= this.frames.length - 1) this.go(0, false);
@@ -1040,6 +1311,11 @@ html, body { margin: 0; background: var(--dsa-zemin); color: var(--dsa-yazi);
         if (!player.err.textContent) errors.push('bad own values were accepted');
       }
       player.go(0, false); player.go(1, true); player.go(2, true);   // animated transitions must not throw
+      var vbw = function () { return +player.svg.getAttribute('viewBox').split(' ')[2]; }, w0 = vbw();
+      player.zoomBy(2);
+      if (Math.abs(vbw() * 2 - w0) > 1) errors.push('zoom in did not halve the view width');
+      player.resetView();
+      if (Math.abs(vbw() - w0) > 1) errors.push('fit did not restore the view');
     } catch (e) { errors.push(String(e && e.stack || e)); }
     var out = document.createElement('pre');
     out.id = 'dsa-selftest';

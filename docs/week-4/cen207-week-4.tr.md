@@ -6986,7 +6986,7 @@ başladığı konusunda hiçbir an şüphe yoktur.
 ![Huffman ile kodlama ve kod çözme — adım adım](anim/huffman-encode-decode.png)
 </div>
 
-Oynatıcıda ayrıca **daha çeşitli: "THEQUICKBROWNFOX" (17 karakter)** (zor) ve uç durumlar **sadece 2 farklı
+Oynatıcıda ayrıca **daha çeşitli: "THEQUICKBROWNFOX" (16 karakter)** (zor) ve uç durumlar **sadece 2 farklı
 sembol: 10 karakter**, **çok çarpık: 9 A, 1 B**, **rakamlarla: 14 karakter**, ve **uzun metin: 30 karakter**
 seçeneklerini deneyin — ya da 🎲 ile dört zorluk seviyesinde rastgele veri üretin, ya da kendi metninizi yazın
 (en az 10 karakter, en az 2 farklı sembol).

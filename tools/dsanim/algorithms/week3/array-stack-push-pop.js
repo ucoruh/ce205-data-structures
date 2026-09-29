@@ -170,14 +170,16 @@
             decide('full!', 'del');
             S.step(T('`push(' + x + ')` — `top == CAP - 1` (' + top + ' == ' + (CAP - 1) + '), yığın dolu → **taşma (overflow)**. Hiçbir şey yazılmaz, `false` döner.',
                      '`push(' + x + ')` — `top == CAP - 1` (' + top + ' == ' + (CAP - 1) + '), the stack is full → **overflow**. Nothing is written; it returns `false`.'),
-                   { c: [6, 7], java: [6, 7] });
+                   { c: [{ n: 6, note: T(top + ' == ' + (CAP - 1) + '? evet', top + ' == ' + (CAP - 1) + '? yes') }, 7],
+                     java: [{ n: 6, note: T(top + ' == ' + (CAP - 1) + '? evet', top + ' == ' + (CAP - 1) + '? yes') }, 7] });
             return;
           }
           pushes++;
           if (pushes === 1) {
             S.step(T('`push(' + x + ')` — önce soruyoruz, yığın dolu mu? `top` (' + top + ') son indise (' + (CAP - 1) + ') eşit değil, yer var.',
                      '`push(' + x + ')` — first we ask, is the stack full? `top` (' + top + ') is not the last index (' + (CAP - 1) + '), so there is room.'),
-                   { c: [5, 6], java: [5, 6] });
+                   { c: [5, { n: 6, note: T(top + ' == ' + (CAP - 1) + '? hayır', top + ' == ' + (CAP - 1) + '? no') }, { n: 7, skip: true }],
+                     java: [5, { n: 6, note: T(top + ' == ' + (CAP - 1) + '? hayır', top + ' == ' + (CAP - 1) + '? no') }, { n: 7, skip: true }] });
             top++; point(); count(); braces();
             S.set('h' + top, { style: 'hl' });
             S.step(T('`top` bir artar ve ' + top + ' olur: yeni eleman bir sonraki hücreye gidecek.', '`top` goes up by one to ' + top + ': the new element goes into the next cell.'),
@@ -192,7 +194,8 @@
           S.set('h' + top, { text: String(x), style: 'new' });
           S.step(T('`push(' + x + ')` — yer var → `top = ' + top + '`, `data[' + top + '] = ' + x + '`.',
                    '`push(' + x + ')` — there is room → `top = ' + top + '`, `data[' + top + '] = ' + x + '`.'),
-                 { c: [6, 8, 9], java: [6, 8, 9] });
+                 { c: [{ n: 6, note: T(top + ' == ' + (CAP - 1) + '? hayır', top + ' == ' + (CAP - 1) + '? no') }, { n: 7, skip: true }, 8, 9, 10],
+                   java: [{ n: 6, note: T(top + ' == ' + (CAP - 1) + '? hayır', top + ' == ' + (CAP - 1) + '? no') }, { n: 7, skip: true }, 8, 9, 10] });
           return;
         }
         if (top === -1) {
@@ -201,7 +204,8 @@
           decide('empty!', 'del');
           S.step(T('`pop()` — `top == -1`, çıkaracak eleman yok → **alttan taşma (underflow)**. `false` döner; program çökmez.',
                    '`pop()` — `top == -1`, there is nothing to remove → **underflow**. It returns `false`; the program does not crash.'),
-                 { c: [14, 15], java: [14, 15] });
+                 { c: [{ n: 14, note: T('top == -1? evet', 'top == -1? yes') }, 15],
+                   java: [{ n: 14, note: T('top == -1? evet', 'top == -1? yes') }, 15] });
           return;
         }
         pops++;
@@ -211,7 +215,8 @@
           S.set('h' + top, { style: 'hl' });
           S.step(T('`pop()` — yığın boş değil. En üstteki değer (' + v + ') okunur: yalnız en üste erişebiliriz, **Son giren İlk çıkar (LIFO)**.',
                    '`pop()` — the stack is not empty. The top value (' + v + ') is read: we can only reach the top, **Last In, First Out (LIFO)**.'),
-                 { c: [14, 16], java: [14, 16] });
+                 { c: [{ n: 14, note: T('top == -1? hayır', 'top == -1? no') }, { n: 15, skip: true }, 16],
+                   java: [{ n: 14, note: T('top == -1? hayır', 'top == -1? no') }, { n: 15, skip: true }, 16] });
           S.set('h' + top, { style: 'dim' });
           top--; point(); count(); braces();
           addPopped(v);
@@ -223,7 +228,9 @@
         S.set('h' + top, { style: 'dim' });
         top--; point(); count(); braces();
         addPopped(v);
-        S.step(T('`pop()` → ' + v + '; `top = ' + top + '`.', '`pop()` → ' + v + '; `top = ' + top + '`.'), { c: [16, 17], java: [16, 17] });
+        S.step(T('`pop()` → ' + v + '; `top = ' + top + '`.', '`pop()` → ' + v + '; `top = ' + top + '`.'),
+               { c: [{ n: 14, note: T('top == -1? hayır', 'top == -1? no') }, { n: 15, skip: true }, 16, 17, 18],
+                 java: [{ n: 14, note: T('top == -1? hayır', 'top == -1? no') }, { n: 15, skip: true }, 16, 17, 18] });
       });
       refresh(); decide('', 'normal'); S.at(null);
       var rest = [];

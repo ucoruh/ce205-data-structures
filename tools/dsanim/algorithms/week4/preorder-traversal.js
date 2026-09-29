@@ -168,8 +168,10 @@
       var root = buildTree(arr);
       if (!root) {
         S.label('empty', { x: 60, y: 50, text: T('Boş ağaç: gezilecek düğüm yok.', 'Empty tree: there is nothing to traverse.'), anchor: 'start', size: 16 });
-        S.step(T('Ağaç boş (`tree = []`): `preorder(NULL)` doğrudan temel duruma (`base case`) düşer, hiçbir şey ziyaret edilmez.',
-                 'The tree is empty (`tree = []`): `preorder(NULL)` hits the base case right away, nothing is visited.'), { c: [1, 2], java: [1, 2] });
+        S.step(T('Ağaç boş (`tree = []`): `preorder(NULL)` doğrudan temel duruma (`base case`) düşer, hiçbir şey ziyaret edilmez. Fonksiyonun geri kalanı (3-6. satırlar) hiç çalışmaz.',
+                 'The tree is empty (`tree = []`): `preorder(NULL)` hits the base case right away, nothing is visited. The rest of the function (lines 3-6) never runs.'),
+               { c: [1, { n: 2, note: T('node == NULL? evet', 'node == NULL? yes') }, { n: 3, skip: true }, { n: 4, skip: true }, { n: 5, skip: true }, { n: 6, skip: true }],
+                 java: [1, { n: 2, note: T('node == NULL? evet', 'node == NULL? yes') }, { n: 3, skip: true }, { n: 4, skip: true }, { n: 5, skip: true }, { n: 6, skip: true }] });
         S.result = [];
         return;
       }
@@ -181,6 +183,10 @@
       S.step(T('Preorder dolaşma kuralı: her düğümde önce DÜĞÜMÜN KENDİSİNİ ziyaret et, sonra SOL alt ağacı gez, sonra SAĞ alt ağacı gez (kısaca: ziyaret, sol, sağ). `preorder(root)` ile başlıyoruz; etkin (mavi `active`) kenarlar kökten şu anki çağrıya giden yolu (call path) gösterecek.',
                'Preorder rule: at every node, visit the NODE ITSELF first, then the LEFT subtree, then the RIGHT subtree (short form: visit, left, right). We start with `preorder(root)`; the active (blue) edges will show the call path from the root down to the current call.'),
              { c: [1], java: [1] });
+      S.step(T('Temel durum (base case): eğer bir çocuk göstericisi NULL ise, `preorder(NULL)` 2. satırdaki kontrolde hemen `return` eder — fonksiyonun geri kalanı (3-6. satırlar) hiç çalışmaz. Aşağıdaki adımlarda, var olmayan bir çocuğa yapılan her çağrı bu şekilde anında biter.',
+               'Base case: if a child pointer is NULL, `preorder(NULL)` returns immediately at the check on line 2 — the rest of the function (lines 3-6) never runs. In the steps below, every call on a missing child ends this way instantly.'),
+             { c: [{ n: 2, note: T('node == NULL? evet', 'node == NULL? yes') }, { n: 3, skip: true }, { n: 4, skip: true }, { n: 5, skip: true }, { n: 6, skip: true }],
+               java: [{ n: 2, note: T('node == NULL? evet', 'node == NULL? yes') }, { n: 3, skip: true }, { n: 4, skip: true }, { n: 5, skip: true }, { n: 6, skip: true }] });
 
       function setNodeStyle(idx, style) { var id = 'n' + idx; if (S.get(id).style !== 'dim') S.set(id, { style: style }); }
       function clearPath() {
@@ -211,13 +217,19 @@
         outputBox(node.val);
         order.push(node.val);
         var soFar = order.join(', ');
+        /* This step stands for `preorder(node)`'s whole call frame: the base-case check (2, always
+         * false here — a real node), the visit itself (3, 4), then the calls into the left and right
+         * subtrees (5, 6 — each either an instant no-op if that child is NULL, as shown once in the
+         * base-case demo above, or fully traced by the steps that follow). Every line listed here really
+         * executes for this node. */
+        var lines = [{ n: 2, note: T('node == NULL? hayır', 'node == NULL? no') }, 3, 4, 5, 6];
         if (first) {
-          S.step(T('`preorder(' + node.val + ')`: bu düğüm henüz gezilmedi (temel durum geçildi), ilk iş olarak KENDİSİ ziyaret edilir — `printf`/kayıt satırları. Çıkış listesine `' + node.val + '` eklenir: ' + soFar + '.',
-                   '`preorder(' + node.val + ')`: this node has not been visited yet (the base case passed), the FIRST thing we do is visit it itself — the print/record lines. `' + node.val + '` is appended to the output list: ' + soFar + '.'),
-                 { c: [2, 3, 4], java: [2, 3, 4] });
+          S.step(T('`preorder(' + node.val + ')`: bu düğüm henüz gezilmedi (temel durum geçildi), ilk iş olarak KENDİSİ ziyaret edilir — `printf`/kayıt satırları, sonra sol ve sağ alt ağaçlar için çağrılar. Çıkış listesine `' + node.val + '` eklenir: ' + soFar + '.',
+                   '`preorder(' + node.val + ')`: this node has not been visited yet (the base case passed), the FIRST thing we do is visit it itself — the print/record lines, then the calls into the left and right subtrees. `' + node.val + '` is appended to the output list: ' + soFar + '.'),
+                 { c: lines, java: lines });
           first = false;
         } else {
-          S.step(T('Ziyaret: `' + node.val + '`. Şimdiye kadar: ' + soFar + '.', 'Visit: `' + node.val + '`. So far: ' + soFar + '.'), { c: [3, 4], java: [3, 4] });
+          S.step(T('Ziyaret: `' + node.val + '`. Şimdiye kadar: ' + soFar + '.', 'Visit: `' + node.val + '`. So far: ' + soFar + '.'), { c: lines, java: lines });
         }
         preorder(node.left);
         setNodeStyle(node.idx, 'dim');

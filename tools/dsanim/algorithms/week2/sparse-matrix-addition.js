@@ -66,11 +66,18 @@
     '    return trimmed;',
     '}'
   ];
-  var L_A_FIRST = { c: [10, 11], java: [11, 12] };
-  var L_B_FIRST = { c: [12, 13], java: [13, 14] };
-  var L_SUM = { c: [14, 15, 16, 17, 18, 19, 20, 21], java: [15, 16, 17, 18] };
-  var L_SUM_ZERO = { c: [15, 16, 22, 23], java: [16, 17, 19, 20] };
-  var L_DRAIN = { c: [27, 28], java: [23, 24] };
+  var L_A_FIRST = { c: [{ n: 10, note: T('a[i] önce mi? evet', 'a[i] first? yes') }, 11], java: [{ n: 11, note: T('a[i] önce mi? evet', 'a[i] first? yes') }, 12] };
+  var L_B_FIRST = { c: [{ n: 12, note: T('b[j] önce mi? evet', 'b[j] first? yes') }, 13], java: [{ n: 13, note: T('b[j] önce mi? evet', 'b[j] first? yes') }, 14] };
+  /* Java declares `out[]` as a local (C's out[] is a parameter), so every line from "sum = ..." onward is
+     one higher in Java than in C -- never assume the same offset, always re-derive from the printed array. */
+  var L_SUM = { c: [14, 15, { n: 16, note: T('sum != 0? evet', 'sum != 0? yes') }, 17, 18, 19, 20, 21],
+                java: [15, 16, { n: 17, note: T('sum != 0? evet', 'sum != 0? yes') }, 18] };
+  var L_SUM_ZERO = { c: [15, { n: 16, note: T('sum != 0? hayır (iptal)', 'sum != 0? no (cancelled)') }, 22, 23],
+                      java: [16, { n: 17, note: T('sum != 0? hayır (iptal)', 'sum != 0? no (cancelled)') }, { n: 18, skip: true }, 19, 20] };
+  var L_DRAIN = { c: [{ n: 26, note: T('i < na? (a bitene kadar kopyalanır)', 'i < na? (copies until a is exhausted)') },
+                       { n: 27, note: T('j < nb? (b bitene kadar kopyalanır)', 'j < nb? (copies until b is exhausted)') }],
+                  java: [{ n: 23, note: T('i < a.length? (a bitene kadar kopyalanır)', 'i < a.length? (copies until a is exhausted)') },
+                         { n: 24, note: T('j < b.length? (b bitene kadar kopyalanır)', 'j < b.length? (copies until b is exhausted)') }] };
 
   D.define({
     id: 'sparse-matrix-addition',

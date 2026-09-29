@@ -62,9 +62,38 @@
     '}'
   ];
   var LINES_PUSHFN = { c: [7, 8], java: [6, 7] };
-  var LINES_POP = { c: [12, 13], java: [11, 12] };
-  var LINES_VISIT = { c: [14, 15, 16, 17], java: [13, 14, 15, 16] };
-  var LINES_FOREST = { c: [20, 21, 22, 23], java: [19, 20, 21, 22] };
+  /** `while (top >= 0)` (12/11): a `{note}` marks the loop condition true for every "stale, discarded" pop --
+   *  the loop obviously kept running or this iteration would not exist. */
+  var LINES_POP = { c: [{ n: 12, note: T('top >= 0? evet (yığın boş değil)', 'top >= 0? yes (stack not empty)') }, 13],
+                     java: [{ n: 11, note: T('top >= 0? evet (yığın boş değil)', 'top >= 0? yes (stack not empty)') }, 12] };
+  /** One genuine (non-stale) pop-and-visit: `if (visited[u]) continue;` (14/13) gets a `{note}` saying it was
+   *  false this time (a first visit, not a stale duplicate); 15-16/14-15 always follow. Then, for every
+   *  neighbour the `for` loop (17/16) actually reaches, the whole `if (!visited[...]) push(...);` (18/17) is a
+   *  single line, so a `{note}` says whether it pushed or not -- there is no separate body line to omit or
+   *  (wrongly) mark `{skip: true}`, since the effect lives inside that same line (see bfs.js/adjacency-list.js
+   *  for why a per-iteration `{skip: true}` on a shared body line is unsafe within one step). */
+  function visitLines(trace) {
+    var c = [{ n: 14, note: T('visited[u]? hayır (ilk kez ziyaret)', 'visited[u]? no (first visit)') }, 15, 16];
+    var j = [{ n: 13, note: T('visited[u]? hayır (ilk kez ziyaret)', 'visited[u]? no (first visit)') }, 14, 15];
+    if (!trace.length) {
+      c.push({ n: 17, note: T('i >= 0? hayır (komşu yok)', 'i >= 0? no (no neighbours)') });
+      j.push({ n: 16, note: T('i >= 0? hayır (komşu yok)', 'i >= 0? no (no neighbours)') });
+      return { c: c, java: j };
+    }
+    trace.forEach(function (t) {
+      c.push({ n: 17, note: T('i >= 0? evet (sıradaki: `' + t.v + '`)', 'i >= 0? yes (next: `' + t.v + '`)') });
+      c.push({ n: 18, note: t.pushed ? T('!visited[...]? evet (itilir)', '!visited[...]? yes (pushed)') : T('!visited[...]? hayır (zaten ziyaret edilmiş)', '!visited[...]? no (already visited)') });
+      j.push({ n: 16, note: T('i >= 0? evet (sıradaki: `' + t.v + '`)', 'i >= 0? yes (next: `' + t.v + '`)') });
+      j.push({ n: 17, note: t.pushed ? T('!visited[...]? evet (itilir)', '!visited[...]? yes (pushed)') : T('!visited[...]? hayır (zaten ziyaret edilmiş)', '!visited[...]? no (already visited)') });
+    });
+    c.push({ n: 17, note: T('i >= 0? hayır (komşu kalmadı)', 'i >= 0? no (no neighbours left)') });
+    j.push({ n: 16, note: T('i >= 0? hayır (komşu kalmadı)', 'i >= 0? no (no neighbours left)') });
+    return { c: c, java: j };
+  }
+  /** Final "stack empty, done" step: the `while (top >= 0)` check that ended the LAST `dfs_iterative` call is
+   *  now false. */
+  var LINES_DONE = { c: [{ n: 12, note: T('top >= 0? hayır (yığın boş)', 'top >= 0? no (stack empty)') }],
+                      java: [{ n: 11, note: T('top >= 0? hayır (yığın boş)', 'top >= 0? no (stack empty)') }] };
 
   var EDGE_RE = /^([A-Za-z0-9]{1,3})(-|>)([A-Za-z0-9]{1,3})(?::(\d+))?$/;
   function parseGraph(text) {
@@ -231,18 +260,22 @@
           visited[u] = true; order.push(u);
           S.set('n' + u, { style: 'hl' }); outputBox(u);
           updateStack(stack);
-          var kids = [];
+          var kids = [], trace = [];
           var rev = (adj[u] || []).slice().reverse();
-          rev.forEach(function (v) { if (!visited[v]) { stack.push(v); kids.push(v); } });
+          rev.forEach(function (v) {
+            var pushed = !visited[v];
+            trace.push({ v: v, pushed: pushed });
+            if (pushed) { stack.push(v); kids.push(v); }
+          });
           updateStack(stack);
           S.step(T('`pop()` → `' + u + '`; ziyaret edilir (sıra: ' + order.join(', ') + '). Komşuları TERS alfabetik sırada yığına eklenir: ' + (kids.length ? kids.join(', ') : T('yok', 'none').tr) + '.',
-                   '`pop()` → `' + u + '`; it is visited (order so far: ' + order.join(', ') + '). Its neighbours are pushed in reverse alphabetical order: ' + (kids.length ? kids.join(', ') : 'none') + '.'), LINES_VISIT);
+                   '`pop()` → `' + u + '`; it is visited (order so far: ' + order.join(', ') + '). Its neighbours are pushed in reverse alphabetical order: ' + (kids.length ? kids.join(', ') : 'none') + '.'), visitLines(trace));
           S.set('n' + u, { style: 'dim' });
         }
       });
 
       S.result = { order: order };
-      S.step(T('Yığın boş, bitti. Ziyaret sırası: ' + order.join(', ') + ' -- özyinelemeli sürümle tamamen aynı.', 'The stack is empty, done. Visit order: ' + order.join(', ') + ' -- exactly the same as the recursive version.'), LINES_FOREST);
+      S.step(T('Yığın boş, bitti. Ziyaret sırası: ' + order.join(', ') + ' -- özyinelemeli sürümle tamamen aynı.', 'The stack is empty, done. Visit order: ' + order.join(', ') + ' -- exactly the same as the recursive version.'), LINES_DONE);
     }
   });
 })(typeof DSAnim !== 'undefined' ? DSAnim : require('../../web/scene.js'));

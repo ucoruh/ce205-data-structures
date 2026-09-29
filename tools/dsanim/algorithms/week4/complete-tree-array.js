@@ -31,7 +31,20 @@
     '}'
   ];
   var LINES_FORMULAS = { c: [2, 3, 4], java: [2, 3, 4] };
-  var LINES_CHECK = { c: [7, 8, 9, 10], java: [7, 8, 9, 10] };
+  /** `is_complete`'s real executed lines for a scan that checks cells 0..uptoInclusive: the for-loop
+   *  condition (8) and the emptiness check (9, with a note) run once per cell actually scanned, in order;
+   *  if a gap was found the function returns FALSE from inside line 9 (line 10 never runs); otherwise the
+   *  loop's final (false) condition check runs once more and line 10 (`return true`) is reached. */
+  function checkLines(uptoInclusive, gapAt) {
+    var lines = [];
+    for (var i = 0; i <= uptoInclusive; i++) {
+      lines.push({ n: 8, note: T('i <= last_real? evet', 'i <= last_real? yes') });
+      lines.push({ n: 9, note: i === gapAt ? T('boş mu (arr[' + i + '] == EMPTY)? evet', 'empty (arr[' + i + '] == EMPTY)? yes')
+                                            : T('boş mu (arr[' + i + '] == EMPTY)? hayır', 'empty (arr[' + i + '] == EMPTY)? no') });
+    }
+    if (gapAt === -1) { lines.push({ n: 8, note: T('i <= last_real? hayır (bitti)', 'i <= last_real? no (done)') }); lines.push(10); }
+    return { c: lines, java: lines };
+  }
 
   /* ---- tree helpers (local to this file; build() uses these, reference() does not) ---- */
   function buildTree(arr) {
@@ -172,7 +185,7 @@
       if (!arr.length) {
         S.label('empty', { x: 60, y: 50, text: T('Boş ağaç: 0 düğüm. Kabul olarak boş ağaç "tam" sayılır.', 'Empty tree: 0 nodes. By convention an empty tree counts as complete.'), anchor: 'start', size: 16 });
         S.step(T('`n = 0`: kontrol edilecek hücre yok, döngü hiç çalışmaz, `is_complete` `true` döner.',
-                 '`n = 0`: there are no cells to check, the loop never runs, `is_complete` returns `true`.'), LINES_CHECK);
+                 '`n = 0`: there are no cells to check, the loop never runs, `is_complete` returns `true`.'), checkLines(-1, -1));
         S.result = { complete: true, count: 0 };
         return;
       }
@@ -235,13 +248,13 @@
         for (var i2 = 0; i2 <= last; i2++) hi(i2, 'new');
         addFact(T('kontrol: 0..' + last + ' arası boşluk yok', 'check: no gap in 0..' + last));
         S.step(T('`is_complete`: 0. hücreden ' + last + '. hücreye kadar hepsini tarıyoruz — HİÇBİRİ boş değil. Bu ağaç TAM (complete): son seviye de olsa boşluksuz, soldan sağa dolu.',
-                 '`is_complete`: we scan every cell from 0 to ' + last + ' — NONE of them is empty. This tree IS complete: even the last level, if partial, is filled left to right with no gaps.'), LINES_CHECK);
+                 '`is_complete`: we scan every cell from 0 to ' + last + ' — NONE of them is empty. This tree IS complete: even the last level, if partial, is filled left to right with no gaps.'), checkLines(last, -1));
       } else {
         hi(gap, 'del');
         hi(last, 'hl');
         addFact('gap: arr[' + gap + '] = EMPTY, arr[' + last + '] = ' + arr[last]);
         S.step(T('`is_complete`: tararken ' + gap + '. hücrede bir BOŞLUK buluyoruz — ama ' + last + '. hücre (daha sonraki bir hücre!) dolu (`' + arr[last] + '`). Demek ki bu ağaç TAM DEĞİL: dizide "delik" var, bu da array temsilini bu ağaç için elverişsiz yapar.',
-                 '`is_complete`: while scanning we find a GAP at cell ' + gap + ' — yet cell ' + last + ' (a LATER cell!) is filled (`' + arr[last] + '`). So this tree is NOT complete: the array has a "hole", which is exactly why the array representation is wasteful for a tree shaped like this.'), LINES_CHECK);
+                 '`is_complete`: while scanning we find a GAP at cell ' + gap + ' — yet cell ' + last + ' (a LATER cell!) is filled (`' + arr[last] + '`). So this tree is NOT complete: the array has a "hole", which is exactly why the array representation is wasteful for a tree shaped like this.'), checkLines(gap, gap));
       }
       clearHi();
       var count = arr.filter(function (v) { return v !== null; }).length;

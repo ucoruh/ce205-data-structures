@@ -24,6 +24,8 @@ static void queue_reset(Queue *que) {
 }
 
 static void enqueue(Queue *que, Process p) {
+    if (que->count == QCAP) return;   /* this priority level is full: refuse silently
+                                          rather than wrap rear onto an unread slot */
     que->rear = (que->rear + 1) % QCAP;
     que->items[que->rear] = p;
     que->count++;

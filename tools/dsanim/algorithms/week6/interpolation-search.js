@@ -17,7 +17,9 @@
     '            *probes = p;',
     '            return lo;                            /* target must equal arr[lo] here */',
     '        }',
-    '        int pos = lo + (int) ((double) (target - arr[lo]) * (hi - lo) / (arr[hi] - arr[lo]));',
+    '        long long span = (long long) arr[hi] - (long long) arr[lo];   /* avoid int overflow */',
+    '        long long num = (long long) target - (long long) arr[lo];',
+    '        int pos = lo + (int) ((double) num * (hi - lo) / (double) span);',
     '        if (arr[pos] == target) { *probes = p; return pos; }',
     '        if (arr[pos] < target) lo = pos + 1;',
     '        else hi = pos - 1;',
@@ -35,7 +37,9 @@
     '        if (arr[hi] == arr[lo]) {                 // guard: avoid division by zero',
     '            return lo;                            // target must equal arr[lo] here',
     '        }',
-    '        int pos = lo + (int) ((double) (target - arr[lo]) * (hi - lo) / (arr[hi] - arr[lo]));',
+    '        long span = (long) arr[hi] - (long) arr[lo];   // avoid int overflow',
+    '        long num = (long) target - (long) arr[lo];',
+    '        int pos = lo + (int) ((double) num * (hi - lo) / (double) span);',
     '        if (arr[pos] == target) return pos;',
     '        if (arr[pos] < target) lo = pos + 1;',
     '        else hi = pos - 1;',
@@ -168,7 +172,7 @@
           S.at(lo);
           S.step(T('`arr[hi] == arr[lo]`, formülün paydası `arr[hi] - arr[lo] = 0` olurdu — **sıfıra bölme**. Koruma bu durumu yakalar: aralık zaten tek bir değer (' + arr[lo] + '), `target` ile eşleşiyorsa oradadır.',
                    '`arr[hi] == arr[lo]`, the formula\'s denominator `arr[hi] - arr[lo] = 0` would be **division by zero**. The guard catches this: the range is already one single value (' + arr[lo] + '), it is `target` if they match.'),
-                 { c: [5, 6, 7], java: [6, 7] });
+                 { c: [{ n: 5, note: T('arr[hi]==arr[lo]? evet', 'arr[hi]==arr[lo]? yes') }, 6, 7], java: [{ n: 6, note: T('arr[hi]==arr[lo]? evet', 'arr[hi]==arr[lo]? yes') }, 7] });
           S.remove('lop'); S.remove('hip');
           break;
         }
@@ -176,19 +180,25 @@
         S.set('posf', { text: 'pos = ' + lo + ' + floor((' + target + ' - ' + arr[lo] + ') * (' + hi + ' - ' + lo + ') / (' + arr[hi] + ' - ' + arr[lo] + ')) = ' + pos });
         point(S, 'posp', 'h' + pos, 'pos', 22);
         S.at(pos);
+        var wasFirst = first;
         if (first) {
           S.step(T('Formül: en düşük ve en yüksek uca göre `target`\'in oransal konumunu hesaplarız. `pos = ' + pos + '`.',
                    'The formula: we compute `target`\'s proportional position between the low and high ends. `pos = ' + pos + '`.'),
-                 { c: [9], java: [9] });
+                 { c: [9, 10, 11], java: [9, 10, 11] });
           first = false;
         }
+        /* pos (lines 9-11) is shown in the dedicated step above on the FIRST iteration only; later
+           iterations have no such callout, so their outcome step below must include it themselves. */
+        var posLines = wasFirst ? [] : [9, 10, 11];
         var v = arr[pos];
         if (v === target) {
           index = pos;
           S.set('h' + pos, { style: 'new' });
           S.set('dec', { text: '= ' + target + ' found', style: 'new' });
           S.step(T('`arr[' + pos + '] == ' + target + '`? Evet — ' + p + '. yoklamada bulundu.',
-                   '`arr[' + pos + '] == ' + target + '`? Yes — found on probe ' + p + '.'), { c: [10], java: [10] });
+                   '`arr[' + pos + '] == ' + target + '`? Yes — found on probe ' + p + '.'),
+                 { c: posLines.concat([{ n: 12, note: T('arr[pos]==target? evet', 'arr[pos]==target? yes') }]),
+                   java: posLines.concat([{ n: 12, note: T('arr[pos]==target? evet', 'arr[pos]==target? yes') }]) });
           S.remove('lop'); S.remove('hip'); S.remove('posp');
           break;
         } else if (v < target) {
@@ -196,14 +206,16 @@
           S.set('dec', { text: '< ' + target, style: 'hl' });
           S.step(T('`arr[' + pos + '] = ' + v + ' < ' + target + '` — tahmin düşük kaldı, aralığı sağdan daraltırız: `lo = ' + (pos + 1) + '`.',
                    '`arr[' + pos + '] = ' + v + ' < ' + target + '` — the estimate undershot, we narrow from the left: `lo = ' + (pos + 1) + '`.'),
-                 { c: [9, 10, 11], java: [9, 10, 11] });
+                 { c: posLines.concat([{ n: 12, note: T('arr[pos]==target? hayır', 'arr[pos]==target? no') }, { n: 13, note: T('arr[pos]<target? evet', 'arr[pos]<target? yes') }]),
+                   java: posLines.concat([{ n: 12, note: T('arr[pos]==target? hayır', 'arr[pos]==target? no') }, { n: 13, note: T('arr[pos]<target? evet', 'arr[pos]<target? yes') }]) });
           lo = pos + 1;
         } else {
           S.set('h' + pos, { style: 'hl' });
           S.set('dec', { text: '> ' + target, style: 'hl' });
           S.step(T('`arr[' + pos + '] = ' + v + ' > ' + target + '` — tahmin yüksek kaldı, aralığı soldan daraltırız: `hi = ' + (pos - 1) + '`.',
                    '`arr[' + pos + '] = ' + v + ' > ' + target + '` — the estimate overshot, we narrow from the right: `hi = ' + (pos - 1) + '`.'),
-                 { c: [9, 10, 12], java: [9, 10, 12] });
+                 { c: posLines.concat([{ n: 12, note: T('arr[pos]==target? hayır', 'arr[pos]==target? no') }, { n: 13, note: T('arr[pos]<target? hayır', 'arr[pos]<target? no') }, 14]),
+                   java: posLines.concat([{ n: 12, note: T('arr[pos]==target? hayır', 'arr[pos]==target? no') }, { n: 13, note: T('arr[pos]<target? hayır', 'arr[pos]<target? no') }, 14]) });
           hi = pos - 1;
         }
       }

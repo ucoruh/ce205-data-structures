@@ -345,7 +345,7 @@ really come from an idea that small?
 
 ---
 
-# Edge case — directed, two cycles, a self-loop
+# Edge case — directed, multiple cycles, a self-loop
 
 <iframe class="dsanim" src="anim/graph-terminology.html?yer=slayt&lang=en&example=hard" title="Graph vocabulary: directed, hard"></iframe>
 

@@ -42,8 +42,14 @@
     '        addEdge(edges[k].a, edges[k].b, edges[k].weight, directed);',
     '}'
   ];
-  var LINES_ADD = { c: [6, 7, 8], java: [6, 7, 8] };
   var LINES_LOOP = { c: [14, 15], java: [14, 15] };
+  /** `add_edge`: line 8 (the mirror write) only runs when the graph is undirected -- `{skip: true}` marks it
+   *  dimmed/struck-through for a directed graph, where `if (!directed)` is false and the mirror never runs. */
+  function addEdgeLines(directed) {
+    var lines = [6, { n: 7, note: directed ? T('!directed? hayır (yönlü)', '!directed? no (directed)') : T('!directed? evet (yönsüz)', '!directed? yes (undirected)') }];
+    lines.push(directed ? { n: 8, skip: true } : 8);
+    return { c: lines, java: lines };
+  }
 
   var EDGE_RE = /^([A-Za-z0-9]{1,3})(-|>)([A-Za-z0-9]{1,3})(?::(\d+))?$/;
   function parseGraph(text) {
@@ -161,7 +167,7 @@
           S.set('row' + i3, { style: 'hl' }); S.set('col' + j3, { style: 'hl' }); S.set('m_' + i3 + '_' + j3, { style: 'hl' });
           S.step(T('İlk kenar: `' + e.a + (directed ? '>' : '-') + e.b + '`. Satır `' + e.a + '` ile sütun `' + e.b + '`\'nin kesiştiği hücreye bakıyoruz.',
                     'The first edge: `' + e.a + (directed ? '>' : '-') + e.b + '`. We look at the cell where row `' + e.a + '` meets column `' + e.b + '`.'),
-                 LINES_ADD);
+                 addEdgeLines(directed));
           S.set('m_' + i3 + '_' + j3, { text: String(val), style: 'new' });
           if (!directed) S.set('m_' + j3 + '_' + i3, { text: String(val), style: 'new' });
           S.step(directed
@@ -169,14 +175,14 @@
                 '`matrix[' + e.a + '][' + e.b + '] = ' + val + '`. In a directed graph only this one cell is written.')
             : T('`matrix[' + e.a + '][' + e.b + '] = ' + val + '`, ve simetriği `matrix[' + e.b + '][' + e.a + '] = ' + val + '` de yazılır -- yönsüz çizgenin matrisi köşegene göre SİMETRİKTİR.',
                 '`matrix[' + e.a + '][' + e.b + '] = ' + val + '`, and its mirror `matrix[' + e.b + '][' + e.a + '] = ' + val + '` is written too -- an undirected graph\'s matrix is SYMMETRIC across the diagonal.'),
-            LINES_ADD);
+            addEdgeLines(directed));
           S.set('row' + i3, { style: 'normal' }); S.set('col' + j3, { style: 'normal' });
         } else {
           S.set('m_' + i3 + '_' + j3, { text: String(val), style: 'new' });
           if (!directed) S.set('m_' + j3 + '_' + i3, { text: String(val), style: 'new' });
           S.step(T((k + 1) + '. kenar `' + e.a + (directed ? '>' : '-') + e.b + (e.w !== null ? ':' + e.w : '') + '`: `matrix[' + e.a + '][' + e.b + '] = ' + val + '`' + (directed ? '.' : ', `matrix[' + e.b + '][' + e.a + '] = ' + val + '`.'),
                     'edge ' + (k + 1) + ' `' + e.a + (directed ? '>' : '-') + e.b + (e.w !== null ? ':' + e.w : '') + '`: `matrix[' + e.a + '][' + e.b + '] = ' + val + '`' + (directed ? '.' : ', `matrix[' + e.b + '][' + e.a + '] = ' + val + '`.')),
-                 LINES_ADD);
+                 addEdgeLines(directed));
         }
       });
       for (var i4 = 0; i4 < n; i4++) for (var j4 = 0; j4 < n; j4++) if (M[i4][j4] !== 0) S.set('m_' + i4 + '_' + j4, { style: 'normal' });

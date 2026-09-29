@@ -159,14 +159,16 @@
             relayout(); pointFR(); count();
             S.step(T('Kuyruk boştu (`rear == NULL`), bu yüzden `front = rear = n`: tek eleman varken iki işaretçi de aynı düğümü gösterir.',
                      'The queue was empty (`rear == NULL`), so `front = rear = n`: with a single element, both pointers point to the same node.'),
-                   { c: 7, java: 7 });
+                   { c: [{ n: 7, note: T('rear == NULL? evet', 'rear == NULL? yes') }, { n: 8, skip: true }],
+                     java: [{ n: 7, note: T('rear == NULL? evet', 'rear == NULL? yes') }, { n: 8, skip: true }] });
             S.set(id, { style: 'normal' });
           } else if (wasEmpty) {
             relayout(); pointFR(); count();
             S.set(id, { style: 'normal' });
             S.step(T('`enqueue(' + op + ')` — kuyruk yine boştu, bu yüzden bu yeni düğüm hem `front` hem `rear`.',
                      '`enqueue(' + op + ')` — the queue was empty again, so this new node is both `front` and `rear`.'),
-                   { c: 7, java: 7 });
+                   { c: [5, 6, { n: 7, note: T('rear == NULL? evet', 'rear == NULL? yes') }, { n: 8, skip: true }],
+                     java: [5, 6, { n: 7, note: T('rear == NULL? evet', 'rear == NULL? yes') }, { n: 8, skip: true }] });
           } else {
             S.set(prevId, { isNull: false, style: 'hl' });
             S.arrow('arw' + prevId, { from: prevId, to: id, kind: 'next', style: 'new' });
@@ -174,7 +176,8 @@
             S.set(id, { style: 'normal' }); S.set(prevId, { style: 'normal' });
             S.step(T('`enqueue(' + op + ')` — `rear->next = n`, `rear = n` — listeyi baştan gezmeden sona eklenir: O(1).',
                      '`enqueue(' + op + ')` — `rear->next = n`, `rear = n` — added at the end without walking the list: O(1).'),
-                   { c: [6, 8], java: [6, 8] });
+                   { c: [5, 6, { n: 7, note: T('rear == NULL? hayır', 'rear == NULL? no') }, 8],
+                     java: [5, 6, { n: 7, note: T('rear == NULL? hayır', 'rear == NULL? no') }, 8] });
           }
           return;
         }
@@ -186,7 +189,7 @@
           decide('empty!', 'del');
           S.step(T('`dequeue()` — `front == NULL`, çıkaracak eleman yok → **alttan taşma (underflow)**. `false` döner; program çökmez.',
                    '`dequeue()` — `front == NULL`, there is nothing to remove → **underflow**. It returns `false`; the program does not crash.'),
-                 { c: 11, java: 11 });
+                 { c: { n: 12, note: T('front == NULL? evet', 'front == NULL? yes') }, java: { n: 12, note: T('front == NULL? evet', 'front == NULL? yes') } });
           S.set('front', { style: 'active' }); S.set('rear', { style: 'active' });
           return;
         }
@@ -196,22 +199,22 @@
           S.set(frontId, { style: 'hl' });
           S.step(T('`dequeue()` — `tmp = front` öndeki düğümü tutar; `*out = tmp->data` (' + v + ') okunur — yalnız öne erişebiliriz, **İlk giren İlk çıkar (FIFO)**.',
                    '`dequeue()` — `tmp = front` holds the front node; `*out = tmp->data` (' + v + ') is read — we can only reach the front, **First In, First Out (FIFO)**.'),
-                 { c: [12, 13], java: [12, 13] });
+                 { c: [{ n: 12, note: T('front == NULL? hayır', 'front == NULL? no') }, 13, 14], java: [{ n: 12, note: T('front == NULL? hayır', 'front == NULL? no') }, 13, 14] });
           live.shift(); vals.shift(); dequeued.push(v);
           S.remove(frontId, 'arw' + frontId);
           relayout(); pointFR(); count();
           addDeq(v);
           S.step(T('`front = front->next`: çıkış ucu bir sonraki düğüme geçer.',
                    '`front = front->next`: the front moves to the next node.'),
-                 { c: 14, java: 14 });
+                 { c: 15, java: 15 });
           if (wasLast) {
             S.step(T('`if (front == NULL) rear = NULL;`: kuyruk tamamen boşaldı, bu yüzden `rear` da `NULL` yapılır — unutulursa klasik bir hataya yol açar.',
                      '`if (front == NULL) rear = NULL;`: the queue became completely empty, so `rear` is also set to `NULL` — forgetting this is a classic bug.'),
-                   { c: 15, java: 15 });
+                   { c: { n: 16, note: T('front == NULL? evet', 'front == NULL? yes') }, java: { n: 16, note: T('front == NULL? evet', 'front == NULL? yes') } });
           } else {
             S.step(T('`free(tmp)`: eski düğümün belleği geri verilir. Her işlem O(1): tek elemanlı da olsa bin elemanlı da olsa aynı üç adım.',
                      '`free(tmp)`: the old node\'s memory is released. Every operation is O(1): the same three steps whether there is one element or a thousand.'),
-                   { c: 16, java: 16 });
+                   { c: [{ n: 16, note: T('front == NULL? hayır', 'front == NULL? no') }, 17, 18], java: [{ n: 16, note: T('front == NULL? hayır', 'front == NULL? no') }, 17, 18] });
           }
         } else {
           S.set(frontId, { style: 'dim' });
@@ -221,11 +224,12 @@
           addDeq(v);
           S.step(T('`dequeue()` → ' + v + '; `front` bir sonraki düğüme geçer, `tmp` serbest bırakılır.',
                    '`dequeue()` → ' + v + '; `front` moves to the next node, `tmp` is freed.'),
-                 { c: [12, 13, 14, 16], java: [12, 13, 14, 16] });
+                 { c: [{ n: 12, note: T('front == NULL? hayır', 'front == NULL? no') }, 13, 14, 15, { n: 16, note: T(wasLast ? 'front == NULL? evet' : 'front == NULL? hayır', wasLast ? 'front == NULL? yes' : 'front == NULL? no') }, 17, 18],
+                   java: [{ n: 12, note: T('front == NULL? hayır', 'front == NULL? no') }, 13, 14, 15, { n: 16, note: T(wasLast ? 'front == NULL? evet' : 'front == NULL? hayır', wasLast ? 'front == NULL? yes' : 'front == NULL? no') }, 17, 18] });
           if (wasLast) {
             S.step(T('Son düğüm de çıktı: `front == NULL`, bu yüzden `if (front == NULL) rear = NULL;` de çalışır — `rear` da `NULL` olur.',
                      'Even the last node is gone: `front == NULL`, so `if (front == NULL) rear = NULL;` also runs — `rear` becomes `NULL` too.'),
-                   { c: 15, java: 15 });
+                   { c: { n: 16, note: T('front == NULL? evet', 'front == NULL? yes') }, java: { n: 16, note: T('front == NULL? evet', 'front == NULL? yes') } });
           }
         }
       });
