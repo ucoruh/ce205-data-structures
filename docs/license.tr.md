@@ -2,42 +2,65 @@
 template: main.html
 ---
 
-# License
+# Lisans
+
+Bu sitedeki materyal iki farklı lisansla paylaşılır: **kaynak kodlar** (demolar, derleme betikleri, araçlar) MIT
+lisansıyla, **ders içeriği** (ders notları, sunumlar, çizimler ve kaynakları) Creative Commons CC BY-NC-ND 4.0
+lisansıyla.
+
+| Materyal | Nerede? | Lisans |
+| --- | --- | --- |
+| Demo kodları, CMake/Maven yapısı, derleme ve yardımcı betikler | `code/`, `tools/` | MIT |
+| Ders notları, sunumlar, çizimler, izlence, proje rehberi | `docs/`, `slides/` | CC BY-NC-ND 4.0 |
+
+Derste başvurulan kitaplar, standartlar ve araçlar (ör. Deitel & Deitel *C How to Program*, Cormen ve arkadaşları
+*Introduction to Algorithms*, Sedgewick & Wayne *Algorithms*) kendi lisanslarına tabidir; bu sitede yalnız **atıf**
+yapılır, kopyaları dağıtılmaz.
 
 ---
 
-## Code License
+## Kod lisansı — MIT
 
-![MIT License Logo](https://upload.wikimedia.org/wikipedia/commons/0/0c/MIT_logo.svg)
+![Lisans: MIT](https://img.shields.io/badge/lisans-MIT-0a9396)
 
 **MIT Lisansı**
 
-Telif hakkı (c) 2019-2024 Uğur CORUH
+Telif hakkı © 2019–2026 Uğur CORUH
 
-Bu yazılımın ve ilişkili dokümantasyon dosyalarının ("Yazılım") bir kopyasını edinen her kişiye, aşağıdaki koşullara tabi olmak kaydıyla, Yazılımı herhangi bir kısıtlama olmaksızın kullanma, kopyalama, değiştirme, birleştirme, yayınlama, dağıtma, alt lisanslama ve/veya Yazılımın kopyalarını satma hakkı ücretsiz olarak verilmektedir, ayrıca Yazılımın sağlandığı kişilere de bu hakların verilmesine izin verilmektedir:
+Bu yazılımın ve ilişkili dokümantasyon dosyalarının ("Yazılım") bir kopyasını edinen herkese, aşağıdaki koşullara
+uymak kaydıyla, Yazılımı kısıtlama olmaksızın kullanma, kopyalama, değiştirme, birleştirme, yayımlama, dağıtma, alt
+lisanslama ve/veya kopyalarını satma hakkı ile Yazılımın sağlandığı kişilere bu hakları tanıma izni ücretsiz olarak
+verilir:
 
-Yukarıdaki telif hakkı bildirimi ve bu izin bildirimi, Yazılımın tüm kopyalarına veya önemli kısımlarına dahil edilecektir.
+Yukarıdaki telif hakkı bildirimi ve bu izin bildirimi, Yazılımın bütün kopyalarına ya da önemli bölümlerine eklenir.
 
-YAZILIM, "OLDUĞU GİBİ" SAĞLANMAKTADIR, TİCARİ ELVERİŞLİLİK, BELİRLİ BİR AMACA UYGUNLUK VE İHLAL ETMEME DAHİL ANCAK BUNLARLA SINIRLI OLMAMAK ÜZERE AÇIK VEYA ZIMNİ HERHANGİ BİR GARANTİ OLMAKSIZIN SAĞLANMAKTADIR. HİÇBİR DURUMDA YAZARLAR VEYA TELİF HAKKI SAHİPLERİ, YAZILIMIN VEYA YAZILIMIN KULLANIMI VEYA BAŞKA BİR ŞEKİLDE İLGİLİ OLAN HERHANGİ BİR TALEP, ZARAR VEYA DİĞER YÜKÜMLÜLÜKLERDEN SORUMLU TUTULAMAZ.
+YAZILIM "OLDUĞU GİBİ" SAĞLANIR; TİCARİ ELVERİŞLİLİK, BELİRLİ BİR AMACA UYGUNLUK VE HAK İHLALİ OLMAMASI DAHİL ANCAK
+BUNLARLA SINIRLI OLMAMAK ÜZERE AÇIK YA DA ÖRTÜLÜ HİÇBİR GARANTİ VERİLMEZ. YAZARLAR YA DA TELİF HAKKI SAHİPLERİ,
+SÖZLEŞMEDEN, HAKSIZ FİİLDEN YA DA BAŞKA BİR NEDENDEN DOĞAN, YAZILIMLA YA DA YAZILIMIN KULLANIMIYLA İLGİLİ HİÇBİR
+TALEP, ZARAR YA DA YÜKÜMLÜLÜKTEN SORUMLU TUTULAMAZ.
 
 ---
 
-## Content License
+## İçerik lisansı — CC BY-NC-ND 4.0
 
-![cc](https://mirrors.creativecommons.org/presskit/icons/cc.png)![by](https://mirrors.creativecommons.org/presskit/icons/by.png)![nc"](https://mirrors.creativecommons.org/presskit/icons/nc.png)![nd](https://mirrors.creativecommons.org/presskit/icons/nd.png)
+![Lisans: CC BY-NC-ND 4.0](https://img.shields.io/badge/lisans-CC%20BY--NC--ND%204.0-006d77)
 
-**Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 Uluslararası Lisansı (CC BY-NC-ND 4.0)**
+**Creative Commons Atıf-GayriTicari-Türetilemez 4.0 Uluslararası Lisansı (CC BY-NC-ND 4.0)**
 
-Serbestsiniz:
+Şunları yapabilirsiniz:
 
-- **Paylaşmak**: Materyali her ortamda veya formatta kopyalayabilir ve yeniden dağıtabilirsiniz.
+- **Paylaşmak:** Materyali her ortamda ve biçimde kopyalayabilir, yeniden dağıtabilirsiniz.
 
-Aşağıdaki koşullar altında:
+Şu koşullarla:
 
-- **Atıf**: Uygun atıf yapmalısınız, lisansa bir bağlantı sağlamalısınız ve değişiklik yapılıp yapılmadığını belirtmelisiniz. Bunu makul bir şekilde yapabilirsiniz, ancak lisans verenin sizi veya kullanımınızı onayladığını ima edecek bir şekilde değil.
-- **Ticari Olmayan**: Materyali ticari amaçlarla kullanamazsınız.
-- **Türev Yaratamazsınız**: Materyali yeniden karıştıramaz, dönüştüremez veya üzerine inşa edemezsiniz.
+- **Atıf:** Uygun biçimde atıf yapmalı, lisansa bağlantı vermeli ve değişiklik yapılıp yapılmadığını belirtmelisiniz.
+  Bunu makul herhangi bir biçimde yapabilirsiniz; ancak lisans verenin sizi ya da kullanımınızı onayladığı izlenimini
+  vermemelisiniz.
+- **GayriTicari:** Materyali ticari amaçla kullanamazsınız.
+- **Türetilemez:** Materyali yeniden düzenler, dönüştürür ya da üzerine inşa ederseniz, değiştirilmiş materyali
+  dağıtamazsınız.
 
-Ek kısıtlama yoktur — Lisansın izin verdiği hiçbir şeyi başkalarının yapmasını yasal olarak kısıtlayan yasal terimler veya teknolojik önlemler uygulayamazsınız.
+Ek kısıtlama yoktur: Lisansın izin verdiği bir şeyi başkalarının yapmasını hukuken kısıtlayan koşullar ya da teknik
+önlemler uygulayamazsınız.
 
-Daha fazla detay için: [Creative Commons CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.tr)
+Ayrıntılar: [Creative Commons CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/deed.tr)

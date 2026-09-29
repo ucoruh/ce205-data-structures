@@ -1,502 +1,233 @@
 ---
-marp: true
-theme: default
-style: |
-    img[alt~="center"] {
-      display: block;
-      margin: 0 auto;
-    }
-_class: lead
-paginate: true
-backgroundColor: #fff
-backgroundImage: url('https://marp.app/assets/hero-background.svg')
-header: 'CE205 Veri Yapıları Ders İçeriği'
-footer: '![height:50px](http://erdogan.edu.tr/Images/Uploads/MyContents/L_379-20170718142719217230.jpg) RTEÜ CE205 Ders İçeriği'
-title: "CE205 Veri Yapıları"
-author: "Yazar: Dr. Öğr. Üyesi Uğur CORUH"
-date:
-subtitle: "Detaylı Ders İçeriği"
-geometry: "left=2.54cm,right=2.54cm,top=1.91cm,bottom=1.91cm"
-titlepage: true
-titlepage-color: "FFFFFF"
-titlepage-text-color: "000000"
-titlepage-rule-color: "CCCCCC"
-titlepage-rule-height: 4
-logo: "assets/2021-10-19-15-01-36-image.png"
-logo-width: 100 
-page-background:
-page-background-opacity:
-links-as-notes: true
-lot: true
-lof: true
-listings-disable-line-numbers: true
-listings-no-page-break: false
-disable-header-and-footer: false
-header-left:
-header-center:
-header-right:
-footer-left: "© Dr. Uğur CORUH"
-footer-center: "Lisans: CC BY-NC-ND 4.0"
-footer-right:
-subparagraph: true
+title: "CEN207 Veri Yapıları — Ders İzlencesi"
+subtitle: "2026-2027 Güz Yarıyılı"
+author: "Dr. Öğr. Üyesi Uğur CORUH"
 lang: tr-TR
-math: katex
-tags:
-  - ce205-syllabus
-  - data-structures
-  - fall-2024
-  - asn-1
-ref_link: na
 ---
-
-<!-- _backgroundColor: aquq -->
-
-<!-- _color: orange -->
-
-<!-- paginate: false -->
-
-<img src="http://erdogan.edu.tr/Images/Uploads/MyContents/L_379-20170718142719217230.jpg" title="" alt="height:100px" width="95">
 
 # Recep Tayyip Erdoğan Üniversitesi
 
-## Mühendislik ve Mimarlık Fakültesi
+## Mühendislik ve Mimarlık Fakültesi — Bilgisayar Mühendisliği
 
-## Bilgisayar Mühendisliği
+### CEN207 Veri Yapıları (eski kodu CE205) — Ders İzlencesi
 
-### CE205-Veri Yapıları
-
-#### Ders İçeriği
-
-#### Güz Dönemi, 2024-2025
+#### 2026-2027 Güz Yarıyılı
 
 ---
 
-Download 
+## Ders Bilgileri
 
-- [PDF](pandoc_syllabus.pdf)
-- [DOCX](pandoc_syllabus.docx)
-- [SLIDE](syllabus.pdf)
-
-Download Legacy 
-
-- [WORD](2022-2023-fall-ce205-data-structures-comp-eng.docx)
-- [PDF](2022-2023-fall-ce205-data-structures-comp-eng.pdf)
-
---- 
-
-<iframe width=700, height=500 frameBorder=0 src="../syllabus.html"></iframe>
-
----
-
-<!-- paginate: true -->
-
-| Öğretim Üyesi                | Dr. Öğr. Üyesi Uğur CORUH        |
-| ---------------------------- | -------------------------------- |
-| **İletişim Bilgileri**       | ugur.coruh@erdogan.edu.tr        |
-| **Ofis Numarası**            | F-301                            |
-| **Teams Kodu**               | h3cl51i                          |
-| **Ders Saatleri ve Günleri** | Cuma  09:00-12:00 İİBF 402 Kat-4 |
+| | |
+| --- | --- |
+| **Öğretim üyesi** | Dr. Öğr. Üyesi Uğur CORUH |
+| **İletişim** | ugur.coruh@erdogan.edu.tr — konu satırı **[CEN207]** ile başlamalıdır |
+| **Ofis** | F-301 |
+| **Görüşme saatleri** | E-posta ile randevu; ofiste ya da üniversite hesabıyla çevrim içi |
+| **Ders günü, saati, dersliği** | Cuma 13:00–16:00 · İİBF ve Hukuk Fakültesi Binası, D-402 (ED-K4-2) |
+| **Ders web sitesi** | https://ucoruh.github.io/ce205-data-structures/ |
+| **Ders sınıfı** | Her dönem yeni sınıf açılır; sınıf kodu 1. haftada duyurulur |
+| **Eğitim dili** | İngilizce |
+| **Tür / yarıyıl** | Zorunlu · 3. yarıyıl |
+| **Haftalık saat / kredi / AKTS** | Kuramsal 3 saat · Kredi 3 · AKTS 5 |
+| **Ön koşul** | CEN108 Algoritmalar ve Programlama II (eski kodu CE100) — ayrıntılar: [Ön gereksinimler](../prerequisites/index.md) |
 
 ---
 
-|                   |                                                                                                                                                                                              |
-| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Ofis Saatleri** | Toplantılar Google Meet üzerinden üniversite hesabınızla ve email ile planlanacaktır. Hızlı cevap için lütfen e-postanın başlığını [CE205] etiketi ile gönderin ve resmi, net ve kısa yazın. |
+## A. Dersin Tanımı
+
+Bu ders, veri yapıları ve dosya organizasyonunun temellerini kapsar. Verinin programlarda — hem uygulamanın çalışma
+zamanı belleğinde hem de uzun süreli dosya depolamasında — nasıl eşlendiğini açıklar; bu veri nesnelerinin
+gerçekleştirimlerini, programlama biçimlerini ve çalışma zamanı gösterimlerini tartışır. Sıralama, arama ve çizge
+algoritmalarını da ele alır. Amaç, dijital veri yapılarının gerçek dünya problemlerini nasıl çözdüğünü ve verinin
+belleğe ya da depolamaya nasıl şekillendirilip eşlendiğini göstermektir. Ders uygulama odaklıdır: öğrenme yalnızca
+kuramla değil, derste yapılan programlama uygulamaları ve dönem projesiyle pekiştirilir.
 
 ---
 
-| **Ders ve İletişim Dili**     | İngilizce                                                                   |
-| ----------------------------- | --------------------------------------------------------------------------- |
-| **Teori Haftalık Ders Saati** | 3 Saat                                                                      |
-| **Kredi**                     | 4                                                                           |
-| **Ön Koşul**                  | CE103- Algoritmalar ve Programlama I, CE100- Algoritmalar ve Programlama II |
-| **Yan Koşul**                 | Tanımlanacak                                                                |
-| **Zorunluluk**                | Tanımlanacak                                                                |
+## B. Öğrenme Çıktıları
 
-*Tanımlanacak (TBD).
+Bu dersi başarıyla tamamlayan öğrenci:
 
----
+| Kod | Öğrenme çıktısı |
+| --- | --- |
+| ÖÇ.1 | Temel doğrusal (dizi, bağlı liste, yığın, kuyruk) ve doğrusal olmayan (ağaç, graf) veri yapılarının tanımlarını, temsillerini ve temel operasyonlarını açıklar. |
+| ÖÇ.2 | Algoritmaların zaman ve uzay karmaşıklığını asimptotik notasyon (Büyük O) kullanarak analiz eder ve farklı veri yapılarının performansını karşılaştırır. |
+| ÖÇ.3 | Temel sıralama (ekleme, seçim, hızlı, yığın) ve arama (doğrusal, ikili) algoritmalarını uygular, performanslarını analiz eder ve karşılaştırır. |
+| ÖÇ.4 | İkili ağaçlar, ikili arama ağaçları, AVL ağaçları, B-ağaçları gibi dengeli/dengesiz ağaç yapılarını ve hash tablolarını uygular. |
+| ÖÇ.5 | Graf veri yapısını (temsil yöntemleri) ve temel graf algoritmalarını (dolaşma, MST, en kısa yol) uygular. |
+| ÖÇ.6 | Sıralı, doğrudan (hash tabanlı) ve indeksli sıralı dosya organizasyon tekniklerini açıklar ve uygulamalarını değerlendirir. |
+| ÖÇ.7 | Verilen bir problemi analiz ederek problemin gereksinimlerine en uygun veri yapılarını ve algoritmaları seçer ve etkin bir çözüm geliştirir. |
 
-## A.    Ders Tanımı
+### Öğrenme çıktılarının program çıktılarına katkısı (0–5)
 
-Bu ders, veri yapılarının ve dosya organizasyonunun temellerini kapsamaktadır. Ders, dijital verilerin programlamada kullanılmasını ve verilerin uygulama çalışma zamanı belleğinde ya da uzun süreli dosya depolama alanında nasıl kullanıldığını açıklar. Veri nesnelerinin çeşitli uygulamaları ve programlama tarzları üzerinde durulur. Ayrıca sıralama, arama ve grafik algoritmaları da işlenir. Bu dersin amacı, gerçek dünya problemleri için dijital veri yapıları sağlamak, verilerin belleğe veya depolama çözümlerine nasıl haritalandığını göstermektir. Ders programlama uygulamaları ve projeleri ile pekiştirilerek, teoriden ziyade pratik yapılarak öğrenme süreci güçlendirilecektir.
+| | PÇ.1 | PÇ.2 | PÇ.3 | PÇ.4 | PÇ.5 | PÇ.6–PÇ.12 |
+| --- | --- | --- | --- | --- | --- | --- |
+| ÖÇ.1 | 5 | – | – | – | – | – |
+| ÖÇ.2 | 5 | – | – | – | – | – |
+| ÖÇ.3 | – | – | – | 5 | – | – |
+| ÖÇ.4 | – | 4 | 3 | 5 | – | – |
+| ÖÇ.5 | – | 4 | 3 | 5 | – | – |
+| ÖÇ.6 | – | – | – | 4 | 5 | – |
+| ÖÇ.7 | 5 | 4 | – | 3 | – | – |
 
----
-
-## B.    Dersin Öğrenme Çıktıları
-
-Bu dersi başarıyla tamamlayan bir öğrenci:
-
-- Diziler, matrisler, bağlantılı yapılar, kuyruklar, yığınlar, ağaçlar ve grafikler gibi yaygın lineer ve non-lineer veri yapılarını tanımlayabilecek.
-
-- Dinamik ve statik veri yapılarını karşılaştırıp faydalarını analiz edebilecek.
-
----
-
-- Endüstriyel veri yapılarına yönelik ASN.1 / BER TLV / PER TLV gibi temel tanımları anlayacak.
-
-- Uygulama çalışma zamanı verilerini dosyada nasıl depoladığını ve organize ettiğini açıklayabilecek.
-
-- Veri yapısı temelli bir problem çözümü için C/C++, Java veya C# uygulamalarıyla bu problemin çözümünde veri yapıları kullanabilecek.
-
-- Veri yapılarını performans ve analiz açısından karşılaştırıp, zaman ve alan karmaşıklığını analiz edebilecek.
+PÇ.1 Temel bilgi · PÇ.2 Problem çözme · PÇ.3 Tasarım · PÇ.4 Modern teknik ve araçlar · PÇ.5 Araştırma ve deney.
 
 ---
 
-- Veri yapıları temelli sıralama ve arama algoritmalarını anlayacak.
+## C. Haftalık Program
 
-- Dosya organizasyonu ve işlenmesi için hashing ve indeksleme yöntemlerini açıklayabilecek.
+Bütün değerlendirmeler için kural: **proje gösterimleri vize ve final haftalarının hemen öncesindeki haftada; quizler
+vize ve final haftalarının içinde** yapılır, böylece her öğrenci katılabilir.
 
-- Bellek ve dosya depolama alanındaki temel sıralama, arama ve hashing algoritmalarının hesaplama verimliliğini tartışabilecek.
+| Hafta | Tarih | Konular | ÖÇ |
+| --- | --- | --- | --- |
+| [1](../week-1/cen207-week-1.md) | 18.09.2026 (telafi 23.09) | Ders planı ve iletişim. Doğrusal ve doğrusal olmayan veri yapılarına giriş; performans analizi (Büyük O). Veri ve değişkenler için işaretçiler ve nesneler; bellek düzeni. ASN.1 / BER TLV / PER TLV temelleri. Yoğun C atölyesi (araç zinciri, derle–çalıştır–hata ayıkla). | 1, 2, 7 |
+| [2](../week-2/cen207-week-2.md) | 25.09.2026 | Bağlı listeler (tekli, çift, dairesel, XOR) ve atlamalı listeler; diziler (döndürme, yeniden düzenleme, arama); matrisler ve seyrek matrisler. | 1, 7 |
+| [3](../week-3/cen207-week-3.md) | 02.10.2026 | Yığınlar (dizi ve bağlı liste, LIFO); ifadeler (infix, postfix, prefix) ve dönüşümler; kuyruklar (standart, dairesel, çift uçlu, çok seviyeli; FIFO); Hanoi Kulesi; özyineleme (DFS'e hazırlık). | 1, 7 |
+| [4](../week-4/cen207-week-4.md) | 09.10.2026 | Ağaçlar ve ikili ağaçlar; dolaşmalar (in-, pre-, post-order); yığınlar/heap (min, max, ikili, binom, Fibonacci, leftist, k-ary) ve öncelik kuyrukları; heap sıralama; Huffman kodlama. | 1, 4, 7 |
+| [5](../week-5/cen207-week-5.md) | 16.10.2026 | Çizgeler: gösterimler (komşuluk matrisi, geliş matrisi, komşuluk listesi); dolaşmalar (BFS, DFS, yinelemeli derinleşme, derinlik sınırlı, çift yönlü); topolojik sıralama; su kabı problemi. | 1, 5, 7 |
+| [6](../week-6/cen207-week-6.md) | 23.10.2026 | Arama (doğrusal, ikili, interpolasyon, Fibonacci); hashing ve hash tabloları (doğrudan adresli tablolar, hash fonksiyonları, zincirleme, açık adresleme, mükemmel hashing); çakışma çözümü uygulamaları. | 3, 4, 7 |
+| [7](../week-7/cen207-week-7.md) | 30.10.2026 | **Ara proje gösterimleri (C)** ve ara proje raporu. | 1–5, 7 |
+| [8](../week-8/cen207-week-8.md) | 31.10–08.11.2026 | **Ara sınav haftası — Quiz-1** (1–6. haftalar). | 1, 2, 4, 5, 7 |
+| [9](../week-9/cen207-week-9.md) | 13.11.2026 | Çizge algoritmaları: minimum yayılan ağaçlar (Prim, ayrık kümelerle Kruskal), en kısa yollar (Dijkstra, Bellman–Ford), bağlantılılık ve SCC, maksimum akış, döngü tespiti (Floyd, Brent), geri izleme (n-vezir, m-renklendirme, Euler ve Hamilton yolları). | 3, 5, 7 |
+| [10](../week-10/cen207-week-10.md) | 20.11.2026 | Sıralama algoritmaları ve sınıflandırma (ekleme, seçim, shell, hızlı, birleştirme, heap, radix, sayma, dış sıralama); sıralama yöntemlerinin karşılaştırılması. | 2, 3, 7 |
+| [11](../week-11/cen207-week-11.md) | 27.11.2026 | Gelişmiş ağaçlar: ikili arama ağaçları, AVL, kırmızı-siyah, splay, B-ağacı ailesi (2-3, 2-3-4, B+, B#), veri yapılarının genişletilmesi; arama ağaçlarının karşılaştırılması. | 4, 7 |
+| [12](../week-12/cen207-week-12.md) | 04.12.2026 | Stringler: string yapıları, arama algoritmaları (kaba kuvvet, Knuth–Morris–Pratt, Boyer–Moore, Horspool), LCS ve düzenleme uzaklığı (Levenshtein, Wagner–Fischer), hizalama (Needleman–Wunsch, Smith–Waterman), trie ve Patricia ağaçları. | 1, 3, 4, 7 |
+| [13](../week-13/cen207-week-13.md) | 11.12.2026 | Dosya organizasyonu I: sıralı dosyalar (ikili, interpolasyon, kendini düzenleyen arama); doğrudan dosyalar ve hash fonksiyonları; çakışma çözümü (birleşik hashing, ilerleyen taşma, çift hashing, kovalar, Brent yöntemi); mükemmel hashing. | 6, 7 |
+| [14](../week-14/cen207-week-14.md) | 18.12.2026 | Dosya organizasyonu II: indeksli sıralı dosyalar; ikincil anahtarla erişim; dosyalar için ikili ve B-ağacı yapıları; genişleyebilen dosyalar için hashing (genişletilebilir, dinamik, doğrusal hashing); k-d ağaçları ve ızgara dosyaları; dış dosya sıralama. | 3, 4, 6, 7 |
+| [15](../week-15/cen207-week-15.md) | 25.12.2026 | **Final proje gösterimleri (Java)** ve final proje raporu. | 1–7 |
+| [16](../week-16/cen207-week-16.md) | 04–17.01.2027 | **Final sınav dönemi — Quiz-2** (9–14. haftalar). | 2–7 |
 
-- Programlama becerilerini veri yapıları bilgisiyle birleştirip gerçek hayattaki problemlere etkin çözümler üretebilecek.
-
----
-
-## C.    Ders Konuları
-
----
-
-- Kullanılan Veri, Aktarılan Veri ve Hareketsiz Veri kavramları.
-
-- Veri Yapılarında Zaman ve Mekan Karmaşıklığı Analizi
-
-- Veri ve Değişken Haritalamaları
-
----
-
-- ASN.1 / BER TLV / PER TLV
-
----
-
-- Bağlantılı Listeler (Tek, Dairesel, Çift, XOR)
-
-- Skip List
+Önceki yıllardan korunan ve ders notlarında isteğe bağlı okuma olarak işlenen zenginleştirme konuları: alfa-beta
+budama, Hasse diyagramları, Petri ağları, iki parçalı çizgeler, Bayes ağları, van Emde Boas ağaçları, SimHash,
+trie hashing.
 
 ---
 
-- Strand Sıralama Algoritması
+## D. Kaynaklar, Yazılım ve Donanım
 
-- Diziler (Döndürme, Düzenleme, Yeniden Düzenleme, Arama ve Sıralama)
+Ana kaynak, ders web sitesindeki ders notlarıdır ve kendi başına yeterlidir. İleri okuma için önerilen kitaplar:
 
----
+- Deitel & Deitel. *C How to Program*, 7. baskı. Prentice Hall, 2013.
+- Y. Daniel Liang. *Introduction to Java Programming, Comprehensive Version*, 10. baskı.
+- T. H. Cormen, C. E. Leiserson, R. L. Rivest, C. Stein. *Introduction to Algorithms*, 3. baskı. MIT Press.
+- J. R. Hanly, E. B. Koffman. *Problem Solving and Program Design in C*, 6. baskı.
+- A. L. Tharp. *File Organization and Processing*. Wiley, 1988.
+- P. Brass. *Advanced Data Structures*. Cambridge University Press, 2008.
+- R. Sedgewick, K. Wayne. *Algorithms*, 4. baskı. Addison-Wesley, 2011.
 
-- Matrisler ve Seyrek Matrisler
-
----
-
-- Yığınlar (Dizi ve Bağlantılı Liste) ve FILO (İlk Giren Son Çıkar)
-
-- İfadeler (Infix, Postfix ve Prefix) ve Infix’ten Postfix’e Dönüşümler ve Postfix Değerlendirme
-
-- Kuyruklar (Standart, Dairesel ve Çift Uçlu) (Dizi ve Bağlantılı Liste) (FIFO-İlk Giren İlk Çıkar veya FCFS-İlk Gelen İlk Hizmet Alır)
-
-- Çok Seviyeli Kuyruklar (MLQ)
-
-- Hanoi Kulesi Problemi
+**Dizüstü bilgisayar gereklidir.** Derste, ödevlerde ve projede kendi geliştirme ortamınızı kullanacaksınız: C/C++
+derleyicisi (GCC, Clang ya da MSVC), CMake, GoogleTest, Doxygen, JDK 21 ile Maven ve JUnit 5, Git ve bir GitHub
+hesabı. Kurulum adımları 1. haftada ve ders notlarında verilir; proje şablonları sağlanır. Araç zincirinin tam
+kontrol listesi için [Ön gereksinimler](../prerequisites/index.md) sayfasına bakın.
 
 ---
 
-- Ağaç Yapıları ve İkili Ağaçlar ve Gezinmeler (Sıralı, Öncelikli, Artikullu)
-
-- Heap’ler (Max, Min, İkili, Binom, Fibonacci, Solcu, K-ary) ve Öncelikli Kuyruk
-
-- Heap Sıralama
-
-- Huffman Kodlaması
-
----
-
-- Grafik Temsilleri (Bitişiklik Matrisi, Olay Matrisi, Bitişiklik Listesi) ve Temel Kavramlar
-
-- Grafik Gezinme Algoritmaları (Derinlik Öncelikli Arama (DFS), İteratif Derinleşen Arama (IDS) veya İteratif Derinleşen Derinlik Öncelikli Arama (IDDFS), Genişlik Öncelikli Arama (BFS), Derinlik Sınırlı Arama, Tekdüze Maliyet Araması, İki Yönlü Arama)
-
-- Su Kovası Problemi
-
----
-
-- Grafik Üst Sıralama (Topolojik Sıralama)
-
-- Grafik Minimum Örtücü Ağaç (MST)
-
-- Grafik Geri İzleme (n-Dam Problemi, m-Renkleme, Euler ve Hamilton Yolları)
-
-- Grafik En Kısa Yollar
-
-- Grafik Bağlantısı, Max Akış, İzomorfizm, Kanonizasyon ve Kesitler (Max /Min)
-
----
-
-- Alpha-Beta Budaması
-
-- Hasse Diyagramları
-
-- Petri Ağları
-
-- İki Bölmeli Grafikler
-
-- Grafik Döngü Algılama (Brent, Tavşan ve Kaplumbağa Algoritmaları)
-
-- Bayes Ağı
-
-- Doğrusal, İkili, Aralıklı ve Fibonacci Arama Algoritmaları
-
-- Hashing ve Hash Tabloları (Doğrudan Adres Tabloları, Hash Tabloları, Hash Fonksiyonları, Açık Adresleme, Mükemmel Hashing)
-
----
-
-- Yaygın Sıralama Algoritmaları (Ekleme, Seçim, Radix, Quick, Heap, Permütasyon, Gnome, Comb, Flash, Stooge, Arı, Şanslı, Dolaylı (Pointer), Harici (Segmentlenmiş), Çalkalama/Çift Yönlü Bubble, Shell Sıralama)
-
-- Sıralama Yöntemlerinin Karşılaştırılması
-
-- Yaygın Ağaç Veri Yapıları ve İşlemleri (İkili Arama Ağacı, AVL Ağacı, B Ağacı ve Türevleri (2 3 4 Ağaçlar, 2 3 Ağaçları, B+ Ağaçları, B# Ağaçları), R Ağacı, Kırmızı-Siyah Ağacı, Splay Ağacı, Van Emde Boas Ağacı, Binom Ağacı, Minimax Ağacı)
-
-- Arama Ağaçlarının Karşılaştırılması
-
----
-
-- Veri Yapılarını Geliştirme
-
-- Dize LCS Problemi (Hunt Macllory, Levenstein, Wagner-Fischer)
-
-- Dize Hizalama (Needleman Wunsch, Smith Waterman, Hunt Macllory), Tokenizer ve Karşılaştırma
-
-- Dize Arama (Ters Faktör) Algoritmaları (Knuth-Morris-Pratt, Horspool, Boyer Moore, Brute-Force, DFA Metin Arama)
-
----
-
-- Tries ve Patricia Ağaçları (Radix Ağacı)
-
-- Ayrık Kümeler için Veri Yapıları
-
-- Ardışık Dosya Organizasyonu (İkili Arama, Aralıklı Arama, Kendini Düzenleyen Ardışık Arama)
-
-- Doğrudan Dosya Organizasyonu Bilgi Bulma
-
-- Doğrudan Dosya Organizasyonu Hashing Fonksiyonları (MD5, HAVAL, SHA1, Anahtar Mod N, Anahtar Mod P, Kısaltma, Katlama, Kareleme, Radix Dönüşümü, Polinom Hashing, Alfabetik Anahtarlar, Çatışmalar)
-
-- Doğrudan Dosya Organizasyonu Çatışma Çözümü
-
----
-
-- Doğrudan Dosya Organizasyonu Birleşik Hashing (EISCH, LISCH, BEISCH, BLISCH, REISCH, RLISCH, EICH, LICH)
-
-- Doğrudan Dosya Organizasyonu İlerleyici Taşma (Doğrusal Denetim, Kuadratik Denetim)
-
-- Doğrudan Dosya Organizasyonu Çift Hashing, Kova Kullanımı, Doğrusal Katsayı, Brent Yöntemi, İkili Ağaç ve Hesaplanmış Zincirleme Ekleme (CCI)
-
-- Mükemmel Hashing ve SimHash Doğrudan Dosya Organizasyonu
-
-- Çatışma Çözme Yöntemlerinin Karşılaştırılması
-
----
-
-- İndeksli Ardışık Dosya Organizasyonu
-
-- İkincil Anahtar Erişimleri ve Sınıflandırma ve Kontrol için Bitler ve Hashing
-
-- Dosyalar için İkili Ağaç Yapıları (İkili Arama, AVL Ağaçları, Dahili Yol Azaltma Ağaçları)
-
-- Dosyalar için B Ağaçları ve Türevleri (B Ağacı, B+ Ağacı, B# Ağacı)
-
-- Genişletilebilir Dosyalar için Hashing Teknikleri (Genişletilebilir, Dinamik ve Doğrusal Hashing)
-
----
-
-- Tries, Yaklaşık Dize Eşleşmesi, Trie Hashing, Patricia Ağacı ve Dijital Arama Ağacı Dosya Organizasyonu
-
-- İkincil Anahtar Erişimi (K-d Ağaçları ve Izgara Dosyaları)
-
-- Dosya Sıralama (Ekleme, Hızlı, Yığın Sıralama, Harici Sıralama, Birleştirerek Sıralama ve Disk Sıralaması)
-
----
-
-## D.    Ders Kitapları ve Gerekli Donanım veya Ekipman
-
-Bu dersin bir ders kitabı gerekmemektedir.
-Gerekirse, aşağıdaki kitaplar ve açık kaynaklı çevrimiçi kaynaklar kullanılabilir.
-
----
-
-- *C Nasıl Programlanır, 7/E. Deitel & Deitel. 2013, Prentice-Hall.*
-
-- *Java Programlamaya Giriş, Kapsamlı Versiyon (10. Baskı) 10. Baskı Y. Daniel Liang*
-
-- *Algoritmalara Giriş, Üçüncü Baskı Thomas H. Cormen,
-  Charles E. Leiserson, Ronald L. Rivest ve Clifford Stein tarafından*
-
----
-
-- *C'de Problem Çözme ve Program Tasarımı, J.R. Hanly ve E.B. Koffman, 6. Baskı.*
-
-- *Alan L. Tharp. 1988. Dosya organizasyonu ve işleme. John Wiley & Sons, Inc., ABD.*
-
-- *Richard Jankowski. 2010. Peter Brass tarafından ileri veri yapıları.
-  Cambridge University Press 2008. SIGACT News 41, 1 (Mart 2010), 19–20.
-  DOI:https://doi.org/10.1145/1753171.1753176*
-
-- *Robert Sedgewick ve Kevin Wayne. 2011. Algoritmalar (4. baskı).
-  Addison-Wesley Professional.*
-
----
-
-- *Ek Kitaplar Tanımlanacak*
-
-<u>Bu ders boyunca programlama uygulamaları için bir dizüstü bilgisayara ihtiyacınız olacaktır. Geliştirme ortamınız olacak ve bunu sınavlar, ödevler ve sınıf uygulamaları için kullanacaksınız. </u>
-
----
-
-## E.Değerlendirme
-
-Dönem boyunca 1 adet Proje ve 2 adet yazılı Quiz olacaksınız. Vize zamanı Proje Ara Raporu Teslim Etmeniz ve Projenizin İlermesini İspatlayıcı Şekilde Çıktılar Oluşturmanız ve Projenizin Proje Planına Sadık Kalmanız Gerekiyor. 15. Hafta Projenizin Sonuç Raporunu ve Sunumunu Yapacaksınız. 8. Hafta 1 Adet Yazılı Quiz Olacaksınız ve 14. Hafta da 1 adet Yazılı Quiz Olacaksınız. 
-
----
-
-| Değerlendirme            | Kısaltma | Oran | Kapsam |
-| ------------------------ | -------- | ---- | ------ |
-| Proje Ara Raporu Teslimi | RAP1     | %60  | Vize   |
-| Quiz-1                   | QUIZ1    | %40  | Vize   |
-| Proje Final Raporu       | RAP2     | %70  | Final  |
-| Quiz-2                   | QUIZ2    | %30  | Final  |
+## E. Değerlendirme
+
+Dönem boyunca **tek bir proje** yürütülür; her biri kendi rubriğiyle değerlendirilen iki ara kontrolü vardır: vize
+kontrolü (C gerçekleştirimi) ve final kontrolü (Java gerçekleştirimi). Ayrıca ara sınav haftasında bir, final
+döneminde bir quiz yapılır. Proje konuları, takım oluşturma kuralları, teslimler ve **ayrıntılı vize ve final
+rubrikleri** (kriterler, puanlar, ilişkili öğrenme çıktıları ve başarı düzeyleri) dersin
+[proje rehberinde](../project-guide/index.md) verilir.
+
+| Değerlendirme | Kod | Ağırlık | Zaman |
+| --- | --- | --- | --- |
+| Proje kontrolü 1 — C gerçekleştirimi, rapor ve gösterim (rubrik) | RAP1 | Vizenin %60'ı | 7. hafta (30.10.2026) |
+| Quiz-1 (1–6. haftalar) | QUIZ1 | Vizenin %40'ı | 8. hafta, ara sınav haftası (31.10–08.11.2026) |
+| Proje kontrolü 2 — Java gerçekleştirimi, rapor ve gösterim (rubrik) | RAP2 | Finalin %70'i | 15. hafta (25.12.2026) |
+| Quiz-2 (9–14. haftalar) | QUIZ2 | Finalin %30'u | 16. hafta, final dönemi (04–17.01.2027) |
 
 $$
-Not_{Vize} = 0.6RAP1 + 0.4QUIZ1
+Not_{Vize} = 0.6\,RAP1 + 0.4\,QUIZ1 \qquad Not_{Final} = 0.7\,RAP2 + 0.3\,QUIZ2
 $$
 
 $$
-Not_{Final}=0.7RAP2 + 0.3QUIZ2
+Başarı\ Notu = 0.4\,Not_{Vize} + 0.6\,Not_{Final}
 $$
 
-$$
-\text{Geçme Notu}=(40*Not{Vize}+60*Not_{Final})/100
-$$
+### İş yükü (AKTS 5 = 125 saat)
+
+| Etkinlik | Sayı | Süre | Toplam |
+| --- | --- | --- | --- |
+| Derse Katılım | 14 | 3 | 42 |
+| Bireysel Çalışma (haftalık notlar ve örnekler) | 14 | 1 | 14 |
+| Quiz (ara sınav haftası ve final dönemi) | 2 | 2 | 4 |
+| Quiz için Bireysel Çalışma | 2 | 10 | 20 |
+| Proje Hazırlama (C ve Java kontrolleri) | 2 | 16 | 32 |
+| Rapor Hazırlama | 2 | 5 | 10 |
+| Proje Sunma (gösterim ve sorular) | 2 | 1,5 | 3 |
+| **Toplam** | | | **125** |
 
 ---
 
-## F. Öğretim Stratejileri ve Yöntemleri
+## F. Öğretim Yöntemleri
 
-Bu dersin temel öğretim yöntemi, sınıfta yüz yüze eğitim olarak planlanmıştır ve destekleyici kaynaklar, ödevler ve duyurular Google Classroom üzerinden paylaşılacaktır. Öğrencilerin üniversitede olması beklenmektedir. Bu sorumluluk, bu dersi başarıyla tamamlamanın önemli bir parçasıdır. Pandemi durumu değişir ve bu dersin uzaktan eğitim ile yapılması gerekirse, bu ders eşzamanlı ve eşzamansız uzaktan eğitim yöntemleri ile yapılacaktır. Bu senaryoda, ders programında belirtilen zamanda çevrimiçi platformda (zoom veya meet) olmanız beklenmektedir. Yoklama alınacaktır.
+Dersler sınıfta yüz yüze yapılır; anlatım, soru–cevap ve uygulamalı programlama bir arada kullanılır. Her içerik
+haftası ders notu, sunum, çözümlü örnekler ve kendini sınama sorularıyla birlikte gelir. Duyurular, kaynaklar ve
+teslimler ders sınıfında yürütülür. Yoklama alınır.
 
 ---
 
-## G. Geç Teslim Edilen Ödevler
+## G. Geç Teslim
 
-Dönem boyunca verilen ödevler belirtilen tarihe kadar teslim edilmelidir. Geç teslim edilen ödevler kabul edilmeyecektir.
-
-Beklenmedik durumlar için öğrencilerin ödev gecikmelerini öğretim üyesine bildirmesi gerekmektedir.
+Dönem boyunca ödevler duyurulan son tarihe kadar teslim edilmelidir. Süresi geçmiş ödevler kabul edilmez. Beklenmedik
+durumlar öğrenci tarafından öğretim üyesine bildirilmelidir.
 
 ---
 
 ## H. Ders Platformu ve İletişim
 
-Ders öğrenme yönetim sistemi olarak Google Classroom kullanılacaktır. Dersle ilgili tüm elektronik kaynaklar ve duyurular bu platformda paylaşılacaktır. Başarıyla tamamlayabilmek için ders sayfasını günlük olarak kontrol etmek, gerekli kaynaklara ve duyurulara erişmek ve ihtiyaç duyduğunuzda öğretim üyesi ile iletişim kurmak çok önemlidir.
+Bütün duyurular, kaynaklar ve teslimler her dönem yeniden açılan ders sınıfında paylaşılır; sınıf kodu 1. haftada
+duyurulur. Ders notları, sunumlar ve indirilebilir belgeler ders web sitesindedir. Sınıfı ve üniversite e-postanızı her
+gün kontrol edin.
 
 ---
 
-## I. Akademik Dürüstlük, Plagiarizm ve Kopya
+## I. Akademik Dürüstlük, İntihal ve Kopya
 
-Akademik dürüstlük, Recep Tayyip Erdoğan Üniversitesi'nin en önemli ilkelerinden biridir. Akademik dürüstlük ilkelerine aykırı davranan herkes ağır şekilde cezalandırılır.
+Akademik dürüstlük RTEÜ'nün en önemli ilkelerinden biridir. Akademik dürüstlük ilkelerini ihlal eden herkes ağır
+şekilde cezalandırılır.
 
----
+Sınıf arkadaşlarıyla ve başkalarıyla "birlikte çalışmak" doğaldır. Bir öğrencinin zor bir konuyu ya da bütün bir dersi
+daha iyi anlamak için ücretli ya da ücretsiz yardım istemesi de mümkündür. Peki "birlikte çalışmak" ya da "özel ders
+almak" ile "akademik sahtekârlık" arasındaki sınır nedir? Ne zaman intihal, ne zaman kopya olur?
 
- Sınıf arkadaşlarınızla "birlikte çalışmak" için etkileşimde bulunmak doğaldır. Bir öğrenci zor bir konuyu veya tüm dersi daha iyi anlamak için ücretli veya ücretsiz olarak başka birinden yardım istemesi de doğal olabilir. Ancak, "birlikte çalışmak" veya "özel ders almak" ile "akademik sahtekarlık" arasındaki sınır nedir? Plagiarizm (intihal) ne zaman olur, kopya ne zaman olur?
+Sınav sırasında başka bir öğrencinin kâğıdına ya da izin verilenler dışındaki bir kaynağa bakmak kopyadır ve
+cezalandırılır. Ancak pek çok öğrenci, özellikle ödevlerde neyin kabul edilebilir olduğu ve neyin "kopya" sayıldığı
+konusunda çok az deneyimle üniversiteye gelir. Aşağıdaki ilkeler notlandırılan ödevlerde akademik dürüstlük anlayışını
+açıklar. Aşağıda tanımlanmayan bir durumla karşılaşırsanız, yapmak istediğinizin akademik dürüstlük çerçevesinde kalıp
+kalmadığını öğretim üyesine sorun.
 
----
+### a. Ödev hazırlarken neler kabul edilebilir?
 
-Bir başka öğrencinin kağıdına veya sınavda izin verilen kaynaklar dışında herhangi bir kaynağa bakmanın kopya olduğu açıktır ve cezalandırılır. Ancak, birçok öğrencinin üniversiteye çok az deneyimle geldiği, neyin kabul edilebilir olduğu ve "kopya" olarak sayıldığı konusunda çok az deneyime sahip olduğu bilinmektedir, özellikle ödevler söz konusu olduğunda.
+- Ödevi daha iyi anlamak için sınıf arkadaşlarıyla konuşmak.
+- İnternette ya da başka bir yerde bulduğunuz fikirleri, alıntıları, paragrafları ya da küçük kod parçalarını,
+  çözümün tamamı olmamak ve kaynağını belirtmek koşuluyla ödevinize eklemek.
+- Ödevinizin İngilizce dili konusunda yardım istemek.
+- Tartışmalı bir konuda sınıf içi tartışma başlatmak için ödevinizin küçük parçalarını paylaşmak.
+- Talimatlar, başvuru kaynakları ve teknik sorunların çözümü için internete ya da başka kaynaklara başvurmak; ama
+  ödevin doğrudan cevabı için değil.
+- Çözümleri gerçek metin ya da kod yerine diyagramlar veya özet ifadelerle başkalarıyla tartışmak.
+- Ödevinizi sizin yerinize yapmaması koşuluyla bir özel öğretmenle (ücretli de olabilir) çalışmak.
 
-Mühendislik ve Mimarlık Fakültesi öğrencileri için akademik dürüstlük felsefesini vurgulamak için aşağıdaki yönergeler belirlenmiştir. Aşağıda belirtilmeyen bir durumla karşılaşılması durumunda, öğrencinin yapmak istediği şeyin akademik dürüstlük çerçevesinde kalıp kalmayacağını sorması önerilir.
+### b. Neler kabul edilemez?
 
----
-
-### a. Bir ödev hazırlarken ne kabul edilebilir?
-
-- Ödevi daha iyi anlamak için sınıf arkadaşlarınızla iletişim kurmak
-
----
-
-- İnternette veya başka bir yerde bulduğunuz fikirler, alıntılar, paragraflar, küçük kod parçalarını (snippet) ödevinize eklemek, ancak
-  
-  - bunlar ödevin tüm çözümü değilse,
-  
-  - kaynakları doğru bir şekilde belirtirseniz
-
----
-
-- Ödevinizin İngilizce içeriği için kaynaklardan yardım almak.
-
-- Tartışmalı konular üzerine sınıfta tartışma yaratmak için ödevinizin küçük bir kısmını paylaşmak.
-
----
-
-- Teknik zorluklar için talimatlar, referanslar ve çözümler aramak, ancak ödevin doğrudan cevaplarını bulmaya çalışmamak.
-
-- Ödev çözümlerini başkalarıyla şemalar veya özetlenmiş ifadelerle tartışmak, ancak gerçek metin veya kod paylaşmamak.
-
-- Dersle ilgili bir öğretmenden yardım almak (hatta ücretli), ancak öğretmenin ödevi sizin yerinize yapmaması koşuluyla.
-
----
-
-### b. Ne kabul edilemez?
-
-- Ödevinizi teslim etmeden önce bir arkadaşınızdan çözümünü istemek.
-
-- Ders dışı kaynaklardan bulduğunuz metinlerin (veya programlama derslerinde kodların) kaynaklarını belirtmemek.
-
-- Bir sınıf arkadaşınıza çözümü göstermek veya zorlandığında çözümü vermek.
+- Kendi çözümünüzü teslim etmeden önce bir sınıf arkadaşınızdan çözümünü görmek istemek.
+- Ders dışında bulup çalışmanıza kattığınız herhangi bir metnin ya da kodun kaynağını belirtmemek.
+- Problemi çözmekte zorlanan bir sınıf arkadaşınıza kendi çözümünüzü vermek ya da göstermek.
 
 ---
 
 ## J. Beklentiler
 
-Derslere zamanında katılmanız ve dönem boyunca haftalık ders gereksinimlerini (okumalar ve ödevler) tamamlamanız beklenmektedir. Öğretim üyesi ile öğrenciler arasındaki ana iletişim kanalı email olacaktır. Lütfen dersle ilgili sorularınızı üniversitenin size sağladığı e-posta adresi üzerinden öğretim üyesine iletin. ***Mesajınızın konu alanına ders adını ve metin alanına isminizi eklediğinizden emin olun***. Ayrıca, öğretim üyesi gerekli olduğunda sizinle e-posta yoluyla iletişime geçecektir. Bu nedenle, sağlıklı bir iletişim için e-posta adresinizi her gün kontrol etmeniz çok önemlidir.
+Derslere zamanında katılmanız ve haftalık gereksinimleri (okumalar ve proje adımları) tamamlamanız beklenir. Öğretim üyesi ile öğrenciler arasındaki ana iletişim kanalı e-postadır. Sorularınızı üniversite
+e-posta adresinizden gönderin; **konu satırına ders kodunu, mesaja adınızı yazın**. Öğretim üyesi de gerektiğinde
+sizinle e-posta ile iletişime geçer; bu yüzden e-postanızı her gün kontrol edin.
 
 ---
 
-## K. Ders İçeriği ve Güncellemeler
+## K. Ders İçeriği ve İzlence Güncellemeleri
 
-Gerekirse, ders içeriği veya ders programında değişiklikler yapılabilir. Bu belgenin kapsamındaki herhangi bir değişiklik yapılırsa, öğretim üyesi sizi bilgilendirecektir.
-
----
-
-## Ders Planı Genel Görünümü
-
-| Haftalar | Tarihler   | Konular                                                                                                                                                                                 | Diğer Görevler |
-| -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- |
-| Hafta 1  | 27.09.2024 | Ders Planı ve İletişim, Doğrusal ve Doğrusal Olmayan Veri Yapıları ve Performans Analizi, Veri ve Değişkenler için Gösterici ve Nesne Uygulamaları, ASN.1 / BER TLV / PER TLV Temelleri | TBD            |
-| Hafta 2  | 04.10.2024 | Bağlı Listeler ve İlgili Algoritmalar, Diziler ve Matrisler                                                                                                                             | TBD            |
-
----
-
-| Hafta 3 | 11.10.2024 | Yığınlar, Kuyruk Yapıları ve İlgili Algoritmalar ve Problemler                    | TBD |
-| ------- | ---------- | --------------------------------------------------------------------------------- | --- |
-| Hafta 4 | 18.10.2024 | Ağaç Veri Yapısı Türleri ve Uygulamaları (İkili Ağaç, Ağaç Dolaşmaları, Yığınlar) | TBD |
-| Hafta 5 | 25.10.2024 | Grafik Veri Yapıları ve Dolaşmalar                                                |     |
-
----
-
-| Hafta-6 | 01.11.2024 | Grafik MST, Geri İzleme, Topolojik Sıralama, En Kısa Yollar, Bağlantı, Maksimum Akış ve Döngü Algılama Algoritmaları. Grafik İzomorfizmi ve Kanonizasyon, Grafik Kesitleri | TBD |
-| ------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| Hafta-7 | 08.11.2024 | Doğrusal, İkili ve Fibonacci Arama, Hashing ve Hash Tabloları ile Mükemmel Hashing                                                                                         | TBD |
-| Hafta-8 | 15.11.2024 | **Quiz-1 + Ara Proje Raporu Teslimi**                                                                                                                                      | TBD |
-
----
-
-| Hafta-9  | 22.11.2024 | Sıralama Algoritmaları, Sınıflandırma ve Karşılaştırmalar                                                                                                                                                                | TBD |
-| -------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --- |
-| Hafta-10 | 29.11.2024 | İleri Ağaç Veri Yapıları (İkili Arama Ağacı, AVL Ağacı, B Ağaçları ve türevleri, Kırmızı-Siyah Ağaçlar, Splay Ağaçları ve Gelişmiş Veri Yapıları, van Emde Boas Ağaçları, Binom ve Minimax Ağaçlar) ve Karşılaştırmalar. | TBD |
-| Hafta-11 | 06.12.2024 | Dize Veri Yapısı, Alt Dizi Arama, Hizalama ve Karşılaştırma Algoritmaları                                                                                                                                                | TBD |
-
----
-
-| Hafta-12 | 13.12.2024 | Dize Arama Algoritmaları, Tries, Bağımsız Kümeler için Veri Yapıları                                                                                                              | TBD |
-| -------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| Hafta-13 | 20.12.2024 | Dosya Organizasyonu ve İşleme Giriş, Sıralı Dosya Organizasyonu, Doğrudan Dosya Organizasyonu Hash Yöntemleri + Doğrudan Dosya Organizasyonu İndeksleri, İkili ve B Ağaç Yapıları | TBD |
-| Hafta-14 | 27.12.2024 | **Quiz-2**                                                                                                                                                                        | TBD |
-| Hafta-15 | 03.01.2025 | Proje İncelemesi ve Sunumu 																																						| TBD |
-
----
-
-$$
-Ders-İzlence-Sonu
-$$
+Gerekli görülürse ders içeriği ya da ders takvimi değiştirilebilir. Bu belge kapsamındaki her değişiklik öğretim üyesi
+tarafından duyurulur.

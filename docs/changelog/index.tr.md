@@ -2,7 +2,28 @@
 template: main.html
 ---
 
-# Changelog
+# Revizyonlar
+
+Bu sayfa ders sitesindeki önemli değişiklikleri listeler. Ayrıntılı geçmiş için
+[GitHub deposunun commit geçmişine](https://github.com/ucoruh/ce205-data-structures/commits/main) bakın.
+
+## 2026–2027 Güz
+
+### 29.09.2026 — 2026–2027 yeniden yapılanması
+
+- Ders kodu **CEN207 Veri Yapıları (eski kodu CE205)** olarak güncellendi; depo adı değişmedi.
+- 16 haftanın tamamı Türkçe ve İngilizce olarak yeniden yazıldı; her hafta işlenen veri yapıları ve algoritmalar
+  için etkileşimli, tarayıcı içi animasyonlar eklendi.
+- Her hafta test edilmiş, çalışan C ve/veya Java programları ile birim testleri içeriyor; her iki dilde de sunum
+  (HTML/PDF/PPTX) ve indirilebilir ders notu (PDF/DOCX) sağlanıyor.
+- Proje rehberi sekiz grupta **200 proje konusu**, bir C ara kontrolü ve bir Java final kontrolü ile, her biri
+  ayrıntılı bir rubrikle yeniden yazıldı.
+- **Ön Gereksinimler** sayfası eklendi; İzlence, Lisans, Özgeçmiş ve Revizyonlar sayfaları yeni döneme göre
+  yenilendi.
+
+## Önceki revizyonlar
+
+*Aşağıdaki kayıtlar deponun özgün commit-günlüğü revizyon listesidir; geçmiş için burada korunmuştur.*
 
 ### [6b4e2e1](https://github.com/ucoruh/ce205-data-structures/commit/6b4e2e1998fc044835fc68694bf5076733b1c5b6) <small>_ 1 year, 11 months ago</small> { id='6b4e2e1' }
 

@@ -1,512 +1,234 @@
 ---
-marp: true
-theme: default
-style: |
-    img[alt~="center"] {
-      display: block;
-      margin: 0 auto;
-    }
-_class: lead
-paginate: true
-backgroundColor: #fff
-backgroundImage: url('https://marp.app/assets/hero-background.svg')
-header: 'CE205 Data Structures Syllabus'
-footer: '![height:50px](http://erdogan.edu.tr/Images/Uploads/MyContents/L_379-20170718142719217230.jpg) RTEU CE205 Syllabus'
-title: "CE205 Data Structures"
-author: "Author: Asst. Prof. Dr. Uğur CORUH"
-date:
-subtitle: "Detailed Syllabus"
-geometry: "left=2.54cm,right=2.54cm,top=1.91cm,bottom=1.91cm"
-titlepage: true
-titlepage-color: "FFFFFF"
-titlepage-text-color: "000000"
-titlepage-rule-color: "CCCCCC"
-titlepage-rule-height: 4
-logo: "assets/2021-10-19-15-01-36-image.png"
-logo-width: 100 
-page-background:
-page-background-opacity:
-links-as-notes: true
-lot: true
-lof: true
-listings-disable-line-numbers: true
-listings-no-page-break: false
-disable-header-and-footer: false
-header-left:
-header-center:
-header-right:
-footer-left: "© Dr. Uğur CORUH"
-footer-center: "License: CC BY-NC-ND 4.0"
-footer-right:
-subparagraph: true
-lang: en-US 
-math: katex
-tags:
-  - ce205-syllabus
-  - data-structures
-  - fall-2024
-  - asn-1
-ref_link: na
+title: "CEN207 Data Structures — Syllabus"
+subtitle: "Fall Semester 2026-2027"
+author: "Asst. Prof. Dr. Uğur CORUH"
+lang: en-US
 ---
 
-<!-- _backgroundColor: aquq -->
+# Recep Tayyip Erdoğan University
 
-<!-- _color: orange -->
+## Faculty of Engineering and Architecture — Computer Engineering
 
-<!-- paginate: false -->
+### CEN207 Data Structures (formerly CE205) — Syllabus
 
-<img src="http://erdogan.edu.tr/Images/Uploads/MyContents/L_379-20170718142719217230.jpg" title="" alt="height:100px" width="95">
-
-# Recep Tayyip Erdogan University
-
-## Faculty of Engineering and Architecture
-
-## Computer Engineering
-
-### CE205-Data Structures
-
-#### Syllabus
-
-#### Fall Semester, 2024-2025
+#### Fall Semester, 2026-2027
 
 ---
 
-Download 
+## Course Information
 
-- [PDF](pandoc_syllabus.pdf)
-- [DOCX](pandoc_syllabus.docx)
-- [SLIDE](syllabus.pdf)
-
-Download Legacy 
-
-- [WORD](2022-2023-fall-ce205-data-structures-comp-eng.docx)
-- [PDF](2022-2023-fall-ce205-data-structures-comp-eng.pdf)
-
---- 
-
-<iframe width=700, height=500 frameBorder=0 src="../syllabus.html"></iframe>
-
----
-
-<!-- paginate: true -->
-
-| Instructor                 | Asst. Prof. Dr. Uğur CORUH          |
-| -------------------------- | ----------------------------------- |
-| **Contact Information**    | ugur.coruh@erdogan.edu.tr           |
-| **Office No**              | F-301                               |
-| **Teams Code**             | h3cl51i                             |
-| **Lecture Hours and Days** | Friday 09:00-12:00 İİBF 402 Floor-4 |
+| | |
+| --- | --- |
+| **Instructor** | Asst. Prof. Dr. Uğur CORUH |
+| **Contact** | ugur.coruh@erdogan.edu.tr — subject line must start with **[CEN207]** |
+| **Office** | F-301 |
+| **Office hours** | By appointment by e-mail; meetings in the office or online with the university account |
+| **Lecture day, time, room** | Friday 13:00–16:00 · İİBF & Faculty of Law Building, D-402 (ED-K4-2) |
+| **Course website** | https://ucoruh.github.io/ce205-data-structures/ |
+| **Course class** | A new class is opened every term; the class code is announced in week 1 |
+| **Language** | English |
+| **Type / semester** | Compulsory · 3rd semester |
+| **Weekly hours / credit / ECTS** | Theory 3 h · Credit 3 · ECTS 5 |
+| **Prerequisite** | CEN108 Algorithms and Programming II (former code CE100) — details: [Prerequisites](../prerequisites/index.md) |
 
 ---
 
-|                  |                                                                                                                                                                                                                                                   |
-| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Office Hours** | Meetings will be scheduled over Google Meet with your university account and email and performed via demand emails. Please send emails with the subject starting with [CE205] tag for the fast response and write formal, clear, and short emails |
+## A. Course Description
+
+This course covers the fundamentals of data structures and file organization. It explains how data is mapped
+in programs — both in application run-time memory and in long-term file storage — and discusses the
+implementations, programming styles and run-time representations of these data objects. It also covers sorting,
+searching and graph algorithms. The aim is to show how digital data structures solve real-world problems and how
+data is shaped and mapped to memory or storage. The course is practice-oriented: learning is strengthened through
+programming practice in class and a term project rather than theory alone.
 
 ---
 
-| **Lecture and Communication Language** | English                                                                  |
-| -------------------------------------- | ------------------------------------------------------------------------ |
-| **Theory Course Hour Per Week**        | 3 Hours                                                                  |
-| **Credit**                             | 4                                                                        |
-| **Prerequisite**                       | CE103- Algorithms and Programming I CE100- Algorithms and Programming II |
-| **Corequisite**                        | TBD                                                                      |
-| **Requirement**                        | TBD                                                                      |
+## B. Course Learning Outcomes
 
-*TBD: To Be Defined.
+After completing this course, a student will be able to:
 
----
+| Code | Learning outcome |
+| --- | --- |
+| LO.1 | Explain the definitions, representations and basic operations of fundamental linear (array, linked list, stack, queue) and non-linear (tree, graph) data structures. |
+| LO.2 | Analyze the time and space complexity of algorithms using asymptotic notation (Big-O) and compare the performance of different data structures. |
+| LO.3 | Implement fundamental sorting (insertion, selection, quick, heap) and searching (linear, binary) algorithms, and analyze and compare their performance. |
+| LO.4 | Implement balanced and unbalanced tree structures (binary trees, binary search trees, AVL trees, B-trees) and hash tables. |
+| LO.5 | Implement the graph data structure (representation methods) and fundamental graph algorithms (traversal, MST, shortest path). |
+| LO.6 | Explain sequential, direct (hash-based) and indexed sequential file organization techniques and evaluate their applications. |
+| LO.7 | Analyze a given problem, select the data structures and algorithms best suited to its requirements, and develop an efficient solution. |
 
-## A.    Course Description
+### Contribution of learning outcomes to program outcomes (0–5)
 
-This course covers the fundamentals of data structure and file organization. The course scope explains using digital data mapping in programming to use data in application run-time memory or long-term file storage. The course discusses various implementations of these data objects and programming styles, and run-time representations. The study also looks at sorting, searching, and graph algorithms. This course aims to provide digital data structures for real-world problems, as well as how data is shaped and mapped to memory or storage solutions. The class will be based on sharing expertise and guiding students to discover learning methods and practice for data structure topics. By making programming applications and projects in the courses, the learning process will be strengthened by practicing rather than theory.
+| | PO.1 | PO.2 | PO.3 | PO.4 | PO.5 | PO.6–PO.12 |
+| --- | --- | --- | --- | --- | --- | --- |
+| LO.1 | 5 | – | – | – | – | – |
+| LO.2 | 5 | – | – | – | – | – |
+| LO.3 | – | – | – | 5 | – | – |
+| LO.4 | – | 4 | 3 | 5 | – | – |
+| LO.5 | – | 4 | 3 | 5 | – | – |
+| LO.6 | – | – | – | 4 | 5 | – |
+| LO.7 | 5 | 4 | – | 3 | – | – |
 
----
-
-## B.    Course Learning Outcomes
-
-After completing this course satisfactorily, a student will be able
-to:
-
-- Describe how common linear and non-linear data structures such as arrays, matrices, linked structures, queues, stacks, trees and graphs are represented in run time and storage memory and used by algorithms.
-
-- Compare and contrast the beneﬁts of dynamic and static data structures implementations.
-
----
-
-- Understand basic industrial data structure definitions such as ASN.1 / BER TLV / PER TLV.
-
-- Describe how run-time application data stored in a file and organized.
-
-- Interpret a problem and define data structures for solution by using a C/C++, Java or C# application solve that problem in data structure manner.
-
-- Compare alternative implementations of data structures with respect to performance and analysis space and time complexity.
+PO.1 Basic knowledge · PO.2 Problem solving · PO.3 Design · PO.4 Modern tools and techniques · PO.5 Research and experimentation.
 
 ---
 
-- Understand data structure based sorting and searching algorithms.
+## C. Weekly Schedule
 
-- Describe hashing and indexing methods for file organization and processing.
+Rule for all assessments: **project demonstrations take place in the week just before the midterm and final exam
+weeks; quizzes take place inside the midterm and final exam weeks** so that every student can attend.
 
-- Discuss the computational efﬁciency of the principal algorithms for sorting, searching, and hashing in memory and file storage.
+| Week | Date | Topics | LO |
+| --- | --- | --- | --- |
+| [1](../week-1/cen207-week-1.md) | 18.09.2026 (make-up 23.09) | Course plan and communication. Introduction to linear and non-linear data structures; performance analysis (Big-O). Pointers and objects for data and variables; memory layout. Basics of ASN.1 / BER TLV / PER TLV. Intensive C workshop (toolchain, compile–run–debug). | 1, 2, 7 |
+| [2](../week-2/cen207-week-2.md) | 25.09.2026 | Linked lists (singly, doubly, circular, XOR) and skip lists; arrays (rotation, rearrangement, searching); matrices and sparse matrices. | 1, 7 |
+| [3](../week-3/cen207-week-3.md) | 02.10.2026 | Stacks (array and linked list, LIFO); expressions (infix, postfix, prefix) and conversions; queues (standard, circular, deque, multilevel; FIFO); Tower of Hanoi; recursion (groundwork for DFS). | 1, 7 |
+| [4](../week-4/cen207-week-4.md) | 09.10.2026 | Trees and binary trees; traversals (in-, pre-, post-order); heaps (min, max, binary, binomial, Fibonacci, leftist, k-ary) and priority queues; heap sort; Huffman coding. | 1, 4, 7 |
+| [5](../week-5/cen207-week-5.md) | 16.10.2026 | Graphs: representations (adjacency matrix, incidence matrix, adjacency list); traversals (BFS, DFS, iterative deepening, depth-limited, bidirectional); topological sorting; water jug problem. | 1, 5, 7 |
+| [6](../week-6/cen207-week-6.md) | 23.10.2026 | Searching (linear, binary, interpolation, Fibonacci); hashing and hash tables (direct-address tables, hash functions, chaining, open addressing, perfect hashing); collision resolution in practice. | 3, 4, 7 |
+| [7](../week-7/cen207-week-7.md) | 30.10.2026 | **Midterm project demonstrations (C)** and midterm project report. | 1–5, 7 |
+| [8](../week-8/cen207-week-8.md) | 31.10–08.11.2026 | **Midterm exam week — Quiz-1** (weeks 1–6). | 1, 2, 4, 5, 7 |
+| [9](../week-9/cen207-week-9.md) | 13.11.2026 | Graph algorithms: minimum spanning trees (Prim, Kruskal with disjoint sets), shortest paths (Dijkstra, Bellman–Ford), connectivity and SCC, maximum flow, cycle detection (Floyd, Brent), backtracking (n-queens, m-coloring, Euler and Hamiltonian paths). | 3, 5, 7 |
+| [10](../week-10/cen207-week-10.md) | 20.11.2026 | Sorting algorithms and taxonomy (insertion, selection, shell, quick, merge, heap, radix, counting, external sorting); comparison of sorting methods. | 2, 3, 7 |
+| [11](../week-11/cen207-week-11.md) | 27.11.2026 | Advanced trees: binary search trees, AVL, red-black, splay, B-tree family (2-3, 2-3-4, B+, B#), augmenting data structures; comparison of search trees. | 4, 7 |
+| [12](../week-12/cen207-week-12.md) | 04.12.2026 | Strings: string structures, search algorithms (brute force, Knuth–Morris–Pratt, Boyer–Moore, Horspool), LCS and edit distance (Levenshtein, Wagner–Fischer), alignment (Needleman–Wunsch, Smith–Waterman), tries and Patricia trees. | 1, 3, 4, 7 |
+| [13](../week-13/cen207-week-13.md) | 11.12.2026 | File organization I: sequential files (binary, interpolation, self-organizing search); direct files and hashing functions; collision resolution (coalesced hashing, progressive overflow, double hashing, buckets, Brent's method); perfect hashing. | 6, 7 |
+| [14](../week-14/cen207-week-14.md) | 18.12.2026 | File organization II: indexed sequential files; secondary key retrieval; binary and B-tree structures for files; hashing for expandable files (extendible, dynamic, linear hashing); k-d trees and grid files; external file sorting. | 3, 4, 6, 7 |
+| [15](../week-15/cen207-week-15.md) | 25.12.2026 | **Final project demonstrations (Java)** and final project report. | 1–7 |
+| [16](../week-16/cen207-week-16.md) | 04–17.01.2027 | **Final exam period — Quiz-2** (weeks 9–14). | 2–7 |
 
-- Combine programming skills with data structures know-how and generate efficient solutions for real-life problems.
-
----
-
-## C.    Course Topics
-
----
-
-- Data-in-use, Data-in-transit and Data-at-rest concepts.
-
-- Data Structures Space and Time Complexity Analysis
-
-- Data and Variable Mappings
-
----
-
-- ASN.1 / BER TLV / PER TLV
-
----
-
-- Linked Lists (Single, Circular, Double, XOR)
-
-- Skip List
+Enrichment topics kept from previous years and covered in the course notes as optional reading: alpha-beta pruning,
+Hasse diagrams, Petri nets, bipartite graphs, Bayesian networks, van Emde Boas trees, SimHash, trie hashing.
 
 ---
 
-- Strand Sort
+## D. Textbooks, Software and Equipment
 
-- Arrays (Rotations, Arrangement, Rearrangement, Searching and Sorting)
+The course notes on the course website are the main resource and are self-contained. The following books are
+recommended for further reading:
 
----
+- Deitel & Deitel. *C How to Program*, 7th ed. Prentice Hall, 2013.
+- Y. Daniel Liang. *Introduction to Java Programming, Comprehensive Version*, 10th ed.
+- T. H. Cormen, C. E. Leiserson, R. L. Rivest, C. Stein. *Introduction to Algorithms*, 3rd ed. MIT Press.
+- J. R. Hanly, E. B. Koffman. *Problem Solving and Program Design in C*, 6th ed.
+- A. L. Tharp. *File Organization and Processing*. Wiley, 1988.
+- P. Brass. *Advanced Data Structures*. Cambridge University Press, 2008.
+- R. Sedgewick, K. Wayne. *Algorithms*, 4th ed. Addison-Wesley, 2011.
 
-- Matrices and Spare Matrices
-
----
-
-- Stacks (Array and Linked List) and FILO (First in Last Out)
-
-- Expressions (Infix, Postfix and Prefix) and Infix to Postfix Conversions and Postfix Evaluation
-
-- Queues (Standard, Circular and Double Ended) (Array and Linked List) (FIFO-First-in First-Out or FCFS-Fist Come First Serve)
-
-- Multievel Queues (MLQ)
-
-- Hanoi Tower
+**Laptop required.** You will use your own development environment in class, in assignments and in the project:
+a C/C++ compiler (GCC, Clang or MSVC), CMake, GoogleTest, Doxygen, JDK 21 with Maven and JUnit 5, and Git with a
+GitHub account. Installation steps are given in week 1 and in the course notes; project templates are provided.
+See the [Prerequisites](../prerequisites/index.md) page for the exact toolchain checklist.
 
 ---
 
-- Tree Structures and Binary Tree and Traversals (In-Order, Pre-Order, Post-Order)
-
-- Heaps (Max, Min, Binary , Binomial, Fibonacci, Leftist, K-ary) and Priority Queue
-
-- Heap Sort
-
-- Huffman Coding
-
----
-
-- Graph Representations (Adjency Matrix, Incidence Matrix, Adjency List) and Basics
-
-- Graph Traversals ( Depth-First Search (DFS), Iterative Deepening Search(IDS) or Iterative Deepening Depth First Search(IDDFS), Breadth-First Search (BFS), Depth-limited Search, Uniform Cost Search, Bidirectional Search)
-
-- Water Jug Problem
-
----
-
-- Graph Topological Sorting
-
-- Graph Minimum Spanning Tree (MST)
-
-- Graph Backtracking ( Tug of War, n-Queen’s, m Coloring, Euler& Hamiltonian Path)
-
-- Graph Shortest Paths
-
-- Graph Connectivity, Max Flow, Isomorphism, Canonization and Cuts (Max /Min)
-
----
-
-- Alpha-Beta Prunning
-
-- Hasse Diagrams
-
-- Petri Nets
-
-- Bipartite Graphs
-
-- Graph Cycle Detection (Brent’s, Hare and Tortoise Algorithms)
-
-- Bayesian Network
-
-- Linear, Binary, Interpolation and Fibonacci Search
-
-- Hashing and Hash Tables (Direct-Adress Tables, Hash Tables, Hash Functions, Open Adressing, Perfect Hashing)
-
----
-
-- Common Sorting Algorithms ( Insertion, Selection, Radix, Quick, Heap, Permutation, Gnome, Comb, Flash, Stooge, Bees, Lucky, Indirect (Pointer), External ( Segmented), Shaker/Bidirectional Bubble, Shell Sort)
-
-- Comparison of Sorting Methods
-
-- Common Tree Data Structures and Operations ( Binary Search Tree, AVL Tree, B Tree and Derivations (2 3 4 Trees, 2 3 Trees, B+ Trees, B# Trees), R Tree, Red-Black Tree, Splay Tree, Van Emde Boas Tree, Binomial Tree, Minimax Tree)
-
-- Comparison of Search Trees
-
----
-
-- Augmenting Data Structures
-
-- String LCS Problem (Hunt Macllory, Levenstein, Wagner-Fischer)
-
-- String Alignment (Needleman Wunsch, Smith Waterman, Hunt Macllory), Tokenizer and Comparison
-
-- String Search (Reverse Factor) Algorithms (Knuth-Morris-Pratt, Horspool, Boyer Moore, Brute-Force, DFA Text Search)
-
----
-
-- Tries and Patricia Tree (Radix Tree)
-
-- Data Structure for Disjoint Sets
-
-- Sequential File Organization (Binary Search, Interpolation Search, Self-Organizing Sequential Search)
-
-- Direct File Organization Locating Information
-
-- Direct File Organization Hashing Functions ( MD5, HAVAL, SHA1, Key Mod N, Key Mod P, Truncation, Folding, Squaring, Radix Conversion, Polynomial Hashing, Alphabetic Keys, Collisions)
-
-- Direct File Organization Collision Resolution
-
----
-
-- Direct File Organization Coalesced Hashing (EISCH, LISCH, BEISCH, BLISCH, REISCH, RLISCH, EICH, LICH)
-
-- Direct File Organization Progressive Overflow (Linear Probing, Quadratic Probing)
-
-- Direct File Organization Double Hashing, Use of Buckets, Linear Quotient, Brent’s Method, Binary Tree and Computed Chaining Insertion (CCI)
-
-- Perfect Hashing and SimHash for Direct File Organization
-
-- Comparison of Collision Resolution Methods
-
----
-
-- Indexed Sequential File Organization
-
-- Secondary Key Retrivals and Bits and Hashing for Classification and Checking
-
-- Binary Tree Structures for Files (Binary Search, AVL Trees, Internal Path Reduction Trees)
-
-- B-Trees and Derivates for Files (B Tree, B+Tree, B# Tree)
-
-- Hashing Techniques for Expandable Files (Extendible, Dynamic and Linear Hashing)
-
----
-
-- Tries, Approximate String Matching, Trie Hashing, Patricia Tree and Digital Search Tree for File Organization
-
-- Secondary Key Retrivial (K-d Trees and Grid Files)
-
-- File Sorting (Insertion, Quick, Heap Sorts, External Sorting, Sorting By Merging and Disk Sort)
-
----
-
-## D.    Textbooks and Required Hardware or Equipment
-
-This course does not require a coursebook.
-If necessary, you can use the following books and open-source online resources.
-
----
-
-- *C How to Program, 7/E. Deitel & Deitel. 2013, Prentice-Hall.*
-
-- *Intro to Java Programming, Comprehensive Version (10th Edition) 10th
-  Edition by Y. Daniel Liang*
-
-- *Introduction to Algorithms, Third Edition By Thomas H. Cormen,
-  Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein*
-
----
-
-- *Problem Solving and Program Design in C, J.R. Hanly, and E.B.
-  Koffman, 6th Edition.*
-
-- *Alan L. Tharp. 1988. File organization and processing. John Wiley
-  & Sons, Inc., USA.*
-
-- *Richard Jankowski. 2010. Advanced data structures by Peter Brass
-  Cambridge University Press 2008. SIGACT News 41, 1 (March 2010), 19–20.
-  DOI:https://doi.org/10.1145/1753171.1753176*
-
-- *Robert Sedgewick and Kevin Wayne. 2011. Algorithms (4th. ed.).
-  Addison-Wesley Professional.*
-
----
-
-- *Additional Books TBD*
-
-<u>During this course, you should have a laptop for programming practices. You will have your development environment, and you will use this for examination and assignments also classroom practices. </u>
-
----
-
-## E. Grading
-
-You will complete one project and two written quizzes throughout the semester. You are expected to submit your Midterm Project Report at the midterm, demonstrating progress and outputs aligned with your project plan. In the 15th week, you will present and submit your Final Project Report. You will take a written quiz in the 8th week and another in the 14th week.
-
----
-
-| Assessment             | Code  | Weight | Scope   |
-| ---------------------- | ----- | ------ | ------- |
-| Midterm Project Report | RAP1  | 60%    | Midterm |
-| Quiz-1                 | QUIZ1 | 40%    | Midterm |
-| Final Project Report   | RAP2  | 70%    | Final   |
-| Quiz-2                 | QUIZ2 | 30%    | Final   |
+## E. Assessment
+
+You carry out **one term project** with two checkpoints, each evaluated with its rubric: a midterm checkpoint
+(C implementation) and a final checkpoint (Java implementation). You also take one quiz in the midterm exam week and
+one quiz in the final exam period. The project topics, team-formation rules, deliverables and the **detailed
+midterm and final rubrics** (criteria, points, related learning outcomes and performance levels) are given in the
+course's [project guide](../project-guide/index.md).
+
+| Assessment | Code | Weight | When |
+| --- | --- | --- | --- |
+| Project checkpoint 1 — C implementation, report and demonstration (rubric) | RAP1 | 60% of midterm | Week 7 (30.10.2026) |
+| Quiz-1 (weeks 1–6) | QUIZ1 | 40% of midterm | Week 8, midterm exam week (31.10–08.11.2026) |
+| Project checkpoint 2 — Java implementation, report and demonstration (rubric) | RAP2 | 70% of final | Week 15 (25.12.2026) |
+| Quiz-2 (weeks 9–14) | QUIZ2 | 30% of final | Week 16, final exam period (04–17.01.2027) |
 
 $$
-Grade_{Midterm} = 0.6 RAP1 + 0.4 QUIZ1
+Grade_{Midterm} = 0.6\,RAP1 + 0.4\,QUIZ1 \qquad Grade_{Final} = 0.7\,RAP2 + 0.3\,QUIZ2
 $$
 
 $$
-Grade_{Final} = 0.7 RAP2 + 0.3 QUIZ2
+Passing\ Grade = 0.4\,Grade_{Midterm} + 0.6\,Grade_{Final}
 $$
 
-$$
-Passing Grade = (40 * Grade_{Midterm} + 60 * Grade_{Final}) / 100
-$$
+### Workload (ECTS 5 = 125 hours)
+
+| Activity | Count | Hours | Total |
+| --- | --- | --- | --- |
+| Class attendance | 14 | 3 | 42 |
+| Individual study (weekly notes and examples) | 14 | 1 | 14 |
+| Quiz (midterm exam week and final exam period) | 2 | 2 | 4 |
+| Individual study for quizzes | 2 | 10 | 20 |
+| Project preparation (C and Java checkpoints) | 2 | 16 | 32 |
+| Report preparation | 2 | 5 | 10 |
+| Project presentation (demonstration and questions) | 2 | 1.5 | 3 |
+| **Total** | | | **125** |
 
 ---
 
 ## F. Instructional Strategies and Methods
 
-The basic teaching method of this course will be planned to be face-to-face in the classroom, and support resources, homeworks, and announcements will be shared over google classroom. Students are expected to be in the university. This responsibility is very important to complete this course with success. If pandemic situation changes and distance education is required during this course, this course will be done using synchronous and asynchronous distance education methods. In this scenario, students are expected to be in the online platform, zoom, or meet at the time specified in the course schedule. Attendance will be taken.
+Lectures are face-to-face in the classroom and combine explanation, question–answer and hands-on programming.
+Each content week comes with course notes, slides, worked examples and self-check questions.
+Announcements, resources and submissions are handled in the course class. Attendance is taken.
 
 ---
 
 ## G. Late Homework
 
-Throughout the semester, assignments must be submitted as specified by the announced deadline. Overdue assignments will not be accepted.
-
-Unexpected situations must be reported to the instructor for late homeworks by students.
+Throughout the semester, assignments must be submitted by the announced deadline. Overdue assignments will not be
+accepted. Unexpected situations must be reported to the instructor by students.
 
 ---
 
 ## H. Course Platform and Communication
 
-Google Classroom will be used as a course learning management system. All electronic resources and announcements about the course will be shared on this platform. It is very important to check the course page daily, access the necessary resources and announcements, and communicate with the instructor as you needed to complete the course with success
+All announcements, resources and submissions are shared in the course class, which is opened anew every term; the
+class code is announced in week 1. Course notes, slides and downloadable documents are on the course website. Check
+the class and your university e-mail every day.
 
 ---
 
 ## I. Academic Integrity, Plagiarism & Cheating
 
-Academic Integrity is one of the most important principles of RTEÜ University. Anyone
-who breaches the principles of academic honesty is severely punished.
+Academic integrity is one of the most important principles of RTEÜ. Anyone who breaches the principles of
+academic honesty is severely punished.
 
----
+It is natural to interact with classmates and others to "study together". It may also be the case where a student
+asks for help from someone else, paid or unpaid, to better understand a difficult topic or a whole course. However,
+what is the borderline between "studying together" or "taking private lessons" and "academic dishonesty"? When is
+it plagiarism, when is it cheating?
 
- It is natural to interact with classmates and others to "study together". It may also be the case where a student asks to help from someone else, paid or unpaid, better understand a difficult topic or a whole course. However, what is the borderline between "studying together" or "taking private lessons" and "academic dishonesty"? When is it plagiarism, when is it cheating?
-
----
-
-It is obvious that looking at another student's paper or any source other than what is allowed during the exam is cheating and will be punished. However, it is known that
-many students come to university with very little experience concerning what is acceptable and what counts as "copying", especially for assignments.
-
-The following are attempted as guidelines for the Faculty of Engineering and Architecture students to highlight the philosophy of academic honesty for assignments for which the student will be graded. Should a situation arise which is not described below, the student is advised to ask the instructor or assistant of the course whether what they intend to do would remain within the framework of academic honesty or not.
-
----
+Looking at another student's paper or any source other than what is allowed during the exam is cheating and will be
+punished. However, many students come to university with very little experience of what is acceptable and what
+counts as "copying", especially for assignments. The following guidelines highlight the philosophy of academic
+honesty for graded assignments. If a situation arises that is not described below, ask the instructor whether what
+you intend to do stays within academic honesty.
 
 ### a. What is acceptable when preparing an assignment?
 
-- Communicating with classmates about the assignment to understand it better
-
----
-
-- Putting ideas, quotes, paragraphs, small pieces of code (snippets) that you find online
-  or elsewhere into your assignment, provided that
-  
-  - these are not themselves the whole solution to the assignment,
-  
-  - you cite the origins of these
-
----
-
-- Asking sources for help in guiding you for the English language content of your
-  assignment.
-
-- Sharing small pieces of your assignment in the classroom to create a class discussion
-  on some controversial topics.
-
----
-
-- Turning to the web or elsewhere for instructions, references, and solutions to
-  technical difficulties, but not for direct answers to the assignment
-
-- Discuss solutions to assignments with others using diagrams or summarized statements but not actual text or code.
-
-- Working with (and even paying) a tutor to help you with the course, provided the tutor does not do your assignment for you.
-
----
+- Communicating with classmates about the assignment to understand it better.
+- Putting ideas, quotes, paragraphs or small pieces of code (snippets) found online or elsewhere into your
+  assignment, provided that they are not themselves the whole solution and you cite their origin.
+- Asking for help with the English language of your assignment.
+- Sharing small pieces of your assignment in class to start a discussion on a controversial topic.
+- Turning to the web or elsewhere for instructions, references and solutions to technical difficulties, but not
+  for direct answers to the assignment.
+- Discussing solutions with others using diagrams or summarized statements, but not actual text or code.
+- Working with (even paying) a tutor, provided the tutor does not do your assignment for you.
 
 ### b. What is not acceptable?
 
-- Ask a classmate to see their solution to a problem before submitting your own.
-
-- Failing to cite the origins of any text (or code for programming courses) that you discover outside of the course's lessons and integrate into your work
-
-- Giving or showing a classmate your solution to a problem when the classmate is struggling to solve it.
+- Asking a classmate to see their solution before submitting your own.
+- Failing to cite the origin of any text or code that you found outside the course and used in your work.
+- Giving or showing your solution to a classmate who is struggling to solve the problem.
 
 ---
 
 ## J. Expectations
 
-You are expected to attend classes on time by completing weekly course requirements (readings and assignments) during the semester. The main communication channel between the instructor and the students will be emailed. Please send your questions to the instructor's email address about the course via the email address provided to you by the university. ***Ensure that you include the course name in the subject field of your message and your name in the text field***. In addition, the instructor will contact you via email if necessary. For this reason, it is very important to check your email address every day for healthy communication.
+You are expected to attend classes on time and complete the weekly requirements (readings and project milestones). The main communication channel between the instructor and students is e-mail. Send your
+questions from your university e-mail address; **include the course code in the subject line and your name in the
+message**. The instructor will also contact you by e-mail when necessary, so check your e-mail every day.
 
 ---
 
 ## K. Lecture Content and Syllabus Updates
 
-If deemed necessary, changes in the lecture content or course schedule can be made. If any changes are made in the scope of this document, the instructor will inform you about this.
-
----
-
-## Course Schedule Overview
-
-| Weeks  | Dates      | Subjects                                                                                                                                                                                               | Other Tasks |
-| ------ | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------- |
-| Week 1 | 27.09.2024 | Course Plan and Communication,Introduction to Linear & Non-Linear Data Structure and Performance Analysis, Implementing Pointer and Objects for Data and Variables, Basic of ASN.1 / BER TLV / PER TLV | TBD         |
-| Week 2 | 04.10.2024 | Linked Lists and Related Algorithms, Arrays and Matrices                                                                                                                                               | TBD         |
-
----
-
-| Week 3 | 11.10.2024 | Stacks, Queue Structures and Related Algorithms and Problems.                    | TBD |
-| ------ | ---------- | -------------------------------------------------------------------------------- | --- |
-| Week 4 | 18.10.2024 | Tree Data Structure Types and Applications (Binary Tree, Tree Traversals, Heaps) | TBD |
-| Week 5 | 25.10.2024 | Graph Data Structure and Traversals                                              |     |
-
----
-
-| Week-6 | 01.11.2024 | Graph MST, Backtracking, Topological Sorting, Shortest Paths, Connectivity,Max Flow and Cycle Detection Algorithms. Graph Isomorphism and canonization Graph Cuts | TBD |
-| ------ | ---------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| Week-7 | 08.11.2024 | Linear, Binary and Fibonacci Search Hashing and Hash Tables with Perfect Hashing                                                                                  | TBD |
-| Week-8 | 15.11.2024 | **Quiz-1 + Interim Project Report Submission**                                                                                                                    | TBD |
-
----
-
-| Week-9  | 22.11.2024 | Sorting Algorithms, Taxonomy and Comparisons                                                                                                                                                                        | TBD |
-| ------- | ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| Week-10 | 29.11.2024 | Advanced Tree Data Structures (Binary Search Tree, AVL Tree, B Trees and derivations,Red-Black trees, Splay Trees and Augmented Data Structures, van Emde Boas Trees, Binomial and Minimax Trees ) and Comparisons. | TBD |
-| Week-11 | 06.12.2024 | String Data Structure, Subsequence Search, Alignment and Comparison Algorithms.                                                                                                                                     | TBD |
-
----
-
-| Week-12 | 13.12.2024 | String Search Algorithms, Tries, Data Structures for Disjoint Sets.                                                                                                                           | TBD |
-| ------- | ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| Week-13 | 20.12.2024 | Introduction to File Organization and Processing Sequential File Organization,Direct File Organization Hash Methods + Direct File Organization Indexes Binary and B Tree Structures for File. | TBD |
-| Week-14 | 27.12.2024 | **Quiz-2**                                                                                                                                                                                    | TBD |
-| Week-15 | 03.01.2025 | **Project Review and Presentation** 																																						   | TBD |
-
----
-
-$$
-End-Of-Syllabus
-$$
+If deemed necessary, the lecture content or course schedule may change. Any change within the scope of this
+document will be announced by the instructor.

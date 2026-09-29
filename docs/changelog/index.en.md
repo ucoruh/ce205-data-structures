@@ -4,6 +4,27 @@ template: main.html
 
 # Changelog
 
+This page lists the important changes to the course site. For the detailed history, see the
+[commit history of the GitHub repository](https://github.com/ucoruh/ce205-data-structures/commits/main).
+
+## 2026–2027 Fall
+
+### 29.09.2026 — 2026–2027 rebuild
+
+- The course code changed to **CEN207 Data Structures (formerly CE205)**; the repository name is unchanged.
+- All 16 weeks were rebuilt in English and Turkish, each with interactive in-browser animations for the data
+  structures and algorithms covered that week.
+- Every week ships tested, working C and/or Java programs with unit tests; slide decks (HTML/PDF/PPTX) and
+  downloadable lecture notes (PDF/DOCX) are provided in both languages.
+- The project guide was rewritten with **200 project topics** across eight groups, a C midterm checkpoint and a
+  Java final checkpoint, each with a detailed rubric.
+- A **Prerequisites** page was added; the Syllabus, Licence, Résumé and Changelog pages were renewed to match the
+  new term.
+
+## Earlier revisions
+
+*The entries below are the repository's original commit-log changelog, kept here for history.*
+
 ### [6b4e2e1](https://github.com/ucoruh/ce205-data-structures/commit/6b4e2e1998fc044835fc68694bf5076733b1c5b6) <small>_ 1 year, 11 months ago</small> { id='6b4e2e1' }
 
 - week-4 tree structure course notes are updated
