@@ -6,6 +6,28 @@ template: main.html
 
 *CEN207 Veri Yapıları (eski kodu CE205) · 2026–2027 Güz*
 
+<!-- materials:start -->
+
+<div class="materials" markdown>
+
+[:material-file-pdf-box: Ders notu (PDF)](cen207-project-guide-notes.pdf){ .md-button download="cen207-project-guide-notes.pdf" }
+[:material-file-word-box: Ders notu (DOCX)](cen207-project-guide-notes.docx){ .md-button download="cen207-project-guide-notes.docx" }
+[:material-presentation: Sunum (PDF)](cen207-project-guide-slides.pdf){ .md-button download="cen207-project-guide-slides.pdf" }
+[:material-microsoft-powerpoint: Sunum (PPTX)](cen207-project-guide-slides.pptx){ .md-button download="cen207-project-guide-slides.pptx" }
+[:material-language-html5: Sunum (HTML, çevrimdışı)](cen207-project-guide-slides.html){ .md-button download="cen207-project-guide-slides.html" }
+[:material-folder-zip: Tümünü indir (ZIP)](cen207-project-guide-materials.zip){ .md-button download="cen207-project-guide-materials.zip" }
+[:material-fullscreen: Sunumu tam ekran aç](cen207-project-guide-slides.html){ .md-button .md-button--primary target=_blank }
+
+</div>
+
+<div class="deck-frame">
+<iframe src="cen207-project-guide-slides.html" title="CEN207 Veri Yapıları — Proje Rehberi" loading="lazy" allowfullscreen></iframe>
+</div>
+
+<p class="deck-hint">Sunumun içine tıklayıp ok tuşlarıyla ilerleyin; tam ekran için sunumun sağ altındaki düğmeyi ya da yukarıdaki "Sunumu tam ekran aç" bağlantısını kullanın.</p>
+
+<!-- materials:end -->
+
 Bu dönem **tek bir proje** yapacaksınız: listeden seçtiğiniz bir uygulamayı, derste öğrendiğiniz veri yapıları ve
 algoritmalarla **iki kez** gerçekleştireceksiniz — önce **C** ile (vize kontrolü), sonra aynı uygulamayı genişleterek
 **Java** ile (final kontrolü). Amaç, her veri yapısını gerçek bir sorunun içinde kullanmak ve "neden bu yapıyı

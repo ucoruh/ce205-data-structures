@@ -6,6 +6,28 @@ template: main.html
 
 *CEN207 Data Structures (formerly CE205) · Fall 2026–2027*
 
+<!-- materials:start -->
+
+<div class="materials" markdown>
+
+[:material-file-pdf-box: Lecture notes (PDF)](cen207-project-guide-notes.pdf){ .md-button download="cen207-project-guide-notes.pdf" }
+[:material-file-word-box: Lecture notes (DOCX)](cen207-project-guide-notes.docx){ .md-button download="cen207-project-guide-notes.docx" }
+[:material-presentation: Slides (PDF)](cen207-project-guide-slides.pdf){ .md-button download="cen207-project-guide-slides.pdf" }
+[:material-microsoft-powerpoint: Slides (PPTX)](cen207-project-guide-slides.pptx){ .md-button download="cen207-project-guide-slides.pptx" }
+[:material-language-html5: Slides (HTML, offline)](cen207-project-guide-slides.html){ .md-button download="cen207-project-guide-slides.html" }
+[:material-folder-zip: Download all (ZIP)](cen207-project-guide-materials.zip){ .md-button download="cen207-project-guide-materials.zip" }
+[:material-fullscreen: Open slides full screen](cen207-project-guide-slides.html){ .md-button .md-button--primary target=_blank }
+
+</div>
+
+<div class="deck-frame">
+<iframe src="cen207-project-guide-slides.html" title="CEN207 Data Structures — Project Guide" loading="lazy" allowfullscreen></iframe>
+</div>
+
+<p class="deck-hint">Click inside the slides and use the arrow keys; use the button at the bottom right of the slides, or the "Open slides full screen" link above, for full screen.</p>
+
+<!-- materials:end -->
+
 This term you will build **one project**: an application you choose from the list, implemented **twice** with the
 data structures and algorithms you learn in class — first in **C** (midterm check), then extended in **Java** (final
 check). The goal is to use every data structure inside a real problem and to answer "why did I choose this

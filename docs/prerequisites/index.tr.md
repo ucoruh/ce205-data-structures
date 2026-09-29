@@ -4,6 +4,28 @@ template: main.html
 
 # Ön gereksinimler
 
+<!-- materials:start -->
+
+<div class="materials" markdown>
+
+[:material-file-pdf-box: Ders notu (PDF)](cen207-prerequisites-notes.pdf){ .md-button download="cen207-prerequisites-notes.pdf" }
+[:material-file-word-box: Ders notu (DOCX)](cen207-prerequisites-notes.docx){ .md-button download="cen207-prerequisites-notes.docx" }
+[:material-presentation: Sunum (PDF)](cen207-prerequisites-slides.pdf){ .md-button download="cen207-prerequisites-slides.pdf" }
+[:material-microsoft-powerpoint: Sunum (PPTX)](cen207-prerequisites-slides.pptx){ .md-button download="cen207-prerequisites-slides.pptx" }
+[:material-language-html5: Sunum (HTML, çevrimdışı)](cen207-prerequisites-slides.html){ .md-button download="cen207-prerequisites-slides.html" }
+[:material-folder-zip: Tümünü indir (ZIP)](cen207-prerequisites-materials.zip){ .md-button download="cen207-prerequisites-materials.zip" }
+[:material-fullscreen: Sunumu tam ekran aç](cen207-prerequisites-slides.html){ .md-button .md-button--primary target=_blank }
+
+</div>
+
+<div class="deck-frame">
+<iframe src="cen207-prerequisites-slides.html" title="CEN207 Veri Yapıları — Ön Gereksinimler" loading="lazy" allowfullscreen></iframe>
+</div>
+
+<p class="deck-hint">Sunumun içine tıklayıp ok tuşlarıyla ilerleyin; tam ekran için sunumun sağ altındaki düğmeyi ya da yukarıdaki "Sunumu tam ekran aç" bağlantısını kullanın.</p>
+
+<!-- materials:end -->
+
 Bu derste ilk haftadan itibaren **kendi bilgisayarınızda program yazıyor, derliyor ve test ediyorsunuz** — vize
 projesi için önce C, final projesi için ardından Java — ve çalışmanızı **Git ve GitHub** üzerinde yürütüyorsunuz. Bu
 yüzden aşağıdaki bilgi ve araçlarla gelmeniz gerekir. Dersin resmî ön koşulları **CEN107 Algoritmalar ve Programlama

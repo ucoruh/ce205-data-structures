@@ -15,6 +15,28 @@ lang: tr-TR
 
 ---
 
+<!-- materials:start -->
+
+<div class="materials" markdown>
+
+[:material-file-pdf-box: Ders notu (PDF)](cen207-syllabus-notes.pdf){ .md-button download="cen207-syllabus-notes.pdf" }
+[:material-file-word-box: Ders notu (DOCX)](cen207-syllabus-notes.docx){ .md-button download="cen207-syllabus-notes.docx" }
+[:material-presentation: Sunum (PDF)](cen207-syllabus-slides.pdf){ .md-button download="cen207-syllabus-slides.pdf" }
+[:material-microsoft-powerpoint: Sunum (PPTX)](cen207-syllabus-slides.pptx){ .md-button download="cen207-syllabus-slides.pptx" }
+[:material-language-html5: Sunum (HTML, çevrimdışı)](cen207-syllabus-slides.html){ .md-button download="cen207-syllabus-slides.html" }
+[:material-folder-zip: Tümünü indir (ZIP)](cen207-syllabus-materials.zip){ .md-button download="cen207-syllabus-materials.zip" }
+[:material-fullscreen: Sunumu tam ekran aç](cen207-syllabus-slides.html){ .md-button .md-button--primary target=_blank }
+
+</div>
+
+<div class="deck-frame">
+<iframe src="../cen207-syllabus-slides.html" title="CEN207 Veri Yapıları — Ders İzlencesi" loading="lazy" allowfullscreen></iframe>
+</div>
+
+<p class="deck-hint">Sunumun içine tıklayıp ok tuşlarıyla ilerleyin; tam ekran için sunumun sağ altındaki düğmeyi ya da yukarıdaki "Sunumu tam ekran aç" bağlantısını kullanın.</p>
+
+<!-- materials:end -->
+
 ## Ders Bilgileri
 
 | | |

@@ -15,6 +15,28 @@ lang: en-US
 
 ---
 
+<!-- materials:start -->
+
+<div class="materials" markdown>
+
+[:material-file-pdf-box: Lecture notes (PDF)](cen207-syllabus-notes.pdf){ .md-button download="cen207-syllabus-notes.pdf" }
+[:material-file-word-box: Lecture notes (DOCX)](cen207-syllabus-notes.docx){ .md-button download="cen207-syllabus-notes.docx" }
+[:material-presentation: Slides (PDF)](cen207-syllabus-slides.pdf){ .md-button download="cen207-syllabus-slides.pdf" }
+[:material-microsoft-powerpoint: Slides (PPTX)](cen207-syllabus-slides.pptx){ .md-button download="cen207-syllabus-slides.pptx" }
+[:material-language-html5: Slides (HTML, offline)](cen207-syllabus-slides.html){ .md-button download="cen207-syllabus-slides.html" }
+[:material-folder-zip: Download all (ZIP)](cen207-syllabus-materials.zip){ .md-button download="cen207-syllabus-materials.zip" }
+[:material-fullscreen: Open slides full screen](cen207-syllabus-slides.html){ .md-button .md-button--primary target=_blank }
+
+</div>
+
+<div class="deck-frame">
+<iframe src="../cen207-syllabus-slides.html" title="CEN207 Data Structures — Syllabus" loading="lazy" allowfullscreen></iframe>
+</div>
+
+<p class="deck-hint">Click inside the slides and use the arrow keys; use the button at the bottom right of the slides, or the "Open slides full screen" link above, for full screen.</p>
+
+<!-- materials:end -->
+
 ## Course Information
 
 | | |

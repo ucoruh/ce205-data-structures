@@ -4,6 +4,28 @@ template: main.html
 
 # Prerequisites
 
+<!-- materials:start -->
+
+<div class="materials" markdown>
+
+[:material-file-pdf-box: Lecture notes (PDF)](cen207-prerequisites-notes.pdf){ .md-button download="cen207-prerequisites-notes.pdf" }
+[:material-file-word-box: Lecture notes (DOCX)](cen207-prerequisites-notes.docx){ .md-button download="cen207-prerequisites-notes.docx" }
+[:material-presentation: Slides (PDF)](cen207-prerequisites-slides.pdf){ .md-button download="cen207-prerequisites-slides.pdf" }
+[:material-microsoft-powerpoint: Slides (PPTX)](cen207-prerequisites-slides.pptx){ .md-button download="cen207-prerequisites-slides.pptx" }
+[:material-language-html5: Slides (HTML, offline)](cen207-prerequisites-slides.html){ .md-button download="cen207-prerequisites-slides.html" }
+[:material-folder-zip: Download all (ZIP)](cen207-prerequisites-materials.zip){ .md-button download="cen207-prerequisites-materials.zip" }
+[:material-fullscreen: Open slides full screen](cen207-prerequisites-slides.html){ .md-button .md-button--primary target=_blank }
+
+</div>
+
+<div class="deck-frame">
+<iframe src="cen207-prerequisites-slides.html" title="CEN207 Data Structures — Prerequisites" loading="lazy" allowfullscreen></iframe>
+</div>
+
+<p class="deck-hint">Click inside the slides and use the arrow keys; use the button at the bottom right of the slides, or the "Open slides full screen" link above, for full screen.</p>
+
+<!-- materials:end -->
+
 From the first week of this course you **write, build and test programs on your own computer** — first in C for the
 midterm project, later in Java for the final project — and you keep your work under **Git and GitHub**. You
 therefore need to arrive with the knowledge and tools below. The formal prerequisites of the course are **CEN107

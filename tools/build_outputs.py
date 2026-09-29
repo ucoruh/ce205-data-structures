@@ -13,9 +13,15 @@ For every week that already has a new-layout lecture note (docs/week-N/cen207-we
 A week WITHOUT a new-layout note is skipped entirely -- old-layout weeks (docs/week-N-name/...) are left alone
 until they are rewritten. Publishing (GitHub Pages) is NOT part of this script; that is separate and explicit.
 
+The same steps also build the standalone pages listed in PAGES (syllabus, prerequisites, project-guide): pass
+their key instead of a week number through --week, mixed freely with week numbers. A page has no code folder,
+so its package (ZIP) holds only its own generated files, and 'skeleton' never touches it -- its deck is written
+by hand under slides/<page>/.
+
 Usage (from the repository root):
     py -3.12 tools/build_outputs.py all
     py -3.12 tools/build_outputs.py deck deck-pdf buttons --week 3
+    py -3.12 tools/build_outputs.py deck deck-pdf pptx note-pdf docx package buttons --week syllabus,prerequisites,project-guide
 """
 import argparse
 import base64
@@ -175,9 +181,39 @@ WEEKS = {
          ['Quiz-2 (weeks 9-14).'], ['Quiz-2 (9-14. haftalar).']),
 }
 
+# Non-week pages that get the same download-button block, embedded deck and generated outputs as a week.
+# 'page_stem' is the source page's filename stem (docs/<folder>/<page_stem>.<lang>.md); 'index' publishes
+# at the site's <folder>/ URL, anything else publishes at <folder>/<page_stem>/ (mkdocs-static-i18n).
+# 'anchor' is the heading text to insert the block before, when the page's own title block is not shaped
+# like a week's (subtitle line or table right under the H1) -- see syllabus below; None uses that same
+# week-page rule (right after the H1, past a subtitle line or table if one is there).
+PAGES = {
+    'syllabus': {
+        'folder': 'syllabus', 'page_stem': 'syllabus', 'slides_stem': 'cen207-syllabus',
+        'output_name': 'cen207-syllabus',
+        'title': {'en': 'CEN207 Data Structures — Syllabus', 'tr': 'CEN207 Veri Yapıları — Ders İzlencesi'},
+        'short': {'en': 'Syllabus', 'tr': 'Ders İzlencesi'},
+        'anchor': {'en': '## Course Information', 'tr': '## Ders Bilgileri'},
+    },
+    'prerequisites': {
+        'folder': 'prerequisites', 'page_stem': 'index', 'slides_stem': 'cen207-prerequisites',
+        'output_name': 'cen207-prerequisites',
+        'title': {'en': 'CEN207 Data Structures — Prerequisites', 'tr': 'CEN207 Veri Yapıları — Ön Gereksinimler'},
+        'short': {'en': 'Prerequisites', 'tr': 'Ön Gereksinimler'},
+        'anchor': None,
+    },
+    'project-guide': {
+        'folder': 'project-guide', 'page_stem': 'index', 'slides_stem': 'cen207-project-guide',
+        'output_name': 'cen207-project-guide',
+        'title': {'en': 'CEN207 Data Structures — Project Guide', 'tr': 'CEN207 Veri Yapıları — Proje Rehberi'},
+        'short': {'en': 'Project Guide', 'tr': 'Proje Rehberi'},
+        'anchor': None,
+    },
+}
 
-class Week:
-    """File paths for one week's note, deck and generated outputs."""
+
+class Item:
+    """Shared file-path logic for a week or a standalone page (syllabus, prerequisites, project guide)."""
 
     # output kind -> filename suffix. mkdocs-static-i18n publishes ".en." at the site root and ".tr." under
     # /tr/ with the SAME (suffix-less) name, so links inside the pages are written without the language suffix.
@@ -186,18 +222,16 @@ class Week:
         'note_pdf': '-notes.pdf', 'note_docx': '-notes.docx', 'package': '-materials.zip',
     }
 
-    def __init__(self, number):
-        self.number = number
-        self.folder = DOCS / f'week-{number}'
-        self.name = f'{PREFIX}{number}'
-        self.page = {lang: self.folder / f'{self.name}.{lang}.md' for lang in (PRIMARY, SECONDARY)}
-        self.deck_source_path = {lang: SLIDES / f'week-{number}' / f'{self.name}.{lang}.md' for lang in (PRIMARY, SECONDARY)}
-        w = WEEKS[number]
-        self.title = {'en': f'Week {number} — {w[2]}', 'tr': f'Hafta {number} — {w[3]}'}
+    # The embedded deck <iframe> is raw HTML, so -- unlike a markdown link -- mkdocs never adjusts its src.
+    # A source file named "name.md" (a week, or the syllabus) publishes one directory level BELOW its own
+    # sibling assets (mkdocs-material's directory-URL nesting: .../name.md -> .../name/index.html, while
+    # its siblings stay at .../), so the iframe needs "../"; a source file literally named "index.md"
+    # (prerequisites, project guide) publishes AT that same level as its siblings, so it needs no prefix.
+    iframe_prefix = '../'
 
     @property
     def code_folder(self):
-        return ROOT / 'code' / f'week-{self.number:02d}'
+        return None
 
     def output_path(self, kind, lang=PRIMARY):
         stem, ext = self.KINDS[kind].rsplit('.', 1)
@@ -232,6 +266,67 @@ class Week:
         primary_file = self.output_path(kind, PRIMARY)
         if primary_file.exists():
             shutil.copyfile(primary_file, self.output_path(kind, SECONDARY))
+
+
+class Week(Item):
+    """File paths for one week's note, deck and generated outputs."""
+
+    anchor = None   # weeks always use the generic (H1-relative) button-block insertion rule
+
+    def __init__(self, number):
+        self.number = number
+        self.folder = DOCS / f'week-{number}'
+        self.name = f'{PREFIX}{number}'
+        self.page = {lang: self.folder / f'{self.name}.{lang}.md' for lang in (PRIMARY, SECONDARY)}
+        self.deck_source_path = {lang: SLIDES / f'week-{number}' / f'{self.name}.{lang}.md' for lang in (PRIMARY, SECONDARY)}
+        w = WEEKS[number]
+        self.title = {'en': f'Week {number} — {w[2]}', 'tr': f'Hafta {number} — {w[3]}'}
+
+    @property
+    def code_folder(self):
+        return ROOT / 'code' / f'week-{self.number:02d}'
+
+    @property
+    def site_path(self):
+        return f'week-{self.number}/{self.name}/'
+
+    def print_meta(self, lang):
+        """(kind, header, short, date) for the printable-page letterhead; see printable_page()."""
+        n = self.number
+        kind = 'Lecture Note' if lang == 'en' else 'Ders Notu'
+        header = f'Week {n} — Lecture Note' if lang == 'en' else f'Hafta {n} — Ders Notu'
+        short = f'Week {n}' if lang == 'en' else f'Hafta {n}'
+        date = WEEKS[n][0]
+        return kind, header, short, date
+
+
+class Page(Item):
+    """File paths for a standalone page (syllabus, prerequisites, project guide) that gets the same
+    download-button block, embedded deck and generated outputs as a week. Defined in PAGES above."""
+
+    def __init__(self, key):
+        cfg = PAGES[key]
+        self.key = key
+        self.cfg = cfg
+        self.folder = DOCS / cfg['folder']
+        self.name = cfg['output_name']
+        self.page = {lang: self.folder / f"{cfg['page_stem']}.{lang}.md" for lang in (PRIMARY, SECONDARY)}
+        self.deck_source_path = {
+            lang: SLIDES / cfg['folder'] / f"{cfg['slides_stem']}.{lang}.md" for lang in (PRIMARY, SECONDARY)}
+        self.title = cfg['title']
+        self.anchor = cfg['anchor']
+        # 'index.md' publishes at the same level as its sibling assets (no extra nesting) -- see Item.iframe_prefix
+        self.iframe_prefix = '' if cfg['page_stem'] == 'index' else '../'
+
+    @property
+    def site_path(self):
+        stem = self.cfg['page_stem']
+        folder = self.cfg['folder']
+        return f'{folder}/' if stem == 'index' else f'{folder}/{stem}/'
+
+    def print_meta(self, lang):
+        kind = self.cfg['short'][lang]
+        return kind, kind, CONFIG['term'][lang], CONFIG['instructor'][lang]
 
 
 def discover_weeks():
@@ -446,7 +541,8 @@ def button_block(week, lang):
     if has_deck:
         title = week.title[lang]
         lines += ['<div class="deck-frame">',
-                  f'<iframe src="../{week.link("deck_html")}" title="{title}" loading="lazy" allowfullscreen></iframe>',
+                  f'<iframe src="{week.iframe_prefix}{week.link("deck_html")}" title="{title}" loading="lazy" '
+                  'allowfullscreen></iframe>',
                   '</div>', '']
         hint = ('Click inside the slides and use the arrow keys; use the button at the bottom right of the '
                 'slides, or the "Open slides full screen" link above, for full screen.') if en else (
@@ -466,17 +562,24 @@ def buttons(week):
         # always (re)place the block right under the title: remove an old copy wherever it is
         text = re.sub(r'\n*' + re.escape(MARK_START) + r'.*?' + re.escape(MARK_END) + r'\n*', '\n\n', text,
                       flags=re.S)
-        lines = text.split('\n')
-        h1 = next(i for i, s in enumerate(lines) if s.startswith('# '))
-        i = h1 + 1
-        while i < len(lines) and not lines[i].strip():
-            i += 1
-        # skip the subtitle line (*CEN207 … *) or an info table directly under the title
-        if i < len(lines) and (lines[i].startswith('*') or lines[i].startswith('|')):
-            while i < len(lines) and lines[i].strip():
+        anchor = week.anchor[lang] if isinstance(week.anchor, dict) else week.anchor
+        if anchor is not None:
+            # the page's own title block is not shaped like a week's (e.g. the syllabus opens with a
+            # multi-line letterhead, not a subtitle line or a table) -- insert right before a named heading
+            text = text.replace(anchor, new_block + '\n\n' + anchor, 1)
+        else:
+            lines = text.split('\n')
+            h1 = next(i for i, s in enumerate(lines) if s.startswith('# '))
+            i = h1 + 1
+            while i < len(lines) and not lines[i].strip():
                 i += 1
-        lines[i:i] = ['', new_block, '']
-        text = re.sub(r'\n{3,}', '\n\n', '\n'.join(lines))
+            # skip the subtitle line (*CEN207 … *) or an info table directly under the title
+            if i < len(lines) and (lines[i].startswith('*') or lines[i].startswith('|')):
+                while i < len(lines) and lines[i].strip():
+                    i += 1
+            lines[i:i] = ['', new_block, '']
+            text = '\n'.join(lines)
+        text = re.sub(r'\n{3,}', '\n\n', text)
         page.write_text(text, encoding='utf-8', newline='\n')
         print(f'   button block: {page.relative_to(ROOT)}')
 
@@ -514,7 +617,7 @@ def page_url(week, site_root=None, lang=PRIMARY):
     its own folder (e.g. tr/). Since the default language can change, the path is picked by checking what
     actually exists rather than being hard-coded.
     """
-    tail = f'week-{week.number}/{week.name}/'
+    tail = week.site_path
     if site_root is None:
         return lang + '/' + tail
     if (site_root / tail / 'index.html').exists() and not (site_root / lang / tail / 'index.html').exists():
@@ -599,11 +702,7 @@ def printable_page(site, week, lang):
     path = page_url(week, site.temp_dir, lang)
     folder = site.temp_dir / path
     html = (folder / 'index.html').read_text(encoding='utf-8')
-    n = week.number
-    kind = 'Lecture Note' if lang == 'en' else 'Ders Notu'
-    header = f'Week {n} — Lecture Note' if lang == 'en' else f'Hafta {n} — Ders Notu'
-    short = f'Week {n}' if lang == 'en' else f'Hafta {n}'
-    date = WEEKS[n][0]
+    kind, header, short, date = week.print_meta(lang)
     html = re.sub(r'<details(?![^>]*\bopen\b)', '<details open', html)
     html = expand_tabs(html)
     css = PRINT_CSS % {'code': CONFIG['course_code'], 'course_name': CONFIG['course_name'][lang],
@@ -933,15 +1032,34 @@ def package(week, lang):
 STEPS = ['skeleton', 'deck', 'deck-pdf', 'pptx', 'note-pdf', 'docx', 'package', 'buttons']
 
 
+def parse_items(week_arg):
+    """--week takes a comma-separated mix of week numbers and PAGES keys (e.g. "3,syllabus"). With no
+    --week at all, the default stays week-only (discover_weeks()) -- a page unit is only built when asked
+    for by name, so plain `all`/`buttons --week 3` behaviour for weeks is unchanged."""
+    if not week_arg:
+        return [Week(n) for n in discover_weeks()]
+    items = []
+    for token in (t.strip() for t in week_arg.split(',')):
+        if not token:
+            continue
+        if token in PAGES:
+            items.append(Page(token))
+        elif token.isdigit():
+            items.append(Week(int(token)))
+        else:
+            sys.exit(f'Unknown --week token: {token!r} (expected a week number or one of {sorted(PAGES)})')
+    return items
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument('steps', nargs='+', choices=STEPS + ['all'])
-    ap.add_argument('--week', help='comma-separated week numbers (default: every week with a new-layout note)')
+    ap.add_argument('--week', help='comma-separated week numbers and/or page keys (%s); default: every '
+                     'week with a new-layout note' % ', '.join(sorted(PAGES)))
     args = ap.parse_args()
     steps = STEPS if 'all' in args.steps else args.steps
-    numbers = [int(n) for n in args.week.split(',')] if args.week else discover_weeks()
+    items = parse_items(args.week)
     build_theme()
-    weeks = [Week(n) for n in numbers]
     site = None
     for step in STEPS:
         if step not in steps:
@@ -949,29 +1067,30 @@ def main():
         if step in ('note-pdf', 'docx'):
             site = Site()
         print(f'== {step}')
-        for week in weeks:
+        for item in items:
             if step == 'skeleton':
-                skeleton(week)
+                if isinstance(item, Week):   # a page's deck is written by hand, not skeleton()
+                    skeleton(item)
             elif step == 'deck':
-                deck_html(week, PRIMARY)
-                deck_html(week, SECONDARY)
+                deck_html(item, PRIMARY)
+                deck_html(item, SECONDARY)
             elif step == 'deck-pdf':
-                deck_pdf(week, PRIMARY)
-                deck_pdf(week, SECONDARY)
+                deck_pdf(item, PRIMARY)
+                deck_pdf(item, SECONDARY)
             elif step == 'pptx':
-                deck_pptx(week, PRIMARY)
-                deck_pptx(week, SECONDARY)
+                deck_pptx(item, PRIMARY)
+                deck_pptx(item, SECONDARY)
             elif step == 'note-pdf':
-                note_pdf(week, site, PRIMARY)
-                note_pdf(week, site, SECONDARY)
+                note_pdf(item, site, PRIMARY)
+                note_pdf(item, site, SECONDARY)
             elif step == 'docx':
-                note_docx(week, site, PRIMARY)
-                note_docx(week, site, SECONDARY)
+                note_docx(item, site, PRIMARY)
+                note_docx(item, site, SECONDARY)
             elif step == 'package':
-                package(week, PRIMARY)
-                package(week, SECONDARY)
+                package(item, PRIMARY)
+                package(item, SECONDARY)
             elif step == 'buttons':
-                buttons(week)
+                buttons(item)
         if site:
             site.close()
             site = None
