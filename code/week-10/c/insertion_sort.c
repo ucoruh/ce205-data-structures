@@ -3,7 +3,7 @@
  * element greater than the key one cell right until the key's correct spot
  * (its "hole") is found. Prints the key and the array after every
  * insertion, plus total comparisons/shifts.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

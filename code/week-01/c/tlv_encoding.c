@@ -1,6 +1,6 @@
 /* Week 1 -- Introduction to Data Structures
  * Hand-encode a tiny record as BER TLV: SEQUENCE { name UTF8String, age INTEGER }.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

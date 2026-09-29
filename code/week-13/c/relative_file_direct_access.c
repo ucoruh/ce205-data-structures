@@ -2,7 +2,7 @@
  * Relative (direct) file access: a record number (RRN) maps straight to a block and an offset by arithmetic --
  * block = rrn / bf, offset = rrn % bf -- so a record is fetched with exactly ONE block read and no searching at
  * all. The file really lives on disk, inside a temporary lab folder that main() creates and removes.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

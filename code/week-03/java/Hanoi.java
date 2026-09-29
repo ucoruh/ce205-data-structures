@@ -1,6 +1,6 @@
 /* Week 3 -- Stacks and Queues
  * Tower of Hanoi, solved with recursion.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class Hanoi {
     static int moveCount = 0;

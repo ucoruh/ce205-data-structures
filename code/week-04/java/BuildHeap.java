@@ -1,6 +1,6 @@
 /* Week 4 -- Trees, Heaps, and Huffman Coding
  * Bottom-up build-heap (Floyd's algorithm), O(n).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class BuildHeap {
     static boolean kindIsMax;

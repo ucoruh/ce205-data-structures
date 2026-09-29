@@ -1,6 +1,6 @@
 /* Week 11 -- Advanced Trees
  * Binary search tree (BST): search.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class BstSearch {
     static class Node {

@@ -5,7 +5,7 @@
  * layout into the source text per preset; this program keeps a runtime
  * flag `rowMajor` so addr/traverseRowMajor/traverseColMajor are otherwise
  * identical to the animation's code panel.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class MatrixRowMajor {
     static int rows, cols;

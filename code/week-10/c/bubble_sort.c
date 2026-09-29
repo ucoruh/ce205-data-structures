@@ -3,7 +3,7 @@
  * out-of-order pairs; a pass with zero swaps means the array is already
  * sorted and the algorithm stops early. Prints the array after every pass
  * and the total comparisons/swaps.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

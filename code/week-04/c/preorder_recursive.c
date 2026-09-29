@@ -1,6 +1,6 @@
 /* Week 4 -- Trees, Heaps, and Huffman Coding
  * Recursive preorder traversal: visit, left, right.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <limits.h>
 #include <stdio.h>

@@ -3,7 +3,7 @@
  * max-heap or a min-heap; heapify_prepare turns a raw array into a valid
  * starting heap and is used only to SET UP each scenario, never by extract
  * itself.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdbool.h>
 #include <stdio.h>

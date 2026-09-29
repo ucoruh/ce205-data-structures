@@ -1,7 +1,7 @@
 /* Week 14 -- File Organisation II
  * B-tree insert (order m): every node is one disk page; overflow splits a page in two and
  * pushes its median key up, growing the tree upward when the root itself splits.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 import java.util.ArrayList;
 import java.util.List;

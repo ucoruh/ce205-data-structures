@@ -274,7 +274,7 @@ is not in the array**, **best case: target is in the first box (index 0)**, and 
         /* Week 1 -- Introduction to Data Structures
          * Linear search: scan the array from the front, one comparison at a time.
          * Runs the same normal / hard / edge-case scenarios as the linear-search animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -337,7 +337,7 @@ is not in the array**, **best case: target is in the first box (index 0)**, and 
         /* Week 1 -- Introduction to Data Structures
          * Linear search: scan the array from the front, one comparison at a time.
          * Runs the same normal / hard / edge-case scenarios as the linear-search animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class LinearSearch {
             static int comparisons;
@@ -529,7 +529,7 @@ for random data at four difficulty levels, or type your own sorted array and tar
         /* Week 1 -- Introduction to Data Structures
          * Binary search: repeatedly halve the search range on a SORTED array.
          * Runs the same normal / hard / edge-case scenarios as the binary-search animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -599,7 +599,7 @@ for random data at four difficulty levels, or type your own sorted array and tar
         /* Week 1 -- Introduction to Data Structures
          * Binary search: repeatedly halve the search range on a SORTED array.
          * Runs the same normal / hard / edge-case scenarios as the binary-search animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BinarySearch {
             static int comparisons;
@@ -807,7 +807,7 @@ grade-school-arithmetic trick, just automated.
          * 2^n is computed EXACTLY, as a decimal digit string built by repeated doubling (no library big-integer
          * type in C) so it can be compared byte for byte with Java's BigInteger version.
          * Runs the same normal / edge-case scenarios as the growth-race animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <math.h>
         #include <stdio.h>
@@ -879,7 +879,7 @@ grade-school-arithmetic trick, just automated.
          * 2^n uses java.math.BigInteger, which gives EXACT arbitrary-precision integers out of the box --
          * unlike C, which has no built-in big-integer type (see growth_table.c's hand-rolled decimal doubling).
          * Runs the same normal / edge-case scenarios as the growth-race animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.math.BigInteger;
 
@@ -1044,7 +1044,7 @@ In the picker, also try **triangle loop, n = 4 in detail, then 10 more n values*
          * Count the operations of a nested loop to build T(n) by hand, for three loop shapes:
          * square (j < n), triangle (j < i), and halving (j *= 2).
          * Runs the same normal / hard / edge-case scenarios as the nested-loop-counting animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -1122,7 +1122,7 @@ In the picker, also try **triangle loop, n = 4 in detail, then 10 more n values*
          * Count the operations of a nested loop to build T(n) by hand, for three loop shapes:
          * square (j < n), triangle (j < i), and halving (j *= 2).
          * Runs the same normal / hard / edge-case scenarios as the nested-loop-counting animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class NestedLoopCounting {
             static long operations;
@@ -1353,7 +1353,7 @@ difficulty levels, or type your own array (leaving it empty is also a valid inpu
          * Space complexity: a recursive sum pushes one stack frame per call;
          * an iterative sum reuses a single set of variables.
          * Runs the same normal / hard / edge-case scenarios as the space-recursive-vs-iterative animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -1412,7 +1412,7 @@ difficulty levels, or type your own array (leaving it empty is also a valid inpu
          * Space complexity: a recursive sum pushes one stack frame per call;
          * an iterative sum reuses a single set of variables.
          * Runs the same normal / hard / edge-case scenarios as the space-recursive-vs-iterative animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SpaceRecursiveVsIterative {
             static int sumRecursive(int[] arr, int n) {
@@ -1613,7 +1613,7 @@ from them) are efficient.
     ```c
     /* Week 1 -- Introduction to Data Structures
      * A variable, its address, and a pointer that stores that address.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdio.h>
 
@@ -1638,7 +1638,7 @@ from them) are efficient.
     /* Week 1 -- Introduction to Data Structures
      * Java has no raw pointers, but arrays and objects are REFERENCE types:
      * a variable holds a reference to the data, not the data itself.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class ReferenceBasics {
         public static void main(String[] args) {
@@ -1714,7 +1714,7 @@ common that C gives it a shorthand: `p->field`.
     ```c
     /* Week 1 -- Introduction to Data Structures
      * A pointer to a struct, and the -> shorthand for (*p).field.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdio.h>
 
@@ -1742,7 +1742,7 @@ common that C gives it a shorthand: `p->field`.
     ```java
     /* Week 1 -- Introduction to Data Structures
      * A reference to an object, and the '.' access that plays the role of C's '->'.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class PointRef {
         static class Point {
@@ -1851,7 +1851,7 @@ data (and a random type) at four difficulty levels, or type your own array, type
          * Addresses are a PRETEND base (matching the animation), not real OS addresses, so the output is
          * reproducible and can be compared byte for byte with the Java version.
          * Runs the same normal / hard / edge-case scenarios as the pointer-arithmetic animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -1937,7 +1937,7 @@ data (and a random type) at four difficulty levels, or type your own array, type
          * version, using the type's C size, purely to compare the formula's result side by side; Java
          * itself never computes a real address, it only ever indexes with a[k].
          * Runs the same normal / hard / edge-case scenarios as the pointer-arithmetic animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class ArrayIndexing {
             static void runIntScenario(String label, long base, int[] values, int[] offsets) {
@@ -2190,7 +2190,7 @@ C. Section 5.5 shows what Java does differently.
     /* Week 1 -- Introduction to Data Structures
      * Stack frames (one per active function call) versus a heap block
      * requested with malloc and given back with free.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdio.h>
     #include <stdlib.h>
@@ -2230,7 +2230,7 @@ C. Section 5.5 shows what Java does differently.
     ```java
     /* Week 1 -- Introduction to Data Structures
      * Java allocates every object with `new` on the heap; there is no `free`.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class HeapNoFree {
         static void showFrame(int depth) {
@@ -2323,7 +2323,7 @@ then reclaims it, on its own schedule.
     /* Week 1 -- Introduction to Data Structures
      * Two references can alias the same heap object; when no reference is left,
      * the object becomes eligible for garbage collection.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class ReferenceAliasing {
         static class Counter {
@@ -2356,7 +2356,7 @@ then reclaims it, on its own schedule.
     /* Week 1 -- Introduction to Data Structures
      * C has no garbage collector: losing the only pointer to a block
      * without freeing it first is a memory leak.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdio.h>
     #include <stdlib.h>
@@ -2512,7 +2512,7 @@ values and `k`.
          * stand-in instead: the array's byte OFFSET from its base (base + i*4, the real formula the
          * hardware uses) and the linked list's POSITION ("node #i"); the C and Java outputs are then
          * byte-identical and testable. The point -- one index calculation vs k pointer hops -- still holds.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -2595,7 +2595,7 @@ values and `k`.
          * stand-in instead: the array's byte OFFSET from its base (base + i*4, the real formula the
          * hardware uses) and the linked list's POSITION ("node #i"); the C and Java outputs are then
          * byte-identical and testable. The point -- one index calculation vs k pointer hops -- still holds.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class ArrayVsLinkedPreview {
             static class Node {
@@ -2984,7 +2984,7 @@ time.
     ```c
     /* Week 1 -- Introduction to Data Structures
      * Hand-encode a tiny record as BER TLV: SEQUENCE { name UTF8String, age INTEGER }.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdio.h>
     #include <string.h>
@@ -3034,7 +3034,7 @@ time.
     ```java
     /* Week 1 -- Introduction to Data Structures
      * Hand-encode a tiny record as BER TLV: SEQUENCE { name UTF8String, age INTEGER }.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     import java.io.ByteArrayOutputStream;
     import java.nio.charset.StandardCharsets;
@@ -3169,7 +3169,7 @@ levels, or type your own fields as `name:min..max:value`.
          * PER-style encoding: every field is packed into the MINIMUM number of bits its own
          * [min, max] range needs -- no tags, no length bytes, byte-aligned only at the very end.
          * Runs the same normal / hard / edge-case scenarios as the per-encoding animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <math.h>
         #include <stdio.h>
@@ -3253,7 +3253,7 @@ levels, or type your own fields as `name:min..max:value`.
          * PER-style encoding: every field is packed into the MINIMUM number of bits its own
          * [min, max] range needs -- no tags, no length bytes, byte-aligned only at the very end.
          * Runs the same normal / hard / edge-case scenarios as the per-encoding animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class PerEncoding {
             static class Field {
@@ -3474,7 +3474,7 @@ Every program in this course, from here on, is built and run the same way. Start
     ```c
     /* Week 1 -- Introduction to Data Structures
      * The first program you compile and run this semester.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdio.h>
 
@@ -3552,7 +3552,7 @@ double average_fixed(const int arr[], int n) {
          * average_buggy() truncates because of integer division; average_fixed() casts to double first.
          * Runs the same normal / hard / edge-case scenarios as the debugger-stepping animation, the way a
          * gdb session (Section 7.5) narrates them one breakpoint at a time.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -3608,7 +3608,7 @@ double average_fixed(const int arr[], int n) {
         /* Week 1 -- Introduction to Data Structures
          * averageBuggy() truncates because of integer division; averageFixed() casts to double first.
          * Runs the same normal / hard / edge-case scenarios as the debugger-stepping animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class DebugAverage {
             static int averageBuggy(int[] arr) {
@@ -3778,7 +3778,7 @@ add_executable(week1_cmake_demo main.c)
 ```c title="main.c"
 /* Week 1 -- Introduction to Data Structures
  * The program built by the CMake basics demo in the C workshop.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

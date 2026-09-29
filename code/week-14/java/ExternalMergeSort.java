@@ -5,7 +5,7 @@
  *
  * This program creates real files, but only inside a lab folder it creates itself; every file and
  * the folder are removed again before the program exits.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 import java.io.BufferedReader;
 import java.io.File;

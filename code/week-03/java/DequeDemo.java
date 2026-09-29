@@ -1,6 +1,6 @@
 /* Week 3 -- Stacks and Queues
  * Double-ended queue (deque): push/pop at both front and back.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 import java.util.ArrayDeque;
 import java.util.Deque;

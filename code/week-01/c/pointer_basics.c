@@ -1,6 +1,6 @@
 /* Week 1 -- Introduction to Data Structures
  * A variable, its address, and a pointer that stores that address.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

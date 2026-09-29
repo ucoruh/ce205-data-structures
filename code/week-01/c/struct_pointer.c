@@ -1,6 +1,6 @@
 /* Week 1 -- Introduction to Data Structures
  * A pointer to a struct, and the -> shorthand for (*p).field.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

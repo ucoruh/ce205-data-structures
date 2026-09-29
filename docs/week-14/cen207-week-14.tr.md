@@ -231,7 +231,7 @@ seçeneklerini de deneyin — ya da 🎲 ile dört zorluk seviyesinde rastgele v
         ```c
         /* Week 14 -- File Organisation II
          * Primary (sparse) index over a sorted file: one index entry per disk page.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -329,7 +329,7 @@ seçeneklerini de deneyin — ya da 🎲 ile dört zorluk seviyesinde rastgele v
         ```java
         /* Week 14 -- File Organisation II
          * Primary (sparse) index over a sorted file: one index entry per disk page.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class PrimaryIndex {
             static final int MAX_PAGES = 8;
@@ -589,7 +589,7 @@ rastgele veri üretin, ya da kendi `block`, kayıt `keys` ve `queries` değerler
         ```c
         /* Week 14 -- File Organisation II
          * Dense secondary index: one index entry per RECORD, sorted by a key that repeats.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -673,7 +673,7 @@ rastgele veri üretin, ya da kendi `block`, kayıt `keys` ve `queries` değerler
         ```java
         /* Week 14 -- File Organisation II
          * Dense secondary index: one index entry per RECORD, sorted by a key that repeats.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.Arrays;
         import java.util.Comparator;
@@ -938,7 +938,7 @@ yazın.
         /* Week 14 -- File Organisation II
          * ISAM: a two-level index over a sorted primary data area, plus an overflow area
          * (a linked chain) for keys that no longer fit their home page.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -1094,7 +1094,7 @@ yazın.
         /* Week 14 -- File Organisation II
          * ISAM: a two-level index over a sorted primary data area, plus an overflow area
          * (a linked chain) for keys that no longer fit their home page.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class Isam {
             static final int MAX_PAGES = 8;
@@ -1444,7 +1444,7 @@ seviyesinde rastgele veri üretin, ya da kendi `order` ve `keys` değerlerinizi 
         /* Week 14 -- File Organisation II
          * B-tree insert (order m): every node is one disk page; overflow splits a page in two and
          * pushes its median key up, growing the tree upward when the root itself splits.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -1624,7 +1624,7 @@ seviyesinde rastgele veri üretin, ya da kendi `order` ve `keys` değerlerinizi 
         /* Week 14 -- File Organisation II
          * B-tree insert (order m): every node is one disk page; overflow splits a page in two and
          * pushes its median key up, growing the tree upward when the root itself splits.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.List;
@@ -1912,7 +1912,7 @@ rastgele veri üretin, ya da kendi `order`, `keys` ve `queries` değerlerinizi y
         /* Week 14 -- File Organisation II
          * B-tree search (order m): descend from the root comparing the target against each page's
          * keys; every page visited is one disk read.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -2069,7 +2069,7 @@ rastgele veri üretin, ya da kendi `order`, `keys` ve `queries` değerlerinizi y
         /* Week 14 -- File Organisation II
          * B-tree search (order m): descend from the root comparing the target against each page's
          * keys; every page visited is one disk read.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BTreeSearch {
             static class Node {
@@ -2401,7 +2401,7 @@ seviyesinde rastgele veri üretin, ya da kendi `order`, `keys` ve `deletes` değ
         /* Week 14 -- File Organisation II
          * B-tree delete (order m): remove a key, then fix underflow by BORROWING a key from a sibling
          * through the parent, or MERGING with a sibling when no sibling can spare one.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -2685,7 +2685,7 @@ seviyesinde rastgele veri üretin, ya da kendi `order`, `keys` ve `deletes` değ
         /* Week 14 -- File Organisation II
          * B-tree delete (order m): remove a key, then fix underflow by BORROWING a key from a sibling
          * through the parent, or MERGING with a sibling when no sibling can spare one.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BTreeDelete {
             static class Node {
@@ -3130,7 +3130,7 @@ değerlerinizi yazın.
         /* Week 14 -- File Organisation II
          * B+-tree: every key lives in a LEAF (internal nodes only route); leaves are linked into a
          * chain, so a range query descends once and then just walks the chain.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -3329,7 +3329,7 @@ değerlerinizi yazın.
         /* Week 14 -- File Organisation II
          * B+-tree: every key lives in a LEAF (internal nodes only route); leaves are linked into a
          * chain, so a range query descends once and then just walks the chain.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.List;
@@ -3665,7 +3665,7 @@ zorluk seviyesinde rastgele veri üretin, ya da kendi `capacity` ve `keys` değe
          * Extendible hashing: an in-memory directory of 2^global_depth pointers selects a bucket by
          * the key's last global_depth bits; a full bucket splits, doubling the directory first if its
          * local_depth had caught up to global_depth.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -3766,7 +3766,7 @@ zorluk seviyesinde rastgele veri üretin, ya da kendi `capacity` ve `keys` değe
          * Extendible hashing: an in-memory directory of 2^global_depth pointers selects a bucket by
          * the key's last global_depth bits; a full bucket splits, doubling the directory first if its
          * local_depth had caught up to global_depth.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.List;
@@ -4051,7 +4051,7 @@ ile dört zorluk seviyesinde rastgele veri üretin, ya da kendi `n0`, `capacity`
          * Linear hashing: no directory at all. Buckets split in round-robin order (bucket n, then
          * n+1, ...), triggered by ANY overflow; a key's address is a simple modulo, bumped to the
          * next level only when its home bucket has already been split this round.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -4146,7 +4146,7 @@ ile dört zorluk seviyesinde rastgele veri üretin, ya da kendi `n0`, `capacity`
          * Linear hashing: no directory at all. Buckets split in round-robin order (bucket n, then
          * n+1, ...), triggered by ANY overflow; a key's address is a simple modulo, bumped to the
          * next level only when its home bucket has already been split this round.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.List;
@@ -4463,7 +4463,7 @@ Bu program gerçek çalışma dosyaları yaratır, ama yalnızca **kendi kurduğ
          *
          * This program creates real files, but only inside a lab folder it creates itself; every file and
          * the folder are removed again before the program exits.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -4618,7 +4618,7 @@ Bu program gerçek çalışma dosyaları yaratır, ama yalnızca **kendi kurduğ
          *
          * This program creates real files, but only inside a lab folder it creates itself; every file and
          * the folder are removed again before the program exits.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.io.BufferedReader;
         import java.io.File;
@@ -4943,7 +4943,7 @@ Bu program gerçek çalışma dosyaları yaratır, ama yalnızca **kendi kurduğ
          *
          * This program creates real files, but only inside a lab folder it creates itself; every file and
          * the folder are removed again before the program exits.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <limits.h>
         #include <stdio.h>
@@ -5090,7 +5090,7 @@ Bu program gerçek çalışma dosyaları yaratır, ama yalnızca **kendi kurduğ
          *
          * This program creates real files, but only inside a lab folder it creates itself; every file and
          * the folder are removed again before the program exits.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.io.BufferedReader;
         import java.io.File;

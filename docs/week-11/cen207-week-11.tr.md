@@ -218,7 +218,7 @@ düğmesine basın, ya da kendi değerlerinizi yazın.
         ```c
         /* Week 11 -- Advanced Trees
          * Binary search tree (BST): insert. Duplicates are ignored (tree unchanged).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -313,7 +313,7 @@ düğmesine basın, ya da kendi değerlerinizi yazın.
         ```java
         /* Week 11 -- Advanced Trees
          * Binary search tree (BST): insert. Duplicates are ignored (tree unchanged).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BstInsert {
             static class Node {
@@ -483,7 +483,7 @@ değerlerinizi yazın.
         ```c
         /* Week 11 -- Advanced Trees
          * Binary search tree (BST): search.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -580,7 +580,7 @@ değerlerinizi yazın.
         ```java
         /* Week 11 -- Advanced Trees
          * Binary search tree (BST): search.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BstSearch {
             static class Node {
@@ -754,7 +754,7 @@ yazın.
         ```c
         /* Week 11 -- Advanced Trees
          * Binary search tree (BST): delete (leaf / one child / two children with successor).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -870,7 +870,7 @@ yazın.
         ```java
         /* Week 11 -- Advanced Trees
          * Binary search tree (BST): delete (leaf / one child / two children with successor).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BstDelete {
             static class Node {
@@ -1083,7 +1083,7 @@ düğmesine basıp rastgele veri, ya da kendi değerlerinizi yazın.
         /* Week 11 -- Advanced Trees
          * Why balancing matters: inserting the SAME set of keys in different orders gives wildly different BST
          * shapes. Sorted input degenerates into a chain -- height n-1, every operation O(n).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -1177,7 +1177,7 @@ düğmesine basıp rastgele veri, ya da kendi değerlerinizi yazın.
         /* Week 11 -- Advanced Trees
          * Why balancing matters: inserting the SAME set of keys in different orders gives wildly different BST
          * shapes. Sorted input degenerates into a chain -- height n-1, every operation O(n).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BstDegenerate {
             static class Node {
@@ -1381,7 +1381,7 @@ rastgele veri için 🎲 düğmesine basın, ya da kendi `keys=... trigger=...` 
          * AVL tree: the four rebalancing cases (LL, RR, LR, RL). insert() is the standard recursive AVL insert;
          * rebalance() decides the case from the balance factors (not from the just-inserted key) and records which
          * one fired in last_case, purely so this program can print it.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -1497,7 +1497,7 @@ rastgele veri için 🎲 düğmesine basın, ya da kendi `keys=... trigger=...` 
          * AVL tree: the four rebalancing cases (LL, RR, LR, RL). insert() is the standard recursive AVL insert;
          * rebalance() decides the case from the balance factors (not from the just-inserted key) and records which
          * one fired in lastCase, purely so this program can print it.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class AvlRotations {
             static class Node {
@@ -1685,7 +1685,7 @@ düğmesine basın, ya da kendi değerlerinizi yazın.
         ```c
         /* Week 11 -- Advanced Trees
          * AVL tree: insert, with the balance factor bf = height(left) - height(right) shown for every step.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -1803,7 +1803,7 @@ düğmesine basın, ya da kendi değerlerinizi yazın.
         ```java
         /* Week 11 -- Advanced Trees
          * AVL tree: insert, with the balance factor bf = height(left) - height(right) shown for every step.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class AvlInsert {
             static class Node {
@@ -1970,7 +1970,7 @@ dengeli kalır)**, ve **tek düğümü sil** — deneyin; ya da rastgele veri i�
          * AVL tree: delete. Splicing is exactly bst_delete.c's leaf / one-child / two-children (successor) logic;
          * afterwards rebalance() is applied at EVERY ancestor on the way back up (a delete can rotate more than
          * once, unlike an insert).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -2114,7 +2114,7 @@ dengeli kalır)**, ve **tek düğümü sil** — deneyin; ya da rastgele veri i�
          * AVL tree: delete. Splicing is exactly BstDelete.java's leaf / one-child / two-children (successor) logic;
          * afterwards rebalance() is applied at EVERY ancestor on the way back up (a delete can rotate more than
          * once, unlike an insert).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class AvlDelete {
             static class Node {
@@ -2322,7 +2322,7 @@ değerlerinizi yazın.
         ```c
         /* Week 11 -- Advanced Trees
          * Red-black tree: insert (recoloring and rotations, the three cases named).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -2466,7 +2466,7 @@ değerlerinizi yazın.
         ```java
         /* Week 11 -- Advanced Trees
          * Red-black tree: insert (recoloring and rotations, the three cases named).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class RedBlackInsert {
             static final int RED = 0;
@@ -2722,7 +2722,7 @@ taşır** — deneyin; ya da rastgele veri için 🎲 düğmesine basın, ya da 
         ```c
         /* Week 11 -- Advanced Trees
          * Splay tree: every access moves the accessed key to the root (zig, zig-zig, zig-zag).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -2848,7 +2848,7 @@ taşır** — deneyin; ya da rastgele veri için 🎲 düğmesine basın, ya da 
         ```java
         /* Week 11 -- Advanced Trees
          * Splay tree: every access moves the accessed key to the root (zig, zig-zig, zig-zag).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SplayTree {
             static class Node {
@@ -3072,7 +3072,7 @@ ya da kendi değerlerinizi yazın.
         ```c
         /* Week 11 -- Advanced Trees
          * 2-3 tree: insert (growing upward via node splits).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -3243,7 +3243,7 @@ ya da kendi değerlerinizi yazın.
         ```java
         /* Week 11 -- Advanced Trees
          * 2-3 tree: insert (growing upward via node splits).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayDeque;
         import java.util.Queue;
@@ -3490,7 +3490,7 @@ düğmesine basın, ya da kendi `arr=... q=l-r,l-r` değerlerinizi yazın.
         ```c
         /* Week 11 -- Advanced Trees
          * Segment tree: build once from an array, then answer range-sum queries in O(log n).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -3562,7 +3562,7 @@ düğmesine basın, ya da kendi `arr=... q=l-r,l-r` değerlerinizi yazın.
         ```java
         /* Week 11 -- Advanced Trees
          * Segment tree: build once from an array, then answer range-sum queries in O(log n).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SegmentTree {
             static final int MAXN = 32;
@@ -3726,7 +3726,7 @@ düğmesine basın, ya da kendi `n=... add(i,delta) query(i)` değerlerinizi yaz
         ```c
         /* Week 11 -- Advanced Trees
          * Fenwick tree (binary indexed tree, BIT): prefix sums and i & -i.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -3805,7 +3805,7 @@ düğmesine basın, ya da kendi `n=... add(i,delta) query(i)` değerlerinizi yaz
         ```java
         /* Week 11 -- Advanced Trees
          * Fenwick tree (binary indexed tree, BIT): prefix sums and i & -i.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class FenwickTree {
             static final int MAXN = 32;

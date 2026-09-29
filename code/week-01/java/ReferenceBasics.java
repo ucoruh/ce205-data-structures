@@ -1,7 +1,7 @@
 /* Week 1 -- Introduction to Data Structures
  * Java has no raw pointers, but arrays and objects are REFERENCE types:
  * a variable holds a reference to the data, not the data itself.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class ReferenceBasics {
     public static void main(String[] args) {

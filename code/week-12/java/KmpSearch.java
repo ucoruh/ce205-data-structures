@@ -1,6 +1,6 @@
 /* Week 12 -- Strings: Structures and Algorithms
  * KMP search: uses the lps[] failure-function table so the text pointer i never moves backward. O(n + m).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 import java.util.ArrayList;
 import java.util.List;

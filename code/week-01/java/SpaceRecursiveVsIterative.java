@@ -2,7 +2,7 @@
  * Space complexity: a recursive sum pushes one stack frame per call;
  * an iterative sum reuses a single set of variables.
  * Runs the same normal / hard / edge-case scenarios as the space-recursive-vs-iterative animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class SpaceRecursiveVsIterative {
     static int sumRecursive(int[] arr, int n) {

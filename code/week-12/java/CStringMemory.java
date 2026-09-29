@@ -3,7 +3,7 @@
  * FLAGGED but never executed. Java strings carry their own length, so the overflow danger below is really a
  * C-only bug; we reproduce the same bounded-array exercise here so the two languages can be compared side by
  * side, with the identical safety guard.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class CStringMemory {
     static final int MAX_CAP = 16;

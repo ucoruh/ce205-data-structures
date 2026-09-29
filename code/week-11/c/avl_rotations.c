@@ -2,7 +2,7 @@
  * AVL tree: the four rebalancing cases (LL, RR, LR, RL). insert() is the standard recursive AVL insert;
  * rebalance() decides the case from the balance factors (not from the just-inserted key) and records which
  * one fired in last_case, purely so this program can print it.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

@@ -2,7 +2,7 @@
  * The Josephus problem: n people in a circle, every k-th one eliminated,
  * who survives? Solved with a circular linked list. Matches the josephus.js
  * animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class Josephus {
     static class Node { int id; Node next; Node(int id) { this.id = id; } }

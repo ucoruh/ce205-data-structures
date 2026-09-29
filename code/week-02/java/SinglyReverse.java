@@ -1,7 +1,7 @@
 /* Week 2 -- Linked Lists, Arrays and Matrices
  * Singly linked list: iterative reverse with three pointers (prev, curr,
  * next). Matches the singly-reverse.js animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class SinglyReverse {
     static class Node {

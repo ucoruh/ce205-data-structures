@@ -4,7 +4,7 @@
  * equal keys never cross) and with selection sort (unstable: a long-range
  * swap can jump a record past another with an equal key). Prints both
  * results so the tag order for tied keys can be compared by eye.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

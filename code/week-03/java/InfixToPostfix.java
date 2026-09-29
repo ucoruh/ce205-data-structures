@@ -1,6 +1,6 @@
 /* Week 3 -- Stacks and Queues
  * Converting an infix expression to postfix (shunting-yard), with parentheses.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class InfixToPostfix {
     static int prec(char op) {

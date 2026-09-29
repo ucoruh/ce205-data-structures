@@ -1,6 +1,6 @@
 /* Week 14 -- File Organisation II
  * Dense secondary index: one index entry per RECORD, sorted by a key that repeats.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 import java.util.Arrays;
 import java.util.Comparator;

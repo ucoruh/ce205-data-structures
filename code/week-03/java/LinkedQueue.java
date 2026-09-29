@@ -1,6 +1,6 @@
 /* Week 3 -- Stacks and Queues
  * Linked-list queue: enqueue and dequeue.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class LinkedQueue {
     static class QNode {

@@ -2,7 +2,7 @@
  * Huffman coding: count frequencies, build the tree with a min-heap of
  * trees (repeatedly merging the two lowest-frequency roots), assign a
  * 0/1 code to every leaf, then encode and decode.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

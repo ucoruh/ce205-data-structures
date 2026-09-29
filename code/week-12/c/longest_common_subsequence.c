@@ -1,7 +1,7 @@
 /* Week 12 -- Strings: Structures and Algorithms
  * Longest common subsequence (LCS): the longest sequence of characters appearing, in order, in both a and b.
  * A DP table plus a traceback that reconstructs one actual longest common subsequence.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

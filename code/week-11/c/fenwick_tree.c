@@ -1,6 +1,6 @@
 /* Week 11 -- Advanced Trees
  * Fenwick tree (binary indexed tree, BIT): prefix sums and i & -i.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

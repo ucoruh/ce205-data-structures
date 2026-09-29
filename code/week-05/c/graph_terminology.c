@@ -3,7 +3,7 @@
  * in/out-degree, self-loop, parallel (multi-) edge, connected component,
  * cycle. Builds a Graph as an adjacency list (Edge structs, one linked
  * list per vertex) and reports these properties for each scenario.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

@@ -6,7 +6,7 @@
  * cap0/factor/shrink into the source text per preset; this program keeps
  * them as runtime globals set per scenario, so da_resize/da_append/
  * da_remove_last are otherwise identical to the animation's code panel.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

@@ -216,7 +216,7 @@ için 🎲'e basın, ya da kendi kapasitenizi ve metninizi yazın.
          * C string memory: a char array plus the '\0' convention, strlen(), and a buffer-overflow edge case that is
          * FLAGGED but never executed (no out-of-bounds write is ever performed -- the guard `if (i == cap) break;`
          * stops the copy one write before it would happen).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -273,7 +273,7 @@ için 🎲'e basın, ya da kendi kapasitenizi ve metninizi yazın.
          * FLAGGED but never executed. Java strings carry their own length, so the overflow danger below is really a
          * C-only bug; we reproduce the same bounded-array exercise here so the two languages can be compared side by
          * side, with the identical safety guard.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class CStringMemory {
             static final int MAX_CAP = 16;
@@ -466,7 +466,7 @@ yazın.
          * Growable string buffer: characters are appended one at a time; when full, a new block double the size is
          * allocated, every existing byte is copied across (realloc), then the new character is written. Appending is
          * O(1) most of the time and O(len) only on the rare growth step -- amortized O(1) overall.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -528,7 +528,7 @@ yazın.
          * Growable string buffer, built by hand (java.lang.StringBuilder does exactly this internally). Characters
          * are appended one at a time; when full, a new array double the size is allocated, every existing character
          * is copied across, then the new character is written. Amortized O(1) append.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class StringBuilderDemo {
             static class Builder {
@@ -773,7 +773,7 @@ aramalarınızı yazın.
         ```c
         /* Week 12 -- Strings: Structures and Algorithms
          * Trie (prefix tree): insert and search, one edge per character, a fixed 26-letter alphabet array per node.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -870,7 +870,7 @@ aramalarınızı yazın.
         ```java
         /* Week 12 -- Strings: Structures and Algorithms
          * Trie (prefix tree): insert and search, one edge per character, a HashMap of children per node.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.HashMap;
         import java.util.Map;
@@ -1179,7 +1179,7 @@ sözcüklerinizi ve aramalarınızı yazın.
         /* Week 12 -- Strings: Structures and Algorithms
          * Compressed trie (radix tree): each edge carries a whole substring; a new word either extends an existing
          * edge, becomes a brand-new leaf edge, or SPLITS an existing edge at the point where it first diverges.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -1326,7 +1326,7 @@ sözcüklerinizi ve aramalarınızı yazın.
         /* Week 12 -- Strings: Structures and Algorithms
          * Compressed trie (radix tree): each edge carries a whole substring; a new word either extends an existing
          * edge, becomes a brand-new leaf edge, or SPLITS an existing edge at the point where it first diverges.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.HashMap;
         import java.util.Map;
@@ -1613,7 +1613,7 @@ kaydırma** deneyin — ya da dört zorluk seviyesinde rastgele veri için 🎲'
         /* Week 12 -- Strings: Structures and Algorithms
          * Suffix array: every starting position of text, sorted by the suffix beginning there, built here with
          * insertion sort over strcmp(text+a, text+b) -- each suffix is just a pointer into the same buffer, no copy.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -1665,7 +1665,7 @@ kaydırma** deneyin — ya da dört zorluk seviyesinde rastgele veri için 🎲'
         /* Week 12 -- Strings: Structures and Algorithms
          * Suffix array: every starting position of text, sorted by the suffix beginning there, built here with
          * insertion sort over String.compareTo on substrings.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SuffixArray {
             static int compareSuffix(String text, int a, int b) {
@@ -1906,7 +1906,7 @@ kaydırma** deneyin — ya da dört zorluk seviyesinde rastgele veri için 🎲'
         /* Week 12 -- Strings: Structures and Algorithms
          * Naive (brute-force) substring search: try every shift, compare left to right until a mismatch or a full
          * match. Worst case O(n*m).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -1955,7 +1955,7 @@ kaydırma** deneyin — ya da dört zorluk seviyesinde rastgele veri için 🎲'
         /* Week 12 -- Strings: Structures and Algorithms
          * Naive (brute-force) substring search: try every shift, compare left to right until a mismatch or a full
          * match. Worst case O(n*m).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.List;
@@ -2164,7 +2164,7 @@ zorluk seviyesinde rastgele veri için 🎲'e basın, ya da kendi örüntünüz�
         /* Week 12 -- Strings: Structures and Algorithms
          * KMP failure function (lps[]): for every prefix pattern[0..i], lps[i] is the length of the longest proper
          * prefix of that prefix that is also a suffix of it. Built in O(m) by comparing the pattern to itself.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -2213,7 +2213,7 @@ zorluk seviyesinde rastgele veri için 🎲'e basın, ya da kendi örüntünüz�
         /* Week 12 -- Strings: Structures and Algorithms
          * KMP failure function (lps[]): for every prefix pattern[0..i], lps[i] is the length of the longest proper
          * prefix of that prefix that is also a suffix of it. Built in O(m) by comparing the pattern to itself.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class KmpFailureFunction {
             static int[] computeLps(String pattern) {
@@ -2399,7 +2399,7 @@ yazın.
         ```c
         /* Week 12 -- Strings: Structures and Algorithms
          * KMP search: uses the lps[] failure-function table so the text pointer i never moves backward. O(n + m).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -2478,7 +2478,7 @@ yazın.
         ```java
         /* Week 12 -- Strings: Structures and Algorithms
          * KMP search: uses the lps[] failure-function table so the text pointer i never moves backward. O(n + m).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.List;
@@ -2730,7 +2730,7 @@ eşleşme yok ama 3 sahte özet çakışması var**, **her yerde gerçek çakı�
          * Rabin-Karp search: compare a rolling hash of each window against the pattern's hash; a hash match is only
          * a candidate and must be VERIFIED character by character (a "spurious hit" is a hash match that fails
          * verification).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -2801,7 +2801,7 @@ eşleşme yok ama 3 sahte özet çakışması var**, **her yerde gerçek çakı�
          * Rabin-Karp search: compare a rolling hash of each window against the pattern's hash; a hash match is only
          * a candidate and must be VERIFIED character by character (a "spurious hit" is a hash match that fails
          * verification).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.List;
@@ -3032,7 +3032,7 @@ rastgele veri için 🎲'e basın, ya da kendi metninizi ve örüntünüzü yaz�
         /* Week 12 -- Strings: Structures and Algorithms
          * Boyer-Moore, bad-character rule only: compare the pattern to each window RIGHT to LEFT; on a mismatch, use
          * the mismatched character's last occurrence in the pattern to jump forward as far as safely possible.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -3095,7 +3095,7 @@ rastgele veri için 🎲'e basın, ya da kendi metninizi ve örüntünüzü yaz�
         /* Week 12 -- Strings: Structures and Algorithms
          * Boyer-Moore, bad-character rule only: compare the pattern to each window RIGHT to LEFT; on a mismatch, use
          * the mismatched character's last occurrence in the pattern to jump forward as far as safely possible.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.HashMap;
@@ -3302,7 +3302,7 @@ metninizi yazın.
         /* Week 12 -- Strings: Structures and Algorithms
          * The Z-algorithm: Z[i] is how many characters S[i..] shares with S itself from the start. For
          * S = pattern + '#' + text, positions in the text part with Z[i] >= |pattern| mark occurrences. O(n + m).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -3370,7 +3370,7 @@ metninizi yazın.
         /* Week 12 -- Strings: Structures and Algorithms
          * The Z-algorithm: Z[i] is how many characters S[i..] shares with S itself from the start. For
          * S = pattern + '#' + text, positions in the text part with Z[i] >= |pattern| mark occurrences. O(n + m).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.List;
@@ -3641,7 +3641,7 @@ dizginizi yazın.
         /* Week 12 -- Strings: Structures and Algorithms
          * Edit distance (Levenshtein distance): the fewest insertions, deletions and substitutions to turn a into b,
          * a DP table plus a traceback that reconstructs one shortest edit sequence.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -3719,7 +3719,7 @@ dizginizi yazın.
         /* Week 12 -- Strings: Structures and Algorithms
          * Edit distance (Levenshtein distance): the fewest insertions, deletions and substitutions to turn a into b,
          * a DP table plus a traceback that reconstructs one shortest edit sequence.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.Collections;
@@ -3963,7 +3963,7 @@ kendi iki dizginizi yazın.
         /* Week 12 -- Strings: Structures and Algorithms
          * Longest common subsequence (LCS): the longest sequence of characters appearing, in order, in both a and b.
          * A DP table plus a traceback that reconstructs one actual longest common subsequence.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -4022,7 +4022,7 @@ kendi iki dizginizi yazın.
         /* Week 12 -- Strings: Structures and Algorithms
          * Longest common subsequence (LCS): the longest sequence of characters appearing, in order, in both a and b.
          * A DP table plus a traceback that reconstructs one actual longest common subsequence.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class LongestCommonSubsequence {
             static int lcsLength(String a, String b, int[][] dp) {

@@ -2,7 +2,7 @@
  * Extendible hashing: an in-memory directory of 2^global_depth pointers selects a bucket by
  * the key's last global_depth bits; a full bucket splits, doubling the directory first if its
  * local_depth had caught up to global_depth.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 import java.util.ArrayList;
 import java.util.List;

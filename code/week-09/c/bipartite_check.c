@@ -3,7 +3,7 @@
  * neighbour the OPPOSITE colour, and queues it. If an already-coloured
  * neighbour has the SAME colour, that edge closes an odd cycle -- the graph
  * is not bipartite. One BFS per component.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

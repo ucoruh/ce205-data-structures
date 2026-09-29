@@ -179,7 +179,7 @@ deneyin — ya da dört zorluk seviyesinde rastgele veri için 🎲 düğmesine 
     ```c
     /* Week 3 -- Stacks and Queues
      * Array-backed stack: push and pop.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdbool.h>
     #include <stdio.h>
@@ -277,7 +277,7 @@ deneyin — ya da dört zorluk seviyesinde rastgele veri için 🎲 düğmesine 
     ```java
     /* Week 3 -- Stacks and Queues
      * Array-backed stack: push and pop.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class ArrayStackPushPop {
         static final int MAX_CAP = 12;
@@ -517,7 +517,7 @@ Kod, yukarıdaki aynı `push`/`pop` çiftidir — yığını güvende tutan tam 
     ```c
     /* Week 3 -- Stacks and Queues
      * Array-backed stack: overflow and underflow.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdbool.h>
     #include <stdio.h>
@@ -606,7 +606,7 @@ Kod, yukarıdaki aynı `push`/`pop` çiftidir — yığını güvende tutan tam 
     ```java
     /* Week 3 -- Stacks and Queues
      * Array-backed stack: overflow and underflow.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class ArrayStackOverflow {
         static final int MAX_CAP = 10;
@@ -802,7 +802,7 @@ rastgele veri için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
     ```c
     /* Week 3 -- Stacks and Queues
      * Linked-list stack: push and pop.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdbool.h>
     #include <stdio.h>
@@ -899,7 +899,7 @@ rastgele veri için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
     ```java
     /* Week 3 -- Stacks and Queues
      * Linked-list stack: push and pop.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class LinkedStackPushPop {
         static class Node {
@@ -1196,7 +1196,7 @@ bittiğinde yığın boşsa, her parantez eşleşmiştir.
     ```c
     /* Week 3 -- Stacks and Queues
      * Checking brackets with a stack.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdbool.h>
     #include <stdio.h>
@@ -1245,7 +1245,7 @@ bittiğinde yığın boşsa, her parantez eşleşmiştir.
     ```java
     /* Week 3 -- Stacks and Queues
      * Checking brackets with a stack.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class BracketChecker {
         static boolean matches(char open, char close) {
@@ -1363,7 +1363,7 @@ sonda artakalan işlenenler de bir hata sayılır.
     ```c
     /* Week 3 -- Stacks and Queues
      * Evaluating a postfix expression with a stack (with error handling).
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <ctype.h>
     #include <stdbool.h>
@@ -1434,7 +1434,7 @@ sonda artakalan işlenenler de bir hata sayılır.
     ```java
     /* Week 3 -- Stacks and Queues
      * Evaluating a postfix expression with a stack (with error handling).
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class PostfixEvaluator {
         static boolean isNumber(String t) {
@@ -1561,7 +1561,7 @@ düğmesine basın, ya da kendi değerlerinizi yazın.
     ```c
     /* Week 3 -- Stacks and Queues
      * Evaluating a prefix (Polish) expression with a stack, right to left.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <ctype.h>
     #include <stdbool.h>
@@ -1632,7 +1632,7 @@ düğmesine basın, ya da kendi değerlerinizi yazın.
     ```java
     /* Week 3 -- Stacks and Queues
      * Evaluating a prefix (Polish) expression with a stack, right to left.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class PrefixEvaluator {
         static boolean isNumber(String t) {
@@ -1768,7 +1768,7 @@ kadar her şeyi çekip çıktıya yazar, sonra `(`'i hiç çıktıya yazmadan at
     ```c
     /* Week 3 -- Stacks and Queues
      * Converting an infix expression to postfix (shunting-yard), with parentheses.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <ctype.h>
     #include <stdbool.h>
@@ -1840,7 +1840,7 @@ kadar her şeyi çekip çıktıya yazar, sonra `(`'i hiç çıktıya yazmadan at
     ```java
     /* Week 3 -- Stacks and Queues
      * Converting an infix expression to postfix (shunting-yard), with parentheses.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class InfixToPostfix {
         static int prec(char op) {
@@ -1983,7 +1983,7 @@ için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
      * Converting an infix expression to prefix: reverse the input (swapping
      * parentheses), run shunting-yard with the strict precedence rule, then
      * reverse the result.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <ctype.h>
     #include <stdbool.h>
@@ -2075,7 +2075,7 @@ için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
      * Converting an infix expression to prefix: reverse the input (swapping
      * parentheses), run shunting-yard with the strict precedence rule, then
      * reverse the result.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class InfixToPrefix {
         static int prec(char op) {
@@ -2244,7 +2244,7 @@ durum** ve **n = -4: negatif girdi, düzeltilmiş temel durum sayesinde yine tek
     ```c
     /* Week 3 -- Stacks and Queues
      * Recursion: countdown, with a corrected base case (n <= 0).
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdio.h>
 
@@ -2278,7 +2278,7 @@ durum** ve **n = -4: negatif girdi, düzeltilmiş temel durum sayesinde yine tek
     ```java
     /* Week 3 -- Stacks and Queues
      * Recursion: countdown, with a corrected base case (n <= 0).
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class RecursionCountdown {
         static void countdown(int n) {
@@ -2400,7 +2400,7 @@ fikri gerçekçi bir derinlikte gösteriyor.
     ```c
     /* Week 3 -- Stacks and Queues
      * Recursion and the call stack: fact(n), and a real 32-bit int overflow bug.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdio.h>
 
@@ -2434,7 +2434,7 @@ fikri gerçekçi bir derinlikte gösteriyor.
     ```java
     /* Week 3 -- Stacks and Queues
      * Recursion and the call stack: fact(n), and a real 32-bit int overflow bug.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class RecursionCallStack {
         static int fact(int n) {
@@ -2553,7 +2553,7 @@ için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
     ```c
     /* Week 3 -- Stacks and Queues
      * Tower of Hanoi, solved with recursion.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdio.h>
 
@@ -2592,7 +2592,7 @@ için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
     ```java
     /* Week 3 -- Stacks and Queues
      * Tower of Hanoi, solved with recursion.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class Hanoi {
         static int moveCount = 0;
@@ -2773,7 +2773,7 @@ enqueue/dequeue, sonra taşma patlaması** örneklerini deneyin — ya da dört 
     ```c
     /* Week 3 -- Stacks and Queues
      * Queue in a plain array and the drift problem.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdbool.h>
     #include <stdio.h>
@@ -2859,7 +2859,7 @@ enqueue/dequeue, sonra taşma patlaması** örneklerini deneyin — ya da dört 
     ```java
     /* Week 3 -- Stacks and Queues
      * Queue in a plain array and the drift problem.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class ArrayQueueDrift {
         static final int MAX_CAP = 12;
@@ -3048,7 +3048,7 @@ seviyesinde rastgele veri için 🎲 düğmesine basın, ya da kendi değerlerin
     ```c
     /* Week 3 -- Stacks and Queues
      * Circular queue: index arithmetic wraps with (i + 1) % cap.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdbool.h>
     #include <stdio.h>
@@ -3150,7 +3150,7 @@ seviyesinde rastgele veri için 🎲 düğmesine basın, ya da kendi değerlerin
     ```java
     /* Week 3 -- Stacks and Queues
      * Circular queue: index arithmetic wraps with (i + 1) % cap.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class CircularQueue {
         static final int MAX_CAP = 12;
@@ -3381,7 +3381,7 @@ basın, ya da kendi değerlerinizi yazın.
     ```c
     /* Week 3 -- Stacks and Queues
      * Linked-list queue: enqueue and dequeue.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdbool.h>
     #include <stdio.h>
@@ -3471,7 +3471,7 @@ basın, ya da kendi değerlerinizi yazın.
     ```java
     /* Week 3 -- Stacks and Queues
      * Linked-list queue: enqueue and dequeue.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     public class LinkedQueue {
         static class QNode {
@@ -3679,7 +3679,7 @@ ADT'yi zaten sağlar, bu yüzden Java sürümü doğrudan onu kullanır.
     ```c
     /* Week 3 -- Stacks and Queues
      * Double-ended queue (deque): push/pop at both front and back.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdbool.h>
     #include <stdio.h>
@@ -3789,7 +3789,7 @@ ADT'yi zaten sağlar, bu yüzden Java sürümü doğrudan onu kullanır.
     ```java
     /* Week 3 -- Stacks and Queues
      * Double-ended queue (deque): push/pop at both front and back.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     import java.util.ArrayDeque;
     import java.util.Deque;
@@ -3987,7 +3987,7 @@ veri için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
     ```c
     /* Week 3 -- Stacks and Queues
      * Multilevel queue scheduling: three priority classes, each its own FIFO queue.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdio.h>
 
@@ -4097,7 +4097,7 @@ veri için 🎲 düğmesine basın, ya da kendi değerlerinizi yazın.
     ```java
     /* Week 3 -- Stacks and Queues
      * Multilevel queue scheduling: three priority classes, each its own FIFO queue.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     import java.util.ArrayDeque;
     import java.util.Deque;

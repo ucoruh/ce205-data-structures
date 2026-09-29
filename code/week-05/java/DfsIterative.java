@@ -5,7 +5,7 @@
  * order -- exactly the order DfsRecursive.java visits them in. A vertex
  * may be pushed more than once; a stale entry (already visited when
  * popped) is simply discarded. Same graphs as DfsRecursive.java.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class DfsIterative {
     static final int MAX_V = 32, MAX_STACK = 256;

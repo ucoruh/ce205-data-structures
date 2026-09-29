@@ -3,7 +3,7 @@
  * numbers instead of the middle (binary search) or a formula
  * (interpolation search). Uses only addition and subtraction. Prints the
  * Fibonacci triple and every probe.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class FibonacciSearch {
     static int comparisons;

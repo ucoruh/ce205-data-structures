@@ -6,7 +6,7 @@
  * cap0/factor/shrink into the source text per preset; this program keeps
  * them as runtime fields set per scenario, so resize/append/removeLast are
  * otherwise identical to the animation's code panel.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class DynamicArrayGrowth {
     static class DynArray {

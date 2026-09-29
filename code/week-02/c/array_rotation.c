@@ -2,7 +2,7 @@
  * Rotate an array left by d positions with the reversal algorithm: reverse
  * the first d elements, reverse the rest, then reverse the whole thing.
  * Matches the array-rotation.js animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

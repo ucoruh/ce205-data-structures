@@ -3,7 +3,7 @@
  * occupied, probe the NEXT slot, wrapping around, until an empty slot is found, the key is already there
  * (duplicate), or every slot has been tried (file full). The table really lives on disk, inside a temporary
  * lab folder that main() creates and removes.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

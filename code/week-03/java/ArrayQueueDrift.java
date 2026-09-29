@@ -1,6 +1,6 @@
 /* Week 3 -- Stacks and Queues
  * Queue in a plain array and the drift problem.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class ArrayQueueDrift {
     static final int MAX_CAP = 12;

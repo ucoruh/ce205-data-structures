@@ -1,7 +1,7 @@
 /* Week 12 -- Strings: Structures and Algorithms
  * Edit distance (Levenshtein distance): the fewest insertions, deletions and substitutions to turn a into b,
  * a DP table plus a traceback that reconstructs one shortest edit sequence.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 import java.util.ArrayList;
 import java.util.Collections;

@@ -2,7 +2,7 @@
  * Connected components: repeated BFS. Every unvisited vertex starts a new
  * BFS that labels everything it reaches with the same component id;
  * direction is ignored (weak connectivity).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

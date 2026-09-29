@@ -5,7 +5,7 @@
  * layout into the source text per preset; this program keeps a runtime
  * flag `row_major` so addr/traverse_row_major/traverse_col_major are
  * otherwise identical to the animation's code panel.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

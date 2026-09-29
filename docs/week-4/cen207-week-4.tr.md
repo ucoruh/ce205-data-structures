@@ -211,7 +211,7 @@ ebeveyninin derinliği + 1'dir) hesaplar.
      * Tree vocabulary on a GENERAL rooted tree (any number of children per
      * node): root, parent, child, sibling, leaf, internal node, edge, depth,
      * height, degree, subtree.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdio.h>
     #include <string.h>
@@ -297,7 +297,7 @@ kardeşlerini ve kendi altağacının boyutunu yazdırır.
          * Tree vocabulary on a GENERAL rooted tree (any number of children per
          * node): root, parent, child, sibling, leaf, internal node, edge, depth,
          * height, degree, subtree.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -472,7 +472,7 @@ kardeşlerini ve kendi altağacının boyutunu yazdırır.
          * Tree vocabulary on a GENERAL rooted tree (any number of children per
          * node): root, parent, child, sibling, leaf, internal node, edge, depth,
          * height, degree, subtree.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.List;
@@ -900,7 +900,7 @@ ağaç, ve 11 düğümlü dengeli-ama-tam-olmayan bir ağaç.
         ```c
         /* Week 4 -- Trees, Heaps, and Huffman Coding
          * Binary tree shapes: full, complete, perfect, degenerate, height-balanced.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <limits.h>
         #include <stdbool.h>
@@ -1077,7 +1077,7 @@ ağaç, ve 11 düğümlü dengeli-ama-tam-olmayan bir ağaç.
         ```java
         /* Week 4 -- Trees, Heaps, and Huffman Coding
          * Binary tree shapes: full, complete, perfect, degenerate, height-balanced.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class TreeShape {
             static final int SLOT_NONE = Integer.MIN_VALUE;
@@ -1321,7 +1321,7 @@ seviyesinde rastgele veri üretin, ya da kendi seviye-sıralı listenizi yazın.
     ```c
     /* Week 4 -- Trees, Heaps, and Huffman Coding
      * Recursive preorder traversal: visit, left, right.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <limits.h>
     #include <stdio.h>
@@ -1446,7 +1446,7 @@ seviyesinde rastgele veri üretin, ya da kendi seviye-sıralı listenizi yazın.
         ```c
         /* Week 4 -- Trees, Heaps, and Huffman Coding
          * Recursive preorder traversal: visit, left, right.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <limits.h>
         #include <stdio.h>
@@ -1554,7 +1554,7 @@ seviyesinde rastgele veri üretin, ya da kendi seviye-sıralı listenizi yazın.
         ```java
         /* Week 4 -- Trees, Heaps, and Huffman Coding
          * Recursive preorder traversal: visit, left, right.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class PreorderRecursive {
             static final int SLOT_NONE = Integer.MIN_VALUE;
@@ -1782,7 +1782,7 @@ fonksiyonları, aynı dört senaryo.
         ```c
         /* Week 4 -- Trees, Heaps, and Huffman Coding
          * Recursive inorder traversal: left, visit, right.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <limits.h>
         #include <stdio.h>
@@ -1890,7 +1890,7 @@ fonksiyonları, aynı dört senaryo.
         ```java
         /* Week 4 -- Trees, Heaps, and Huffman Coding
          * Recursive inorder traversal: left, visit, right.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class InorderRecursive {
             static final int SLOT_NONE = Integer.MIN_VALUE;
@@ -2114,7 +2114,7 @@ aynı ağaç kurucularını ve aynı dört senaryoyu kullanır.
         ```c
         /* Week 4 -- Trees, Heaps, and Huffman Coding
          * Recursive postorder traversal: left, right, visit.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <limits.h>
         #include <stdio.h>
@@ -2222,7 +2222,7 @@ aynı ağaç kurucularını ve aynı dört senaryoyu kullanır.
         ```java
         /* Week 4 -- Trees, Heaps, and Huffman Coding
          * Recursive postorder traversal: left, right, visit.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class PostorderRecursive {
             static final int SLOT_NONE = Integer.MIN_VALUE;
@@ -2512,7 +2512,7 @@ Tam programlar (`code/week-04/c/inorder_stack.c`, `code/week-04/java/InorderStac
         /* Week 4 -- Trees, Heaps, and Huffman Coding
          * Iterative inorder traversal with our own explicit array-based stack
          * (the exact stack idea from Week 3, holding tree nodes instead of numbers).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <limits.h>
         #include <stdio.h>
@@ -2645,7 +2645,7 @@ Tam programlar (`code/week-04/c/inorder_stack.c`, `code/week-04/java/InorderStac
         /* Week 4 -- Trees, Heaps, and Huffman Coding
          * Iterative inorder traversal with our own explicit array-based stack
          * (the exact stack idea from Week 3, holding tree nodes instead of numbers).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class InorderStack {
             static final int SLOT_NONE = Integer.MIN_VALUE;
@@ -2956,7 +2956,7 @@ senaryoyu çalıştırır.
         ```c
         /* Week 4 -- Trees, Heaps, and Huffman Coding
          * Level-order (breadth-first) traversal with an explicit circular queue.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <limits.h>
         #include <stdio.h>
@@ -3094,7 +3094,7 @@ senaryoyu çalıştırır.
         ```java
         /* Week 4 -- Trees, Heaps, and Huffman Coding
          * Level-order (breadth-first) traversal with an explicit circular queue.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class LevelorderQueue {
             static final int SLOT_NONE = Integer.MIN_VALUE;
@@ -3393,7 +3393,7 @@ formülü birkaç gözlem indisine uygular ve üç dizi üzerinde tamlık kontro
          * Storing a binary tree in a plain array: parent/left/right index formulas,
          * and a check for whether the tree is actually "complete" (no gaps before
          * the last real slot).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <limits.h>
         #include <stdbool.h>
@@ -3482,7 +3482,7 @@ formülü birkaç gözlem indisine uygular ve üç dizi üzerinde tamlık kontro
          * Storing a binary tree in a plain array: parent/left/right index formulas,
          * and a check for whether the tree is actually "complete" (no gaps before
          * the last real slot).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class CompleteTreeArray {
             static final int EMPTY = Integer.MIN_VALUE;
@@ -3691,7 +3691,7 @@ rastgele veri üretin, ya da kendi değerlerinizi yazın.
      * Binary heap insertion by sift-up (bubble-up). kind_is_max selects a
      * max-heap (parent >= children) or a min-heap (parent <= children); the
      * sift-up loop itself is exactly the same either way.
-     * CEN207 Data Structures (CS50-style lecture notes)
+     * CEN207 Data Structures (formerly CE205)
      */
     #include <stdbool.h>
     #include <stdio.h>
@@ -3804,7 +3804,7 @@ rastgele veri üretin, ya da kendi değerlerinizi yazın.
          * Binary heap insertion by sift-up (bubble-up). kind_is_max selects a
          * max-heap (parent >= children) or a min-heap (parent <= children); the
          * sift-up loop itself is exactly the same either way.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -3884,7 +3884,7 @@ rastgele veri üretin, ya da kendi değerlerinizi yazın.
          * Binary heap insertion by sift-up (bubble-up). kindIsMax selects a
          * max-heap (parent >= children) or a min-heap (parent <= children); the
          * sift-up loop itself is exactly the same either way.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class HeapInsert {
             static final int MAX_CAP = 20;
@@ -4182,7 +4182,7 @@ sahneyi kurmanın bir yoludur.
          * max-heap or a min-heap; heapify_prepare turns a raw array into a valid
          * starting heap and is used only to SET UP each scenario, never by extract
          * itself.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -4288,7 +4288,7 @@ sahneyi kurmanın bir yoludur.
          * max-heap or a min-heap; heapifyPrepare turns a raw array into a valid
          * starting heap and is used only to SET UP each scenario, never by extract
          * itself.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class HeapExtract {
             static final int MAX_CAP = 20;
@@ -4552,7 +4552,7 @@ Tam programlar (`code/week-04/c/build_heap.c`, `code/week-04/java/BuildHeap.java
         ```c
         /* Week 4 -- Trees, Heaps, and Huffman Coding
          * Bottom-up build-heap (Floyd's algorithm), O(n).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -4636,7 +4636,7 @@ Tam programlar (`code/week-04/c/build_heap.c`, `code/week-04/java/BuildHeap.java
         ```java
         /* Week 4 -- Trees, Heaps, and Huffman Coding
          * Bottom-up build-heap (Floyd's algorithm), O(n).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BuildHeap {
             static boolean kindIsMax;
@@ -4829,7 +4829,7 @@ Tam programlar (`code/week-04/c/heap_sort.c`, `code/week-04/java/HeapSort.java`)
          * Heap sort: build-heap once, then repeatedly move the root to the sorted
          * tail and sift-down. A max-heap sorts ascending (the classic heap sort);
          * a min-heap sorts descending (the mirror image).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -4911,7 +4911,7 @@ Tam programlar (`code/week-04/c/heap_sort.c`, `code/week-04/java/HeapSort.java`)
          * Heap sort: build-heap once, then repeatedly move the root to the sorted
          * tail and sift-down. A max-heap sorts ascending (the classic heap sort);
          * a min-heap sorts descending (the mirror image).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class HeapSort {
             static boolean kindIsMax;
@@ -5177,7 +5177,7 @@ ekleme, peek, çıkarma ve güncelleme dizisi çalıştırır, her öğeyi `değ
          * Priority queue built on an array heap: insert, peek, extract, and
          * update_key (decrease/increase-key), addressed by a stable id handle --
          * the k-th insert always keeps id k, wherever it later moves in the array.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -5338,7 +5338,7 @@ ekleme, peek, çıkarma ve güncelleme dizisi çalıştırır, her öğeyi `değ
          * Priority queue built on an array heap: insert, peek, extract, and
          * updateKey (decrease/increase-key), addressed by a stable id handle --
          * the k-th insert always keeps id k, wherever it later moves in the array.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class PriorityQueueDemo {
             static final int MAX_CAP = 20;
@@ -5690,7 +5690,7 @@ D = 4 ile çalışır, düz ikili öbeğin bölüm 5.4'teki aynı `heapify_prepa
          * D-ary heap: the same array-backed idea as a binary heap, but every node
          * has up to D children (child c of node i sits at D*i + 1 + c, parent at
          * (i-1)/D). D = 3 or 4, chosen per scenario.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -5796,7 +5796,7 @@ D = 4 ile çalışır, düz ikili öbeğin bölüm 5.4'teki aynı `heapify_prepa
          * D-ary heap: the same array-backed idea as a binary heap, but every node
          * has up to D children (child c of node i sits at D*i + 1 + c, parent at
          * (i-1)/D). D = 3 or 4, chosen per scenario.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class DaryHeapExtract {
             static final int MAX_CAP = 20;
@@ -6075,7 +6075,7 @@ union) ve sonra ikisini birleştirir.
          * bits of its element count (order k has 2^k nodes). A root list is
          * represented here as an array indexed by order (NULL = absent), the
          * direct picture of "binary addition with a carry".
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -6247,7 +6247,7 @@ union) ve sonra ikisini birleştirir.
          * bits of its element count (order k has 2^k nodes). A root list is
          * represented here as an array indexed by order (null = absent), the
          * direct picture of "binary addition with a carry".
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BinomialHeapUnion {
             static final int MAX_ORDER = 6;
@@ -6555,7 +6555,7 @@ sağladığını kontrol eder.
          * Leftist heap merge, the operation everything else (insert, extract) is
          * built from. The recursive form used here always keeps the shorter side
          * (by null path length, npl) on the right -- the leftist property.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -6692,7 +6692,7 @@ sağladığını kontrol eder.
          * Leftist heap merge, the operation everything else (insert, extract) is
          * built from. The recursive form used here always keeps the shorter side
          * (by null path length, npl) on the right -- the leftist property.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class LeftistHeapMerge {
             static class Node {
@@ -7075,7 +7075,7 @@ yazdırır, metni kodlar, geri çözer, ve gidiş-dönüşün eşleştiğini kon
          * Huffman coding: count frequencies, build the tree with a min-heap of
          * trees (repeatedly merging the two lowest-frequency roots), assign a
          * 0/1 code to every leaf, then encode and decode.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -7297,7 +7297,7 @@ yazdırır, metni kodlar, geri çözer, ve gidiş-dönüşün eşleştiğini kon
          * Huffman coding: count frequencies, build the tree with a min-heap of
          * trees (repeatedly merging the two lowest-frequency roots), assign a
          * 0/1 code to every leaf, then encode and decode.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class Huffman {
             static class Node {

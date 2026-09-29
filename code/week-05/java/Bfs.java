@@ -2,7 +2,7 @@
  * Breadth-first search (BFS) from a chosen start vertex, using a circular
  * queue. Neighbours are examined in ALPHABETICAL order, so the visit
  * order is reproducible. Prints every dequeue and the vertices it enqueues.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class Bfs {
     static final int MAX_V = 32;

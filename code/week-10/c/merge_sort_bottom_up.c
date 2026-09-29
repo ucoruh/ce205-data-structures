@@ -3,7 +3,7 @@
  * a sorted run of width 1, merge adjacent runs into width-2 runs, then
  * width-4, doubling every round until one run covers the whole array.
  * Prints every merge and the total comparisons/moves.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

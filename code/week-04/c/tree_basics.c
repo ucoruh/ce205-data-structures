@@ -2,7 +2,7 @@
  * Tree vocabulary on a GENERAL rooted tree (any number of children per
  * node): root, parent, child, sibling, leaf, internal node, edge, depth,
  * height, degree, subtree.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

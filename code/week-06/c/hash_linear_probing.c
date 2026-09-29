@@ -3,7 +3,7 @@
  * table. On a collision, probe the next slot, wrapping around, until an
  * empty (or deleted) slot is found. A deleted slot gets a tombstone marker,
  * not a plain empty mark, so search keeps walking past it.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

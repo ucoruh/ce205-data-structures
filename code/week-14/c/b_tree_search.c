@@ -1,7 +1,7 @@
 /* Week 14 -- File Organisation II
  * B-tree search (order m): descend from the root comparing the target against each page's
  * keys; every page visited is one disk read.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdbool.h>
 #include <stdio.h>

@@ -3,7 +3,7 @@
  * sort on one decimal digit at a time, starting at the ones place, up to
  * the highest place any value needs. Always 10 buckets. Prints the array
  * after every digit pass. Zero comparisons; total writes are reported.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

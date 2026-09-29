@@ -4,7 +4,7 @@
  * TRANSPOSE graph, visiting unvisited roots in DECREASING finish-time
  * order -- each resulting DFS tree is exactly one strongly connected
  * component.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class StronglyConnectedComponents {
     static final int MAX_V = 32;

@@ -2,7 +2,7 @@
  * Growable string buffer: characters are appended one at a time; when full, a new block double the size is
  * allocated, every existing byte is copied across (realloc), then the new character is written. Appending is
  * O(1) most of the time and O(len) only on the rare growth step -- amortized O(1) overall.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

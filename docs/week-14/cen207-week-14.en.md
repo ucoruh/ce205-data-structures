@@ -221,7 +221,7 @@ every search) — or press 🎲 for random data at four difficulty levels, or ty
         ```c
         /* Week 14 -- File Organisation II
          * Primary (sparse) index over a sorted file: one index entry per disk page.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -319,7 +319,7 @@ every search) — or press 🎲 for random data at four difficulty levels, or ty
         ```java
         /* Week 14 -- File Organisation II
          * Primary (sparse) index over a sorted file: one index entry per disk page.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class PrimaryIndex {
             static final int MAX_PAGES = 8;
@@ -579,7 +579,7 @@ levels, or type your own `block`, record `keys` and `queries`.
         ```c
         /* Week 14 -- File Organisation II
          * Dense secondary index: one index entry per RECORD, sorted by a key that repeats.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -663,7 +663,7 @@ levels, or type your own `block`, record `keys` and `queries`.
         ```java
         /* Week 14 -- File Organisation II
          * Dense secondary index: one index entry per RECORD, sorted by a key that repeats.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.Arrays;
         import java.util.Comparator;
@@ -923,7 +923,7 @@ data at four difficulty levels, or type your own `block`, `fill`, `group`, `keys
         /* Week 14 -- File Organisation II
          * ISAM: a two-level index over a sorted primary data area, plus an overflow area
          * (a linked chain) for keys that no longer fit their home page.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -1079,7 +1079,7 @@ data at four difficulty levels, or type your own `block`, `fill`, `group`, `keys
         /* Week 14 -- File Organisation II
          * ISAM: a two-level index over a sorted primary data area, plus an overflow area
          * (a linked chain) for keys that no longer fit their home page.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class Isam {
             static final int MAX_PAGES = 8;
@@ -1427,7 +1427,7 @@ levels, or type your own `order` and `keys`.
         /* Week 14 -- File Organisation II
          * B-tree insert (order m): every node is one disk page; overflow splits a page in two and
          * pushes its median key up, growing the tree upward when the root itself splits.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -1607,7 +1607,7 @@ levels, or type your own `order` and `keys`.
         /* Week 14 -- File Organisation II
          * B-tree insert (order m): every node is one disk page; overflow splits a page in two and
          * pushes its median key up, growing the tree upward when the root itself splits.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.List;
@@ -1893,7 +1893,7 @@ four difficulty levels, or type your own `order`, `keys` and `queries`.
         /* Week 14 -- File Organisation II
          * B-tree search (order m): descend from the root comparing the target against each page's
          * keys; every page visited is one disk read.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -2050,7 +2050,7 @@ four difficulty levels, or type your own `order`, `keys` and `queries`.
         /* Week 14 -- File Organisation II
          * B-tree search (order m): descend from the root comparing the target against each page's
          * keys; every page visited is one disk read.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BTreeSearch {
             static class Node {
@@ -2380,7 +2380,7 @@ difficulty levels, or type your own `order`, `keys` and `deletes`.
         /* Week 14 -- File Organisation II
          * B-tree delete (order m): remove a key, then fix underflow by BORROWING a key from a sibling
          * through the parent, or MERGING with a sibling when no sibling can spare one.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -2664,7 +2664,7 @@ difficulty levels, or type your own `order`, `keys` and `deletes`.
         /* Week 14 -- File Organisation II
          * B-tree delete (order m): remove a key, then fix underflow by BORROWING a key from a sibling
          * through the parent, or MERGING with a sibling when no sibling can spare one.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BTreeDelete {
             static class Node {
@@ -3105,7 +3105,7 @@ your own `order`, `keys` and `ranges` (as `lo-hi` pairs).
         /* Week 14 -- File Organisation II
          * B+-tree: every key lives in a LEAF (internal nodes only route); leaves are linked into a
          * chain, so a range query descends once and then just walks the chain.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -3304,7 +3304,7 @@ your own `order`, `keys` and `ranges` (as `lo-hi` pairs).
         /* Week 14 -- File Organisation II
          * B+-tree: every key lives in a LEAF (internal nodes only route); leaves are linked into a
          * chain, so a range query descends once and then just walks the chain.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.List;
@@ -3639,7 +3639,7 @@ difficulty levels, or type your own `capacity` and `keys`.
          * Extendible hashing: an in-memory directory of 2^global_depth pointers selects a bucket by
          * the key's last global_depth bits; a full bucket splits, doubling the directory first if its
          * local_depth had caught up to global_depth.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -3740,7 +3740,7 @@ difficulty levels, or type your own `capacity` and `keys`.
          * Extendible hashing: an in-memory directory of 2^global_depth pointers selects a bucket by
          * the key's last global_depth bits; a full bucket splits, doubling the directory first if its
          * local_depth had caught up to global_depth.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.List;
@@ -4025,7 +4025,7 @@ press 🎲 for random data at four difficulty levels, or type your own `n0`, `ca
          * Linear hashing: no directory at all. Buckets split in round-robin order (bucket n, then
          * n+1, ...), triggered by ANY overflow; a key's address is a simple modulo, bumped to the
          * next level only when its home bucket has already been split this round.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -4120,7 +4120,7 @@ press 🎲 for random data at four difficulty levels, or type your own `n0`, `ca
          * Linear hashing: no directory at all. Buckets split in round-robin order (bucket n, then
          * n+1, ...), triggered by ANY overflow; a key's address is a simple modulo, bumped to the
          * next level only when its home bucket has already been split this round.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.ArrayList;
         import java.util.List;
@@ -4437,7 +4437,7 @@ anywhere else on disk.
          *
          * This program creates real files, but only inside a lab folder it creates itself; every file and
          * the folder are removed again before the program exits.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -4592,7 +4592,7 @@ anywhere else on disk.
          *
          * This program creates real files, but only inside a lab folder it creates itself; every file and
          * the folder are removed again before the program exits.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.io.BufferedReader;
         import java.io.File;
@@ -4915,7 +4915,7 @@ every file, and the folder itself, are removed again before the program exits.
          *
          * This program creates real files, but only inside a lab folder it creates itself; every file and
          * the folder are removed again before the program exits.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <limits.h>
         #include <stdio.h>
@@ -5062,7 +5062,7 @@ every file, and the folder itself, are removed again before the program exits.
          *
          * This program creates real files, but only inside a lab folder it creates itself; every file and
          * the folder are removed again before the program exits.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.io.BufferedReader;
         import java.io.File;

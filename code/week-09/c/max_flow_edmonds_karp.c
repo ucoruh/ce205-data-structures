@@ -4,7 +4,7 @@
  * the SHORTEST augmenting path from s to t, push the bottleneck, and repeat
  * until no path remains. Pushing flow forward on an edge also opens
  * capacity on its REVERSE edge.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

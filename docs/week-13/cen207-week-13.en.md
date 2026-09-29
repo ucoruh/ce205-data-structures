@@ -278,7 +278,7 @@ record truncated in the fixed layout) — or press 🎲 for random data, or type
          * fixed-length (padded/truncated to NAME_FIXED bytes), delimited (name + '|'), and length-prefixed
          * (1-byte length + name). The files are created only inside a temporary lab folder that main()
          * creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -440,7 +440,7 @@ record truncated in the fixed layout) — or press 🎲 for random data, or type
          * fixed-length (padded/truncated to NAME_FIXED bytes), delimited (name + '|'), and length-prefixed
          * (1-byte length + name). The files are created only inside a temporary lab folder that main()
          * creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class RecordsAndFields {
             static final int NAME_FIXED = 8;
@@ -755,7 +755,7 @@ real system must detect, not silently misbehave on — and **12 keys divide bf=3
          * Blocking factor: how many fixed-size records fit in one disk block (bf), and the waste that comes with it --
          * internal fragmentation inside every full block, plus extra waste in a partial last block. Every block is
          * really written to a file inside a temporary lab folder that main() creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -888,7 +888,7 @@ real system must detect, not silently misbehave on — and **12 keys divide bf=3
          * Blocking factor: how many fixed-size records fit in one disk block (bf), and the waste that comes with it --
          * internal fragmentation inside every full block, plus extra waste in a partial last block. Every block is
          * really written to a file inside a temporary lab folder that main() creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BlockingFactor {
             static final int BLOCK_SIZE = 100;
@@ -1157,7 +1157,7 @@ own `target=N` header and key list.
          * Sequential search of a file: blocks are read from disk in order, and every record inside a loaded block is
          * compared until the key is found or the file ends. The cost is measured in BLOCK READS. The file really lives
          * on disk, inside a temporary lab folder that main() creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -1254,7 +1254,7 @@ own `target=N` header and key list.
          * Sequential search of a file: blocks are read from disk in order, and every record inside a loaded block is
          * compared until the key is found or the file ends. The cost is measured in BLOCK READS. The file really lives
          * on disk, inside a temporary lab folder that main() creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SequentialSearchFile {
             static final int BF = 4;   // records per block
@@ -1479,7 +1479,7 @@ and **target is outside the file's range (below the minimum)** — or press 🎲
          * Binary search of a SORTED file: jump to the middle BLOCK (compare the key to the block's first and last
          * key), then scan only inside that one block -- O(log numBlocks) block reads instead of O(numBlocks). The
          * file really lives on disk, inside a temporary lab folder that main() creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -1581,7 +1581,7 @@ and **target is outside the file's range (below the minimum)** — or press 🎲
          * Binary search of a SORTED file: jump to the middle BLOCK (compare the key to the block's first and last
          * key), then scan only inside that one block -- O(log numBlocks) block reads instead of O(numBlocks). The
          * file really lives on disk, inside a temporary lab folder that main() creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BinarySearchSortedFile {
             static final int BF = 4;   // records per block; the whole file is sorted by key
@@ -1849,7 +1849,7 @@ type your own `M<key>:<value>` master list and `A/C/D<key>[:<value>]` transactio
          * master file. Every transaction is add / change / delete; a change or delete on a key that is not in the
          * master is an error, and adding a key that already exists is also an error. The new master really lives on
          * disk, inside a temporary lab folder that main() creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -1976,7 +1976,7 @@ type your own `M<key>:<value>` master list and `A/C/D<key>[:<value>]` transactio
          * master file. Every transaction is add / change / delete; a change or delete on a key that is not in the
          * master is an error, and adding a key that already exists is also an error. The new master really lives on
          * disk, inside a temporary lab folder that main() creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SequentialUpdateMasterTransaction {
             static class Rec { int key, val; Rec(int k, int v) { key = k; val = v; } }
@@ -2212,7 +2212,7 @@ total=N` header and requested-record-number list.
          * Relative (direct) file access: a record number (RRN) maps straight to a block and an offset by arithmetic --
          * block = rrn / bf, offset = rrn % bf -- so a record is fetched with exactly ONE block read and no searching at
          * all. The file really lives on disk, inside a temporary lab folder that main() creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -2307,7 +2307,7 @@ total=N` header and requested-record-number list.
          * Relative (direct) file access: a record number (RRN) maps straight to a block and an offset by arithmetic --
          * block = rrn / bf, offset = rrn % bf -- so a record is fetched with exactly ONE block read and no searching at
          * all. The file really lives on disk, inside a temporary lab folder that main() creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class RelativeFileDirectAccess {
             static final int BF = 5;   // records per block
@@ -2528,7 +2528,7 @@ type your own `m=N bf=N` header and key list.
          * an OVERFLOW block is allocated and chained onto it (bucket chaining) instead of searching elsewhere. Every
          * bucket and overflow block is a real block written to disk, inside a temporary lab folder that main() creates
          * and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -2648,7 +2648,7 @@ type your own `m=N bf=N` header and key list.
          * an OVERFLOW block is allocated and chained onto it (bucket chaining) instead of searching elsewhere. Every
          * bucket and overflow block is a real block written to disk, inside a temporary lab folder that main() creates
          * and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class HashingToBuckets {
             static final int BF = 3;   // keys per bucket / overflow block
@@ -2932,7 +2932,7 @@ fills** — or press 🎲 for random data, or type your own `m=N` header and key
          * occupied, probe the NEXT slot, wrapping around, until an empty slot is found, the key is already there
          * (duplicate), or every slot has been tried (file full). The table really lives on disk, inside a temporary
          * lab folder that main() creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -3040,7 +3040,7 @@ fills** — or press 🎲 for random data, or type your own `m=N` header and key
          * occupied, probe the NEXT slot, wrapping around, until an empty slot is found, the key is already there
          * (duplicate), or every slot has been tried (file full). The table really lives on disk, inside a temporary
          * lab folder that main() creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class CollisionProgressiveOverflow {
             static final int EMPTY = -1;
@@ -3329,7 +3329,7 @@ random data, or type your own `m=N insert=... delete=... found=N missing=N reins
          * wrongly report "not found". A TOMBSTONE ("something was here, keep looking") fixes this; a search skips over
          * tombstones but a later INSERT may reuse one. The table really lives on disk, inside a temporary lab folder
          * that main() creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -3479,7 +3479,7 @@ random data, or type your own `m=N insert=... delete=... found=N missing=N reins
          * wrongly report "not found". A TOMBSTONE ("something was here, keep looking") fixes this; a search skips over
          * tombstones but a later INSERT may reuse one. The table really lives on disk, inside a temporary lab folder
          * that main() creates and removes.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class DeletionWithTombstones {
             static final int EMPTY = -1, TOMB = -2;   // TOMB = deleted marker: "something was here, keep looking"

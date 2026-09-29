@@ -1,6 +1,6 @@
 /* Week 12 -- Strings: Structures and Algorithms
  * Trie (prefix tree): insert and search, one edge per character, a fixed 26-letter alphabet array per node.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdbool.h>
 #include <stdio.h>

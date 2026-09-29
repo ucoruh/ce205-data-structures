@@ -6,6 +6,18 @@ template: main.html
 
 *CEN207 Veri Yapıları (eski kodu CE205) · 2026–2027 Güz · 31.10–08.11.2026*
 
+<!-- materials:start -->
+
+<div class="materials" markdown>
+
+[:material-file-pdf-box: Ders notu (PDF)](cen207-week-8-notes.pdf){ .md-button download="cen207-week-8-notes.pdf" }
+[:material-file-word-box: Ders notu (DOCX)](cen207-week-8-notes.docx){ .md-button download="cen207-week-8-notes.docx" }
+[:material-folder-zip: Tümünü indir (ZIP)](cen207-week-8-materials.zip){ .md-button download="cen207-week-8-materials.zip" }
+
+</div>
+
+<!-- materials:end -->
+
 **Quiz-1** 1–6. haftaları kapsar ve vize notunun %40'ıdır (diğer %60 ara proje RAP1).
 
 | Hafta | Tekrar edilecek konular |

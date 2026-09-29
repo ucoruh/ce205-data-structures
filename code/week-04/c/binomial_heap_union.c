@@ -4,7 +4,7 @@
  * bits of its element count (order k has 2^k nodes). A root list is
  * represented here as an array indexed by order (NULL = absent), the
  * direct picture of "binary addition with a carry".
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdbool.h>
 #include <stdio.h>

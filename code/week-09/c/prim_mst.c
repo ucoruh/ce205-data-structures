@@ -5,7 +5,7 @@
  * and its neighbours' keys are relaxed. Unlike Kruskal, Prim only grows
  * from `start`: a vertex in another component is never reached (key stays
  * "infinite").
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

@@ -1,7 +1,7 @@
 /* Week 12 -- Strings: Structures and Algorithms
  * Suffix array: every starting position of text, sorted by the suffix beginning there, built here with
  * insertion sort over strcmp(text+a, text+b) -- each suffix is just a pointer into the same buffer, no copy.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

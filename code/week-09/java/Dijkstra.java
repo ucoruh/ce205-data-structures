@@ -3,7 +3,7 @@
  * not-yet-finished vertex keeps a "dist" (its current best distance from
  * the start); each round the smallest is picked (it is now final) and its
  * outgoing edges are relaxed.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class Dijkstra {
     static final int MAX_V = 32, INF = 1000000000;

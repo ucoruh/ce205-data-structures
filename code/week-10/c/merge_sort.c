@@ -3,7 +3,7 @@
  * sort each half, then merge the two sorted halves with an auxiliary
  * array. Prints every merge (its two input runs and the merged result)
  * and the total comparisons/moves.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

@@ -2,7 +2,7 @@
  * Binary heap insertion by sift-up (bubble-up). kind_is_max selects a
  * max-heap (parent >= children) or a min-heap (parent <= children); the
  * sift-up loop itself is exactly the same either way.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdbool.h>
 #include <stdio.h>

@@ -270,7 +270,7 @@ directly), plus 🎲 random and your own values.
          * a queue with the vertices that have in-degree 0, then repeatedly dequeue
          * one, print it, and decrement its neighbours' in-degree. If a cycle exists,
          * the queue empties before every vertex is placed.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -422,7 +422,7 @@ directly), plus 🎲 random and your own values.
          * a queue with the vertices that have in-degree 0, then repeatedly dequeue
          * one, print it, and decrement its neighbours' in-degree. If a cycle exists,
          * the queue empties before every vertex is placed.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class TopologicalSortKahn {
             static final int MAX_V = 32;
@@ -557,7 +557,7 @@ directly), plus 🎲 random and your own values.
          * time, then read the finish order back to front. A back edge (to a grey,
          * still-open ancestor) means the graph has a cycle, so no topological order
          * exists.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -703,7 +703,7 @@ directly), plus 🎲 random and your own values.
          * time, then read the finish order back to front. A back edge (to a grey,
          * still-open ancestor) means the graph has a cycle, so no topological order
          * exists.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class TopologicalSortDfs {
             static final int MAX_V = 32;
@@ -990,7 +990,7 @@ Try **"one cycle: C-D-F-C"**, **"two overlapping cycles"**, the edge cases **"en
          * an explicit "on the current path" stack. A back edge to a GREY vertex
          * means that vertex is still an open ancestor -- the path from it down to
          * here, plus the back edge, IS the cycle.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -1144,7 +1144,7 @@ Try **"one cycle: C-D-F-C"**, **"two overlapping cycles"**, the edge cases **"en
          * an explicit "on the current path" stack. A back edge to a GREY vertex
          * means that vertex is still an open ancestor -- the path from it down to
          * here, plus the back edge, IS the cycle.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class CycleDetectionDirected {
             static final int MAX_V = 32;
@@ -1426,7 +1426,7 @@ unions"**, and the edge case **"repeatedly unioning the same set with itself"**;
          * sequence of operations is replayed: "union A B" merges the sets
          * containing A and B; "find A" finds A's root and compresses the path from
          * A to it.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -1540,7 +1540,7 @@ unions"**, and the edge case **"repeatedly unioning the same set with itself"**;
          * sequence of operations is replayed: "union A B" merges the sets
          * containing A and B; "find A" finds A's root and compresses the path from
          * A to it.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class UnionFind {
             static final int MAX_V = 32;
@@ -1863,7 +1863,7 @@ edges when weights tie) and the edge case **"2 components, starts at A -- F..J a
          * path compression) unless it would close a cycle. Ties keep the input
          * order (a stable sort). If the graph is disconnected, Kruskal still
          * finishes and produces a minimum spanning FOREST.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -1978,7 +1978,7 @@ edges when weights tie) and the edge case **"2 components, starts at A -- F..J a
          * order (an explicit tie-break by original index). If the graph is
          * disconnected, Kruskal still finishes and produces a minimum spanning
          * FOREST.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         import java.util.Arrays;
         import java.util.Comparator;
@@ -2089,7 +2089,7 @@ edges when weights tie) and the edge case **"2 components, starts at A -- F..J a
          * and its neighbours' keys are relaxed. Unlike Kruskal, Prim only grows
          * from `start`: a vertex in another component is never reached (key stays
          * "infinite").
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -2249,7 +2249,7 @@ edges when weights tie) and the edge case **"2 components, starts at A -- F..J a
          * and its neighbours' keys are relaxed. Unlike Kruskal, Prim only grows
          * from `start`: a vertex in another component is never reached (key stays
          * "infinite").
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class PrimMst {
             static final int MAX_V = 32, INF = 1000000000;
@@ -2610,7 +2610,7 @@ negative cycle (total -1), starts at A"** — watch the detection round find a s
          * not-yet-finished vertex keeps a "dist" (its current best distance from
          * the start); each round the smallest is picked (it is now final) and its
          * outgoing edges are relaxed.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -2754,7 +2754,7 @@ negative cycle (total -1), starts at A"** — watch the detection round find a s
          * not-yet-finished vertex keeps a "dist" (its current best distance from
          * the start); each round the smallest is picked (it is now final) and its
          * outgoing edges are relaxed.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class Dijkstra {
             static final int MAX_V = 32, INF = 1000000000;
@@ -2879,7 +2879,7 @@ negative cycle (total -1), starts at A"** — watch the detection round find a s
          * (stopping early once a round changes nothing). A final extra round that
          * still finds an improvement means a NEGATIVE CYCLE reaches that vertex --
          * its distance is not well defined.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -3026,7 +3026,7 @@ negative cycle (total -1), starts at A"** — watch the detection round find a s
          * (stopping early once a round changes nothing). A final extra round that
          * still finds an improvement means a NEGATIVE CYCLE reaches that vertex --
          * its distance is not well defined.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BellmanFord {
             static final int MAX_V = 32, INF = 1000000000;
@@ -3307,7 +3307,7 @@ plain `A>B:4 ...` edge list, capped at 7 vertices so the matrix stays readable.
          * dist[k][j] never change during that pass, so the matrix can be updated in
          * place. A negative diagonal entry dist[v][v] < 0 means v lies on a
          * negative cycle.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -3424,7 +3424,7 @@ plain `A>B:4 ...` edge list, capped at 7 vertices so the matrix stays readable.
          * dist[k][j] never change during that pass, so the matrix can be updated in
          * place. A negative diagonal entry dist[v][v] < 0 means v lies on a
          * negative cycle.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class FloydWarshall {
             static final int MAX_V = 32, INF = 1000000000;
@@ -3719,7 +3719,7 @@ graph (a DAG), every vertex is its own component"**; input is `A>B B>C ...`.
          * TRANSPOSE graph, visiting unvisited roots in DECREASING finish-time
          * order -- each resulting DFS tree is exactly one strongly connected
          * component.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -3868,7 +3868,7 @@ graph (a DAG), every vertex is its own component"**; input is `A>B B>C ...`.
          * TRANSPOSE graph, visiting unvisited roots in DECREASING finish-time
          * order -- each resulting DFS tree is exactly one strongly connected
          * component.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class StronglyConnectedComponents {
             static final int MAX_V = 32;
@@ -4135,7 +4135,7 @@ conflicting edge turn red the instant BFS reaches it; input is `A-B B-C ...`, un
          * neighbour the OPPOSITE colour, and queues it. If an already-coloured
          * neighbour has the SAME colour, that edge closes an odd cycle -- the graph
          * is not bipartite. One BFS per component.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -4263,7 +4263,7 @@ conflicting edge turn red the instant BFS reaches it; input is `A-B B-C ...`, un
          * neighbour the OPPOSITE colour, and queues it. If an already-coloured
          * neighbour has the SAME colour, that edge closes an odd cycle -- the graph
          * is not bipartite. One BFS per component.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BipartiteCheck {
             static final int MAX_V = 32;
@@ -4538,7 +4538,7 @@ capacity per ordered pair.
          * the SHORTEST augmenting path from s to t, push the bottleneck, and repeat
          * until no path remains. Pushing flow forward on an edge also opens
          * capacity on its REVERSE edge.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -4641,7 +4641,7 @@ capacity per ordered pair.
          * the SHORTEST augmenting path from s to t, push the bottleneck, and repeat
          * until no path remains. Pushing flow forward on an edge also opens
          * capacity on its REVERSE edge.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class MaxFlowEdmondsKarp {
             static final int MAX_V = 32, INF = 1000000000;
@@ -4874,7 +4874,7 @@ correctly report failure; input is `k=3 A-B A-C ...`.
          * joins two same-coloured vertices. Vertices are tried in alphabetical
          * order, colours 1..k in order; when no colour works, we UNDO (colour 0)
          * and let the caller try its next colour.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -5008,7 +5008,7 @@ correctly report failure; input is `k=3 A-B A-C ...`.
          * joins two same-coloured vertices. Vertices are tried in alphabetical
          * order, colours 1..k in order; when no colour works, we UNDO (colour 0)
          * and let the caller try its next colour.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BacktrackingGraphColoring {
             static final int MAX_V = 32;

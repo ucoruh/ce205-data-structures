@@ -1,6 +1,6 @@
 /* Week 11 -- Advanced Trees
  * AVL tree: insert, with the balance factor bf = height(left) - height(right) shown for every step.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class AvlInsert {
     static class Node {

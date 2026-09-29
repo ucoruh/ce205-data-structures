@@ -3,7 +3,7 @@
  * non-negative value, using two pointers walking toward each other (the
  * same shape as a quicksort partition). Matches the array-rearrange.js
  * animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class ArrayRearrange {
     static void segregate(int[] arr) {

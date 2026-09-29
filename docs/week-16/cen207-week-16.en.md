@@ -6,6 +6,18 @@ template: main.html
 
 *CEN207 Data Structures (formerly CE205) · Fall 2026–2027 · 04–17.01.2027*
 
+<!-- materials:start -->
+
+<div class="materials" markdown>
+
+[:material-file-pdf-box: Lecture notes (PDF)](cen207-week-16-notes.pdf){ .md-button download="cen207-week-16-notes.pdf" }
+[:material-file-word-box: Lecture notes (DOCX)](cen207-week-16-notes.docx){ .md-button download="cen207-week-16-notes.docx" }
+[:material-folder-zip: Download all (ZIP)](cen207-week-16-materials.zip){ .md-button download="cen207-week-16-materials.zip" }
+
+</div>
+
+<!-- materials:end -->
+
 **Quiz-2** covers weeks 9–14 and is 30% of the final grade (the final project RAP2 is the other 70%).
 
 | Week | Topics to review |

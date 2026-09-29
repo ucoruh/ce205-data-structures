@@ -2,7 +2,7 @@
  * Circular linked list: insert at the tail (no separate head field --
  * tail.next IS the head), delete by value, and a traversal that wraps
  * around. Matches the circular-linked-list.js animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class CircularLinkedList {
     static class Node { int data; Node next; Node(int d) { data = d; } }

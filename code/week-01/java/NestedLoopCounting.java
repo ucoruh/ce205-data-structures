@@ -2,7 +2,7 @@
  * Count the operations of a nested loop to build T(n) by hand, for three loop shapes:
  * square (j < n), triangle (j < i), and halving (j *= 2).
  * Runs the same normal / hard / edge-case scenarios as the nested-loop-counting animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class NestedLoopCounting {
     static long operations;

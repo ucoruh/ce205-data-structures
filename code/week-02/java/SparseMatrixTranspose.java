@@ -3,7 +3,7 @@
  * each column, turn that into starting positions with a prefix sum, then
  * place every triplet directly at its final spot in one more pass. Matches
  * the sparse-matrix-transpose.js animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class SparseMatrixTranspose {
     static class Triplet {

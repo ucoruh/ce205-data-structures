@@ -1,7 +1,7 @@
 /* Week 14 -- File Organisation II
  * ISAM: a two-level index over a sorted primary data area, plus an overflow area
  * (a linked chain) for keys that no longer fit their home page.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

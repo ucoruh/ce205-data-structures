@@ -1,7 +1,7 @@
 /* Week 14 -- File Organisation II
  * B-tree delete (order m): remove a key, then fix underflow by BORROWING a key from a sibling
  * through the parent, or MERGING with a sibling when no sibling can spare one.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdbool.h>
 #include <stdio.h>

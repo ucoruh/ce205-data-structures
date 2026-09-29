@@ -4,7 +4,7 @@
  * dist[k][j] never change during that pass, so the matrix can be updated in
  * place. A negative diagonal entry dist[v][v] < 0 means v lies on a
  * negative cycle.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

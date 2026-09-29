@@ -4,7 +4,7 @@
  * most n-1 swaps ever happen, but every position still does a full scan
  * (no early exit). Prints the array after every position and the total
  * comparisons/swaps.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

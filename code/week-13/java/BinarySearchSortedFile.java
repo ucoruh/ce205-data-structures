@@ -6,7 +6,7 @@ import java.io.RandomAccessFile;
  * Binary search of a SORTED file: jump to the middle BLOCK (compare the key to the block's first and last
  * key), then scan only inside that one block -- O(log numBlocks) block reads instead of O(numBlocks). The
  * file really lives on disk, inside a temporary lab folder that main() creates and removes.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class BinarySearchSortedFile {
     static final int BF = 4;   // records per block; the whole file is sorted by key

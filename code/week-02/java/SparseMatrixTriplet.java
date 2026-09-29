@@ -2,7 +2,7 @@
  * A sparse matrix (mostly zeros) wastes memory if stored densely. Scan it
  * row-major and record only the nonzero cells as (row, col, value)
  * triplets. Matches the sparse-matrix-triplet.js animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class SparseMatrixTriplet {
     static class Triplet {

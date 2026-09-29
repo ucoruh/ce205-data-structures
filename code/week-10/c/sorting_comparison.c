@@ -3,7 +3,7 @@
  * -- bubble, selection, insertion, merge (top-down), quick (Lomuto) -- and
  * each algorithm's comparisons/writes are reported on the identical input,
  * so the O(n^2) vs O(n log n) gap becomes an actual number.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

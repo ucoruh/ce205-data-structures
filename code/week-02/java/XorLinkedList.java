@@ -3,7 +3,7 @@
  * separate pointers. Java has no pointer arithmetic: each node's "address"
  * is its index in a small pool array. Matches the xor-linked-list.js
  * animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class XorLinkedList {
     static final int NONE = 0;   // 0 means "no node" (real nodes live at indices 1..n)

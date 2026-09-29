@@ -3,7 +3,7 @@
  * list ("chain") of every key that hashed there. A collision grows the
  * chain instead of overwriting anything. Insertion is O(1); search walks
  * the chain, so its cost depends on the chain's length.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

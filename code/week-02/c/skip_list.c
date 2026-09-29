@@ -4,7 +4,7 @@
  * chosen at random, so every run is repeatable. Matches the skip-list.js
  * animation (MAX_LEVEL = 2: level 0 is the full list, level 1 is the
  * express lane).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <limits.h>
 #include <stdbool.h>

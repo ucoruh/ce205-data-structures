@@ -4,7 +4,7 @@
  * (stopping early once a round changes nothing). A final extra round that
  * still finds an improvement means a NEGATIVE CYCLE reaches that vertex --
  * its distance is not well defined.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class BellmanFord {
     static final int MAX_V = 32, INF = 1000000000;

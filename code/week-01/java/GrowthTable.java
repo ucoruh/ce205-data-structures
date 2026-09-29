@@ -3,7 +3,7 @@
  * 2^n uses java.math.BigInteger, which gives EXACT arbitrary-precision integers out of the box --
  * unlike C, which has no built-in big-integer type (see growth_table.c's hand-rolled decimal doubling).
  * Runs the same normal / edge-case scenarios as the growth-race animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 import java.math.BigInteger;
 

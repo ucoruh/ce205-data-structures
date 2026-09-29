@@ -1,7 +1,7 @@
 /* Week 14 -- File Organisation II
  * B+-tree: every key lives in a LEAF (internal nodes only route); leaves are linked into a
  * chain, so a range query descends once and then just walks the chain.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdbool.h>
 #include <stdio.h>

@@ -2,7 +2,7 @@
  * Linear hashing: no directory at all. Buckets split in round-robin order (bucket n, then
  * n+1, ...), triggered by ANY overflow; a key's address is a simple modulo, bumped to the
  * next level only when its home bucket has already been split this round.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

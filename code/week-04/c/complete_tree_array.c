@@ -2,7 +2,7 @@
  * Storing a binary tree in a plain array: parent/left/right index formulas,
  * and a check for whether the tree is actually "complete" (no gaps before
  * the last real slot).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <limits.h>
 #include <stdbool.h>

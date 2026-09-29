@@ -4,7 +4,7 @@
  * total, then places every input value directly at its final index,
  * scanning backwards to stay stable. Prints count[] at each stage and the
  * final result. Zero comparisons; the total writes are reported.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

@@ -1,7 +1,7 @@
 /* Week 1 -- Introduction to Data Structures
  * Two references can alias the same heap object; when no reference is left,
  * the object becomes eligible for garbage collection.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class ReferenceAliasing {
     static class Counter {

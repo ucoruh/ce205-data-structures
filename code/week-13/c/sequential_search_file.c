@@ -2,7 +2,7 @@
  * Sequential search of a file: blocks are read from disk in order, and every record inside a loaded block is
  * compared until the key is found or the file ends. The cost is measured in BLOCK READS. The file really lives
  * on disk, inside a temporary lab folder that main() creates and removes.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

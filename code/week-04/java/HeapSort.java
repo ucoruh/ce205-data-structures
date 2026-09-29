@@ -2,7 +2,7 @@
  * Heap sort: build-heap once, then repeatedly move the root to the sorted
  * tail and sift-down. A max-heap sorts ascending (the classic heap sort);
  * a min-heap sorts descending (the mirror image).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class HeapSort {
     static boolean kindIsMax;

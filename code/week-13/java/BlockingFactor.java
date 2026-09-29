@@ -8,7 +8,7 @@ import java.util.List;
  * Blocking factor: how many fixed-size records fit in one disk block (bf), and the waste that comes with it --
  * internal fragmentation inside every full block, plus extra waste in a partial last block. Every block is
  * really written to a file inside a temporary lab folder that main() creates and removes.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class BlockingFactor {
     static final int BLOCK_SIZE = 100;

@@ -4,7 +4,7 @@
  * unless it is a self-loop) and prints every list after each edge is
  * added. Same graphs as AdjacencyMatrix.java, so the two representations
  * can be compared directly.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class AdjacencyList {
     static final int MAX_V = 16;

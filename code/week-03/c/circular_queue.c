@@ -1,6 +1,6 @@
 /* Week 3 -- Stacks and Queues
  * Circular queue: index arithmetic wraps with (i + 1) % cap.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdbool.h>
 #include <stdio.h>

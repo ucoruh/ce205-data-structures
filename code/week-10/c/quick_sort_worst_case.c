@@ -4,7 +4,7 @@
  * only in which element is chosen as the pivot (first / middle / median-
  * of-three). Prints each strategy's total comparisons and recursion depth
  * on the same input, so the O(n^2) vs O(n log n) gap becomes a number.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

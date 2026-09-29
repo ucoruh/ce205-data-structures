@@ -2,7 +2,7 @@
  * D-ary heap: the same array-backed idea as a binary heap, but every node
  * has up to D children (child c of node i sits at D*i + 1 + c, parent at
  * (i-1)/D). D = 3 or 4, chosen per scenario.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class DaryHeapExtract {
     static final int MAX_CAP = 20;

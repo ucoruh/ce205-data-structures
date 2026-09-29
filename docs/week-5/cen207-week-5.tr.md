@@ -298,7 +298,7 @@ kestirmesi yoktur ve `v`'ye inen kenarları ararken her *başka* düğümün lis
          * in/out-degree, self-loop, parallel (multi-) edge, connected component,
          * cycle. Builds a Graph as an adjacency list (Edge structs, one linked
          * list per vertex) and reports these properties for each scenario.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -529,7 +529,7 @@ kestirmesi yoktur ve `v`'ye inen kenarları ararken her *başka* düğümün lis
          * in/out-degree, self-loop, parallel (multi-) edge, connected component,
          * cycle. Builds a Graph as an adjacency list (Edge nodes, one linked list
          * per vertex) and reports these properties for each scenario.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class GraphTerminology {
             static final int MAX_V = 16;
@@ -906,7 +906,7 @@ dört zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi kenarla
          * Graph representation: adjacency matrix. Builds a V x V table from an
          * edge list, one edge at a time (undirected mirrors both cells across the
          * diagonal), and prints the whole matrix after every edge is added.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -1036,7 +1036,7 @@ dört zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi kenarla
          * Graph representation: adjacency matrix. Builds a V x V table from an
          * edge list, one edge at a time (undirected mirrors both cells across the
          * diagonal), and prints the whole matrix after every edge is added.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class AdjacencyMatrix {
             static final int MAX_V = 16;
@@ -1334,7 +1334,7 @@ yukarıdaki komşuluk matrisi animasyonuyla aynı çizgeler, böylece iki göste
          * unless it is a self-loop) and prints every list after each edge is
          * added. Same graphs as adjacency_matrix.c, so the two representations
          * can be compared directly.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -1473,7 +1473,7 @@ yukarıdaki komşuluk matrisi animasyonuyla aynı çizgeler, böylece iki göste
          * unless it is a self-loop) and prints every list after each edge is
          * added. Same graphs as AdjacencyMatrix.java, so the two representations
          * can be compared directly.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class AdjacencyList {
             static final int MAX_V = 16;
@@ -1840,7 +1840,7 @@ zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi çizgenizi `s
          * Breadth-first search (BFS) from a chosen start vertex, using a circular
          * queue. Neighbours are examined in ALPHABETICAL order, so the visit
          * order is reproducible. Prints every dequeue and the vertices it enqueues.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -1997,7 +1997,7 @@ zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi çizgenizi `s
          * Breadth-first search (BFS) from a chosen start vertex, using a circular
          * queue. Neighbours are examined in ALPHABETICAL order, so the visit
          * order is reproducible. Prints every dequeue and the vertices it enqueues.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class Bfs {
             static final int MAX_V = 32;
@@ -2332,7 +2332,7 @@ gösterilir)** — ya da dört zorluk seviyesinde rastgele veri için 🎲'ya ba
          * returning. Unvisited vertices (alphabetical order) each start their own
          * tree -- a disconnected graph becomes a DFS FOREST. Edges are classified
          * as tree, back (a cycle), and -- directed graphs only -- forward/cross.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -2506,7 +2506,7 @@ gösterilir)** — ya da dört zorluk seviyesinde rastgele veri için 🎲'ya ba
          * returning. Unvisited vertices (alphabetical order) each start their own
          * tree -- a disconnected graph becomes a DFS FOREST. Edges are classified
          * as tree, back (a cycle), and -- directed graphs only -- forward/cross.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class DfsRecursive {
             static final int MAX_V = 32;
@@ -2919,7 +2919,7 @@ aynı çizgeler, böylece ikisini doğrudan karşılaştırabilirsiniz.
          * order -- exactly the order dfs_recursive.c visits them in. A vertex may
          * be pushed more than once; a stale entry (already visited when popped)
          * is simply discarded. Same graphs as dfs_recursive.c.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -3052,7 +3052,7 @@ aynı çizgeler, böylece ikisini doğrudan karşılaştırabilirsiniz.
          * order -- exactly the order DfsRecursive.java visits them in. A vertex
          * may be pushed more than once; a stale entry (already visited when
          * popped) is simply discarded. Same graphs as DfsRecursive.java.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class DfsIterative {
             static final int MAX_V = 32, MAX_STACK = 256;
@@ -3398,7 +3398,7 @@ zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi çizgenizi ya
          * Connected components: repeated BFS. Every unvisited vertex starts a new
          * BFS that labels everything it reaches with the same component id;
          * direction is ignored (weak connectivity).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -3547,7 +3547,7 @@ zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi çizgenizi ya
          * Connected components: repeated BFS. Every unvisited vertex starts a new
          * BFS that labels everything it reaches with the same component id;
          * direction is ignored (weak connectivity).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class ConnectedComponents {
             static final int MAX_V = 32;
@@ -3850,7 +3850,7 @@ yazın.
          * Shortest path by EDGE COUNT from s to t, using BFS parent pointers
          * walked back to reconstruct the path. Neighbours are examined in
          * alphabetical order (as in bfs.c).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -4005,7 +4005,7 @@ yazın.
          * Shortest path by EDGE COUNT from s to t, using BFS parent pointers
          * walked back to reconstruct the path. Neighbours are examined in
          * alphabetical order (as in Bfs.java).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BfsShortestPath {
             static final int MAX_V = 32;

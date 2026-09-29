@@ -2,7 +2,7 @@
  * Singly linked list: delete by value (head, a middle node, the tail, a
  * value not present, and deleting from an empty list). Matches the
  * singly-delete.js animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class SinglyDelete {
     static class Node {

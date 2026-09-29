@@ -4,7 +4,7 @@
  * path compression) unless it would close a cycle. Ties keep the input
  * order (a stable sort). If the graph is disconnected, Kruskal still
  * finishes and produces a minimum spanning FOREST.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

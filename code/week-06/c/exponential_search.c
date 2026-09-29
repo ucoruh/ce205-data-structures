@@ -3,7 +3,7 @@
  * until it overshoots target, then run ordinary binary search inside
  * [bound/2, bound]. Prints the bound-finding phase and the binary-search
  * phase.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

@@ -3,7 +3,7 @@
  * tens digit, sort each bucket with insertion sort, then concatenate.
  * Prints the bucket contents and the final result; comparisons/moves are
  * counted (comparisons come from the within-bucket insertion sorts).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class BucketSort {
     static final int BUCKETS = 10;

@@ -4,7 +4,7 @@
  * returning. Unvisited vertices (alphabetical order) each start their own
  * tree -- a disconnected graph becomes a DFS FOREST. Edges are classified
  * as tree, back (a cycle), and -- directed graphs only -- forward/cross.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

@@ -1,6 +1,6 @@
 /* Week 14 -- File Organisation II
  * Primary (sparse) index over a sorted file: one index entry per disk page.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdbool.h>
 #include <stdio.h>

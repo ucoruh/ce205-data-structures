@@ -6,7 +6,7 @@
  * one array big enough for every scenario (MAX_CAP) and tracks the
  * scenario's own capacity in the runtime variable `cap`, so insert_at and
  * delete_at are otherwise identical to the animation's code panel.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdbool.h>
 #include <stdio.h>

@@ -4,7 +4,7 @@
  * partition does NOT guarantee the pivot itself lands at the returned
  * index. Recursive calls are (lo, p) and (p + 1, hi) -- note p, not
  * p - 1. Prints every partition call and the total comparisons/swaps.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

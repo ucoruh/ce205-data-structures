@@ -1,7 +1,7 @@
 /* Week 12 -- Strings: Structures and Algorithms
  * Compressed trie (radix tree): each edge carries a whole substring; a new word either extends an existing
  * edge, becomes a brand-new leaf edge, or SPLITS an existing edge at the point where it first diverges.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 import java.util.HashMap;
 import java.util.Map;

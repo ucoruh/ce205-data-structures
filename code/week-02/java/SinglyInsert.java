@@ -1,7 +1,7 @@
 /* Week 2 -- Linked Lists, Arrays and Matrices
  * Singly linked list: insert at head, at tail (no tail field -- walks the
  * list), and after a given node. Matches the singly-insert.js animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class SinglyInsert {
     static class Node {

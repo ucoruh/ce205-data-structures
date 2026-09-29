@@ -258,7 +258,7 @@ uyduğu tam olarak aynı disiplindir.
          * one array big enough for every scenario (MAX_CAP) and tracks the
          * scenario's own capacity in the runtime variable `cap`, so insert_at and
          * delete_at are otherwise identical to the animation's code panel.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -352,7 +352,7 @@ uyduğu tam olarak aynı disiplindir.
          * keeps one array big enough for every scenario (MAX_CAP) and tracks the
          * scenario's own capacity in the runtime field `cap`, so insertAt and
          * deleteAt are otherwise identical to the animation's code panel.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class ArrayInsertDelete {
             static final int MAX_CAP = 16;
@@ -663,7 +663,7 @@ dolulukta kapasitesi yarıya iner** — ya da dört zorluk seviyesinde rastgele 
          * cap0/factor/shrink into the source text per preset; this program keeps
          * them as runtime globals set per scenario, so da_resize/da_append/
          * da_remove_last are otherwise identical to the animation's code panel.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -775,7 +775,7 @@ dolulukta kapasitesi yarıya iner** — ya da dört zorluk seviyesinde rastgele 
          * cap0/factor/shrink into the source text per preset; this program keeps
          * them as runtime fields set per scenario, so resize/append/removeLast are
          * otherwise identical to the animation's code panel.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class DynamicArrayGrowth {
             static class DynArray {
@@ -1087,7 +1087,7 @@ seçiminizi ve `;` ile ayrılmış satırları yazın.
          * layout into the source text per preset; this program keeps a runtime
          * flag `row_major` so addr/traverse_row_major/traverse_col_major are
          * otherwise identical to the animation's code panel.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -1163,7 +1163,7 @@ seçiminizi ve `;` ile ayrılmış satırları yazın.
          * layout into the source text per preset; this program keeps a runtime
          * flag `rowMajor` so addr/traverseRowMajor/traverseColMajor are otherwise
          * identical to the animation's code panel.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class MatrixRowMajor {
             static int rows, cols;
@@ -1405,7 +1405,7 @@ dört zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi `d=N` d
          * Rotate an array left by d positions with the reversal algorithm: reverse
          * the first d elements, reverse the rest, then reverse the whole thing.
          * Matches the array-rotation.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -1475,7 +1475,7 @@ dört zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi `d=N` d
          * Rotate an array left by d positions with the reversal algorithm: reverse
          * the first d elements, reverse the rest, then reverse the whole thing.
          * Matches the array-rotation.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class ArrayRotation {
             static void reverse(int[] arr, int lo, int hi) {
@@ -1658,7 +1658,7 @@ durumlar **hepsi negatif: hiç takas gerekmez**, **hepsi negatif olmayan (0 dahi
          * non-negative value, using two pointers walking toward each other (the
          * same shape as a quicksort partition). Matches the array-rearrange.js
          * animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -1726,7 +1726,7 @@ durumlar **hepsi negatif: hiç takas gerekmez**, **hepsi negatif olmayan (0 dahi
          * non-negative value, using two pointers walking toward each other (the
          * same shape as a quicksort partition). Matches the array-rearrange.js
          * animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class ArrayRearrange {
             static void segregate(int[] arr) {
@@ -1917,7 +1917,7 @@ satırlarınızı `;` ile ayırarak yazın.
          * bakes ROWS/COLS into the source text per preset; this program keeps
          * runtime globals `rows`/`cols` set per scenario, so to_triplets is
          * otherwise identical to the animation's code panel.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -1988,7 +1988,7 @@ satırlarınızı `;` ile ayırarak yazın.
          * A sparse matrix (mostly zeros) wastes memory if stored densely. Scan it
          * row-major and record only the nonzero cells as (row, col, value)
          * triplets. Matches the sparse-matrix-triplet.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SparseMatrixTriplet {
             static class Triplet {
@@ -2192,7 +2192,7 @@ yazın.
          * each column, turn that into starting positions with a prefix sum, then
          * place every triplet directly at its final spot in one more pass. Matches
          * the sparse-matrix-transpose.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -2282,7 +2282,7 @@ yazın.
          * each column, turn that into starting positions with a prefix sum, then
          * place every triplet directly at its final spot in one more pass. Matches
          * the sparse-matrix-transpose.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SparseMatrixTranspose {
             static class Triplet {
@@ -2543,7 +2543,7 @@ zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi `aR,C,V` / `b
          * Add two sparse matrices directly in triplet form: merge a[] and b[]
          * (both already sorted row-major) like the merge step of merge sort.
          * Matches the sparse-matrix-addition.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -2624,7 +2624,7 @@ zorluk seviyesinde rastgele veri için 🎲'ya basın, ya da kendi `aR,C,V` / `b
          * Add two sparse matrices directly in triplet form: merge a[] and b[]
          * (both already sorted row-major) like the merge step of merge sort.
          * Matches the sparse-matrix-addition.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SparseMatrixAddition {
             static class Triplet {
@@ -2944,7 +2944,7 @@ işlemlerinizi yazın.
         /* Week 2 -- Linked Lists, Arrays and Matrices
          * Singly linked list: insert at head, at tail (no tail pointer -- walks the
          * list), and after a given node. Matches the singly-insert.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -3062,7 +3062,7 @@ işlemlerinizi yazın.
         /* Week 2 -- Linked Lists, Arrays and Matrices
          * Singly linked list: insert at head, at tail (no tail field -- walks the
          * list), and after a given node. Matches the singly-insert.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SinglyInsert {
             static class Node {
@@ -3360,7 +3360,7 @@ dizinizi (ekle) ve `dN`'lerinizi (sil) yazın.
          * Singly linked list: delete by value (head, a middle node, the tail, a
          * value not present, and deleting from an empty list). Matches the
          * singly-delete.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -3483,7 +3483,7 @@ dizinizi (ekle) ve `dN`'lerinizi (sil) yazın.
          * Singly linked list: delete by value (head, a middle node, the tail, a
          * value not present, and deleting from an empty list). Matches the
          * singly-delete.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SinglyDelete {
             static class Node {
@@ -3736,7 +3736,7 @@ seviyesinde rastgele veri için 🎲'ya basın, ya da kendi listenizi ve aranan 
         /* Week 2 -- Linked Lists, Arrays and Matrices
          * Singly linked list: linear search with a comparison count. Matches the
          * singly-search.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -3824,7 +3824,7 @@ seviyesinde rastgele veri için 🎲'ya basın, ya da kendi listenizi ve aranan 
         /* Week 2 -- Linked Lists, Arrays and Matrices
          * Singly linked list: linear search with a comparison count. Matches the
          * singly-search.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SinglySearch {
             static class Node {
@@ -4004,7 +4004,7 @@ ya da kendi listenizi yazın (boş bırakılabilir).
         /* Week 2 -- Linked Lists, Arrays and Matrices
          * Singly linked list: iterative reverse with three pointers (prev, curr,
          * next). Matches the singly-reverse.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -4094,7 +4094,7 @@ ya da kendi listenizi yazın (boş bırakılabilir).
         /* Week 2 -- Linked Lists, Arrays and Matrices
          * Singly linked list: iterative reverse with three pointers (prev, curr,
          * next). Matches the singly-reverse.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SinglyReverse {
             static class Node {
@@ -4372,7 +4372,7 @@ yazın.
          * Doubly linked list: insert at the front, at the back and after a given
          * value, delete anywhere by value, and traverse backwards. Matches the
          * doubly-linked-list.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -4516,7 +4516,7 @@ yazın.
          * Doubly linked list: insert at the front, at the back and after a given
          * value, delete anywhere by value, and traverse backwards. Matches the
          * doubly-linked-list.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class DoublyLinkedList {
             static class Node { int data; Node prev, next; Node(int d) { data = d; } }
@@ -4865,7 +4865,7 @@ ekleyerek.
          * Circular linked list: insert at the tail (no separate head pointer --
          * tail->next IS the head), delete by value, and a traversal that wraps
          * around. Matches the circular-linked-list.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdbool.h>
         #include <stdio.h>
@@ -5003,7 +5003,7 @@ ekleyerek.
          * Circular linked list: insert at the tail (no separate head field --
          * tail.next IS the head), delete by value, and a traversal that wraps
          * around. Matches the circular-linked-list.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class CircularLinkedList {
             static class Node { int data; Node next; Node(int d) { data = d; } }
@@ -5291,7 +5291,7 @@ Seçicide ayrıca şunu da deneyin: **n = 12, k = 5** (zor) ve uç durumlar **n 
          * The Josephus problem: n people in a circle, every k-th one eliminated,
          * who survives? Solved with a circular linked list. Matches the josephus.js
          * animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -5366,7 +5366,7 @@ Seçicide ayrıca şunu da deneyin: **n = 12, k = 5** (zor) ve uç durumlar **n 
          * The Josephus problem: n people in a circle, every k-th one eliminated,
          * who survives? Solved with a circular linked list. Matches the josephus.js
          * animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class Josephus {
             static class Node { int id; Node next; Node(int id) { this.id = id; } }
@@ -5657,7 +5657,7 @@ yazın.
         /* Week 2 -- Linked Lists, Arrays and Matrices
          * XOR linked list: one field, npx, holds XOR(prev, next) instead of two
          * separate pointers. Matches the xor-linked-list.js animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdint.h>
         #include <stdio.h>
@@ -5775,7 +5775,7 @@ yazın.
          * separate pointers. Java has no pointer arithmetic: each node's "address"
          * is its index in a small pool array. Matches the xor-linked-list.js
          * animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class XorLinkedList {
             static final int NONE = 0;   // 0 means "no node" (real nodes live at indices 1..n)
@@ -6101,7 +6101,7 @@ olmayan bir değer** — ya da dört zorluk seviyesinde rastgele veri için 🎲
          * chosen at random, so every run is repeatable. Matches the skip-list.js
          * animation (MAX_LEVEL = 2: level 0 is the full list, level 1 is the
          * express lane).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <limits.h>
         #include <stdbool.h>
@@ -6220,7 +6220,7 @@ olmayan bir değer** — ya da dört zorluk seviyesinde rastgele veri için 🎲
          * chosen at random, so every run is repeatable. Matches the skip-list.js
          * animation (MAX_LEVEL = 2: level 0 is the full list, level 1 is the
          * express lane).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SkipList {
             static final int MAX_LEVEL = 2;   // level 0 = the full list, level 1 = the express lane

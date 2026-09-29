@@ -1,6 +1,6 @@
 /* Week 3 -- Stacks and Queues
  * Multilevel queue scheduling: three priority classes, each its own FIFO queue.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 import java.util.ArrayDeque;
 import java.util.Deque;

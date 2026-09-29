@@ -1,7 +1,7 @@
 /* Week 12 -- Strings: Structures and Algorithms
  * Suffix array: every starting position of text, sorted by the suffix beginning there, built here with
  * insertion sort over String.compareTo on substrings.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class SuffixArray {
     static int compareSuffix(String text, int a, int b) {

@@ -5,7 +5,7 @@
  * bakes ROWS/COLS into the source text per preset; this program keeps
  * runtime globals `rows`/`cols` set per scenario, so to_triplets is
  * otherwise identical to the animation's code panel.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

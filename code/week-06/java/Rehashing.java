@@ -5,7 +5,7 @@
  * key into it from scratch (every key's index can change, since the
  * modulus changed). This keeps the average probe length bounded as the
  * table grows.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class Rehashing {
     static final int EMPTY = 0, OCCUPIED = 1;

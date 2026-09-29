@@ -2,7 +2,7 @@
  * Graph representation: adjacency matrix. Builds a V x V table from an
  * edge list, one edge at a time (undirected mirrors both cells across the
  * diagonal), and prints the whole matrix after every edge is added.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

@@ -3,7 +3,7 @@
  * `i` marks the boundary of the "<= pivot" region; `j` scans left to
  * right. The pivot then swaps into its final position i+1. Prints every
  * partition call and the total comparisons/swaps.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

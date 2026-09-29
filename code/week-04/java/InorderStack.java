@@ -1,7 +1,7 @@
 /* Week 4 -- Trees, Heaps, and Huffman Coding
  * Iterative inorder traversal with our own explicit array-based stack
  * (the exact stack idea from Week 3, holding tree nodes instead of numbers).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class InorderStack {
     static final int SLOT_NONE = Integer.MIN_VALUE;

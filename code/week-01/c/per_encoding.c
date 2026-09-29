@@ -2,7 +2,7 @@
  * PER-style encoding: every field is packed into the MINIMUM number of bits its own
  * [min, max] range needs -- no tags, no length bytes, byte-aligned only at the very end.
  * Runs the same normal / hard / edge-case scenarios as the per-encoding animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <math.h>
 #include <stdio.h>

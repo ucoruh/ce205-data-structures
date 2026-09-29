@@ -1,6 +1,6 @@
 /* Week 11 -- Advanced Trees
  * Binary search tree (BST): delete (leaf / one child / two children with successor).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

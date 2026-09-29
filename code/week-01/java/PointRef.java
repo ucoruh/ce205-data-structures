@@ -1,6 +1,6 @@
 /* Week 1 -- Introduction to Data Structures
  * A reference to an object, and the '.' access that plays the role of C's '->'.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class PointRef {
     static class Point {

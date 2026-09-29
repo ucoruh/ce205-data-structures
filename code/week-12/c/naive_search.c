@@ -1,7 +1,7 @@
 /* Week 12 -- Strings: Structures and Algorithms
  * Naive (brute-force) substring search: try every shift, compare left to right until a mismatch or a full
  * match. Worst case O(n*m).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

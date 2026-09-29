@@ -3,7 +3,7 @@
  * (block = floor(sqrt(n))) until a block boundary is >= target, then scan
  * that block linearly. Prints every jump and every comparison inside the
  * final block.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <math.h>

@@ -1,6 +1,6 @@
 /* Week 3 -- Stacks and Queues
  * Converting an infix expression to postfix (shunting-yard), with parentheses.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <ctype.h>
 #include <stdbool.h>

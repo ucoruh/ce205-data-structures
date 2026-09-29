@@ -2,7 +2,7 @@
  * Growable string buffer, built by hand (java.lang.StringBuilder does exactly this internally). Characters
  * are appended one at a time; when full, a new array double the size is allocated, every existing character
  * is copied across, then the new character is written. Amortized O(1) append.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class StringBuilderDemo {
     static class Builder {

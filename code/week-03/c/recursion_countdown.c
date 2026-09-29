@@ -1,6 +1,6 @@
 /* Week 3 -- Stacks and Queues
  * Recursion: countdown, with a corrected base case (n <= 0).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

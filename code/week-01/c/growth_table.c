@@ -3,7 +3,7 @@
  * 2^n is computed EXACTLY, as a decimal digit string built by repeated doubling (no library big-integer
  * type in C) so it can be compared byte for byte with Java's BigInteger version.
  * Runs the same normal / edge-case scenarios as the growth-race animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <math.h>
 #include <stdio.h>

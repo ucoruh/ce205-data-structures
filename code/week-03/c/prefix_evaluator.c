@@ -1,6 +1,6 @@
 /* Week 3 -- Stacks and Queues
  * Evaluating a prefix (Polish) expression with a stack, right to left.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <ctype.h>
 #include <stdbool.h>

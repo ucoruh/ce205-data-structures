@@ -1,6 +1,6 @@
 /* Week 3 -- Stacks and Queues
  * Evaluating a postfix expression with a stack (with error handling).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class PostfixEvaluator {
     static boolean isNumber(String t) {

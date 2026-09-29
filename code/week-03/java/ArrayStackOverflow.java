@@ -1,6 +1,6 @@
 /* Week 3 -- Stacks and Queues
  * Array-backed stack: overflow and underflow.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class ArrayStackOverflow {
     static final int MAX_CAP = 10;

@@ -1,6 +1,6 @@
 /* Week 4 -- Trees, Heaps, and Huffman Coding
  * Binary tree shapes: full, complete, perfect, degenerate, height-balanced.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class TreeShape {
     static final int SLOT_NONE = Integer.MIN_VALUE;

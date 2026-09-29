@@ -1,6 +1,6 @@
 /* Week 3 -- Stacks and Queues
  * Checking brackets with a stack.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class BracketChecker {
     static boolean matches(char open, char close) {

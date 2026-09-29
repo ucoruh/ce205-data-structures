@@ -250,7 +250,7 @@ levels, or type your own array.
          * out-of-order pairs; a pass with zero swaps means the array is already
          * sorted and the algorithm stops early. Prints the array after every pass
          * and the total comparisons/swaps.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -311,7 +311,7 @@ levels, or type your own array.
          * out-of-order pairs; a pass with zero swaps means the array is already
          * sorted and the algorithm stops early. Prints the array after every pass
          * and the total comparisons/swaps.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BubbleSort {
             static int comparisons, swaps;
@@ -551,7 +551,7 @@ or type your own array.
          * most n-1 swaps ever happen, but every position still does a full scan
          * (no early exit). Prints the array after every position and the total
          * comparisons/swaps.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -612,7 +612,7 @@ or type your own array.
          * most n-1 swaps ever happen, but every position still does a full scan
          * (no early exit). Prints the array after every position and the total
          * comparisons/swaps.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SelectionSort {
             static int comparisons, swaps;
@@ -871,7 +871,7 @@ here against your own board notes from earlier in the course — this animation 
          * element greater than the key one cell right until the key's correct spot
          * (its "hole") is found. Prints the key and the array after every
          * insertion, plus total comparisons/shifts.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -932,7 +932,7 @@ here against your own board notes from earlier in the course — this animation 
          * element greater than the key one cell right until the key's correct spot
          * (its "hole") is found. Prints the key and the array after every
          * insertion, plus total comparisons/shifts.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class InsertionSort {
             static int comparisons, shifts;
@@ -1196,7 +1196,7 @@ or type your own array.
          * Shell sort: insertion sort, but comparing elements `gap` apart instead of
          * adjacent; the gap starts at n/2 and halves every round down to 1. Prints
          * the array after every gap round and the total comparisons/shifts.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -1258,7 +1258,7 @@ or type your own array.
          * Shell sort: insertion sort, but comparing elements `gap` apart instead of
          * adjacent; the gap starts at n/2 and halves every round down to 1. Prints
          * the array after every gap round and the total comparisons/shifts.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class ShellSort {
             static int comparisons, shifts;
@@ -1505,7 +1505,7 @@ press 🎲 for random data, or type your own array.
          * sort each half, then merge the two sorted halves with an auxiliary
          * array. Prints every merge (its two input runs and the merged result)
          * and the total comparisons/moves.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -1581,7 +1581,7 @@ press 🎲 for random data, or type your own array.
          * sort each half, then merge the two sorted halves with an auxiliary
          * array. Prints every merge (its two input runs and the merged result)
          * and the total comparisons/moves.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class MergeSort {
             static int comparisons, moves;
@@ -1785,7 +1785,7 @@ random data, or type your own array.
          * a sorted run of width 1, merge adjacent runs into width-2 runs, then
          * width-4, doubling every round until one run covers the whole array.
          * Prints every merge and the total comparisons/moves.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -1864,7 +1864,7 @@ random data, or type your own array.
          * a sorted run of width 1, merge adjacent runs into width-2 runs, then
          * width-4, doubling every round until one run covers the whole array.
          * Prints every merge and the total comparisons/moves.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class MergeSortBottomUp {
             static int comparisons, moves;
@@ -2165,7 +2165,7 @@ array.
          * `i` marks the boundary of the "<= pivot" region; `j` scans left to
          * right. The pivot then swaps into its final position i+1. Prints every
          * partition call and the total comparisons/swaps.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -2242,7 +2242,7 @@ array.
          * `i` marks the boundary of the "<= pivot" region; `j` scans left to
          * right. The pivot then swaps into its final position i+1. Prints every
          * partition call and the total comparisons/swaps.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class QuickSortLomuto {
             static int comparisons, swaps;
@@ -2460,7 +2460,7 @@ own array.
          * partition does NOT guarantee the pivot itself lands at the returned
          * index. Recursive calls are (lo, p) and (p + 1, hi) -- note p, not
          * p - 1. Prints every partition call and the total comparisons/swaps.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -2534,7 +2534,7 @@ own array.
          * partition does NOT guarantee the pivot itself lands at the returned
          * index. Recursive calls are (lo, p) and (p + 1, hi) -- note p, not
          * p - 1. Prints every partition call and the total comparisons/swaps.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class QuickSortHoare {
             static int comparisons, swaps;
@@ -2735,7 +2735,7 @@ naive fixed-corner pivot does fine on average), or type your own array.
          * only in which element is chosen as the pivot (first / middle / median-
          * of-three). Prints each strategy's total comparisons and recursion depth
          * on the same input, so the O(n^2) vs O(n log n) gap becomes a number.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -2824,7 +2824,7 @@ naive fixed-corner pivot does fine on average), or type your own array.
          * only in which element is chosen as the pivot (first / middle / median-
          * of-three). Prints each strategy's total comparisons and recursion depth
          * on the same input, so the O(n^2) vs O(n log n) gap becomes a number.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class QuickSortWorstCase {
             interface Pivot { int pick(int[] a, int lo, int hi); }
@@ -3082,7 +3082,7 @@ those slots are ever used), or press 🎲 for random data, or type your own arra
          * total, then places every input value directly at its final index,
          * scanning backwards to stay stable. Prints count[] at each stage and the
          * final result. Zero comparisons; the total writes are reported.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -3145,7 +3145,7 @@ those slots are ever used), or press 🎲 for random data, or type your own arra
          * total, then places every input value directly at its final index,
          * scanning backwards to stay stable. Prints count[] at each stage and the
          * final result. Zero comparisons; the total writes are reported.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class CountingSort {
             static void printArray(int[] a, int n) {
@@ -3377,7 +3377,7 @@ value's own length simply returns `0`), or press 🎲 for random data, or type y
          * sort on one decimal digit at a time, starting at the ones place, up to
          * the highest place any value needs. Always 10 buckets. Prints the array
          * after every digit pass. Zero comparisons; total writes are reported.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -3446,7 +3446,7 @@ value's own length simply returns `0`), or press 🎲 for random data, or type y
          * sort on one decimal digit at a time, starting at the ones place, up to
          * the highest place any value needs. Always 10 buckets. Prints the array
          * after every digit pass. Zero comparisons; total writes are reported.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class RadixSortLsd {
             static int getDigit(int x, int place) { return (x / place) % 10; }
@@ -3694,7 +3694,7 @@ press 🎲 for random data, or type your own array of values in `0..99`.
          * tens digit, sort each bucket with insertion sort, then concatenate.
          * Prints the bucket contents and the final result; comparisons/moves are
          * counted (comparisons come from the within-bucket insertion sorts).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -3773,7 +3773,7 @@ press 🎲 for random data, or type your own array of values in `0..99`.
          * tens digit, sort each bucket with insertion sort, then concatenate.
          * Prints the bucket contents and the final result; comparisons/moves are
          * counted (comparisons come from the within-bucket insertion sorts).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class BucketSort {
             static final int BUCKETS = 10;
@@ -4051,7 +4051,7 @@ or press 🎲 for random data, or type your own records as `key+letter` pairs (e
          * equal keys never cross) and with selection sort (unstable: a long-range
          * swap can jump a record past another with an equal key). Prints both
          * results so the tag order for tied keys can be compared by eye.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -4127,7 +4127,7 @@ or press 🎲 for random data, or type your own records as `key+letter` pairs (e
          * equal keys never cross) and with selection sort (unstable: a long-range
          * swap can jump a record past another with an equal key). Prints both
          * results so the tag order for tied keys can be compared by eye.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class StabilityDemo {
             static class Rec {
@@ -4361,7 +4361,7 @@ comparison pattern that an adversarial input can exploit). Or press 🎲 for ran
          * -- bubble, selection, insertion, merge (top-down), quick (Lomuto) -- and
          * each algorithm's comparisons/writes are reported on the identical input,
          * so the O(n^2) vs O(n log n) gap becomes an actual number.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <string.h>
@@ -4484,7 +4484,7 @@ comparison pattern that an adversarial input can exploit). Or press 🎲 for ran
          * -- bubble, selection, insertion, merge (top-down), quick (Lomuto) -- and
          * each algorithm's comparisons/writes are reported on the identical input,
          * so the O(n^2) vs O(n log n) gap becomes an actual number.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class SortingComparison {
             interface SortFn { void sort(int[] a, int n); }

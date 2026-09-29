@@ -2,7 +2,7 @@
  * Rabin-Karp search: compare a rolling hash of each window against the pattern's hash; a hash match is only
  * a candidate and must be VERIFIED character by character (a "spurious hit" is a hash match that fails
  * verification).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

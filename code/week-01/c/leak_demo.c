@@ -1,7 +1,7 @@
 /* Week 1 -- Introduction to Data Structures
  * C has no garbage collector: losing the only pointer to a block
  * without freeing it first is a memory leak.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

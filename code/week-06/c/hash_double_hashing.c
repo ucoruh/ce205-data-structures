@@ -6,7 +6,7 @@
  * every colliding key retraces the same path.
  * h2(key) = r - (key mod r) for a prime r < m: always in [1..r], so the
  * step is never 0 (a 0 step would reprobe the same cell forever).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

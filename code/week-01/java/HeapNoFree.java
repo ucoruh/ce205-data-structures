@@ -1,6 +1,6 @@
 /* Week 1 -- Introduction to Data Structures
  * Java allocates every object with `new` on the heap; there is no `free`.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class HeapNoFree {
     static void showFrame(int depth) {

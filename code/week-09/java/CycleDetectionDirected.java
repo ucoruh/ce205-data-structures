@@ -3,7 +3,7 @@
  * an explicit "on the current path" stack. A back edge to a GREY vertex
  * means that vertex is still an open ancestor -- the path from it down to
  * here, plus the back edge, IS the cycle.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class CycleDetectionDirected {
     static final int MAX_V = 32;

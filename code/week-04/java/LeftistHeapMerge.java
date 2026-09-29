@@ -2,7 +2,7 @@
  * Leftist heap merge, the operation everything else (insert, extract) is
  * built from. The recursive form used here always keeps the shorter side
  * (by null path length, npl) on the right -- the leftist property.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class LeftistHeapMerge {
     static class Node {

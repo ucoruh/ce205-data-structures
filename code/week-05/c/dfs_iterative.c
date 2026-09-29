@@ -5,7 +5,7 @@
  * order -- exactly the order dfs_recursive.c visits them in. A vertex may
  * be pushed more than once; a stale entry (already visited when popped)
  * is simply discarded. Same graphs as dfs_recursive.c.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

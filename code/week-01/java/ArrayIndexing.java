@@ -4,7 +4,7 @@
  * version, using the type's C size, purely to compare the formula's result side by side; Java
  * itself never computes a real address, it only ever indexes with a[k].
  * Runs the same normal / hard / edge-case scenarios as the pointer-arithmetic animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class ArrayIndexing {
     static void runIntScenario(String label, long base, int[] values, int[] offsets) {

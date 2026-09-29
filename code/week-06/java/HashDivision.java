@@ -3,7 +3,7 @@
  * table index in [0..m-1]. The extra "+ m) % m" guards against negative
  * keys. Prints each key's hash and whether it collides with an
  * already-occupied bucket.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class HashDivision {
     // the extra "+ m) % m" guards against negative keys: in Java, key % m can be negative when key < 0

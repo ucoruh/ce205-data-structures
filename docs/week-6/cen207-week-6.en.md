@@ -258,7 +258,7 @@ target.
          * (block = floor(sqrt(n))) until a block boundary is >= target, then scan
          * that block linearly. Prints every jump and every comparison inside the
          * final block.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <math.h>
@@ -324,7 +324,7 @@ target.
          * (block = floor(sqrt(n))) until a block boundary is >= target, then scan
          * that block linearly. Prints every jump and every comparison inside the
          * final block.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class JumpSearch {
             static int comparisons;
@@ -603,7 +603,7 @@ entirely outside the range: rejected on sight** — or press 🎲 for random dat
          * the target should be with a formula instead of always checking the
          * middle. A guard avoids dividing by zero when the current range is all one
          * value. Prints every probe.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -670,7 +670,7 @@ entirely outside the range: rejected on sight** — or press 🎲 for random dat
          * the target should be with a formula instead of always checking the
          * middle. A guard avoids dividing by zero when the current range is all one
          * value. Prints every probe.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class InterpolationSearch {
             static int probes;
@@ -913,7 +913,7 @@ In the picker, also try **target near the end, the bound doubles several times**
          * until it overshoots target, then run ordinary binary search inside
          * [bound/2, bound]. Prints the bound-finding phase and the binary-search
          * phase.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -981,7 +981,7 @@ In the picker, also try **target near the end, the bound doubles several times**
          * until it overshoots target, then run ordinary binary search inside
          * [bound/2, bound]. Prints the bound-finding phase and the binary-search
          * phase.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class ExponentialSearch {
             static int comparisons;
@@ -1262,7 +1262,7 @@ array** — or press 🎲 for random data, or type your own sorted array.
          * numbers instead of the middle (binary search) or a formula
          * (interpolation search). Uses only addition and subtraction. Prints the
          * Fibonacci triple and every probe.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -1334,7 +1334,7 @@ array** — or press 🎲 for random data, or type your own sorted array.
          * numbers instead of the middle (binary search) or a formula
          * (interpolation search). Uses only addition and subtraction. Prints the
          * Fibonacci triple and every probe.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class FibonacciSearch {
             static int comparisons;
@@ -1616,7 +1616,7 @@ press 🎲 for random data, or type your own `m` and key list.
          * table index in [0..m-1]. The extra "+ m) % m" guards against negative
          * keys. Prints each key's hash and whether it collides with an
          * already-occupied bucket.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -1668,7 +1668,7 @@ press 🎲 for random data, or type your own `m` and key list.
          * table index in [0..m-1]. The extra "+ m) % m" guards against negative
          * keys. Prints each key's hash and whether it collides with an
          * already-occupied bucket.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class HashDivision {
             // the extra "+ m) % m" guards against negative keys: in Java, key % m can be negative when key < 0
@@ -1941,7 +1941,7 @@ random data, or type your own `m` plus a mix of inserts and `search=N` queries.
          * list ("chain") of every key that hashed there. A collision grows the
          * chain instead of overwriting anything. Insertion is O(1); search walks
          * the chain, so its cost depends on the chain's length.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -2046,7 +2046,7 @@ random data, or type your own `m` plus a mix of inserts and `search=N` queries.
          * list ("chain") of every key that hashed there. A collision grows the
          * chain instead of overwriting anything. Insertion is O(1); search walks
          * the chain, so its cost depends on the chain's length.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class HashChaining {
             static class Node { int key; Node next; Node(int k, Node nx) { key = k; next = nx; } }
@@ -2407,7 +2407,7 @@ inserts, `search=N`, and `del=N`.
          * table. On a collision, probe the next slot, wrapping around, until an
          * empty (or deleted) slot is found. A deleted slot gets a tombstone marker,
          * not a plain empty mark, so search keeps walking past it.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -2520,7 +2520,7 @@ inserts, `search=N`, and `del=N`.
          * table. On a collision, probe the next slot, wrapping around, until an
          * empty (or deleted) slot is found. A deleted slot gets a tombstone marker,
          * not a plain empty mark, so search keeps walking past it.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class HashLinearProbing {
             static final int EMPTY = 0, OCCUPIED = 1, DELETED = 2;
@@ -2836,7 +2836,7 @@ and key list.
          * prime (or the load factor is above 0.5) the i^2 sequence can revisit the
          * same few slots forever and never reach a free one, even though the table
          * is not full.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -2913,7 +2913,7 @@ and key list.
          * prime (or the load factor is above 0.5) the i^2 sequence can revisit the
          * same few slots forever and never reach a free one, even though the table
          * is not full.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class HashQuadraticProbing {
             static final int EMPTY = 0, OCCUPIED = 1;
@@ -3164,7 +3164,7 @@ prime): the step shares a factor with m, a cycle forms** — or press 🎲 for r
          * every colliding key retraces the same path.
          * h2(key) = r - (key mod r) for a prime r < m: always in [1..r], so the
          * step is never 0 (a 0 step would reprobe the same cell forever).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
 
@@ -3264,7 +3264,7 @@ prime): the step shares a factor with m, a cycle forms** — or press 🎲 for r
          * every colliding key retraces the same path.
          * h2(key) = r - (key mod r) for a prime r < m: always in [1..r], so the
          * step is never 0 (a 0 step would reprobe the same cell forever).
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class HashDoubleHashing {
             static final int EMPTY = 0, OCCUPIED = 1;
@@ -3580,7 +3580,7 @@ size, threshold, and key list.
          * key into it from scratch (every key's index can change, since the
          * modulus changed). This keeps the average probe length bounded as the
          * table grows.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         #include <stdio.h>
         #include <stdlib.h>
@@ -3662,7 +3662,7 @@ size, threshold, and key list.
          * key into it from scratch (every key's index can change, since the
          * modulus changed). This keeps the average probe length bounded as the
          * table grows.
-         * CEN207 Data Structures (CS50-style lecture notes)
+         * CEN207 Data Structures (formerly CE205)
          */
         public class Rehashing {
             static final int EMPTY = 0, OCCUPIED = 1;

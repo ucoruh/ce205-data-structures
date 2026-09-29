@@ -1,6 +1,6 @@
 /* Week 11 -- Advanced Trees
  * Segment tree: build once from an array, then answer range-sum queries in O(log n).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

@@ -3,7 +3,7 @@
  * joins two same-coloured vertices. Vertices are tried in alphabetical
  * order, colours 1..k in order; when no colour works, we UNDO (colour 0)
  * and let the caller try its next colour.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class BacktrackingGraphColoring {
     static final int MAX_V = 32;

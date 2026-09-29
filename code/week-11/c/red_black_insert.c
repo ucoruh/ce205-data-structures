@@ -1,6 +1,6 @@
 /* Week 11 -- Advanced Trees
  * Red-black tree: insert (recoloring and rotations, the three cases named).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

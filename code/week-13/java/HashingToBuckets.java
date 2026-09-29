@@ -8,7 +8,7 @@ import java.io.IOException;
  * an OVERFLOW block is allocated and chained onto it (bucket chaining) instead of searching elsewhere. Every
  * bucket and overflow block is a real block written to disk, inside a temporary lab folder that main() creates
  * and removes.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class HashingToBuckets {
     static final int BF = 3;   // keys per bucket / overflow block

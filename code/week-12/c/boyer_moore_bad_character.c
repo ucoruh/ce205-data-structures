@@ -1,7 +1,7 @@
 /* Week 12 -- Strings: Structures and Algorithms
  * Boyer-Moore, bad-character rule only: compare the pattern to each window RIGHT to LEFT; on a mismatch, use
  * the mismatched character's last occurrence in the pattern to jump forward as far as safely possible.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

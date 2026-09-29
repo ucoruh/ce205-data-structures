@@ -1,7 +1,7 @@
 /* Week 1 -- Introduction to Data Structures
  * Binary search: repeatedly halve the search range on a SORTED array.
  * Runs the same normal / hard / edge-case scenarios as the binary-search animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

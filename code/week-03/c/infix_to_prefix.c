@@ -2,7 +2,7 @@
  * Converting an infix expression to prefix: reverse the input (swapping
  * parentheses), run shunting-yard with the strict precedence rule, then
  * reverse the result.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <ctype.h>
 #include <stdbool.h>

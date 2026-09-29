@@ -1,6 +1,6 @@
 /* Week 2 -- Linked Lists, Arrays and Matrices
  * Binary search in a sorted array.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class ArrayBinarySearch {
     static int binarySearch(int[] arr, int target) {

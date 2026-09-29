@@ -2,7 +2,7 @@
  * AVL tree: delete. Splicing is exactly bst_delete.c's leaf / one-child / two-children (successor) logic;
  * afterwards rebalance() is applied at EVERY ancestor on the way back up (a delete can rotate more than
  * once, unlike an insert).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

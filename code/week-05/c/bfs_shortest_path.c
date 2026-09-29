@@ -2,7 +2,7 @@
  * Shortest path by EDGE COUNT from s to t, using BFS parent pointers
  * walked back to reconstruct the path. Neighbours are examined in
  * alphabetical order (as in bfs.c).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

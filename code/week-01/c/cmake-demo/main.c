@@ -1,6 +1,6 @@
 /* Week 1 -- Introduction to Data Structures
  * The program built by the CMake basics demo in the C workshop.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

@@ -1,7 +1,7 @@
 /* Week 1 -- Introduction to Data Structures
  * averageBuggy() truncates because of integer division; averageFixed() casts to double first.
  * Runs the same normal / hard / edge-case scenarios as the debugger-stepping animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class DebugAverage {
     static int averageBuggy(int[] arr) {

@@ -2,7 +2,7 @@
  * average_buggy() truncates because of integer division; average_fixed() casts to double first.
  * Runs the same normal / hard / edge-case scenarios as the debugger-stepping animation, the way a
  * gdb session (Section 7.5) narrates them one breakpoint at a time.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

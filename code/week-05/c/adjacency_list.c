@@ -4,7 +4,7 @@
  * unless it is a self-loop) and prints every list after each edge is
  * added. Same graphs as adjacency_matrix.c, so the two representations
  * can be compared directly.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

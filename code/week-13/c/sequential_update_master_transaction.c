@@ -3,7 +3,7 @@
  * master file. Every transaction is add / change / delete; a change or delete on a key that is not in the
  * master is an error, and adding a key that already exists is also an error. The new master really lives on
  * disk, inside a temporary lab folder that main() creates and removes.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

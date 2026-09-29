@@ -10,7 +10,7 @@ import java.io.RandomAccessFile;
  * wrongly report "not found". A TOMBSTONE ("something was here, keep looking") fixes this; a search skips over
  * tombstones but a later INSERT may reuse one. The table really lives on disk, inside a temporary lab folder
  * that main() creates and removes.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class DeletionWithTombstones {
     static final int EMPTY = -1, TOMB = -2;   // TOMB = deleted marker: "something was here, keep looking"

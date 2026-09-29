@@ -2,7 +2,7 @@
  * Shell sort: insertion sort, but comparing elements `gap` apart instead of
  * adjacent; the gap starts at n/2 and halves every round down to 1. Prints
  * the array after every gap round and the total comparisons/shifts.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

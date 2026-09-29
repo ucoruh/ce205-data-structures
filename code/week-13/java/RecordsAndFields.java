@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
  * fixed-length (padded/truncated to NAME_FIXED bytes), delimited (name + '|'), and length-prefixed
  * (1-byte length + name). The files are created only inside a temporary lab folder that main()
  * creates and removes.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class RecordsAndFields {
     static final int NAME_FIXED = 8;

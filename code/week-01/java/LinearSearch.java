@@ -1,7 +1,7 @@
 /* Week 1 -- Introduction to Data Structures
  * Linear search: scan the array from the front, one comparison at a time.
  * Runs the same normal / hard / edge-case scenarios as the linear-search animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class LinearSearch {
     static int comparisons;

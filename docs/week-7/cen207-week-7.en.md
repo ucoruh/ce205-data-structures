@@ -6,6 +6,18 @@ template: main.html
 
 *CEN207 Data Structures (formerly CE205) · Fall 2026–2027 · 30.10.2026*
 
+<!-- materials:start -->
+
+<div class="materials" markdown>
+
+[:material-file-pdf-box: Lecture notes (PDF)](cen207-week-7-notes.pdf){ .md-button download="cen207-week-7-notes.pdf" }
+[:material-file-word-box: Lecture notes (DOCX)](cen207-week-7-notes.docx){ .md-button download="cen207-week-7-notes.docx" }
+[:material-folder-zip: Download all (ZIP)](cen207-week-7-materials.zip){ .md-button download="cen207-week-7-materials.zip" }
+
+</div>
+
+<!-- materials:end -->
+
 This week there is no new topic: each team demonstrates the **C implementation** of the term project (RAP1) and submits the midterm report.
 
 !!! info "What to bring"

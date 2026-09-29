@@ -3,7 +3,7 @@
  * a queue with the vertices that have in-degree 0, then repeatedly dequeue
  * one, print it, and decrement its neighbours' in-degree. If a cycle exists,
  * the queue empties before every vertex is placed.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class TopologicalSortKahn {
     static final int MAX_V = 32;

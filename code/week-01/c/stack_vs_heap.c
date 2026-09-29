@@ -1,7 +1,7 @@
 /* Week 1 -- Introduction to Data Structures
  * Stack frames (one per active function call) versus a heap block
  * requested with malloc and given back with free.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <stdlib.h>

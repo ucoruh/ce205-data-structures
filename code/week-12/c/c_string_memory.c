@@ -2,7 +2,7 @@
  * C string memory: a char array plus the '\0' convention, strlen(), and a buffer-overflow edge case that is
  * FLAGGED but never executed (no out-of-bounds write is ever performed -- the guard `if (i == cap) break;`
  * stops the copy one write before it would happen).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

@@ -2,7 +2,7 @@
  * Doubly linked list: insert at the front, at the back and after a given
  * value, delete anywhere by value, and traverse backwards. Matches the
  * doubly-linked-list.js animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class DoublyLinkedList {
     static class Node { int data; Node prev, next; Node(int d) { data = d; } }

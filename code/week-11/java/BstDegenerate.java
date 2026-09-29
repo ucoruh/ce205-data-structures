@@ -1,7 +1,7 @@
 /* Week 11 -- Advanced Trees
  * Why balancing matters: inserting the SAME set of keys in different orders gives wildly different BST
  * shapes. Sorted input degenerates into a chain -- height n-1, every operation O(n).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class BstDegenerate {
     static class Node {

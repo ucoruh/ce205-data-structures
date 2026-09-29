@@ -1,6 +1,6 @@
 /* Week 4 -- Trees, Heaps, and Huffman Coding
  * Recursive postorder traversal: left, right, visit.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class PostorderRecursive {
     static final int SLOT_NONE = Integer.MIN_VALUE;

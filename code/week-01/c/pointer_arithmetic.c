@@ -4,7 +4,7 @@
  * Addresses are a PRETEND base (matching the animation), not real OS addresses, so the output is
  * reproducible and can be compared byte for byte with the Java version.
  * Runs the same normal / hard / edge-case scenarios as the pointer-arithmetic animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 

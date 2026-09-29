@@ -1,7 +1,7 @@
 /* Week 12 -- Strings: Structures and Algorithms
  * KMP failure function (lps[]): for every prefix pattern[0..i], lps[i] is the length of the longest proper
  * prefix of that prefix that is also a suffix of it. Built in O(m) by comparing the pattern to itself.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class KmpFailureFunction {
     static int[] computeLps(String pattern) {

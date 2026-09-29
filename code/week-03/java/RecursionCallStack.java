@@ -1,6 +1,6 @@
 /* Week 3 -- Stacks and Queues
  * Recursion and the call stack: fact(n), and a real 32-bit int overflow bug.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class RecursionCallStack {
     static int fact(int n) {

@@ -1,7 +1,7 @@
 /* Week 2 -- Linked Lists, Arrays and Matrices
  * XOR linked list: one field, npx, holds XOR(prev, next) instead of two
  * separate pointers. Matches the xor-linked-list.js animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdint.h>
 #include <stdio.h>

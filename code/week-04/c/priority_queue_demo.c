@@ -2,7 +2,7 @@
  * Priority queue built on an array heap: insert, peek, extract, and
  * update_key (decrease/increase-key), addressed by a stable id handle --
  * the k-th insert always keeps id k, wherever it later moves in the array.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdbool.h>
 #include <stdio.h>

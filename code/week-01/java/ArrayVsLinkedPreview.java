@@ -6,7 +6,7 @@
  * stand-in instead: the array's byte OFFSET from its base (base + i*4, the real formula the
  * hardware uses) and the linked list's POSITION ("node #i"); the C and Java outputs are then
  * byte-identical and testable. The point -- one index calculation vs k pointer hops -- still holds.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class ArrayVsLinkedPreview {
     static class Node {

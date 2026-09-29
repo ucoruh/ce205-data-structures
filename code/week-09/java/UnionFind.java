@@ -3,7 +3,7 @@
  * sequence of operations is replayed: "union A B" merges the sets
  * containing A and B; "find A" finds A's root and compresses the path from
  * A to it.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class UnionFind {
     static final int MAX_V = 32;

@@ -5,7 +5,7 @@
  * prime (or the load factor is above 0.5) the i^2 sequence can revisit the
  * same few slots forever and never reach a free one, even though the table
  * is not full.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class HashQuadraticProbing {
     static final int EMPTY = 0, OCCUPIED = 1;

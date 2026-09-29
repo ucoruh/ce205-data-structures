@@ -5,7 +5,7 @@
  * order (an explicit tie-break by original index). If the graph is
  * disconnected, Kruskal still finishes and produces a minimum spanning
  * FOREST.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 import java.util.Arrays;
 import java.util.Comparator;

@@ -1,6 +1,6 @@
 /* Week 4 -- Trees, Heaps, and Huffman Coding
  * Recursive preorder traversal: visit, left, right.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class PreorderRecursive {
     static final int SLOT_NONE = Integer.MIN_VALUE;

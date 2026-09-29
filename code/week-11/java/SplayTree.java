@@ -1,6 +1,6 @@
 /* Week 11 -- Advanced Trees
  * Splay tree: every access moves the accessed key to the root (zig, zig-zig, zig-zag).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class SplayTree {
     static class Node {

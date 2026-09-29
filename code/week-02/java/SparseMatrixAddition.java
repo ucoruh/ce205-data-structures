@@ -2,7 +2,7 @@
  * Add two sparse matrices directly in triplet form: merge a[] and b[]
  * (both already sorted row-major) like the merge step of merge sort.
  * Matches the sparse-matrix-addition.js animation.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 public class SparseMatrixAddition {
     static class Triplet {

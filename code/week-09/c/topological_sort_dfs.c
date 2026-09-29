@@ -3,7 +3,7 @@
  * time, then read the finish order back to front. A back edge (to a grey,
  * still-open ancestor) means the graph has a cycle, so no topological order
  * exists.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 #include <string.h>

@@ -1,7 +1,7 @@
 /* Week 12 -- Strings: Structures and Algorithms
  * The Z-algorithm: Z[i] is how many characters S[i..] shares with S itself from the start. For
  * S = pattern + '#' + text, positions in the text part with Z[i] >= |pattern| mark occurrences. O(n + m).
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 import java.util.ArrayList;
 import java.util.List;

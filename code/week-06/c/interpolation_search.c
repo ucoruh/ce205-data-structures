@@ -3,7 +3,7 @@
  * the target should be with a formula instead of always checking the
  * middle. A guard avoids dividing by zero when the current range is all one
  * value. Prints every probe.
- * CEN207 Data Structures (CS50-style lecture notes)
+ * CEN207 Data Structures (formerly CE205)
  */
 #include <stdio.h>
 
