@@ -396,136 +396,6 @@ is not in the array**, **best case: target is in the first box (index 0)**, and 
         }
         ```
 
-??? example "Full program: `linear_search.c` / `LinearSearch.java`"
-
-    === "C"
-
-        ```c
-        /* Week 1 -- Introduction to Data Structures
-         * Linear search: scan the array from the front, one comparison at a time.
-         * Runs the same normal / hard / edge-case scenarios as the linear-search animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
-         */
-        #include <stdio.h>
-
-        int linear_search(const int arr[], int n, int target, int *comparisons) {
-            for (int i = 0; i < n; i++) {
-                (*comparisons)++;
-                if (arr[i] == target)
-                    return i;
-            }
-            return -1;
-        }
-
-        static void print_array(const int arr[], int n) {
-            printf("arr:");
-            for (int i = 0; i < n; i++)
-                printf(" %d", arr[i]);
-            printf("  (n = %d)\n", n);
-        }
-
-        static void run_scenario(const char *label, const int arr[], int n, int target) {
-            printf("-- %s --\n", label);
-            print_array(arr, n);
-            int comparisons = 0;
-            int index = linear_search(arr, n, target, &comparisons);
-            if (index >= 0)
-                printf("linear_search(target=%d) -> found at index %d, %d comparison%s\n\n",
-                       target, index, comparisons, comparisons == 1 ? "" : "s");
-            else
-                printf("linear_search(target=%d) -> not found, %d comparisons\n\n", target, comparisons);
-        }
-
-        int main(void) {
-            /* normal: 11 values, target in the middle */
-            int normal[] = {4, 8, 15, 16, 23, 27, 31, 38, 42, 50, 61};
-            run_scenario("normal: 11 values, target in the middle", normal, 11, 27);
-
-            /* hard: 20 values, duplicate target, first match */
-            int hard[] = {12, 47, 3, 88, 25, 61, 9, 34, 77, 15, 52, 6, 41, 18, 63, 99, 5, 29, 99, 71};
-            run_scenario("hard: 20 values, duplicate target, first match", hard, 20, 99);
-
-            /* edge: not found -- target is not in the array */
-            int notFound[] = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
-            run_scenario("edge: not found, target is not in the array", notFound, 10, 7);
-
-            /* edge: best case -- target is in the first box (index 0) */
-            int firstIndex[] = {5, 13, 21, 34, 42, 55, 67, 78, 89, 91};
-            run_scenario("edge: best case, target is in the first box (index 0)", firstIndex, 10, 5);
-
-            /* edge: one-element array */
-            int one[] = {42};
-            run_scenario("edge: one-element array", one, 1, 42);
-
-            return 0;
-        }
-        ```
-
-    === "Java"
-
-        ```java
-        /* Week 1 -- Introduction to Data Structures
-         * Linear search: scan the array from the front, one comparison at a time.
-         * Runs the same normal / hard / edge-case scenarios as the linear-search animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
-         */
-        public class LinearSearch {
-            static int comparisons;
-
-            static int linearSearch(int[] arr, int target) {
-                comparisons = 0;
-                for (int i = 0; i < arr.length; i++) {
-                    comparisons++;
-                    if (arr[i] == target)
-                        return i;
-                }
-                return -1;
-            }
-
-            static void printArray(int[] arr) {
-                StringBuilder sb = new StringBuilder("arr:");
-                for (int v : arr) sb.append(' ').append(v);
-                sb.append("  (n = ").append(arr.length).append(')');
-                System.out.println(sb);
-            }
-
-            static void runScenario(String label, int[] arr, int target) {
-                System.out.println("-- " + label + " --");
-                printArray(arr);
-                int index = linearSearch(arr, target);
-                if (index >= 0)
-                    System.out.println("linearSearch(target=" + target + ") -> found at index " + index
-                            + ", " + comparisons + " comparison" + (comparisons == 1 ? "" : "s"));
-                else
-                    System.out.println("linearSearch(target=" + target + ") -> not found, "
-                            + comparisons + " comparisons");
-                System.out.println();
-            }
-
-            public static void main(String[] args) {
-                // normal: 11 values, target in the middle
-                int[] normal = {4, 8, 15, 16, 23, 27, 31, 38, 42, 50, 61};
-                runScenario("normal: 11 values, target in the middle", normal, 27);
-
-                // hard: 20 values, duplicate target, first match
-                int[] hard = {12, 47, 3, 88, 25, 61, 9, 34, 77, 15, 52, 6, 41, 18, 63, 99, 5, 29, 99, 71};
-                runScenario("hard: 20 values, duplicate target, first match", hard, 99);
-
-                // edge: not found -- target is not in the array
-                int[] notFound = {2, 4, 6, 8, 10, 12, 14, 16, 18, 20};
-                runScenario("edge: not found, target is not in the array", notFound, 7);
-
-                // edge: best case -- target is in the first box (index 0)
-                int[] firstIndex = {5, 13, 21, 34, 42, 55, 67, 78, 89, 91};
-                runScenario("edge: best case, target is in the first box (index 0)", firstIndex, 5);
-
-                // edge: one-element array
-                int[] one = {42};
-                runScenario("edge: one-element array", one, 42);
-            }
-        }
-        ```
-
 **Try it**
 
 === "C"
@@ -650,150 +520,6 @@ for random data at four difficulty levels, or type your own sorted array and tar
     ```
 
     The full class (`code/week-01/java/BinarySearch.java`) mirrors the C program's five scenarios exactly.
-
-??? example "Full program: `binary_search.c` / `BinarySearch.java`"
-
-    === "C"
-
-        ```c
-        /* Week 1 -- Introduction to Data Structures
-         * Binary search: repeatedly halve the search range on a SORTED array.
-         * Runs the same normal / hard / edge-case scenarios as the binary-search animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
-         */
-        #include <stdio.h>
-
-        int binary_search(const int arr[], int n, int target, int *comparisons) {
-            int lo = 0, hi = n - 1;
-            while (lo <= hi) {
-                int mid = lo + (hi - lo) / 2;
-                (*comparisons)++;
-                if (arr[mid] == target)
-                    return mid;
-                if (arr[mid] < target)
-                    lo = mid + 1;
-                else
-                    hi = mid - 1;
-            }
-            return -1;
-        }
-
-        static void print_array(const int arr[], int n) {
-            printf("arr:");
-            for (int i = 0; i < n; i++)
-                printf(" %d", arr[i]);
-            printf("  (n = %d)\n", n);
-        }
-
-        static void run_scenario(const char *label, const int arr[], int n, int target) {
-            printf("-- %s --\n", label);
-            print_array(arr, n);
-            int comparisons = 0;
-            int index = binary_search(arr, n, target, &comparisons);
-            if (index >= 0)
-                printf("binary_search(target=%d) -> found at index %d, %d comparison%s\n\n",
-                       target, index, comparisons, comparisons == 1 ? "" : "s");
-            else
-                printf("binary_search(target=%d) -> not found, %d comparisons\n\n", target, comparisons);
-        }
-
-        int main(void) {
-            /* normal: 16 values, target found */
-            int normal[] = {3, 7, 11, 15, 19, 23, 29, 34, 41, 47, 53, 60, 68, 75, 83, 90};
-            run_scenario("normal: 16 values, target found", normal, 16, 47);
-
-            /* hard: 31 values, not found: lo > hi at the end */
-            int hard[] = {2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58, 62,
-                          66, 70, 74, 78, 82, 86, 90, 94, 98, 102, 106, 110, 114, 118, 122};
-            run_scenario("hard: 31 values, not found (lo > hi at the end)", hard, 31, 5);
-
-            /* edge: target is smaller than every value */
-            int smallerThanAll[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
-            run_scenario("edge: target is smaller than every value", smallerThanAll, 10, 1);
-
-            /* edge: target is larger than every value */
-            int largerThanAll[] = {15, 25, 35, 45, 55, 65, 75, 85, 95, 105};
-            run_scenario("edge: target is larger than every value", largerThanAll, 10, 999);
-
-            /* edge: searching among duplicate values */
-            int duplicates[] = {5, 5, 5, 10, 15, 20, 20, 25, 30, 35};
-            run_scenario("edge: searching among duplicate values", duplicates, 10, 20);
-
-            return 0;
-        }
-        ```
-
-    === "Java"
-
-        ```java
-        /* Week 1 -- Introduction to Data Structures
-         * Binary search: repeatedly halve the search range on a SORTED array.
-         * Runs the same normal / hard / edge-case scenarios as the binary-search animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
-         */
-        public class BinarySearch {
-            static int comparisons;
-
-            static int binarySearch(int[] arr, int target) {
-                comparisons = 0;
-                int lo = 0, hi = arr.length - 1;
-                while (lo <= hi) {
-                    int mid = lo + (hi - lo) / 2;
-                    comparisons++;
-                    if (arr[mid] == target)
-                        return mid;
-                    if (arr[mid] < target)
-                        lo = mid + 1;
-                    else
-                        hi = mid - 1;
-                }
-                return -1;
-            }
-
-            static void printArray(int[] arr) {
-                StringBuilder sb = new StringBuilder("arr:");
-                for (int v : arr) sb.append(' ').append(v);
-                sb.append("  (n = ").append(arr.length).append(')');
-                System.out.println(sb);
-            }
-
-            static void runScenario(String label, int[] arr, int target) {
-                System.out.println("-- " + label + " --");
-                printArray(arr);
-                int index = binarySearch(arr, target);
-                if (index >= 0)
-                    System.out.println("binarySearch(target=" + target + ") -> found at index " + index
-                            + ", " + comparisons + " comparison" + (comparisons == 1 ? "" : "s"));
-                else
-                    System.out.println("binarySearch(target=" + target + ") -> not found, "
-                            + comparisons + " comparisons");
-                System.out.println();
-            }
-
-            public static void main(String[] args) {
-                // normal: 16 values, target found
-                int[] normal = {3, 7, 11, 15, 19, 23, 29, 34, 41, 47, 53, 60, 68, 75, 83, 90};
-                runScenario("normal: 16 values, target found", normal, 47);
-
-                // hard: 31 values, not found: lo > hi at the end
-                int[] hard = {2, 6, 10, 14, 18, 22, 26, 30, 34, 38, 42, 46, 50, 54, 58, 62,
-                              66, 70, 74, 78, 82, 86, 90, 94, 98, 102, 106, 110, 114, 118, 122};
-                runScenario("hard: 31 values, not found (lo > hi at the end)", hard, 5);
-
-                // edge: target is smaller than every value
-                int[] smallerThanAll = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
-                runScenario("edge: target is smaller than every value", smallerThanAll, 1);
-
-                // edge: target is larger than every value
-                int[] largerThanAll = {15, 25, 35, 45, 55, 65, 75, 85, 95, 105};
-                runScenario("edge: target is larger than every value", largerThanAll, 999);
-
-                // edge: searching among duplicate values
-                int[] duplicates = {5, 5, 5, 10, 15, 20, 20, 25, 30, 35};
-                runScenario("edge: searching among duplicate values", duplicates, 20);
-            }
-        }
-        ```
 
 ??? example "Full program: `binary_search.c` / `BinarySearch.java`"
 
@@ -1070,124 +796,6 @@ grade-school-arithmetic trick, just automated.
     ```
 
     The full class (`code/week-01/java/GrowthTable.java`) mirrors the C program's three scenarios exactly.
-
-??? example "Full program: `growth_table.c` / `GrowthTable.java`"
-
-    === "C"
-
-        ```c
-        /* Week 1 -- Introduction to Data Structures
-         * The growth race: for a list of n values, print log2(n), n, n*log2(n), n^2 and 2^n side by side.
-         * 2^n is computed EXACTLY, as a decimal digit string built by repeated doubling (no library big-integer
-         * type in C) so it can be compared byte for byte with Java's BigInteger version.
-         * Runs the same normal / edge-case scenarios as the growth-race animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
-         */
-        #include <math.h>
-        #include <stdio.h>
-        #include <string.h>
-
-        #define MAX_DIGITS 2000
-
-        /* out[] holds the decimal digits of 2^n, most significant digit first, NUL-terminated.
-         * Doubling a decimal number is: multiply every digit by 2, right to left, carrying into the next digit. */
-        static void pow2_decimal(int n, char *out) {
-            char digits[MAX_DIGITS];
-            int len = 1;
-            digits[0] = 1;   /* start at 2^0 = 1 */
-            for (int step = 0; step < n; step++) {
-                int carry = 0;
-                for (int i = 0; i < len; i++) {
-                    int v = digits[i] * 2 + carry;
-                    digits[i] = (char) (v % 10);
-                    carry = v / 10;
-                }
-                if (carry) {
-                    digits[len] = (char) carry;
-                    len++;
-                }
-            }
-            for (int i = 0; i < len; i++)
-                out[i] = (char) ('0' + digits[len - 1 - i]);
-            out[len] = '\0';
-        }
-
-        static void print_row(long n) {
-            double log2n = round(log2((double) n));
-            double nlogn = round((double) n * log2((double) n));
-            long nsq = n * n;
-            char pow2n[MAX_DIGITS];
-            pow2_decimal((int) n, pow2n);
-            printf("n=%-6ld log2(n)=%-4.0f n*log2(n)=%-8.0f n^2=%-9ld 2^n=%s\n", n, log2n, nlogn, nsq, pow2n);
-        }
-
-        static void run_scenario(const char *label, const long ns[], int count) {
-            printf("-- %s --\n", label);
-            for (int i = 0; i < count; i++)
-                print_row(ns[i]);
-            printf("\n");
-        }
-
-        int main(void) {
-            /* normal: doubling, 1 -> 512 */
-            long normal[] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512};
-            run_scenario("normal: doubling, 1 -> 512", normal, 10);
-
-            /* edge: a single value, n = 1 */
-            long single[] = {1};
-            run_scenario("edge: a single value, n = 1", single, 1);
-
-            /* edge: an increasing sequence that is not a power of two */
-            long nonPower[] = {1, 3, 5, 9, 14, 20, 27, 35, 44, 54};
-            run_scenario("edge: an increasing sequence that is not a power of two", nonPower, 10);
-
-            return 0;
-        }
-        ```
-
-    === "Java"
-
-        ```java
-        /* Week 1 -- Introduction to Data Structures
-         * The growth race: for a list of n values, print log2(n), n, n*log2(n), n^2 and 2^n side by side.
-         * 2^n uses java.math.BigInteger, which gives EXACT arbitrary-precision integers out of the box --
-         * unlike C, which has no built-in big-integer type (see growth_table.c's hand-rolled decimal doubling).
-         * Runs the same normal / edge-case scenarios as the growth-race animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
-         */
-        import java.math.BigInteger;
-
-        public class GrowthTable {
-            static void printRow(long n) {
-                double log2n = Math.round(Math.log(n) / Math.log(2));
-                double nlogn = Math.round(n * (Math.log(n) / Math.log(2)));
-                long nsq = n * n;
-                BigInteger pow2n = BigInteger.ONE.shiftLeft((int) n);
-                System.out.printf("n=%-6d log2(n)=%-4.0f n*log2(n)=%-8.0f n^2=%-9d 2^n=%s%n",
-                        n, log2n, nlogn, nsq, pow2n.toString());
-            }
-
-            static void runScenario(String label, long[] ns) {
-                System.out.println("-- " + label + " --");
-                for (long n : ns) printRow(n);
-                System.out.println();
-            }
-
-            public static void main(String[] args) {
-                // normal: doubling, 1 -> 512
-                long[] normal = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512};
-                runScenario("normal: doubling, 1 -> 512", normal);
-
-                // edge: a single value, n = 1
-                long[] single = {1};
-                runScenario("edge: a single value, n = 1", single);
-
-                // edge: an increasing sequence that is not a power of two
-                long[] nonPower = {1, 3, 5, 9, 14, 20, 27, 35, 44, 54};
-                runScenario("edge: an increasing sequence that is not a power of two", nonPower);
-            }
-        }
-        ```
 
 ??? example "Full program: `growth_table.c` / `GrowthTable.java`"
 
@@ -1586,165 +1194,6 @@ In the picker, also try **triangle loop, n = 4 in detail, then 10 more n values*
         }
         ```
 
-??? example "Full program: `nested_loop_counting.c` / `NestedLoopCounting.java`"
-
-    === "C"
-
-        ```c
-        /* Week 1 -- Introduction to Data Structures
-         * Count the operations of a nested loop to build T(n) by hand, for three loop shapes:
-         * square (j < n), triangle (j < i), and halving (j *= 2).
-         * Runs the same normal / hard / edge-case scenarios as the nested-loop-counting animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
-         */
-        #include <stdio.h>
-
-        long t_square(int n, long *operations) {
-            long count = 0;
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                    count++;
-                    (*operations)++;
-                }
-            }
-            return count;
-        }
-
-        long t_triangle(int n, long *operations) {
-            long count = 0;
-            for (int i = 0; i < n; i++) {
-                for (int j = 0; j < i; j++) {
-                    count++;
-                    (*operations)++;
-                }
-            }
-            return count;
-        }
-
-        long t_halving(int n, long *operations) {
-            long count = 0;
-            for (int i = 0; i < n; i++) {
-                for (int j = 1; j < n; j *= 2) {
-                    count++;
-                    (*operations)++;
-                }
-            }
-            return count;
-        }
-
-        typedef long (*counter_fn)(int, long *);
-
-        static void run_scenario(const char *label, counter_fn f, const char *shape, const int ns[], int count) {
-            printf("-- %s (%s) --\n", label, shape);
-            for (int k = 0; k < count; k++) {
-                int n = ns[k];
-                long operations = 0;
-                long total = f(n, &operations);
-                printf("n = %d: inner body ran %ld times, total = %ld\n", n, operations, total);
-            }
-            printf("\n");
-        }
-
-        int main(void) {
-            /* normal: square loop, n = 3 in detail, then 9 more n values */
-            int normalNs[] = {3, 4, 5, 6, 8, 10, 12, 16, 20, 25};
-            run_scenario("normal: square loop", t_square, "square, j < n", normalNs, 10);
-
-            /* hard: triangle loop, n = 4 in detail, then 10 more n values */
-            int hardNs[] = {4, 5, 6, 8, 10, 14, 18, 24, 32, 40, 50};
-            run_scenario("hard: triangle loop", t_triangle, "triangle, j < i", hardNs, 11);
-
-            /* edge: halving loop, n = 1: zero executions */
-            int halvingNs[] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512};
-            run_scenario("edge: halving loop, n = 1 (zero executions)", t_halving, "halving, j *= 2", halvingNs, 10);
-
-            /* edge: square loop, n = 2 in detail, Fibonacci-spaced n values */
-            int fibNs[] = {2, 3, 5, 8, 13, 21, 34, 55, 89, 144};
-            run_scenario("edge: square loop, Fibonacci-spaced n values", t_square, "square, j < n", fibNs, 10);
-
-            return 0;
-        }
-        ```
-
-    === "Java"
-
-        ```java
-        /* Week 1 -- Introduction to Data Structures
-         * Count the operations of a nested loop to build T(n) by hand, for three loop shapes:
-         * square (j < n), triangle (j < i), and halving (j *= 2).
-         * Runs the same normal / hard / edge-case scenarios as the nested-loop-counting animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
-         */
-        public class NestedLoopCounting {
-            static long operations;
-
-            static long tSquare(int n) {
-                long count = 0;
-                for (int i = 0; i < n; i++) {
-                    for (int j = 0; j < n; j++) {
-                        count++;
-                        operations++;
-                    }
-                }
-                return count;
-            }
-
-            static long tTriangle(int n) {
-                long count = 0;
-                for (int i = 0; i < n; i++) {
-                    for (int j = 0; j < i; j++) {
-                        count++;
-                        operations++;
-                    }
-                }
-                return count;
-            }
-
-            static long tHalving(int n) {
-                long count = 0;
-                for (int i = 0; i < n; i++) {
-                    for (int j = 1; j < n; j *= 2) {
-                        count++;
-                        operations++;
-                    }
-                }
-                return count;
-            }
-
-            interface CounterFn {
-                long apply(int n);
-            }
-
-            static void runScenario(String label, CounterFn f, String shape, int[] ns) {
-                System.out.println("-- " + label + " (" + shape + ") --");
-                for (int n : ns) {
-                    operations = 0;
-                    long total = f.apply(n);
-                    System.out.println("n = " + n + ": inner body ran " + operations + " times, total = " + total);
-                }
-                System.out.println();
-            }
-
-            public static void main(String[] args) {
-                // normal: square loop, n = 3 in detail, then 9 more n values
-                int[] normalNs = {3, 4, 5, 6, 8, 10, 12, 16, 20, 25};
-                runScenario("normal: square loop", NestedLoopCounting::tSquare, "square, j < n", normalNs);
-
-                // hard: triangle loop, n = 4 in detail, then 10 more n values
-                int[] hardNs = {4, 5, 6, 8, 10, 14, 18, 24, 32, 40, 50};
-                runScenario("hard: triangle loop", NestedLoopCounting::tTriangle, "triangle, j < i", hardNs);
-
-                // edge: halving loop, n = 1 (zero executions)
-                int[] halvingNs = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512};
-                runScenario("edge: halving loop, n = 1 (zero executions)", NestedLoopCounting::tHalving, "halving, j *= 2", halvingNs);
-
-                // edge: square loop, Fibonacci-spaced n values
-                int[] fibNs = {2, 3, 5, 8, 13, 21, 34, 55, 89, 144};
-                runScenario("edge: square loop, Fibonacci-spaced n values", NestedLoopCounting::tSquare, "square, j < n", fibNs);
-            }
-        }
-        ```
-
 **Try it**
 
 === "C"
@@ -1821,7 +1270,6 @@ the inner body runs **zero** times. Writing the square count out as `T(n) = 1·n
 inner body, a smaller `c₁·n` from loop bookkeeping, a constant `c₂` from setup and the return), dropping the
 constant `c₂` and the lower-order term `c₁·n` leaves exactly `n²` — which is exactly the "drop the constants and
 the smaller terms" rule from the table above, now built from a real, counted program instead of asserted.
-
 ### 3.8 Best, worst, and average case
 
 The same algorithm can take a different number of steps depending on *which* input it gets, not just how big the
@@ -1894,126 +1342,6 @@ values: deep recursion** — or press 🎲 for random data at four difficulty le
 
     The full class (`code/week-01/java/SpaceRecursiveVsIterative.java`) mirrors the C program's four scenarios
     exactly.
-
-??? example "Full program: `space_recursive_vs_iterative.c` / `SpaceRecursiveVsIterative.java`"
-
-    === "C"
-
-        ```c
-        /* Week 1 -- Introduction to Data Structures
-         * Space complexity: a recursive sum pushes one stack frame per call;
-         * an iterative sum reuses a single set of variables.
-         * Runs the same normal / hard / edge-case scenarios as the space-recursive-vs-iterative animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
-         */
-        #include <stdio.h>
-
-        int sum_recursive(const int arr[], int n) {
-            if (n == 0)              /* base case: 0 elements left */
-                return 0;
-            return arr[n - 1] + sum_recursive(arr, n - 1);   /* one stack frame per call */
-        }
-
-        int sum_iterative(const int arr[], int n) {
-            int total = 0;           /* ONE set of variables, reused every iteration */
-            for (int i = 0; i < n; i++)
-                total += arr[i];
-            return total;
-        }
-
-        static void print_array(const int arr[], int n) {
-            printf("arr:");
-            for (int i = 0; i < n; i++)
-                printf(" %d", arr[i]);
-            printf("  (n = %d)\n", n);
-        }
-
-        static void run_scenario(const char *label, const int arr[], int n) {
-            printf("-- %s --\n", label);
-            print_array(arr, n);
-            printf("sum_recursive -> %d (uses O(n) stack space: %d frames)\n", sum_recursive(arr, n), n);
-            printf("sum_iterative -> %d (uses O(1) stack space: 1 frame, reused)\n\n", sum_iterative(arr, n));
-        }
-
-        int main(void) {
-            /* normal: 10 positive values */
-            int normal[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
-            run_scenario("normal: 10 positive values", normal, 10);
-
-            /* hard: 20 values with mixed signs */
-            int hard[] = {5, -3, 12, 8, -7, 15, 22, -10, 6, 18, 9, -4, 11, 27, -15, 3, 19, -8, 14, 7};
-            run_scenario("hard: 20 values with mixed signs", hard, 20);
-
-            /* edge: 10 negative values */
-            int allNegative[] = {-5, -10, -15, -20, -25, -30, -35, -40, -45, -50};
-            run_scenario("edge: 10 negative values", allNegative, 10);
-
-            /* edge: 22 values, deep recursion */
-            int deep[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
-            run_scenario("edge: 22 values, deep recursion", deep, 22);
-
-            return 0;
-        }
-        ```
-
-    === "Java"
-
-        ```java
-        /* Week 1 -- Introduction to Data Structures
-         * Space complexity: a recursive sum pushes one stack frame per call;
-         * an iterative sum reuses a single set of variables.
-         * Runs the same normal / hard / edge-case scenarios as the space-recursive-vs-iterative animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
-         */
-        public class SpaceRecursiveVsIterative {
-            static int sumRecursive(int[] arr, int n) {
-                if (n == 0)               // base case: 0 elements left
-                    return 0;
-                return arr[n - 1] + sumRecursive(arr, n - 1);   // one stack frame per call
-            }
-
-            static int sumIterative(int[] arr, int n) {
-                int total = 0;            // ONE set of variables, reused every iteration
-                for (int i = 0; i < n; i++)
-                    total += arr[i];
-                return total;
-            }
-
-            static void printArray(int[] arr) {
-                StringBuilder sb = new StringBuilder("arr:");
-                for (int v : arr) sb.append(' ').append(v);
-                sb.append("  (n = ").append(arr.length).append(')');
-                System.out.println(sb);
-            }
-
-            static void runScenario(String label, int[] arr) {
-                System.out.println("-- " + label + " --");
-                printArray(arr);
-                int n = arr.length;
-                System.out.println("sumRecursive -> " + sumRecursive(arr, n) + " (uses O(n) stack space: " + n + " frames)");
-                System.out.println("sumIterative -> " + sumIterative(arr, n) + " (uses O(1) stack space: 1 frame, reused)");
-                System.out.println();
-            }
-
-            public static void main(String[] args) {
-                // normal: 10 positive values
-                int[] normal = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
-                runScenario("normal: 10 positive values", normal);
-
-                // hard: 20 values with mixed signs
-                int[] hard = {5, -3, 12, 8, -7, 15, 22, -10, 6, 18, 9, -4, 11, 27, -15, 3, 19, -8, 14, 7};
-                runScenario("hard: 20 values with mixed signs", hard);
-
-                // edge: 10 negative values
-                int[] allNegative = {-5, -10, -15, -20, -25, -30, -35, -40, -45, -50};
-                runScenario("edge: 10 negative values", allNegative);
-
-                // edge: 22 values, deep recursion
-                int[] deep = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
-                runScenario("edge: 22 values, deep recursion", deep);
-            }
-        }
-        ```
 
 ??? example "Full program: `space_recursive_vs_iterative.c` / `SpaceRecursiveVsIterative.java`"
 
@@ -2677,172 +2005,6 @@ data (and a random type) at four difficulty levels, or type your own array, type
         }
         ```
 
-??? example "Full program: `pointer_arithmetic.c` / `ArrayIndexing.java`"
-
-    === "C"
-
-        ```c
-        /* Week 1 -- Introduction to Data Structures
-         * Pointer arithmetic: p + k means base address + k * sizeof(*p), never k bytes.
-         * An out-of-range k is undefined behavior (UB); the guard below reports it instead of reading it.
-         * Addresses are a PRETEND base (matching the animation), not real OS addresses, so the output is
-         * reproducible and can be compared byte for byte with the Java version.
-         * Runs the same normal / hard / edge-case scenarios as the pointer-arithmetic animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
-         */
-        #include <stdio.h>
-
-        static void run_int_scenario(const char *label, long base, const int values[], int n,
-                                      const int offsets[], int offCount) {
-            printf("-- %s (type = int, sizeof = %zu) --\n", label, sizeof(int));
-            const int *p = values;   /* p decays to point at values[0] */
-            for (int i = 0; i < offCount; i++) {
-                int k = offsets[i];
-                if (k < 0 || k >= n) {
-                    printf("p + %d -> out of range (UB): 0 <= k < %d required\n", k, n);
-                    continue;
-                }
-                long addr = base + (long) k * (long) sizeof(int);
-                printf("p + %d = %ld, *(p + %d) = %d\n", k, addr, k, *(p + k));
-            }
-            printf("\n");
-        }
-
-        static void run_double_scenario(const char *label, long base, const double values[], int n,
-                                         const int offsets[], int offCount) {
-            printf("-- %s (type = double, sizeof = %zu) --\n", label, sizeof(double));
-            const double *p = values;
-            for (int i = 0; i < offCount; i++) {
-                int k = offsets[i];
-                if (k < 0 || k >= n) {
-                    printf("p + %d -> out of range (UB): 0 <= k < %d required\n", k, n);
-                    continue;
-                }
-                long addr = base + (long) k * (long) sizeof(double);
-                printf("p + %d = %ld, *(p + %d) = %.0f\n", k, addr, k, *(p + k));
-            }
-            printf("\n");
-        }
-
-        static void run_char_scenario(const char *label, long base, const char values[], int n,
-                                       const int offsets[], int offCount) {
-            printf("-- %s (type = char, sizeof = %zu) --\n", label, sizeof(char));
-            const char *p = values;
-            for (int i = 0; i < offCount; i++) {
-                int k = offsets[i];
-                if (k < 0 || k >= n) {
-                    printf("p + %d -> out of range (UB): 0 <= k < %d required\n", k, n);
-                    continue;
-                }
-                long addr = base + (long) k * (long) sizeof(char);   /* sizeof(char) is always 1 */
-                printf("p + %d = %ld, *(p + %d) = %d\n", k, addr, k, (int) *(p + k));
-            }
-            printf("\n");
-        }
-
-        int main(void) {
-            /* normal: int array, 5 valid offsets */
-            int normalValues[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
-            int normalOffsets[] = {0, 1, 2, 4, 9};
-            run_int_scenario("normal: int array, 5 valid offsets", 1000, normalValues, 10, normalOffsets, 5);
-
-            /* hard: double array (sizeof = 8), 7 offsets */
-            double hardValues[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-            int hardOffsets[] = {0, 2, 5, 8, 11, 6, 3};
-            run_double_scenario("hard: double array (sizeof = 8), 7 offsets", 2000, hardValues, 12, hardOffsets, 7);
-
-            /* edge: out-of-range offsets, negative and beyond N */
-            int edgeValues[] = {4, 8, 15, 16, 23, 42, 8, 9, 15, 3};
-            int edgeOffsets[] = {-1, 0, 5, 10, 15};
-            run_int_scenario("edge: out-of-range offsets (negative and beyond N)", 1000, edgeValues, 10, edgeOffsets, 5);
-
-            /* edge: char array (sizeof = 1), p + k coincides with k bytes */
-            char charValues[] = {65, 66, 67, 68, 69, 70, 71, 72, 73, 74};
-            int charOffsets[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-            run_char_scenario("edge: char array (sizeof = 1)", 500, charValues, 10, charOffsets, 10);
-
-            return 0;
-        }
-        ```
-
-    === "Java"
-
-        ```java
-        /* Week 1 -- Introduction to Data Structures
-         * Java has no pointer arithmetic -- array indexing is the only way to move between elements.
-         * These scenarios still print the SAME "address = base + k * sizeof(type)" arithmetic as the C
-         * version, using the type's C size, purely to compare the formula's result side by side; Java
-         * itself never computes a real address, it only ever indexes with a[k].
-         * Runs the same normal / hard / edge-case scenarios as the pointer-arithmetic animation.
-         * CEN207 Data Structures (CS50-style lecture notes)
-         */
-        public class ArrayIndexing {
-            static void runIntScenario(String label, long base, int[] values, int[] offsets) {
-                int n = values.length, sizeofInt = 4;
-                System.out.println("-- " + label + " (type = int, sizeof = " + sizeofInt + ") --");
-                for (int k : offsets) {
-                    if (k < 0 || k >= n) {
-                        System.out.println("a[" + k + "] -> out of range: throws ArrayIndexOutOfBoundsException in real Java");
-                        continue;
-                    }
-                    long addr = base + (long) k * sizeofInt;
-                    System.out.println("p + " + k + " = " + addr + ", a[" + k + "] = " + values[k]);
-                }
-                System.out.println();
-            }
-
-            static void runDoubleScenario(String label, long base, double[] values, int[] offsets) {
-                int n = values.length, sizeofDouble = 8;
-                System.out.println("-- " + label + " (type = double, sizeof = " + sizeofDouble + ") --");
-                for (int k : offsets) {
-                    if (k < 0 || k >= n) {
-                        System.out.println("a[" + k + "] -> out of range: throws ArrayIndexOutOfBoundsException in real Java");
-                        continue;
-                    }
-                    long addr = base + (long) k * sizeofDouble;
-                    System.out.printf("p + %d = %d, a[%d] = %.0f%n", k, addr, k, values[k]);
-                }
-                System.out.println();
-            }
-
-            static void runCharScenario(String label, long base, char[] values, int[] offsets) {
-                int n = values.length, sizeofChar = 1;
-                System.out.println("-- " + label + " (type = char, sizeof = " + sizeofChar + ") --");
-                for (int k : offsets) {
-                    if (k < 0 || k >= n) {
-                        System.out.println("a[" + k + "] -> out of range: throws ArrayIndexOutOfBoundsException in real Java");
-                        continue;
-                    }
-                    long addr = base + (long) k * sizeofChar;
-                    System.out.println("p + " + k + " = " + addr + ", a[" + k + "] = " + (int) values[k]);
-                }
-                System.out.println();
-            }
-
-            public static void main(String[] args) {
-                // normal: int array, 5 valid offsets
-                int[] normalValues = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
-                int[] normalOffsets = {0, 1, 2, 4, 9};
-                runIntScenario("normal: int array, 5 valid offsets", 1000, normalValues, normalOffsets);
-
-                // hard: double array (sizeof = 8), 7 offsets
-                double[] hardValues = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-                int[] hardOffsets = {0, 2, 5, 8, 11, 6, 3};
-                runDoubleScenario("hard: double array (sizeof = 8), 7 offsets", 2000, hardValues, hardOffsets);
-
-                // edge: out-of-range offsets, negative and beyond N
-                int[] edgeValues = {4, 8, 15, 16, 23, 42, 8, 9, 15, 3};
-                int[] edgeOffsets = {-1, 0, 5, 10, 15};
-                runIntScenario("edge: out-of-range offsets (negative and beyond N)", 1000, edgeValues, edgeOffsets);
-
-                // edge: char array (sizeof = 1), p + k coincides with k bytes
-                char[] charValues = {65, 66, 67, 68, 69, 70, 71, 72, 73, 74};
-                int[] charOffsets = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
-                runCharScenario("edge: char array (sizeof = 1)", 500, charValues, charOffsets);
-            }
-        }
-        ```
-
 **Try it**
 
 === "C"
@@ -3299,92 +2461,42 @@ for an entire category of bug becoming structurally impossible.
 
 One more contrast, previewing next week. An array reserves one contiguous block, so `arr[i]` is a single
 calculation — O(1). A linked list, which you will build starting next week, stores each value in its own
-individually allocated node, connected only by pointers.
+individually allocated node, connected only by pointers — reaching element `k` costs `k` hops.
 
 <iframe class="dsanim" src="../anim/array-vs-linked-preview.html" title="Preview: array layout vs linked layout" loading="lazy"></iframe>
 <div class="dsanim-baski" markdown>
 ![Preview: array layout vs linked layout — step by step](anim/array-vs-linked-preview.png)
 </div>
 
+In the picker, also try **16 values, k = 13 (near the end)** (hard) and the edge cases **k = 0: the first element**
+and **k = the last index: the most hops** — or press 🎲 for random data at four difficulty levels, or type your own
+values and `k`.
+
 === "C"
 
     ```c
-    /* Week 1 -- Introduction to Data Structures
-     * Preview of Week 2: five values laid out as a contiguous array
-     * versus the same five values as individually allocated linked nodes.
-     * CEN207 Data Structures (CS50-style lecture notes)
-     */
-    #include <stdio.h>
-    #include <stdlib.h>
+    int arr[N];                       /* filled with the input values */
 
-    typedef struct Node {
-        int data;
-        struct Node *next;
-    } Node;
-
-    int main(void) {
-        int arr[5] = {10, 20, 30, 40, 50};
-
-        printf("array (contiguous):\n");
-        for (int i = 0; i < 5; i++)
-            printf("  arr[%d] = %d at %p\n", i, arr[i], (void *) &arr[i]);
-
-        Node *head = NULL;
-        for (int i = 4; i >= 0; i--) {
-            Node *n = malloc(sizeof(Node));
-            n->data = arr[i];
-            n->next = head;
-            head = n;
-        }
-
-        printf("\nlinked list (scattered, connected by pointers):\n");
-        for (Node *n = head; n != NULL; n = n->next)
-            printf("  node at %p: data = %d, next = %p\n", (void *) n, n->data, (void *) n->next);
-
-        for (Node *n = head; n != NULL;) {
-            Node *tmp = n;
-            n = n->next;
-            free(tmp);
-        }
-
-        return 0;
+    Node *head = NULL;
+    for (int i = N - 1; i >= 0; i--) {
+        Node *node = malloc(sizeof(Node));
+        node->data = arr[i];
+        node->next = head;
+        head = node;
     }
     ```
 
 === "Java"
 
     ```java
-    /* Week 1 -- Introduction to Data Structures
-     * Preview of Week 2: the same five values as a contiguous array
-     * versus a chain of individually created linked nodes.
-     * CEN207 Data Structures (CS50-style lecture notes)
-     */
-    public class ArrayVsLinkedPreview {
-        static class Node {
-            int data;
-            Node next;
-            Node(int data, Node next) { this.data = data; this.next = next; }
-        }
+    int[] arr = new int[N];           // filled with the input values
 
-        public static void main(String[] args) {
-            int[] arr = {10, 20, 30, 40, 50};
-
-            System.out.println("array (one contiguous block, indexed access):");
-            for (int i = 0; i < arr.length; i++)
-                System.out.println("  arr[" + i + "] = " + arr[i]);
-
-            Node head = null;
-            for (int i = arr.length - 1; i >= 0; i--)
-                head = new Node(arr[i], head);
-
-            System.out.println();
-            System.out.println("linked list (separate objects, followed one .next at a time):");
-            for (Node n = head; n != null; n = n.next)
-                System.out.println("  node@" + Integer.toHexString(System.identityHashCode(n))
-                        + ": data = " + n.data);
-        }
-    }
+    Node head = null;
+    for (int i = N - 1; i >= 0; i--)
+        head = new Node(arr[i], head);
     ```
+
+    The full class (`code/week-01/java/ArrayVsLinkedPreview.java`) mirrors the C program's four scenarios exactly.
 
 ??? example "Full program: `array_vs_linked_preview.c` / `ArrayVsLinkedPreview.java`"
 
@@ -3538,19 +2650,125 @@ individually allocated node, connected only by pointers.
     Expected output (your addresses will differ):
 
     ```text
+    -- normal: 10 values, k = 4 (in the middle) (k = 4) --
     array (contiguous):
-      arr[0] = 10 at 000000A8783FF8A0
-      arr[1] = 20 at 000000A8783FF8A4
-      arr[2] = 30 at 000000A8783FF8A8
-      arr[3] = 40 at 000000A8783FF8AC
-      arr[4] = 50 at 000000A8783FF8B0
-
+      arr[0] = 10 at 00000010D7DFF5E0
+      arr[1] = 20 at 00000010D7DFF5E4
+      arr[2] = 30 at 00000010D7DFF5E8
+      arr[3] = 40 at 00000010D7DFF5EC
+      arr[4] = 50 at 00000010D7DFF5F0
+      arr[5] = 60 at 00000010D7DFF5F4
+      arr[6] = 70 at 00000010D7DFF5F8
+      arr[7] = 80 at 00000010D7DFF5FC
+      arr[8] = 90 at 00000010D7DFF600
+      arr[9] = 100 at 00000010D7DFF604
+    array access: arr[4] = 50, ONE calculation (base + 4*4). O(1).
     linked list (scattered, connected by pointers):
-      node at 000001EEABFF34F0: data = 10, next = 000001EEABFF34D0
-      node at 000001EEABFF34D0: data = 20, next = 000001EEABFF34B0
-      node at 000001EEABFF34B0: data = 30, next = 000001EEABFF3490
-      node at 000001EEABFF3490: data = 40, next = 000001EEABFF3470
-      node at 000001EEABFF3470: data = 50, next = 0000000000000000
+      node at 0000018A35373610: data = 10, next = 0000018A353735F0
+      node at 0000018A353735F0: data = 20, next = 0000018A353735D0
+      node at 0000018A353735D0: data = 30, next = 0000018A353735B0
+      node at 0000018A353735B0: data = 40, next = 0000018A35373590
+      node at 0000018A35373590: data = 50, next = 0000018A35373570
+      node at 0000018A35373570: data = 60, next = 0000018A35373550
+      node at 0000018A35373550: data = 70, next = 0000018A35373530
+      node at 0000018A35373530: data = 80, next = 0000018A35373510
+      node at 0000018A35373510: data = 90, next = 0000018A353734F0
+      node at 0000018A353734F0: data = 100, next = 0000000000000000
+    linked access: reached node with data = 50 after 4 hops. O(n).
+
+    -- hard: 16 values, k = 13 (near the end) (k = 13) --
+    array (contiguous):
+      arr[0] = 11 at 00000010D7DFF5E0
+      arr[1] = 22 at 00000010D7DFF5E4
+      arr[2] = 33 at 00000010D7DFF5E8
+      arr[3] = 44 at 00000010D7DFF5EC
+      arr[4] = 55 at 00000010D7DFF5F0
+      arr[5] = 66 at 00000010D7DFF5F4
+      arr[6] = 77 at 00000010D7DFF5F8
+      arr[7] = 88 at 00000010D7DFF5FC
+      arr[8] = 99 at 00000010D7DFF600
+      arr[9] = 111 at 00000010D7DFF604
+      arr[10] = 122 at 00000010D7DFF608
+      arr[11] = 133 at 00000010D7DFF60C
+      arr[12] = 144 at 00000010D7DFF610
+      arr[13] = 155 at 00000010D7DFF614
+      arr[14] = 166 at 00000010D7DFF618
+      arr[15] = 177 at 00000010D7DFF61C
+    array access: arr[13] = 155, ONE calculation (base + 13*4). O(1).
+    linked list (scattered, connected by pointers):
+      node at 0000018A35373720: data = 11, next = 0000018A35373820
+      node at 0000018A35373820: data = 22, next = 0000018A35373690
+      node at 0000018A35373690: data = 33, next = 0000018A35373670
+      node at 0000018A35373670: data = 44, next = 0000018A35373650
+      node at 0000018A35373650: data = 55, next = 0000018A35373630
+      node at 0000018A35373630: data = 66, next = 0000018A35373610
+      node at 0000018A35373610: data = 77, next = 0000018A353735F0
+      node at 0000018A353735F0: data = 88, next = 0000018A353735D0
+      node at 0000018A353735D0: data = 99, next = 0000018A353735B0
+      node at 0000018A353735B0: data = 111, next = 0000018A35373590
+      node at 0000018A35373590: data = 122, next = 0000018A35373570
+      node at 0000018A35373570: data = 133, next = 0000018A35373550
+      node at 0000018A35373550: data = 144, next = 0000018A35373530
+      node at 0000018A35373530: data = 155, next = 0000018A35373510
+      node at 0000018A35373510: data = 166, next = 0000018A353734F0
+      node at 0000018A353734F0: data = 177, next = 0000000000000000
+    linked access: reached node with data = 155 after 13 hops. O(n).
+
+    -- edge: k = 0, the first element (k = 0) --
+    array (contiguous):
+      arr[0] = 7 at 00000010D7DFF5E0
+      arr[1] = 14 at 00000010D7DFF5E4
+      arr[2] = 21 at 00000010D7DFF5E8
+      arr[3] = 28 at 00000010D7DFF5EC
+      arr[4] = 35 at 00000010D7DFF5F0
+      arr[5] = 42 at 00000010D7DFF5F4
+      arr[6] = 49 at 00000010D7DFF5F8
+      arr[7] = 56 at 00000010D7DFF5FC
+      arr[8] = 63 at 00000010D7DFF600
+      arr[9] = 70 at 00000010D7DFF604
+    array access: arr[0] = 7, ONE calculation (base + 0*4). O(1).
+    linked list (scattered, connected by pointers):
+      node at 0000018A353738A0: data = 7, next = 0000018A35373980
+      node at 0000018A35373980: data = 14, next = 0000018A353737C0
+      node at 0000018A353737C0: data = 21, next = 0000018A35373700
+      node at 0000018A35373700: data = 28, next = 0000018A35373780
+      node at 0000018A35373780: data = 35, next = 0000018A35373740
+      node at 0000018A35373740: data = 42, next = 0000018A353739C0
+      node at 0000018A353739C0: data = 49, next = 0000018A35373840
+      node at 0000018A35373840: data = 56, next = 0000018A353737A0
+      node at 0000018A353737A0: data = 63, next = 0000018A353739A0
+      node at 0000018A353739A0: data = 70, next = 0000000000000000
+    linked access: reached node with data = 7 after 0 hops. O(n).
+
+    -- edge: k = the last index, the most hops (k = 11) --
+    array (contiguous):
+      arr[0] = 3 at 00000010D7DFF5E0
+      arr[1] = 6 at 00000010D7DFF5E4
+      arr[2] = 9 at 00000010D7DFF5E8
+      arr[3] = 12 at 00000010D7DFF5EC
+      arr[4] = 15 at 00000010D7DFF5F0
+      arr[5] = 18 at 00000010D7DFF5F4
+      arr[6] = 21 at 00000010D7DFF5F8
+      arr[7] = 24 at 00000010D7DFF5FC
+      arr[8] = 27 at 00000010D7DFF600
+      arr[9] = 30 at 00000010D7DFF604
+      arr[10] = 33 at 00000010D7DFF608
+      arr[11] = 36 at 00000010D7DFF60C
+    array access: arr[11] = 36, ONE calculation (base + 11*4). O(1).
+    linked list (scattered, connected by pointers):
+      node at 0000018A35373960: data = 3, next = 0000018A353738C0
+      node at 0000018A353738C0: data = 6, next = 0000018A353739C0
+      node at 0000018A353739C0: data = 9, next = 0000018A35373740
+      node at 0000018A35373740: data = 12, next = 0000018A35373A00
+      node at 0000018A35373A00: data = 15, next = 0000018A35373800
+      node at 0000018A35373800: data = 18, next = 0000018A35373A80
+      node at 0000018A35373A80: data = 21, next = 0000018A353737C0
+      node at 0000018A353737C0: data = 24, next = 0000018A35373A60
+      node at 0000018A35373A60: data = 27, next = 0000018A35373840
+      node at 0000018A35373840: data = 30, next = 0000018A353739A0
+      node at 0000018A353739A0: data = 33, next = 0000018A35373900
+      node at 0000018A35373900: data = 36, next = 0000000000000000
+    linked access: reached node with data = 36 after 11 hops. O(n).
     ```
 
 === "Java"
@@ -3563,26 +2781,133 @@ individually allocated node, connected only by pointers.
     will differ on your machine):
 
     ```text
+    -- normal: 10 values, k = 4 (in the middle) (k = 4) --
     array (one contiguous block, indexed access):
       arr[0] = 10
       arr[1] = 20
       arr[2] = 30
       arr[3] = 40
       arr[4] = 50
-
+      arr[5] = 60
+      arr[6] = 70
+      arr[7] = 80
+      arr[8] = 90
+      arr[9] = 100
+    array access: arr[4] = 50, ONE index computation. O(1).
     linked list (separate objects, followed one .next at a time):
-      node@1be6f5c3: data = 10
-      node@13221655: data = 20
-      node@2f2c9b19: data = 30
-      node@31befd9f: data = 40
-      node@1c20c684: data = 50
+      node@13221655: data = 10
+      node@2f2c9b19: data = 20
+      node@31befd9f: data = 30
+      node@1c20c684: data = 40
+      node@1fb3ebeb: data = 50
+      node@548c4f57: data = 60
+      node@1218025c: data = 70
+      node@816f27d: data = 80
+      node@87aac27: data = 90
+      node@3e3abc88: data = 100
+    linked access: reached node with data = 50 after 4 hops. O(n).
+
+    -- hard: 16 values, k = 13 (near the end) (k = 13) --
+    array (one contiguous block, indexed access):
+      arr[0] = 11
+      arr[1] = 22
+      arr[2] = 33
+      arr[3] = 44
+      arr[4] = 55
+      arr[5] = 66
+      arr[6] = 77
+      arr[7] = 88
+      arr[8] = 99
+      arr[9] = 111
+      arr[10] = 122
+      arr[11] = 133
+      arr[12] = 144
+      arr[13] = 155
+      arr[14] = 166
+      arr[15] = 177
+    array access: arr[13] = 155, ONE index computation. O(1).
+    linked list (separate objects, followed one .next at a time):
+      node@6d311334: data = 11
+      node@682a0b20: data = 22
+      node@3d075dc0: data = 33
+      node@214c265e: data = 44
+      node@448139f0: data = 55
+      node@7cca494b: data = 66
+      node@7ba4f24f: data = 77
+      node@3b9a45b3: data = 88
+      node@7699a589: data = 99
+      node@58372a00: data = 111
+      node@4dd8dc3: data = 122
+      node@6d03e736: data = 133
+      node@568db2f2: data = 144
+      node@378bf509: data = 155
+      node@5fd0d5ae: data = 166
+      node@2d98a335: data = 177
+    linked access: reached node with data = 155 after 13 hops. O(n).
+
+    -- edge: k = 0, the first element (k = 0) --
+    array (one contiguous block, indexed access):
+      arr[0] = 7
+      arr[1] = 14
+      arr[2] = 21
+      arr[3] = 28
+      arr[4] = 35
+      arr[5] = 42
+      arr[6] = 49
+      arr[7] = 56
+      arr[8] = 63
+      arr[9] = 70
+    array access: arr[0] = 7, ONE index computation. O(1).
+    linked list (separate objects, followed one .next at a time):
+      node@16b98e56: data = 7
+      node@7ef20235: data = 14
+      node@27d6c5e0: data = 21
+      node@4f3f5b24: data = 28
+      node@15aeb7ab: data = 35
+      node@7b23ec81: data = 42
+      node@6acbcfc0: data = 49
+      node@5f184fc6: data = 56
+      node@3feba861: data = 63
+      node@5b480cf9: data = 70
+    linked access: reached node with data = 7 after 0 hops. O(n).
+
+    -- edge: k = the last index, the most hops (k = 11) --
+    array (one contiguous block, indexed access):
+      arr[0] = 3
+      arr[1] = 6
+      arr[2] = 9
+      arr[3] = 12
+      arr[4] = 15
+      arr[5] = 18
+      arr[6] = 21
+      arr[7] = 24
+      arr[8] = 27
+      arr[9] = 30
+      arr[10] = 33
+      arr[11] = 36
+    array access: arr[11] = 36, ONE index computation. O(1).
+    linked list (separate objects, followed one .next at a time):
+      node@6f496d9f: data = 3
+      node@723279cf: data = 6
+      node@10f87f48: data = 9
+      node@b4c966a: data = 12
+      node@2f4d3709: data = 15
+      node@4e50df2e: data = 18
+      node@1d81eb93: data = 21
+      node@7291c18f: data = 24
+      node@34a245ab: data = 27
+      node@7cc355be: data = 30
+      node@6e8cf4c6: data = 33
+      node@12edcd21: data = 36
+    linked access: reached node with data = 36 after 11 hops. O(n).
     ```
 
-Notice the array addresses: `...8A0`, `...8A4`, `...8A8`, ... — each exactly 4 bytes after the previous one, always,
-guaranteed by the language. The linked list's node addresses have no such guarantee at all; on this particular run
-they even happened to land close together, but nothing promises that — only the `next` pointers, drawn as arrows
-above, are guaranteed to connect the right values in the right order. Next week you will build, search, insert into
-and delete from exactly this structure.
+Notice the array addresses in the normal scenario: `...5E0`, `...5E4`, `...5E8`, ... — each exactly 4 bytes after
+the previous one, always, guaranteed by the language, the same fixed stride Section 4.7 computed by hand. The
+linked list's node addresses have no such guarantee at all — only the `next` pointers, drawn as arrows above, are
+guaranteed to connect the right values in the right order. Every scenario tells the same story: the array reaches
+element `k` in one calculation; the linked list must walk `k` nodes to get there. Next week you will build, search,
+insert into and delete from exactly this structure.
 
 ## 6. ASN.1, BER TLV, and PER TLV: encoding data for the wire
 
@@ -3781,8 +3106,299 @@ that content, `0C 03 52 65 78` (a UTF8String of length 3, `"Rex"`) followed by `
 | Typical use | X.509 certificates, LDAP, SNMP — interoperability across many independent implementations | Bandwidth-critical protocols (e.g. cellular signaling) where every byte on the wire matters |
 
 Both encode the exact same abstract information (an ASN.1 schema, written once) — BER trades size for
-self-description, PER trades self-description for size. This course's example above is BER; PER is worth knowing
-exists, but hand-packing individual bits is outside this course's scope.
+self-description, PER trades self-description for size. Section 6.5 above hand-encoded BER; Section 6.7 below does
+the same record's cousin in PER, bit by bit.
+
+### 6.7 PER: packing fields into the minimum number of bits
+
+BER spends at least two whole bytes (a tag and a length) on every single field, even a one-bit flag. **PER**
+throws that away: if both sides already agree on the schema — each field's name, and its `[min, max]` range — then
+a field only ever needs `width = ⌈log₂(max - min + 1)⌉` bits, and not one more. A field whose range has exactly one
+possible value (`min == max`) needs **zero** bits: the receiver already knows the value from the schema alone.
+
+<iframe class="dsanim" src="../anim/per-encoding.html" title="PER encoding: every field uses exactly as many bits as its range needs" loading="lazy"></iframe>
+<div class="dsanim-baski" markdown>
+![PER encoding: every field uses exactly as many bits as its range needs — step by step](anim/per-encoding.png)
+</div>
+
+In the picker, also try **14 fields: wide ranges, widths up to 16 bits** (hard) and the edge cases **a range of
+size 1: 0 bits** and **values sit at the very top of their range** — or press 🎲 for random data at four difficulty
+levels, or type your own fields as `name:min..max:value`.
+
+=== "C"
+
+    ```c
+    /* width = 0 when max == min: there is only one possible value, so NO bits are sent at all --
+       the receiver already knows it from the schema. */
+    int width = (max == min) ? 0 : (int) ceil(log2((double) (max - min + 1)));
+    pack_bits(per, &bitpos, (unsigned) (value - min), width);
+    ```
+
+=== "Java"
+
+    ```java
+    // width = 0 when max == min: only one possible value, so NO bits are sent -- the receiver
+    // already knows it from the schema.
+    int width = (max == min) ? 0 : (int) Math.ceil(Math.log(max - min + 1) / Math.log(2));
+    packBits(per, value - min, width);
+    ```
+
+    The full class (`code/week-01/java/PerEncoding.java`) mirrors the C program's four scenarios exactly.
+
+??? example "Full program: `per_encoding.c` / `PerEncoding.java`"
+
+    === "C"
+
+        ```c
+        /* Week 1 -- Introduction to Data Structures
+         * PER-style encoding: every field is packed into the MINIMUM number of bits its own
+         * [min, max] range needs -- no tags, no length bytes, byte-aligned only at the very end.
+         * Runs the same normal / hard / edge-case scenarios as the per-encoding animation.
+         * CEN207 Data Structures (CS50-style lecture notes)
+         */
+        #include <math.h>
+        #include <stdio.h>
+
+        typedef struct { const char *name; int min; int max; int value; } Field;
+
+        /* Pack the low `width` bits of `value` into buf, starting at bit offset *bitpos (MSB first). */
+        static void pack_bits(unsigned char *buf, int *bitpos, unsigned int value, int width) {
+            for (int i = width - 1; i >= 0; i--) {
+                int bit = (int) ((value >> i) & 1u);
+                int byte_index = *bitpos / 8;
+                int bit_index = 7 - (*bitpos % 8);
+                if (bit)
+                    buf[byte_index] |= (unsigned char) (1u << bit_index);
+                (*bitpos)++;
+            }
+        }
+
+        static void run_scenario(const char *label, const Field fields[], int count) {
+            printf("-- %s --\n", label);
+            unsigned char buf[64] = {0};
+            int bitpos = 0;
+            for (int i = 0; i < count; i++) {
+                const Field *f = &fields[i];
+                /* width = 0 when max == min: only one possible value, so NO bits are sent -- the
+                   receiver already knows it from the schema. */
+                int width = (f->max == f->min) ? 0 : (int) ceil(log2((double) (f->max - f->min + 1)));
+                pack_bits(buf, &bitpos, (unsigned) (f->value - f->min), width);
+                printf("  %-8s [%4d..%-4d] value=%-4d -> %d bit%s\n", f->name, f->min, f->max, f->value, width, width == 1 ? "" : "s");
+            }
+            int totalBits = bitpos;
+            int totalBytes = (bitpos + 7) / 8;
+            printf("total: %d significant bits, %d bytes:", totalBits, totalBytes);
+            for (int i = 0; i < totalBytes; i++)
+                printf(" %02X", buf[i]);
+            printf("\n\n");
+        }
+
+        int main(void) {
+            /* normal: 10 fields: name characters, an age, a few constrained numbers */
+            Field normal[] = {
+                {"name0", 0, 255, 82}, {"name1", 0, 255, 101}, {"name2", 0, 255, 120},
+                {"age", 0, 31, 5}, {"active", 0, 1, 1}, {"score", 0, 100, 87},
+                {"level", 0, 7, 3}, {"flag", 0, 1, 0}, {"code", 0, 15, 9}, {"temp", -20, 50, 22}
+            };
+            run_scenario("normal: 10 fields, name characters, an age, a few constrained numbers", normal, 10);
+
+            /* hard: 14 fields: wide ranges, widths up to 16 bits */
+            Field hard[] = {
+                {"id", 0, 65535, 4000}, {"name0", 0, 255, 82}, {"name1", 0, 255, 101}, {"name2", 0, 255, 120},
+                {"name3", 0, 255, 84}, {"age", 0, 31, 20}, {"active", 0, 1, 0}, {"score", 0, 1000, 999},
+                {"level", 0, 7, 7}, {"flag", 0, 1, 1}, {"code", 0, 15, 0}, {"temp", -50, 50, -30},
+                {"ratio", 0, 9, 4}, {"extra", 0, 3, 2}
+            };
+            run_scenario("hard: 14 fields, wide ranges, widths up to 16 bits", hard, 14);
+
+            /* edge: a range of size 1 needs 0 bits */
+            Field rangeSizeOne[] = {
+                {"version", 1, 1, 1}, {"name0", 0, 255, 82}, {"name1", 0, 255, 101}, {"name2", 0, 255, 120},
+                {"age", 0, 31, 5}, {"active", 0, 1, 1}, {"score", 0, 100, 50}, {"level", 0, 7, 3},
+                {"flag", 0, 1, 0}, {"code", 0, 15, 9}
+            };
+            run_scenario("edge: a range of size 1 (0 bits)", rangeSizeOne, 10);
+
+            /* edge: values sit at the very top of their range */
+            Field topOfRange[] = {
+                {"name0", 0, 255, 82}, {"name1", 0, 255, 101}, {"name2", 0, 255, 120},
+                {"age", 0, 31, 31}, {"active", 0, 1, 1}, {"score", 0, 100, 100}, {"level", 0, 7, 3},
+                {"flag", 0, 1, 0}, {"code", 0, 15, 9}, {"temp", -20, 50, 22}
+            };
+            run_scenario("edge: values sit at the very top of their range", topOfRange, 10);
+
+            return 0;
+        }
+        ```
+
+    === "Java"
+
+        ```java
+        /* Week 1 -- Introduction to Data Structures
+         * PER-style encoding: every field is packed into the MINIMUM number of bits its own
+         * [min, max] range needs -- no tags, no length bytes, byte-aligned only at the very end.
+         * Runs the same normal / hard / edge-case scenarios as the per-encoding animation.
+         * CEN207 Data Structures (CS50-style lecture notes)
+         */
+        public class PerEncoding {
+            static class Field {
+                String name; int min, max, value;
+                Field(String name, int min, int max, int value) { this.name = name; this.min = min; this.max = max; this.value = value; }
+            }
+
+            static int bitpos;
+
+            // Pack the low `width` bits of `value` into buf, starting at bit offset bitpos (MSB first).
+            static void packBits(byte[] buf, int value, int width) {
+                for (int i = width - 1; i >= 0; i--) {
+                    int bit = (value >> i) & 1;
+                    int byteIndex = bitpos / 8;
+                    int bitIndex = 7 - (bitpos % 8);
+                    if (bit != 0)
+                        buf[byteIndex] |= (byte) (1 << bitIndex);
+                    bitpos++;
+                }
+            }
+
+            static void runScenario(String label, Field[] fields) {
+                System.out.println("-- " + label + " --");
+                byte[] buf = new byte[64];
+                bitpos = 0;
+                for (Field f : fields) {
+                    // width = 0 when max == min: only one possible value, so NO bits are sent -- the
+                    // receiver already knows it from the schema.
+                    int width = (f.max == f.min) ? 0 : (int) Math.ceil(Math.log(f.max - f.min + 1) / Math.log(2));
+                    packBits(buf, f.value - f.min, width);
+                    System.out.printf("  %-8s [%4d..%-4d] value=%-4d -> %d bit%s%n", f.name, f.min, f.max, f.value, width, width == 1 ? "" : "s");
+                }
+                int totalBits = bitpos;
+                int totalBytes = (bitpos + 7) / 8;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < totalBytes; i++) sb.append(String.format(" %02X", buf[i]));
+                System.out.println("total: " + totalBits + " significant bits, " + totalBytes + " bytes:" + sb);
+                System.out.println();
+            }
+
+            public static void main(String[] args) {
+                // normal: 10 fields: name characters, an age, a few constrained numbers
+                Field[] normal = {
+                    new Field("name0", 0, 255, 82), new Field("name1", 0, 255, 101), new Field("name2", 0, 255, 120),
+                    new Field("age", 0, 31, 5), new Field("active", 0, 1, 1), new Field("score", 0, 100, 87),
+                    new Field("level", 0, 7, 3), new Field("flag", 0, 1, 0), new Field("code", 0, 15, 9), new Field("temp", -20, 50, 22)
+                };
+                runScenario("normal: 10 fields, name characters, an age, a few constrained numbers", normal);
+
+                // hard: 14 fields: wide ranges, widths up to 16 bits
+                Field[] hard = {
+                    new Field("id", 0, 65535, 4000), new Field("name0", 0, 255, 82), new Field("name1", 0, 255, 101), new Field("name2", 0, 255, 120),
+                    new Field("name3", 0, 255, 84), new Field("age", 0, 31, 20), new Field("active", 0, 1, 0), new Field("score", 0, 1000, 999),
+                    new Field("level", 0, 7, 7), new Field("flag", 0, 1, 1), new Field("code", 0, 15, 0), new Field("temp", -50, 50, -30),
+                    new Field("ratio", 0, 9, 4), new Field("extra", 0, 3, 2)
+                };
+                runScenario("hard: 14 fields, wide ranges, widths up to 16 bits", hard);
+
+                // edge: a range of size 1 needs 0 bits
+                Field[] rangeSizeOne = {
+                    new Field("version", 1, 1, 1), new Field("name0", 0, 255, 82), new Field("name1", 0, 255, 101), new Field("name2", 0, 255, 120),
+                    new Field("age", 0, 31, 5), new Field("active", 0, 1, 1), new Field("score", 0, 100, 50), new Field("level", 0, 7, 3),
+                    new Field("flag", 0, 1, 0), new Field("code", 0, 15, 9)
+                };
+                runScenario("edge: a range of size 1 (0 bits)", rangeSizeOne);
+
+                // edge: values sit at the very top of their range
+                Field[] topOfRange = {
+                    new Field("name0", 0, 255, 82), new Field("name1", 0, 255, 101), new Field("name2", 0, 255, 120),
+                    new Field("age", 0, 31, 31), new Field("active", 0, 1, 1), new Field("score", 0, 100, 100), new Field("level", 0, 7, 3),
+                    new Field("flag", 0, 1, 0), new Field("code", 0, 15, 9), new Field("temp", -20, 50, 22)
+                };
+                runScenario("edge: values sit at the very top of their range", topOfRange);
+            }
+        }
+        ```
+
+**Try it**
+
+=== "C"
+
+    ```console
+    gcc -std=c11 -Wall -Wextra -o /tmp/x per_encoding.c -lm && /tmp/x
+    ```
+
+    Expected output:
+
+    ```text
+    -- normal: 10 fields, name characters, an age, a few constrained numbers --
+      name0    [   0..255 ] value=82   -> 8 bits
+      name1    [   0..255 ] value=101  -> 8 bits
+      name2    [   0..255 ] value=120  -> 8 bits
+      age      [   0..31  ] value=5    -> 5 bits
+      active   [   0..1   ] value=1    -> 1 bit
+      score    [   0..100 ] value=87   -> 7 bits
+      level    [   0..7   ] value=3    -> 3 bits
+      flag     [   0..1   ] value=0    -> 1 bit
+      code     [   0..15  ] value=9    -> 4 bits
+      temp     [ -20..50  ] value=22   -> 7 bits
+    total: 52 significant bits, 7 bytes: 52 65 78 2E BB 4A A0
+
+    -- hard: 14 fields, wide ranges, widths up to 16 bits --
+      id       [   0..65535] value=4000 -> 16 bits
+      name0    [   0..255 ] value=82   -> 8 bits
+      name1    [   0..255 ] value=101  -> 8 bits
+      name2    [   0..255 ] value=120  -> 8 bits
+      name3    [   0..255 ] value=84   -> 8 bits
+      age      [   0..31  ] value=20   -> 5 bits
+      active   [   0..1   ] value=0    -> 1 bit
+      score    [   0..1000] value=999  -> 10 bits
+      level    [   0..7   ] value=7    -> 3 bits
+      flag     [   0..1   ] value=1    -> 1 bit
+      code     [   0..15  ] value=0    -> 4 bits
+      temp     [ -50..50  ] value=-30  -> 7 bits
+      ratio    [   0..9   ] value=4    -> 4 bits
+      extra    [   0..3   ] value=2    -> 2 bits
+    total: 85 significant bits, 11 bytes: 0F A0 52 65 78 54 A3 E7 F0 28 90
+
+    -- edge: a range of size 1 (0 bits) --
+      version  [   1..1   ] value=1    -> 0 bits
+      name0    [   0..255 ] value=82   -> 8 bits
+      name1    [   0..255 ] value=101  -> 8 bits
+      name2    [   0..255 ] value=120  -> 8 bits
+      age      [   0..31  ] value=5    -> 5 bits
+      active   [   0..1   ] value=1    -> 1 bit
+      score    [   0..100 ] value=50   -> 7 bits
+      level    [   0..7   ] value=3    -> 3 bits
+      flag     [   0..1   ] value=0    -> 1 bit
+      code     [   0..15  ] value=9    -> 4 bits
+    total: 45 significant bits, 6 bytes: 52 65 78 2D 93 48
+
+    -- edge: values sit at the very top of their range --
+      name0    [   0..255 ] value=82   -> 8 bits
+      name1    [   0..255 ] value=101  -> 8 bits
+      name2    [   0..255 ] value=120  -> 8 bits
+      age      [   0..31  ] value=31   -> 5 bits
+      active   [   0..1   ] value=1    -> 1 bit
+      score    [   0..100 ] value=100  -> 7 bits
+      level    [   0..7   ] value=3    -> 3 bits
+      flag     [   0..1   ] value=0    -> 1 bit
+      code     [   0..15  ] value=9    -> 4 bits
+      temp     [ -20..50  ] value=22   -> 7 bits
+    total: 52 significant bits, 7 bytes: 52 65 78 FF 23 4A A0
+    ```
+
+=== "Java"
+
+    ```console
+    javac -d /tmp/j PerEncoding.java && java -cp /tmp/j PerEncoding
+    ```
+
+    Expected output: identical to the C output above (only the field-width computation's language differs;
+    `ceil(log2(...))` in C, `Math.ceil(Math.log(...) / Math.log(2))` in Java, since Java has no built-in `log2`).
+
+The normal scenario needs only **52 bits (7 bytes)** for 10 fields that BER (Section 6.5) would have spent at
+least `10 * 2 = 20` bytes' worth of tags and lengths alone on. The edge scenario makes the `width = 0` rule
+concrete: `version` has `min == max == 1`, so it contributes **zero** bits to the stream, yet both sides still
+agree its value is `1` — the schema carries that information instead of the wire. PER pays for this by giving up
+BER's self-description entirely: without the schema in hand, a PER decoder cannot even tell where one field's bits
+end and the next one's begin.
 
 !!! warning "Common mistakes"
     - Forgetting the length prefix and hoping a fixed-size read on the other end will "just work". TLV exists
@@ -3881,41 +3497,190 @@ time; never "fix" a warning by silencing it.
 
 ### 7.5 Step 3: find a bug with gdb
 
-Here is a small program with a genuine bug: the average it prints is wrong.
+Here is a small program with a genuine bug: the average it prints is wrong. Play the animation first to see the
+same investigation — breakpoint, step, watch table — narrated frame by frame; then reproduce it yourself in a real
+`gdb` session below.
+
+<iframe class="dsanim" src="../anim/debugger-stepping.html" title="Stepping through a debugger: breakpoints, step, next, and a watch table" loading="lazy"></iframe>
+<div class="dsanim-baski" markdown>
+![Stepping through a debugger: breakpoints, step, next, and a watch table — step by step](anim/debugger-stepping.png)
+</div>
+
+In the picker, also try **16 elements, negative values** (hard) and the edge cases **empty array: the
+division-by-zero guard** and **a single element** — or press 🎲 for random data at four difficulty levels, or type
+your own array.
 
 ```c
-/* Week 1 -- Introduction to Data Structures
- * A small bug hunt for the C workshop: why is the average wrong?
- * CEN207 Data Structures (CS50-style lecture notes)
- */
-#include <stdio.h>
-
 int average_buggy(const int arr[], int n) {
+    if (n == 0) return 0;            /* guard: avoid division by zero */
     int sum = 0;
     for (int i = 0; i < n; i++)
         sum = sum + arr[i];
-    return sum / n;               /* bug: integer division truncates */
+    return sum / n;                  /* bug: integer division truncates */
 }
 
 double average_fixed(const int arr[], int n) {
+    if (n == 0) return 0.0;
     int sum = 0;
     for (int i = 0; i < n; i++)
         sum = sum + arr[i];
-    return (double) sum / n;      /* fix: promote to double before dividing */
-}
-
-int main(void) {
-    int scores[] = {7, 8, 8};
-    int n = (int) (sizeof(scores) / sizeof(scores[0]));
-
-    printf("average_buggy  -> %d\n", average_buggy(scores, n));
-    printf("average_fixed  -> %.2f\n", average_fixed(scores, n));
-
-    return 0;
+    return (double) sum / n;         /* fix: promote to double before dividing */
 }
 ```
 
-Build it **with debug symbols** (`-g`), so gdb can show source lines and variable names instead of raw addresses:
+??? example "Full program: `debug_average.c` / `DebugAverage.java`"
+
+    === "C"
+
+        ```c
+        /* Week 1 -- Introduction to Data Structures
+         * average_buggy() truncates because of integer division; average_fixed() casts to double first.
+         * Runs the same normal / hard / edge-case scenarios as the debugger-stepping animation, the way a
+         * gdb session (Section 7.5) narrates them one breakpoint at a time.
+         * CEN207 Data Structures (CS50-style lecture notes)
+         */
+        #include <stdio.h>
+
+        int average_buggy(const int arr[], int n) {
+            if (n == 0) return 0;            /* guard: avoid division by zero */
+            int sum = 0;
+            for (int i = 0; i < n; i++)
+                sum = sum + arr[i];
+            return sum / n;                  /* bug: integer division truncates */
+        }
+
+        double average_fixed(const int arr[], int n) {
+            if (n == 0) return 0.0;
+            int sum = 0;
+            for (int i = 0; i < n; i++)
+                sum = sum + arr[i];
+            return (double) sum / n;         /* fix: promote to double before dividing */
+        }
+
+        static void run_scenario(const char *label, const int arr[], int n) {
+            printf("-- %s --\n", label);
+            printf("arr:");
+            for (int i = 0; i < n; i++)
+                printf(" %d", arr[i]);
+            printf("  (n = %d)\n", n);
+            printf("average_buggy  -> %d\n", average_buggy(arr, n));
+            printf("average_fixed  -> %.2f\n\n", average_fixed(arr, n));
+        }
+
+        int main(void) {
+            /* normal: 10 elements, the bug shows */
+            int normal[] = {7, 8, 8, 9, 6, 10, 7, 8, 9, 9};
+            run_scenario("normal: 10 elements, the bug shows", normal, 10);
+
+            /* hard: 16 elements, negative values */
+            int hard[] = {-5, 3, -8, 12, -1, 7, -10, 4, 9, -6, 2, -3, 8, -7, 1, 5};
+            run_scenario("hard: 16 elements, negative values", hard, 16);
+
+            /* edge: empty array, the division-by-zero guard */
+            run_scenario("edge: empty array (division-by-zero guard)", NULL, 0);
+
+            /* edge: a single element */
+            int single[] = {7};
+            run_scenario("edge: a single element", single, 1);
+
+            return 0;
+        }
+        ```
+
+    === "Java"
+
+        ```java
+        /* Week 1 -- Introduction to Data Structures
+         * averageBuggy() truncates because of integer division; averageFixed() casts to double first.
+         * Runs the same normal / hard / edge-case scenarios as the debugger-stepping animation.
+         * CEN207 Data Structures (CS50-style lecture notes)
+         */
+        public class DebugAverage {
+            static int averageBuggy(int[] arr) {
+                if (arr.length == 0) return 0;
+                int sum = 0;
+                for (int x : arr) sum += x;
+                return sum / arr.length;          // bug: integer division truncates
+            }
+
+            static double averageFixed(int[] arr) {
+                if (arr.length == 0) return 0.0;
+                int sum = 0;
+                for (int x : arr) sum += x;
+                return (double) sum / arr.length; // fix: promote to double before dividing
+            }
+
+            static void runScenario(String label, int[] arr) {
+                System.out.println("-- " + label + " --");
+                StringBuilder sb = new StringBuilder("arr:");
+                for (int v : arr) sb.append(' ').append(v);
+                sb.append("  (n = ").append(arr.length).append(')');
+                System.out.println(sb);
+                System.out.println("averageBuggy  -> " + averageBuggy(arr));
+                System.out.printf("averageFixed  -> %.2f%n%n", averageFixed(arr));
+            }
+
+            public static void main(String[] args) {
+                // normal: 10 elements, the bug shows
+                int[] normal = {7, 8, 8, 9, 6, 10, 7, 8, 9, 9};
+                runScenario("normal: 10 elements, the bug shows", normal);
+
+                // hard: 16 elements, negative values
+                int[] hard = {-5, 3, -8, 12, -1, 7, -10, 4, 9, -6, 2, -3, 8, -7, 1, 5};
+                runScenario("hard: 16 elements, negative values", hard);
+
+                // edge: empty array, the division-by-zero guard
+                runScenario("edge: empty array (division-by-zero guard)", new int[0]);
+
+                // edge: a single element
+                int[] single = {7};
+                runScenario("edge: a single element", single);
+            }
+        }
+        ```
+
+**Try it**
+
+=== "C"
+
+    ```console
+    gcc -std=c11 -Wall -Wextra -o /tmp/x debug_average.c && /tmp/x
+    ```
+
+    Expected output:
+
+    ```text
+    -- normal: 10 elements, the bug shows --
+    arr: 7 8 8 9 6 10 7 8 9 9  (n = 10)
+    average_buggy  -> 8
+    average_fixed  -> 8.10
+
+    -- hard: 16 elements, negative values --
+    arr: -5 3 -8 12 -1 7 -10 4 9 -6 2 -3 8 -7 1 5  (n = 16)
+    average_buggy  -> 0
+    average_fixed  -> 0.69
+
+    -- edge: empty array (division-by-zero guard) --
+    arr:  (n = 0)
+    average_buggy  -> 0
+    average_fixed  -> 0.00
+
+    -- edge: a single element --
+    arr: 7  (n = 1)
+    average_buggy  -> 7
+    average_fixed  -> 7.00
+    ```
+
+=== "Java"
+
+    ```console
+    javac -d /tmp/j DebugAverage.java && java -cp /tmp/j DebugAverage
+    ```
+
+    Expected output: identical values to the C output above (`averageBuggy`/`averageFixed` naming).
+
+Now find the bug with a debugger instead of reading the source by eye. Build **with debug symbols** (`-g`), so gdb
+can show source lines and variable names instead of raw addresses:
 
 ```console
 gcc -std=c11 -Wall -Wextra -g -o /tmp/dbg debug_average.c
@@ -3926,41 +3691,62 @@ Inside the `(gdb)` prompt, type these commands one at a time (each `(gdb)` line 
 everything else is gdb's response):
 
 ```console
-(gdb) break debug_average.c:11
+(gdb) break debug_average.c:14
 (gdb) run
 (gdb) print sum
 (gdb) print n
 (gdb) print sum / n
 (gdb) print (double) sum / n
+(gdb) delete 1
 (gdb) continue
 (gdb) quit
 ```
 
-Expected session (a couple of gdb's own thread-lifecycle lines are trimmed for clarity; everything else is exactly
-what gdb prints):
+Expected session (a thread-creation line is trimmed for clarity; everything else is exactly what gdb prints):
 
 ```text
-Breakpoint 1 at 0x140001768: file debug_average.c, line 11.
+Breakpoint 1 at 0x140001775: file debug_average.c, line 14.
 
-Thread 1 hit Breakpoint 1, average_buggy (arr=0x5ffe80, n=3) at debug_average.c:11
-11          return sum / n;               /* bug: integer division truncates */
-$1 = 23
-$2 = 3
-$3 = 7
-$4 = 7.666666666666667
+Thread 1 hit Breakpoint 1, average_buggy (arr=0x5ffe60, n=10) at debug_average.c:14
+14          return sum / n;                  /* bug: integer division truncates */
+$1 = 81
+$2 = 10
+$3 = 8
+$4 = 8.0999999999999996
+-- normal: 10 elements, the bug shows --
+arr: 7 8 8 9 6 10 7 8 9 9  (n = 10)
+average_buggy  -> 8
+average_fixed  -> 8.10
+
+-- hard: 16 elements, negative values --
+arr: -5 3 -8 12 -1 7 -10 4 9 -6 2 -3 8 -7 1 5  (n = 16)
+average_buggy  -> 0
+average_fixed  -> 0.69
+
+-- edge: empty array (division-by-zero guard) --
+arr:  (n = 0)
+average_buggy  -> 0
+average_fixed  -> 0.00
+
+-- edge: a single element --
+arr: 7  (n = 1)
 average_buggy  -> 7
-average_fixed  -> 7.67
+average_fixed  -> 7.00
+
+[Inferior 1 (process ...) exited normally]
 ```
 
-Walk through what just happened: `break debug_average.c:11` set a breakpoint on the `return` line inside
-`average_buggy`; `run` started the program, which stopped exactly there, before that line executed. `print sum` and
-`print n` showed the real values at that point (`23` and `3` — correct so far: 7 + 8 + 8 = 23). `print sum / n`
-showed `7` — **integer division**, which truncates `23 / 3 = 7.666...` down to `7`. `print (double) sum / n` showed
-the *intended* result, `7.666666666666667`, by forcing floating-point division. The bug was never in the loop or the
-sum — it was the final division. `average_fixed` (Section-visible in the code above) fixes it with exactly that
-cast, and its `%.2f` output, `7.67`, matches. This — form a hypothesis, inspect a variable, confirm or refute it —
-is the entire method of debugging with a debugger, and it scales to bugs far subtler than this one.
-
+Walk through what just happened: `break debug_average.c:14` set a breakpoint on the `return sum / n;` line inside
+`average_buggy`; `run` started the program, which called `run_scenario` for the *normal* scenario first (10
+elements) and stopped exactly there, before that line executed. `print sum` and `print n` showed the real values
+at that point (`81` and `10` — correct so far, matching the animation's watch table: 7+8+8+9+6+10+7+8+9+9 = 81).
+`print sum / n` showed `8` — **integer division**, which truncates `81 / 10 = 8.1` down to `8`. `print (double) sum
+/ n` showed the *intended* result (`8.0999999999999996`, floating point's usual imprecise-but-close way of writing
+`8.1`), by forcing floating-point division. The bug was never in the loop or the sum — it was the final division.
+`delete 1` removed the breakpoint so `continue` could run the remaining three scenarios to completion without
+stopping again; their output matches the plain "Try it" run above exactly, and `average_fixed` fixes every one of
+them with exactly the `(double)` cast. This — form a hypothesis, inspect a variable, confirm or refute it — is the
+entire method of debugging with a debugger, and it scales to bugs far subtler than this one.
 ### 7.6 Step 4: CMake basics
 
 The midterm project template (see the [project guide](../project-guide/index.md)) is built with CMake, not a bare

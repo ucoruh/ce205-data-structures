@@ -230,25 +230,22 @@ bilgisayarın bugün ne kadar meşgul olduğuna bağlı değildir; yalnızca alg
 ### 3.4 Doğrusal arama: her kutuyu dene
 
 **Doğrusal arama (linear search)**, dizinin başından başlar ve hedefi bulana ya da elemanlar bitene kadar bir
-elemandan sonra diğerine bakar. Veride belirli bir sıra gerektirmez — herhangi bir dizide çalışır.
+elemandan diğerine bakar. Veride belirli bir sıra gerektirmez — herhangi bir dizide çalışır.
 
-Animasyonu oynatın: 10 elemanlı bir dizide önce en iyi durumda, sonra sona yakın bir değeri ararken
-karşılaştırmaları sayarken izleyin.
+Animasyonu oynatın: 11 elemanlı bir dizide, ortadaki bir değeri ararken karşılaştırmaları saymasını izleyin.
 
 <iframe class="dsanim" src="../anim/linear-search.html" title="Linear search: counting comparisons" loading="lazy"></iframe>
 <div class="dsanim-baski" markdown>
 ![Linear search: counting comparisons — step by step](anim/linear-search.png)
 </div>
 
+Seçicide ayrıca **20 değer, tekrarlı hedef, ilk eşleşme** (zor) örneğini ve **bulunamadı: hedef dizide yok**,
+**en iyi durum: hedef ilk kutuda (indeks 0)**, **tek elemanlı dizi** uç durumlarını deneyin — ya da dört zorluk
+seviyesinde rastgele veri için 🎲'a basın, ya da kendi dizinizi ve hedefinizi yazın.
+
 === "C"
 
     ```c
-    /* Week 1 -- Introduction to Data Structures
-     * Linear search: scan the array from the front, one comparison at a time.
-     * CEN207 Data Structures (CS50-style lecture notes)
-     */
-    #include <stdio.h>
-
     int linear_search(const int arr[], int n, int target, int *comparisons) {
         for (int i = 0; i < n; i++) {
             (*comparisons)++;
@@ -257,102 +254,25 @@ karşılaştırmaları sayarken izleyin.
         }
         return -1;
     }
-
-    static void report(const int arr[], int n, int target) {
-        int comparisons = 0;
-        int index = linear_search(arr, n, target, &comparisons);
-        if (index >= 0)
-            printf("linear_search(target=%d) -> found at index %d, %d comparison%s\n",
-                   target, index, comparisons, comparisons == 1 ? "" : "s");
-        else
-            printf("linear_search(target=%d) -> not found, %d comparisons\n",
-                   target, comparisons);
-    }
-
-    int main(void) {
-        int arr[] = {4, 8, 15, 16, 23, 27, 31, 38, 42, 50};
-        int n = (int) (sizeof(arr) / sizeof(arr[0]));
-
-        printf("array: ");
-        for (int i = 0; i < n; i++)
-            printf("%d ", arr[i]);
-        printf("(n = %d)\n\n", n);
-
-        report(arr, n, 4);    /* best case: first element */
-        report(arr, n, 42);   /* near-worst case: second to last element */
-        report(arr, n, 50);   /* worst case among hits: last element */
-        report(arr, n, 99);   /* worst case: not present at all */
-
-        /* Average case: average the comparison count over every possible target position. */
-        long total = 0;
-        for (int i = 0; i < n; i++) {
-            int comparisons = 0;
-            linear_search(arr, n, arr[i], &comparisons);
-            total += comparisons;
-        }
-        printf("\naverage comparisons over all %d positions: %.1f (formula: (n + 1) / 2 = %.1f)\n",
-               n, (double) total / n, (n + 1) / 2.0);
-
-        return 0;
-    }
     ```
 
 === "Java"
 
     ```java
-    /* Week 1 -- Introduction to Data Structures
-     * Linear search: scan the array from the front, one comparison at a time.
-     * CEN207 Data Structures (CS50-style lecture notes)
-     */
-    public class LinearSearch {
-        static int comparisons;
-
-        static int linearSearch(int[] arr, int target) {
-            comparisons = 0;
-            for (int i = 0; i < arr.length; i++) {
-                comparisons++;
-                if (arr[i] == target)
-                    return i;
-            }
-            return -1;
+    static int linearSearch(int[] arr, int target) {
+        comparisons = 0;
+        for (int i = 0; i < arr.length; i++) {
+            comparisons++;
+            if (arr[i] == target)
+                return i;
         }
-
-        static void report(int[] arr, int target) {
-            int index = linearSearch(arr, target);
-            if (index >= 0)
-                System.out.println("linearSearch(target=" + target + ") -> found at index " + index
-                        + ", " + comparisons + " comparison" + (comparisons == 1 ? "" : "s"));
-            else
-                System.out.println("linearSearch(target=" + target + ") -> not found, "
-                        + comparisons + " comparisons");
-        }
-
-        public static void main(String[] args) {
-            int[] arr = {4, 8, 15, 16, 23, 27, 31, 38, 42, 50};
-            int n = arr.length;
-
-            StringBuilder sb = new StringBuilder("array: ");
-            for (int v : arr)
-                sb.append(v).append(' ');
-            System.out.println(sb + "(n = " + n + ")\n");
-
-            report(arr, 4);
-            report(arr, 42);
-            report(arr, 50);
-            report(arr, 99);
-
-            long total = 0;
-            for (int v : arr) {
-                linearSearch(arr, v);
-                total += comparisons;
-            }
-            System.out.printf("%naverage comparisons over all %d positions: %.1f (formula: (n + 1) / 2 = %.1f)%n",
-                    n, (double) total / n, (n + 1) / 2.0);
-        }
+        return -1;
     }
     ```
 
-??? example "Programın tamamı: `linear_search.c` / `LinearSearch.java`"
+    Tam sınıf (`code/week-01/java/LinearSearch.java`), C programının beş senaryosunu birebir aynı şekilde çalıştırır.
+
+??? example "Tam program: `linear_search.c` / `LinearSearch.java`"
 
     === "C"
 
@@ -544,31 +464,31 @@ karşılaştırmaları sayarken izleyin.
     linearSearch(target=42) -> found at index 0, 1 comparison
     ```
 
-On eleman, en fazla on karşılaştırma: dizide bir milyon eleman olsaydı, en kötü durum bir milyon karşılaştırma
-olurdu. Maliyet **doğrudan n ile** büyüyor — bu **O(n)**, doğrusal zaman.
+On bir değer olsun, yirmi olsun, şekil hep aynı: `target = 27`, indeks 5'te, 6 karşılaştırmada bulundu; zor
+senaryodaki tekrarlı `99` değeri de *ilk* göründüğü yerde (indeks 15, 16 karşılaştırma) bulundu, ikincisinde değil.
+Dizide bir milyon eleman olsaydı, en kötü durum bir milyon karşılaştırma olurdu. Maliyet **doğrudan n ile birlikte**
+büyür — bu **O(n)**, doğrusal zaman.
 
 ### 3.5 İkili arama: her seferinde yarısını ele
 
-Dizi **sıralıysa (sorted)**, çok daha iyisini yapabiliriz. Ortadaki elemana bakın: hedefse işiniz bitti; hedef
-ondan küçükse, yalnızca sol yarıda olabilir, o yüzden sağ yarıyı atın (ya da tersi). Kalan yarıda tekrarlayın. Buna
-**ikili arama (binary search)** denir.
+Dizi **sıralıysa**, çok daha iyisini yapabiliriz. Ortadaki elemana bakın: hedefse iş bitmiştir; hedef ondan
+küçükse yalnızca sol yarıda olabilir, sağ yarıyı atın (büyükse tam tersi). Kalan yarıda tekrarlayın. Bu **ikili
+arama (binary search)**dır.
 
-Animasyonu, doğrusal aramanın az önce 9 karşılaştırma harcadığı aynı dizide ve aynı hedefte (`42`) oynatın.
+Animasyonu 16 elemanlı sıralı bir dizide, `47`'yi ararken oynatın.
 
 <iframe class="dsanim" src="../anim/binary-search.html" title="Binary search: halving the range" loading="lazy"></iframe>
 <div class="dsanim-baski" markdown>
 ![Binary search: halving the range — step by step](anim/binary-search.png)
 </div>
 
+Seçicide ayrıca **31 değer, bulunamadı: sonunda lo > hi** (zor) örneğini ve **hedef en küçükten de küçük**, **hedef
+en büyükten de büyük**, **tekrarlı değerler arasında arama** uç durumlarını deneyin — ya da dört zorluk seviyesinde
+rastgele veri için 🎲'a basın, ya da kendi sıralı diziniz ve hedefinizi yazın.
+
 === "C"
 
     ```c
-    /* Week 1 -- Introduction to Data Structures
-     * Binary search: repeatedly halve the search range on a SORTED array.
-     * CEN207 Data Structures (CS50-style lecture notes)
-     */
-    #include <stdio.h>
-
     int binary_search(const int arr[], int n, int target, int *comparisons) {
         int lo = 0, hi = n - 1;
         while (lo <= hi) {
@@ -583,106 +503,31 @@ Animasyonu, doğrusal aramanın az önce 9 karşılaştırma harcadığı aynı 
         }
         return -1;
     }
-
-    static void report(const int arr[], int n, int target) {
-        int comparisons = 0;
-        int index = binary_search(arr, n, target, &comparisons);
-        if (index >= 0)
-            printf("binary_search(target=%d) -> found at index %d, %d comparison%s\n",
-                   target, index, comparisons, comparisons == 1 ? "" : "s");
-        else
-            printf("binary_search(target=%d) -> not found, %d comparisons\n",
-                   target, comparisons);
-    }
-
-    int main(void) {
-        int arr[] = {4, 8, 15, 16, 23, 27, 31, 38, 42, 50};
-        int n = (int) (sizeof(arr) / sizeof(arr[0]));
-
-        printf("array: ");
-        for (int i = 0; i < n; i++)
-            printf("%d ", arr[i]);
-        printf("(n = %d)\n\n", n);
-
-        report(arr, n, 4);    /* first element: still fast, not "step 1" like linear search */
-        report(arr, n, 42);   /* same target as linear_search.c -- compare the comparison counts */
-        report(arr, n, 50);   /* last element */
-        report(arr, n, 99);   /* not present */
-
-        /* Average case: average the comparison count over every possible target position. */
-        long total = 0;
-        for (int i = 0; i < n; i++) {
-            int comparisons = 0;
-            binary_search(arr, n, arr[i], &comparisons);
-            total += comparisons;
-        }
-        printf("\naverage comparisons over all %d positions: %.2f\n", n, (double) total / n);
-
-        return 0;
-    }
     ```
 
 === "Java"
 
     ```java
-    /* Week 1 -- Introduction to Data Structures
-     * Binary search: repeatedly halve the search range on a SORTED array.
-     * CEN207 Data Structures (CS50-style lecture notes)
-     */
-    public class BinarySearch {
-        static int comparisons;
-
-        static int binarySearch(int[] arr, int target) {
-            comparisons = 0;
-            int lo = 0, hi = arr.length - 1;
-            while (lo <= hi) {
-                int mid = lo + (hi - lo) / 2;
-                comparisons++;
-                if (arr[mid] == target)
-                    return mid;
-                if (arr[mid] < target)
-                    lo = mid + 1;
-                else
-                    hi = mid - 1;
-            }
-            return -1;
-        }
-
-        static void report(int[] arr, int target) {
-            int index = binarySearch(arr, target);
-            if (index >= 0)
-                System.out.println("binarySearch(target=" + target + ") -> found at index " + index
-                        + ", " + comparisons + " comparison" + (comparisons == 1 ? "" : "s"));
+    static int binarySearch(int[] arr, int target) {
+        comparisons = 0;
+        int lo = 0, hi = arr.length - 1;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            comparisons++;
+            if (arr[mid] == target)
+                return mid;
+            if (arr[mid] < target)
+                lo = mid + 1;
             else
-                System.out.println("binarySearch(target=" + target + ") -> not found, "
-                        + comparisons + " comparisons");
+                hi = mid - 1;
         }
-
-        public static void main(String[] args) {
-            int[] arr = {4, 8, 15, 16, 23, 27, 31, 38, 42, 50};
-            int n = arr.length;
-
-            StringBuilder sb = new StringBuilder("array: ");
-            for (int v : arr)
-                sb.append(v).append(' ');
-            System.out.println(sb + "(n = " + n + ")\n");
-
-            report(arr, 4);
-            report(arr, 42);
-            report(arr, 50);
-            report(arr, 99);
-
-            long total = 0;
-            for (int v : arr) {
-                binarySearch(arr, v);
-                total += comparisons;
-            }
-            System.out.printf("%naverage comparisons over all %d positions: %.2f%n", n, (double) total / n);
-        }
+        return -1;
     }
     ```
 
-??? example "Programın tamamı: `binary_search.c` / `BinarySearch.java`"
+    Tam sınıf (`code/week-01/java/BinarySearch.java`), C programının beş senaryosunu birebir aynı şekilde çalıştırır.
+
+??? example "Tam program: `binary_search.c` / `BinarySearch.java`"
 
     === "C"
 
@@ -888,72 +733,78 @@ Animasyonu, doğrusal aramanın az önce 9 karşılaştırma harcadığı aynı 
     binarySearch(target=20) -> found at index 5, 3 comparisons
     ```
 
-Doğrusal aramaya 9 karşılaştırmaya mal olan aynı `42`, burada yalnızca 3 karşılaştırmada bulundu. Her karşılaştırma
-kalanın yarısını atıyor, o yüzden gereken karşılaştırma sayısı, `n`'i 1'e inene kadar kaç kez ikiye bölebildiğiniz —
-tam olarak `log₂ n`. Bu **O(log n)**, logaritmik zaman. Ödünleşim: ikili arama önce dizinin sıralı olmasını ister,
-sıralamanın kendisi de tek bir aramadan daha pahalıdır (Hafta 9 sıralamayı derinlemesine ele alır).
+Aynı `target = 47`, doğrusal aramada 6 karşılaştırma gerektirmişti (3.4'ün normal senaryosu farklı bir dizi
+kullanıyordu ama şekil genel olarak aynı), ikili aramada yalnızca 3 karşılaştırma sürdü — hatta 31 elemanlı zor
+senaryoda, hiç var olmayan bir değeri ararken bile yalnızca 5 karşılaştırma yetti. Her karşılaştırma kalanın
+yarısını atar, bu yüzden gereken karşılaştırma sayısı, `n`'i 1'e inene kadar kaç kez ikiye bölebileceğinizdir —
+bu tam olarak `log₂ n`'dir. Bu **O(log n)**, logaritmik zaman. Bedeli: ikili arama önce dizinin sıralı olmasını
+ister, sıralamanın kendisi de bir aramadan daha pahalıya mal olur (9. hafta sıralamayı derinlemesine işler).
 
 ### 3.6 Büyüme yarışı: eğrinin şeklinin neden önemli olduğu
 
-O(n) ve O(log n), çok daha büyük bir ölçeğin iki noktası. Üç fonksiyonu, `n` tekrar tekrar ikiye katlandıkça
-yarıştırın: düz `n`, `n·log₂n` (en iyi sıralama algoritmalarının tipik büyümesi) ve `n²` (en basit olanların, ve
-genel olarak iç içe döngülerin tipik büyümesi).
+O(n) ve O(log n), çok daha büyük bir ölçeğin yalnızca iki noktası. `n` tekrar tekrar ikiye katlanırken, `1`'den
+`512`'ye kadar beş fonksiyonun yarışını izleyin: `log₂n`, `n`, `n·log₂n` (en iyi sıralama algoritmalarının
+tipik davranışı), `n²` (en basit algoritmaların ve genel olarak iç içe döngülerin tipik davranışı), ve `2ⁿ`
+(üstel — 3. haftadaki Hanoi Kuleleri).
 
-<iframe class="dsanim" src="../anim/growth-race.html" title="The growth race: n, n log n, n squared" loading="lazy"></iframe>
+<iframe class="dsanim" src="../anim/growth-race.html" title="The growth race: log2 n, n, n log n, n squared, 2^n" loading="lazy"></iframe>
 <div class="dsanim-baski" markdown>
-![The growth race: n, n log n, n squared — step by step](anim/growth-race.png)
+![The growth race: log2 n, n, n log n, n squared, 2^n — step by step](anim/growth-race.png)
 </div>
 
-Aynı üç fonksiyon, animasyondaki küçük ikiye katlama adımları yerine gerçekçi boyutlar için hesaplanmış hâliyle:
+Seçicide ayrıca **ikiye katlayarak, daha uzun: 1→4096** (zor) örneğini ve **baştan büyük n'ler: 2^n daha ilk
+adımda taşar**, **tek değer: n = 1**, **ikinin kuvveti olmayan artan dizi** uç durumlarını deneyin — ya da dört
+zorluk seviyesinde rastgele veri için 🎲'a basın, ya da kendi `n` değerler listenizi yazın.
+
+Aynı beş fonksiyon, animasyonun kullandığı `n` değerleri için, çubuklardan okumak yerine gerçekten hesaplanmış
+olarak. `2^n`, `n` birkaç düzineyi geçtiği anda **tam** ve keyfi büyüklükte bir tamsayı gerektirir — Java'nın
+`java.math.BigInteger`'ı bunu bedavaya verir; C'nin yerleşik bir büyük-tamsayı türü yoktur, bu yüzden aşağıdaki C
+sürümü ondalık basamak dizisini kendisi kurar, her seferinde bir ikiye katlama (her basamağı sağdan sola 2 ile
+çarpıp elde bir sonraki basamağa taşımak) — ilkokuldan bildiğimiz o elle çarpma numarasının, sadece otomatikleştirilmiş hali.
 
 === "C"
 
     ```c
-    /* Week 1 -- Introduction to Data Structures
-     * A small table that makes the growth of n, n*log2(n) and n^2 concrete.
-     * CEN207 Data Structures (CS50-style lecture notes)
-     */
-    #include <math.h>
-    #include <stdio.h>
-
-    int main(void) {
-        long ns[] = {10, 100, 1000, 10000, 100000};
-        int count = (int) (sizeof(ns) / sizeof(ns[0]));
-
-        printf("%10s %16s %18s\n", "n", "n*log2(n)", "n^2");
-        for (int i = 0; i < count; i++) {
-            long n = ns[i];
-            double nlogn = (double) n * log2((double) n);
-            double nsq = (double) n * (double) n;
-            printf("%10ld %16.0f %18.0f\n", n, nlogn, nsq);
+    /* out[] holds the decimal digits of 2^n, most significant digit first, NUL-terminated.
+     * Doubling a decimal number is: multiply every digit by 2, right to left, carrying into the next digit. */
+    static void pow2_decimal(int n, char *out) {
+        char digits[MAX_DIGITS];
+        int len = 1;
+        digits[0] = 1;   /* start at 2^0 = 1 */
+        for (int step = 0; step < n; step++) {
+            int carry = 0;
+            for (int i = 0; i < len; i++) {
+                int v = digits[i] * 2 + carry;
+                digits[i] = (char) (v % 10);
+                carry = v / 10;
+            }
+            if (carry) {
+                digits[len] = (char) carry;
+                len++;
+            }
         }
-
-        return 0;
+        for (int i = 0; i < len; i++)
+            out[i] = (char) ('0' + digits[len - 1 - i]);
+        out[len] = '\0';
     }
     ```
 
 === "Java"
 
     ```java
-    /* Week 1 -- Introduction to Data Structures
-     * A small table that makes the growth of n, n*log2(n) and n^2 concrete.
-     * CEN207 Data Structures (CS50-style lecture notes)
-     */
-    public class GrowthTable {
-        public static void main(String[] args) {
-            long[] ns = {10, 100, 1000, 10000, 100000};
-
-            System.out.printf("%10s %16s %18s%n", "n", "n*log2(n)", "n^2");
-            for (long n : ns) {
-                double nlogn = n * (Math.log(n) / Math.log(2));
-                double nsq = (double) n * (double) n;
-                System.out.printf("%10d %16.0f %18.0f%n", n, nlogn, nsq);
-            }
-        }
+    static void printRow(long n) {
+        double log2n = Math.round(Math.log(n) / Math.log(2));
+        double nlogn = Math.round(n * (Math.log(n) / Math.log(2)));
+        long nsq = n * n;
+        BigInteger pow2n = BigInteger.ONE.shiftLeft((int) n);   // exact, however large n is
+        System.out.printf("n=%-6d log2(n)=%-4.0f n*log2(n)=%-8.0f n^2=%-9d 2^n=%s%n",
+                n, log2n, nlogn, nsq, pow2n.toString());
     }
     ```
 
-??? example "Programın tamamı: `growth_table.c` / `GrowthTable.java`"
+    Tam sınıf (`code/week-01/java/GrowthTable.java`), C programının üç senaryosunu birebir aynı şekilde çalıştırır.
+
+??? example "Tam program: `growth_table.c` / `GrowthTable.java`"
 
     === "C"
 
@@ -1076,7 +927,7 @@ Aynı üç fonksiyon, animasyondaki küçük ikiye katlama adımları yerine ger
 === "C"
 
     ```console
-    gcc -std=c11 -Wall -Wextra -o /tmp/x growth_table.c && /tmp/x
+    gcc -std=c11 -Wall -Wextra -o /tmp/x growth_table.c -lm && /tmp/x
     ```
 
     Beklenen çıktı:
@@ -1116,41 +967,14 @@ Aynı üç fonksiyon, animasyondaki küçük ikiye katlama adımları yerine ger
     javac -d /tmp/j GrowthTable.java && java -cp /tmp/j GrowthTable
     ```
 
-    Beklenen çıktı:
+    Beklenen çıktı: yukarıdaki C çıktısıyla, basamak basamak birebir aynı — 155 basamaklı `2^512` dahil — çünkü
+    `growth_table.c`'nin elle kurduğu ikiye katlama ile Java'nın `BigInteger`'ı ikisi de tam değeri hesaplıyor,
+    yaklaşık değil.
 
-    ```text
-    -- normal: doubling, 1 -> 512 --
-    n=1      log2(n)=0    n*log2(n)=0        n^2=1         2^n=2
-    n=2      log2(n)=1    n*log2(n)=2        n^2=4         2^n=4
-    n=4      log2(n)=2    n*log2(n)=8        n^2=16        2^n=16
-    n=8      log2(n)=3    n*log2(n)=24       n^2=64        2^n=256
-    n=16     log2(n)=4    n*log2(n)=64       n^2=256       2^n=65536
-    n=32     log2(n)=5    n*log2(n)=160      n^2=1024      2^n=4294967296
-    n=64     log2(n)=6    n*log2(n)=384      n^2=4096      2^n=18446744073709551616
-    n=128    log2(n)=7    n*log2(n)=896      n^2=16384     2^n=340282366920938463463374607431768211456
-    n=256    log2(n)=8    n*log2(n)=2048     n^2=65536     2^n=115792089237316195423570985008687907853269984665640564039457584007913129639936
-    n=512    log2(n)=9    n*log2(n)=4608     n^2=262144    2^n=13407807929942597099574024998205846127479365820592393377723561443721764030073546976801874298166903427690031858186486050853753882811946569946433649006084096
-
-    -- edge: a single value, n = 1 --
-    n=1      log2(n)=0    n*log2(n)=0        n^2=1         2^n=2
-
-    -- edge: an increasing sequence that is not a power of two --
-    n=1      log2(n)=0    n*log2(n)=0        n^2=1         2^n=2
-    n=3      log2(n)=2    n*log2(n)=5        n^2=9         2^n=8
-    n=5      log2(n)=2    n*log2(n)=12       n^2=25        2^n=32
-    n=9      log2(n)=3    n*log2(n)=29       n^2=81        2^n=512
-    n=14     log2(n)=4    n*log2(n)=53       n^2=196       2^n=16384
-    n=20     log2(n)=4    n*log2(n)=86       n^2=400       2^n=1048576
-    n=27     log2(n)=5    n*log2(n)=128      n^2=729       2^n=134217728
-    n=35     log2(n)=5    n*log2(n)=180      n^2=1225      2^n=34359738368
-    n=44     log2(n)=5    n*log2(n)=240      n^2=1936      2^n=17592186044416
-    n=54     log2(n)=6    n*log2(n)=311      n^2=2916      2^n=18014398509481984
-    ```
-
-`n = 100000`'de `n·log₂n` iki milyonun altında, ama `n²` on **milyar** — 6.000 kattan fazla büyük. Bir O(n²)
-algoritması ile bir O(n log n) algoritması, 100 elemanlık bir oyuncak girdide ikisi de anında görünebilir ve
-100.000'de tamamen farklı davranabilir. Big-O'nun önemli olmasının tüm sebebi bu: henüz test etmediğiniz
-boyutlarda ne olacağını önceden söyler.
+`n = 512`'de, `n²` mütevazı bir 262144 iken `2ⁿ`, **155 basamaklı** bir sayı. Bir O(n²) algoritma ile bir O(2ⁿ)
+algoritma, birkaç elemanlık ufak bir girdide ikisi de anında çalışıyor gibi görünebilir, ama `n` birkaç düzineyi
+geçer geçmez tamamen farklı davranırlar. Big-O'nun önemli olmasının tüm nedeni bu: henüz test etmediğiniz
+büyüklüklerde ne olacağını önceden söyler.
 
 ### 3.7 Big-O, kesin olarak
 
@@ -1171,6 +995,288 @@ En hızlı büyüyenden en yavaş büyüyene, bu dönem karşılaşacağınız d
 `O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ)`. İlk üçüyle bugün zaten karşılaştınız (Hafta 1'in kendi
 işaretçi aritmetiğinden sabit zamanlı dizi erişimi, O(log n) ikili arama, O(n) doğrusal arama); `O(n log n)`,
 Hafta 9'daki iyi sıralama algoritmalarıyla gelir, `O(2ⁿ)` ise Hafta 3'teki Hanoi Kulesi ile.
+
+Bu formüllerden birini masaya güvenmek yerine kendi elimizle kuralım. **İç içe döngü** — bir döngünün içinde bir
+başka döngü — klasik bir `n²` terimi kaynağıdır: `n` dış yinelemenin her biri için, iç döngü kendi `n`
+yinelemesinin tamamını çalıştırır.
+
+<iframe class="dsanim" src="../anim/nested-loop-counting.html" title="Counting a nested loop to build T(n)" loading="lazy"></iframe>
+<div class="dsanim-baski" markdown>
+![Counting a nested loop to build T(n) — step by step](anim/nested-loop-counting.png)
+</div>
+
+Seçicide ayrıca **üçgen döngü, n = 4 ayrıntılı, sonra 10 n değeri daha** (zor) örneğini ve **yarılama döngüsü,
+n = 1: sıfır çalıştırma**, **kare döngü, n = 2 ayrıntılı, Fibonacci artışlı n değerleri** uç durumlarını deneyin —
+ya da dört zorluk seviyesinde rastgele veri için 🎲'a basın, ya da kendi şeklinizi ve `n` değerlerinizi yazın.
+
+=== "C"
+
+    ```c
+    long t_square(int n, long *operations) {
+        long count = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                count++;
+                (*operations)++;
+            }
+        }
+        return count;
+    }
+    ```
+
+=== "Java"
+
+    ```java
+    static long tSquare(int n) {
+        long count = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                count++;
+                operations++;
+            }
+        }
+        return count;
+    }
+    ```
+
+    Tam sınıf (`code/week-01/java/NestedLoopCounting.java`) `tTriangle`'ı (`j < i`) ve `tHalving`'i (`j *= 2`) de
+    içerir, C programının dört senaryosunu birebir aynı şekilde çalıştırır.
+
+??? example "Tam program: `nested_loop_counting.c` / `NestedLoopCounting.java`"
+
+    === "C"
+
+        ```c
+        /* Week 1 -- Introduction to Data Structures
+         * Count the operations of a nested loop to build T(n) by hand, for three loop shapes:
+         * square (j < n), triangle (j < i), and halving (j *= 2).
+         * Runs the same normal / hard / edge-case scenarios as the nested-loop-counting animation.
+         * CEN207 Data Structures (CS50-style lecture notes)
+         */
+        #include <stdio.h>
+
+        long t_square(int n, long *operations) {
+            long count = 0;
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                    count++;
+                    (*operations)++;
+                }
+            }
+            return count;
+        }
+
+        long t_triangle(int n, long *operations) {
+            long count = 0;
+            for (int i = 0; i < n; i++) {
+                for (int j = 0; j < i; j++) {
+                    count++;
+                    (*operations)++;
+                }
+            }
+            return count;
+        }
+
+        long t_halving(int n, long *operations) {
+            long count = 0;
+            for (int i = 0; i < n; i++) {
+                for (int j = 1; j < n; j *= 2) {
+                    count++;
+                    (*operations)++;
+                }
+            }
+            return count;
+        }
+
+        typedef long (*counter_fn)(int, long *);
+
+        static void run_scenario(const char *label, counter_fn f, const char *shape, const int ns[], int count) {
+            printf("-- %s (%s) --\n", label, shape);
+            for (int k = 0; k < count; k++) {
+                int n = ns[k];
+                long operations = 0;
+                long total = f(n, &operations);
+                printf("n = %d: inner body ran %ld times, total = %ld\n", n, operations, total);
+            }
+            printf("\n");
+        }
+
+        int main(void) {
+            /* normal: square loop, n = 3 in detail, then 9 more n values */
+            int normalNs[] = {3, 4, 5, 6, 8, 10, 12, 16, 20, 25};
+            run_scenario("normal: square loop", t_square, "square, j < n", normalNs, 10);
+
+            /* hard: triangle loop, n = 4 in detail, then 10 more n values */
+            int hardNs[] = {4, 5, 6, 8, 10, 14, 18, 24, 32, 40, 50};
+            run_scenario("hard: triangle loop", t_triangle, "triangle, j < i", hardNs, 11);
+
+            /* edge: halving loop, n = 1: zero executions */
+            int halvingNs[] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512};
+            run_scenario("edge: halving loop, n = 1 (zero executions)", t_halving, "halving, j *= 2", halvingNs, 10);
+
+            /* edge: square loop, n = 2 in detail, Fibonacci-spaced n values */
+            int fibNs[] = {2, 3, 5, 8, 13, 21, 34, 55, 89, 144};
+            run_scenario("edge: square loop, Fibonacci-spaced n values", t_square, "square, j < n", fibNs, 10);
+
+            return 0;
+        }
+        ```
+
+    === "Java"
+
+        ```java
+        /* Week 1 -- Introduction to Data Structures
+         * Count the operations of a nested loop to build T(n) by hand, for three loop shapes:
+         * square (j < n), triangle (j < i), and halving (j *= 2).
+         * Runs the same normal / hard / edge-case scenarios as the nested-loop-counting animation.
+         * CEN207 Data Structures (CS50-style lecture notes)
+         */
+        public class NestedLoopCounting {
+            static long operations;
+
+            static long tSquare(int n) {
+                long count = 0;
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < n; j++) {
+                        count++;
+                        operations++;
+                    }
+                }
+                return count;
+            }
+
+            static long tTriangle(int n) {
+                long count = 0;
+                for (int i = 0; i < n; i++) {
+                    for (int j = 0; j < i; j++) {
+                        count++;
+                        operations++;
+                    }
+                }
+                return count;
+            }
+
+            static long tHalving(int n) {
+                long count = 0;
+                for (int i = 0; i < n; i++) {
+                    for (int j = 1; j < n; j *= 2) {
+                        count++;
+                        operations++;
+                    }
+                }
+                return count;
+            }
+
+            interface CounterFn {
+                long apply(int n);
+            }
+
+            static void runScenario(String label, CounterFn f, String shape, int[] ns) {
+                System.out.println("-- " + label + " (" + shape + ") --");
+                for (int n : ns) {
+                    operations = 0;
+                    long total = f.apply(n);
+                    System.out.println("n = " + n + ": inner body ran " + operations + " times, total = " + total);
+                }
+                System.out.println();
+            }
+
+            public static void main(String[] args) {
+                // normal: square loop, n = 3 in detail, then 9 more n values
+                int[] normalNs = {3, 4, 5, 6, 8, 10, 12, 16, 20, 25};
+                runScenario("normal: square loop", NestedLoopCounting::tSquare, "square, j < n", normalNs);
+
+                // hard: triangle loop, n = 4 in detail, then 10 more n values
+                int[] hardNs = {4, 5, 6, 8, 10, 14, 18, 24, 32, 40, 50};
+                runScenario("hard: triangle loop", NestedLoopCounting::tTriangle, "triangle, j < i", hardNs);
+
+                // edge: halving loop, n = 1 (zero executions)
+                int[] halvingNs = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512};
+                runScenario("edge: halving loop, n = 1 (zero executions)", NestedLoopCounting::tHalving, "halving, j *= 2", halvingNs);
+
+                // edge: square loop, Fibonacci-spaced n values
+                int[] fibNs = {2, 3, 5, 8, 13, 21, 34, 55, 89, 144};
+                runScenario("edge: square loop, Fibonacci-spaced n values", NestedLoopCounting::tSquare, "square, j < n", fibNs);
+            }
+        }
+        ```
+
+**Deneyin**
+
+=== "C"
+
+    ```console
+    gcc -std=c11 -Wall -Wextra -o /tmp/x nested_loop_counting.c && /tmp/x
+    ```
+
+    Beklenen çıktı:
+
+    ```text
+    -- normal: square loop (square, j < n) --
+    n = 3: inner body ran 9 times, total = 9
+    n = 4: inner body ran 16 times, total = 16
+    n = 5: inner body ran 25 times, total = 25
+    n = 6: inner body ran 36 times, total = 36
+    n = 8: inner body ran 64 times, total = 64
+    n = 10: inner body ran 100 times, total = 100
+    n = 12: inner body ran 144 times, total = 144
+    n = 16: inner body ran 256 times, total = 256
+    n = 20: inner body ran 400 times, total = 400
+    n = 25: inner body ran 625 times, total = 625
+
+    -- hard: triangle loop (triangle, j < i) --
+    n = 4: inner body ran 6 times, total = 6
+    n = 5: inner body ran 10 times, total = 10
+    n = 6: inner body ran 15 times, total = 15
+    n = 8: inner body ran 28 times, total = 28
+    n = 10: inner body ran 45 times, total = 45
+    n = 14: inner body ran 91 times, total = 91
+    n = 18: inner body ran 153 times, total = 153
+    n = 24: inner body ran 276 times, total = 276
+    n = 32: inner body ran 496 times, total = 496
+    n = 40: inner body ran 780 times, total = 780
+    n = 50: inner body ran 1225 times, total = 1225
+
+    -- edge: halving loop, n = 1 (zero executions) (halving, j *= 2) --
+    n = 1: inner body ran 0 times, total = 0
+    n = 2: inner body ran 2 times, total = 2
+    n = 4: inner body ran 8 times, total = 8
+    n = 8: inner body ran 24 times, total = 24
+    n = 16: inner body ran 64 times, total = 64
+    n = 32: inner body ran 160 times, total = 160
+    n = 64: inner body ran 384 times, total = 384
+    n = 128: inner body ran 896 times, total = 896
+    n = 256: inner body ran 2048 times, total = 2048
+    n = 512: inner body ran 4608 times, total = 4608
+
+    -- edge: square loop, Fibonacci-spaced n values (square, j < n) --
+    n = 2: inner body ran 4 times, total = 4
+    n = 3: inner body ran 9 times, total = 9
+    n = 5: inner body ran 25 times, total = 25
+    n = 8: inner body ran 64 times, total = 64
+    n = 13: inner body ran 169 times, total = 169
+    n = 21: inner body ran 441 times, total = 441
+    n = 34: inner body ran 1156 times, total = 1156
+    n = 55: inner body ran 3025 times, total = 3025
+    n = 89: inner body ran 7921 times, total = 7921
+    n = 144: inner body ran 20736 times, total = 20736
+    ```
+
+=== "Java"
+
+    ```console
+    javac -d /tmp/j NestedLoopCounting.java && java -cp /tmp/j NestedLoopCounting
+    ```
+
+    Beklenen çıktı: yukarıdaki C çıktısıyla birebir aynı.
+
+Ölçülen sayılar kapalı formlarla tam örtüşüyor: kare şekil için `n²`, üçgen şekil için `n·(n-1)/2` (`n = 50`
+`1225 = 50·49/2` verir), ve yarılama şekli için `n·⌈log₂n⌉` (`n = 512` `4608 = 512·9` verir, çünkü
+`⌈log₂512⌉ = 9`) — ve `n = 1`'de yarılama döngüsünün koşulu (`j < 1`, `j = 1`'den başlar) daha ilk turda yanlış,
+bu yüzden iç gövde **sıfır** kez çalışır. Kare sayacı `T(n) = 1·n² + c₁·n + c₂` diye yazınca (iç gövdeden gelen
+`n²`, döngü muhasebesinden gelen daha küçük `c₁·n`, kurulum ve dönüşten gelen sabit `c₂`), sabit `c₂`'yi ve düşük
+dereceli terim `c₁·n`'i atınca geriye tam olarak `n²` kalır — bu da tablodaki "sabitleri ve küçük terimleri at"
+kuralının ta kendisi, artık varsayılmış değil gerçek, sayılmış bir programdan kurulmuş hâliyle.
 
 ### 3.8 En iyi, en kötü ve ortalama durum
 
@@ -1198,6 +1304,241 @@ Big-O adımları sayarak **zamanı** ölçer; tıpa tıp aynı fikir, **alan kar
 çağrıda bir yığın çerçevesi iter (aşağıdaki 5. bölüm bir yığın çerçevesinin tam olarak ne olduğunu çizer) — `O(log n)`
 çağrı derinliği, dolayısıyla `O(log n)` ek alan, aynı sayıda karşılaştırma yapsa bile. Bu ödünleşimi Hafta 3'te
 özyineleme ve çağrı yığınıyla açıkça tekrar göreceksiniz.
+
+Bir diziyi toplamanın iki yolu, O(n) ile O(1) ek alan arasındaki farkı tamamen somutlaştırır: biri özyinelemeli,
+biri döngülü.
+
+<iframe class="dsanim" src="../anim/space-recursive-vs-iterative.html" title="Space complexity: recursive sum vs iterative sum" loading="lazy"></iframe>
+<div class="dsanim-baski" markdown>
+![Space complexity: recursive sum vs iterative sum — step by step](anim/space-recursive-vs-iterative.png)
+</div>
+
+Seçicide ayrıca **20 karışık işaretli değer** (zor) örneğini ve **10 negatif değer**, **22 değer: derin özyineleme**
+uç durumlarını deneyin — ya da dört zorluk seviyesinde rastgele veri için 🎲'a basın, ya da kendi dizinizi yazın.
+
+=== "C"
+
+    ```c
+    int sum_recursive(const int arr[], int n) {
+        if (n == 0)              /* base case: 0 elements left */
+            return 0;
+        return arr[n - 1] + sum_recursive(arr, n - 1);   /* one stack frame per call */
+    }
+
+    int sum_iterative(const int arr[], int n) {
+        int total = 0;           /* ONE set of variables, reused every iteration */
+        for (int i = 0; i < n; i++)
+            total += arr[i];
+        return total;
+    }
+    ```
+
+=== "Java"
+
+    ```java
+    static int sumRecursive(int[] arr, int n) {
+        if (n == 0)               // base case: 0 elements left
+            return 0;
+        return arr[n - 1] + sumRecursive(arr, n - 1);   // one stack frame per call
+    }
+
+    static int sumIterative(int[] arr, int n) {
+        int total = 0;            // ONE set of variables, reused every iteration
+        for (int i = 0; i < n; i++)
+            total += arr[i];
+        return total;
+    }
+    ```
+
+    Tam sınıf (`code/week-01/java/SpaceRecursiveVsIterative.java`), C programının dört senaryosunu birebir aynı
+    şekilde çalıştırır.
+
+??? example "Tam program: `space_recursive_vs_iterative.c` / `SpaceRecursiveVsIterative.java`"
+
+    === "C"
+
+        ```c
+        /* Week 1 -- Introduction to Data Structures
+         * Space complexity: a recursive sum pushes one stack frame per call;
+         * an iterative sum reuses a single set of variables.
+         * Runs the same normal / hard / edge-case scenarios as the space-recursive-vs-iterative animation.
+         * CEN207 Data Structures (CS50-style lecture notes)
+         */
+        #include <stdio.h>
+
+        int sum_recursive(const int arr[], int n) {
+            if (n == 0)              /* base case: 0 elements left */
+                return 0;
+            return arr[n - 1] + sum_recursive(arr, n - 1);   /* one stack frame per call */
+        }
+
+        int sum_iterative(const int arr[], int n) {
+            int total = 0;           /* ONE set of variables, reused every iteration */
+            for (int i = 0; i < n; i++)
+                total += arr[i];
+            return total;
+        }
+
+        static void print_array(const int arr[], int n) {
+            printf("arr:");
+            for (int i = 0; i < n; i++)
+                printf(" %d", arr[i]);
+            printf("  (n = %d)\n", n);
+        }
+
+        static void run_scenario(const char *label, const int arr[], int n) {
+            printf("-- %s --\n", label);
+            print_array(arr, n);
+            printf("sum_recursive -> %d (uses O(n) stack space: %d frames)\n", sum_recursive(arr, n), n);
+            printf("sum_iterative -> %d (uses O(1) stack space: 1 frame, reused)\n\n", sum_iterative(arr, n));
+        }
+
+        int main(void) {
+            /* normal: 10 positive values */
+            int normal[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+            run_scenario("normal: 10 positive values", normal, 10);
+
+            /* hard: 20 values with mixed signs */
+            int hard[] = {5, -3, 12, 8, -7, 15, 22, -10, 6, 18, 9, -4, 11, 27, -15, 3, 19, -8, 14, 7};
+            run_scenario("hard: 20 values with mixed signs", hard, 20);
+
+            /* edge: 10 negative values */
+            int allNegative[] = {-5, -10, -15, -20, -25, -30, -35, -40, -45, -50};
+            run_scenario("edge: 10 negative values", allNegative, 10);
+
+            /* edge: 22 values, deep recursion */
+            int deep[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
+            run_scenario("edge: 22 values, deep recursion", deep, 22);
+
+            return 0;
+        }
+        ```
+
+    === "Java"
+
+        ```java
+        /* Week 1 -- Introduction to Data Structures
+         * Space complexity: a recursive sum pushes one stack frame per call;
+         * an iterative sum reuses a single set of variables.
+         * Runs the same normal / hard / edge-case scenarios as the space-recursive-vs-iterative animation.
+         * CEN207 Data Structures (CS50-style lecture notes)
+         */
+        public class SpaceRecursiveVsIterative {
+            static int sumRecursive(int[] arr, int n) {
+                if (n == 0)               // base case: 0 elements left
+                    return 0;
+                return arr[n - 1] + sumRecursive(arr, n - 1);   // one stack frame per call
+            }
+
+            static int sumIterative(int[] arr, int n) {
+                int total = 0;            // ONE set of variables, reused every iteration
+                for (int i = 0; i < n; i++)
+                    total += arr[i];
+                return total;
+            }
+
+            static void printArray(int[] arr) {
+                StringBuilder sb = new StringBuilder("arr:");
+                for (int v : arr) sb.append(' ').append(v);
+                sb.append("  (n = ").append(arr.length).append(')');
+                System.out.println(sb);
+            }
+
+            static void runScenario(String label, int[] arr) {
+                System.out.println("-- " + label + " --");
+                printArray(arr);
+                int n = arr.length;
+                System.out.println("sumRecursive -> " + sumRecursive(arr, n) + " (uses O(n) stack space: " + n + " frames)");
+                System.out.println("sumIterative -> " + sumIterative(arr, n) + " (uses O(1) stack space: 1 frame, reused)");
+                System.out.println();
+            }
+
+            public static void main(String[] args) {
+                // normal: 10 positive values
+                int[] normal = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+                runScenario("normal: 10 positive values", normal);
+
+                // hard: 20 values with mixed signs
+                int[] hard = {5, -3, 12, 8, -7, 15, 22, -10, 6, 18, 9, -4, 11, 27, -15, 3, 19, -8, 14, 7};
+                runScenario("hard: 20 values with mixed signs", hard);
+
+                // edge: 10 negative values
+                int[] allNegative = {-5, -10, -15, -20, -25, -30, -35, -40, -45, -50};
+                runScenario("edge: 10 negative values", allNegative);
+
+                // edge: 22 values, deep recursion
+                int[] deep = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22};
+                runScenario("edge: 22 values, deep recursion", deep);
+            }
+        }
+        ```
+
+**Deneyin**
+
+=== "C"
+
+    ```console
+    gcc -std=c11 -Wall -Wextra -o /tmp/x space_recursive_vs_iterative.c && /tmp/x
+    ```
+
+    Beklenen çıktı:
+
+    ```text
+    -- normal: 10 positive values --
+    arr: 10 20 30 40 50 60 70 80 90 100  (n = 10)
+    sum_recursive -> 550 (uses O(n) stack space: 10 frames)
+    sum_iterative -> 550 (uses O(1) stack space: 1 frame, reused)
+
+    -- hard: 20 values with mixed signs --
+    arr: 5 -3 12 8 -7 15 22 -10 6 18 9 -4 11 27 -15 3 19 -8 14 7  (n = 20)
+    sum_recursive -> 129 (uses O(n) stack space: 20 frames)
+    sum_iterative -> 129 (uses O(1) stack space: 1 frame, reused)
+
+    -- edge: 10 negative values --
+    arr: -5 -10 -15 -20 -25 -30 -35 -40 -45 -50  (n = 10)
+    sum_recursive -> -275 (uses O(n) stack space: 10 frames)
+    sum_iterative -> -275 (uses O(1) stack space: 1 frame, reused)
+
+    -- edge: 22 values, deep recursion --
+    arr: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22  (n = 22)
+    sum_recursive -> 253 (uses O(n) stack space: 22 frames)
+    sum_iterative -> 253 (uses O(1) stack space: 1 frame, reused)
+    ```
+
+=== "Java"
+
+    ```console
+    javac -d /tmp/j SpaceRecursiveVsIterative.java && java -cp /tmp/j SpaceRecursiveVsIterative
+    ```
+
+    Beklenen çıktı (aynı değerler, `sumRecursive`/`sumIterative` adlandırmasıyla):
+
+    ```text
+    -- normal: 10 positive values --
+    arr: 10 20 30 40 50 60 70 80 90 100  (n = 10)
+    sumRecursive -> 550 (uses O(n) stack space: 10 frames)
+    sumIterative -> 550 (uses O(1) stack space: 1 frame, reused)
+
+    -- hard: 20 values with mixed signs --
+    arr: 5 -3 12 8 -7 15 22 -10 6 18 9 -4 11 27 -15 3 19 -8 14 7  (n = 20)
+    sumRecursive -> 129 (uses O(n) stack space: 20 frames)
+    sumIterative -> 129 (uses O(1) stack space: 1 frame, reused)
+
+    -- edge: 10 negative values --
+    arr: -5 -10 -15 -20 -25 -30 -35 -40 -45 -50  (n = 10)
+    sumRecursive -> -275 (uses O(n) stack space: 10 frames)
+    sumIterative -> -275 (uses O(1) stack space: 1 frame, reused)
+
+    -- edge: 22 values, deep recursion --
+    arr: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22  (n = 22)
+    sumRecursive -> 253 (uses O(n) stack space: 22 frames)
+    sumIterative -> 253 (uses O(1) stack space: 1 frame, reused)
+    ```
+
+Her senaryo iki fonksiyondan da aynı değeri döndürüyor. `sum_recursive`, derin özyineleme senaryosunda `n`
+eş zamanlı yığın çerçevesinde zirve yapıyor (22 çerçeve) — dizi büyüdükçe zirve de büyür, eleman başına bir
+çerçeve: O(n). `sum_iterative`, `n` ne kadar büyürse büyüsün, `main`in ona verdiği o tek çerçeveden hiç fazlasını
+kullanmıyor: O(1).
 
 !!! warning "Sık yapılan hatalar"
     - Big-O'yu *koddan* değil, *adımlardan* okumak gerekirken koddan okumak. Tek bir satır bir döngüyü
@@ -1267,9 +1608,11 @@ oradakini oku (ya da yaz).
 | Bir adres atama | `p = &x;` | x'in adresini p'ye kaydeder; p artık x'i "gösterir" | O(1) |
 | Dereferanslama (okuma) | `*p` | p'yi hedefine kadar izler ve oradaki değeri okur | O(1) |
 | Dereferanslama (yazma) | `*p = v;` | p'yi hedefine kadar izler ve oraya `v` yazar | O(1) |
+| İşaretçi aritmetiği | `p + k` | `p`'yi değiştirmeden, `p`'den `k * sizeof(*p)` bayt ileride yeni bir adres hesaplar (4.7. bölüm) | O(1) |
 
-Bunların hepsi O(1)'dir: bir işaretçiyi izlemek her zaman tek bir sıçramadır, asla bir arama değil — işaretçilerin
-(ve Hafta 2'de bunlardan kurulan bağlı yapıların) verimli olmasının tam sebebi budur.
+Bunların hepsi O(1)'dir: bir işaretçiyi izlemek ya da ondan yeni bir adres hesaplamak her zaman tek bir sıçrama ya
+da tek bir çarpıp-toplamadır, asla bir arama değil — işaretçilerin (ve Hafta 2'de bunlardan kurulan bağlı
+yapıların) verimli olmasının tam sebebi budur.
 
 ### 4.5 Bir değişken, adresi ve bir işaretçi
 
@@ -1467,6 +1810,317 @@ alana eriş) o kadar yaygındır ki C buna bir kısayol verir: `p->field`.
 Java'da `->` hiç yoktur ve olması da gerekmez: her nesne değişkeni zaten bir referanstır, o yüzden `.` her zaman
 "referansı izle, sonra alana eriş" demektir — yazacak ayrı bir "önce dereferansla" adımı yoktur.
 
+### 4.7 İşaretçi aritmetiği: `p + k`, `k * sizeof(*p)` demektir
+
+4.4. bölüm, bir işaretçiyi dereferanslamayı — `*p` — O(1) olarak listeledi. Düz bir aritmetik gibi görünen ama
+öyle olmayan ikinci bir işaretçi işlemi var: `p + k`. Bu, `k` bayt İLERİ gitmez; `k * sizeof(*p)` bayt ileri gider,
+çünkü derleyici `p`'nin gösterdiği *türü* bilir ve ofseti sizin için ölçekler. `p + k`, `p`'nin kendisini de asla
+değiştirmez — yeni bir adres **hesaplar**, ki `*(p + k)` de o adresi dereferanslar.
+
+<iframe class="dsanim" src="../anim/pointer-arithmetic.html" title="Pointer arithmetic: p + k means k * sizeof(*p)" loading="lazy"></iframe>
+<div class="dsanim-baski" markdown>
+![Pointer arithmetic: p + k means k * sizeof(*p) — step by step](anim/pointer-arithmetic.png)
+</div>
+
+Seçicide ayrıca **double dizi (sizeof = 8), 7 offset** (zor) örneğini ve **aralık dışı offsetler: negatif ve N'i
+aşan**, **char dizi (sizeof = 1): p + k, k bayt ile çakışır** uç durumlarını deneyin — ya da dört zorluk
+seviyesinde rastgele veri (ve rastgele bir tür) için 🎲'a basın, ya da kendi diziniz, türünüz ve offsetlerinizi
+yazın.
+
+=== "C"
+
+    ```c
+    int *p = a;                  /* array decays to a pointer to its first element */
+
+    if (k < 0 || k >= N) {
+        /* p + k lands outside a[]: reading *(p + k) is undefined behavior (UB) */
+    } else {
+        void *addr = (void *) (p + k);   /* address + k * sizeof(int) */
+        int v = *(p + k);                /* dereference: read the value at that address */
+    }
+    ```
+
+=== "Java"
+
+    ```java
+    // Java has no pointer arithmetic; indices are the only way to move between elements
+    if (k < 0 || k >= N) {
+        // out of range: throws ArrayIndexOutOfBoundsException, not undefined behaviour
+    } else {
+        int v = a[k];             // a[k] is the closest Java equivalent of *(p + k)
+    }
+    ```
+
+    Tam sınıf (`code/week-01/java/ArrayIndexing.java`), C programının dört senaryosunu çalıştırır ve Java yalnızca
+    `a[k]` ile indekslese de, karşılaştırma için aynı `base + k * sizeof(type)` aritmetiğini yazdırır.
+
+??? example "Tam program: `pointer_arithmetic.c` / `ArrayIndexing.java`"
+
+    === "C"
+
+        ```c
+        /* Week 1 -- Introduction to Data Structures
+         * Pointer arithmetic: p + k means base address + k * sizeof(*p), never k bytes.
+         * An out-of-range k is undefined behavior (UB); the guard below reports it instead of reading it.
+         * Addresses are a PRETEND base (matching the animation), not real OS addresses, so the output is
+         * reproducible and can be compared byte for byte with the Java version.
+         * Runs the same normal / hard / edge-case scenarios as the pointer-arithmetic animation.
+         * CEN207 Data Structures (CS50-style lecture notes)
+         */
+        #include <stdio.h>
+
+        static void run_int_scenario(const char *label, long base, const int values[], int n,
+                                      const int offsets[], int offCount) {
+            printf("-- %s (type = int, sizeof = %zu) --\n", label, sizeof(int));
+            const int *p = values;   /* p decays to point at values[0] */
+            for (int i = 0; i < offCount; i++) {
+                int k = offsets[i];
+                if (k < 0 || k >= n) {
+                    printf("p + %d -> out of range (UB): 0 <= k < %d required\n", k, n);
+                    continue;
+                }
+                long addr = base + (long) k * (long) sizeof(int);
+                printf("p + %d = %ld, *(p + %d) = %d\n", k, addr, k, *(p + k));
+            }
+            printf("\n");
+        }
+
+        static void run_double_scenario(const char *label, long base, const double values[], int n,
+                                         const int offsets[], int offCount) {
+            printf("-- %s (type = double, sizeof = %zu) --\n", label, sizeof(double));
+            const double *p = values;
+            for (int i = 0; i < offCount; i++) {
+                int k = offsets[i];
+                if (k < 0 || k >= n) {
+                    printf("p + %d -> out of range (UB): 0 <= k < %d required\n", k, n);
+                    continue;
+                }
+                long addr = base + (long) k * (long) sizeof(double);
+                printf("p + %d = %ld, *(p + %d) = %.0f\n", k, addr, k, *(p + k));
+            }
+            printf("\n");
+        }
+
+        static void run_char_scenario(const char *label, long base, const char values[], int n,
+                                       const int offsets[], int offCount) {
+            printf("-- %s (type = char, sizeof = %zu) --\n", label, sizeof(char));
+            const char *p = values;
+            for (int i = 0; i < offCount; i++) {
+                int k = offsets[i];
+                if (k < 0 || k >= n) {
+                    printf("p + %d -> out of range (UB): 0 <= k < %d required\n", k, n);
+                    continue;
+                }
+                long addr = base + (long) k * (long) sizeof(char);   /* sizeof(char) is always 1 */
+                printf("p + %d = %ld, *(p + %d) = %d\n", k, addr, k, (int) *(p + k));
+            }
+            printf("\n");
+        }
+
+        int main(void) {
+            /* normal: int array, 5 valid offsets */
+            int normalValues[] = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+            int normalOffsets[] = {0, 1, 2, 4, 9};
+            run_int_scenario("normal: int array, 5 valid offsets", 1000, normalValues, 10, normalOffsets, 5);
+
+            /* hard: double array (sizeof = 8), 7 offsets */
+            double hardValues[] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+            int hardOffsets[] = {0, 2, 5, 8, 11, 6, 3};
+            run_double_scenario("hard: double array (sizeof = 8), 7 offsets", 2000, hardValues, 12, hardOffsets, 7);
+
+            /* edge: out-of-range offsets, negative and beyond N */
+            int edgeValues[] = {4, 8, 15, 16, 23, 42, 8, 9, 15, 3};
+            int edgeOffsets[] = {-1, 0, 5, 10, 15};
+            run_int_scenario("edge: out-of-range offsets (negative and beyond N)", 1000, edgeValues, 10, edgeOffsets, 5);
+
+            /* edge: char array (sizeof = 1), p + k coincides with k bytes */
+            char charValues[] = {65, 66, 67, 68, 69, 70, 71, 72, 73, 74};
+            int charOffsets[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+            run_char_scenario("edge: char array (sizeof = 1)", 500, charValues, 10, charOffsets, 10);
+
+            return 0;
+        }
+        ```
+
+    === "Java"
+
+        ```java
+        /* Week 1 -- Introduction to Data Structures
+         * Java has no pointer arithmetic -- array indexing is the only way to move between elements.
+         * These scenarios still print the SAME "address = base + k * sizeof(type)" arithmetic as the C
+         * version, using the type's C size, purely to compare the formula's result side by side; Java
+         * itself never computes a real address, it only ever indexes with a[k].
+         * Runs the same normal / hard / edge-case scenarios as the pointer-arithmetic animation.
+         * CEN207 Data Structures (CS50-style lecture notes)
+         */
+        public class ArrayIndexing {
+            static void runIntScenario(String label, long base, int[] values, int[] offsets) {
+                int n = values.length, sizeofInt = 4;
+                System.out.println("-- " + label + " (type = int, sizeof = " + sizeofInt + ") --");
+                for (int k : offsets) {
+                    if (k < 0 || k >= n) {
+                        System.out.println("a[" + k + "] -> out of range: throws ArrayIndexOutOfBoundsException in real Java");
+                        continue;
+                    }
+                    long addr = base + (long) k * sizeofInt;
+                    System.out.println("p + " + k + " = " + addr + ", a[" + k + "] = " + values[k]);
+                }
+                System.out.println();
+            }
+
+            static void runDoubleScenario(String label, long base, double[] values, int[] offsets) {
+                int n = values.length, sizeofDouble = 8;
+                System.out.println("-- " + label + " (type = double, sizeof = " + sizeofDouble + ") --");
+                for (int k : offsets) {
+                    if (k < 0 || k >= n) {
+                        System.out.println("a[" + k + "] -> out of range: throws ArrayIndexOutOfBoundsException in real Java");
+                        continue;
+                    }
+                    long addr = base + (long) k * sizeofDouble;
+                    System.out.printf("p + %d = %d, a[%d] = %.0f%n", k, addr, k, values[k]);
+                }
+                System.out.println();
+            }
+
+            static void runCharScenario(String label, long base, char[] values, int[] offsets) {
+                int n = values.length, sizeofChar = 1;
+                System.out.println("-- " + label + " (type = char, sizeof = " + sizeofChar + ") --");
+                for (int k : offsets) {
+                    if (k < 0 || k >= n) {
+                        System.out.println("a[" + k + "] -> out of range: throws ArrayIndexOutOfBoundsException in real Java");
+                        continue;
+                    }
+                    long addr = base + (long) k * sizeofChar;
+                    System.out.println("p + " + k + " = " + addr + ", a[" + k + "] = " + (int) values[k]);
+                }
+                System.out.println();
+            }
+
+            public static void main(String[] args) {
+                // normal: int array, 5 valid offsets
+                int[] normalValues = {10, 20, 30, 40, 50, 60, 70, 80, 90, 100};
+                int[] normalOffsets = {0, 1, 2, 4, 9};
+                runIntScenario("normal: int array, 5 valid offsets", 1000, normalValues, normalOffsets);
+
+                // hard: double array (sizeof = 8), 7 offsets
+                double[] hardValues = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
+                int[] hardOffsets = {0, 2, 5, 8, 11, 6, 3};
+                runDoubleScenario("hard: double array (sizeof = 8), 7 offsets", 2000, hardValues, hardOffsets);
+
+                // edge: out-of-range offsets, negative and beyond N
+                int[] edgeValues = {4, 8, 15, 16, 23, 42, 8, 9, 15, 3};
+                int[] edgeOffsets = {-1, 0, 5, 10, 15};
+                runIntScenario("edge: out-of-range offsets (negative and beyond N)", 1000, edgeValues, edgeOffsets);
+
+                // edge: char array (sizeof = 1), p + k coincides with k bytes
+                char[] charValues = {65, 66, 67, 68, 69, 70, 71, 72, 73, 74};
+                int[] charOffsets = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+                runCharScenario("edge: char array (sizeof = 1)", 500, charValues, charOffsets);
+            }
+        }
+        ```
+
+**Deneyin**
+
+=== "C"
+
+    ```console
+    gcc -std=c11 -Wall -Wextra -o /tmp/x pointer_arithmetic.c && /tmp/x
+    ```
+
+    Beklenen çıktı:
+
+    ```text
+    -- normal: int array, 5 valid offsets (type = int, sizeof = 4) --
+    p + 0 = 1000, *(p + 0) = 10
+    p + 1 = 1004, *(p + 1) = 20
+    p + 2 = 1008, *(p + 2) = 30
+    p + 4 = 1016, *(p + 4) = 50
+    p + 9 = 1036, *(p + 9) = 100
+
+    -- hard: double array (sizeof = 8), 7 offsets (type = double, sizeof = 8) --
+    p + 0 = 2000, *(p + 0) = 1
+    p + 2 = 2016, *(p + 2) = 3
+    p + 5 = 2040, *(p + 5) = 6
+    p + 8 = 2064, *(p + 8) = 9
+    p + 11 = 2088, *(p + 11) = 12
+    p + 6 = 2048, *(p + 6) = 7
+    p + 3 = 2024, *(p + 3) = 4
+
+    -- edge: out-of-range offsets (negative and beyond N) (type = int, sizeof = 4) --
+    p + -1 -> out of range (UB): 0 <= k < 10 required
+    p + 0 = 1000, *(p + 0) = 4
+    p + 5 = 1020, *(p + 5) = 42
+    p + 10 -> out of range (UB): 0 <= k < 10 required
+    p + 15 -> out of range (UB): 0 <= k < 10 required
+
+    -- edge: char array (sizeof = 1) (type = char, sizeof = 1) --
+    p + 0 = 500, *(p + 0) = 65
+    p + 1 = 501, *(p + 1) = 66
+    p + 2 = 502, *(p + 2) = 67
+    p + 3 = 503, *(p + 3) = 68
+    p + 4 = 504, *(p + 4) = 69
+    p + 5 = 505, *(p + 5) = 70
+    p + 6 = 506, *(p + 6) = 71
+    p + 7 = 507, *(p + 7) = 72
+    p + 8 = 508, *(p + 8) = 73
+    p + 9 = 509, *(p + 9) = 74
+    ```
+
+=== "Java"
+
+    ```console
+    javac -d /tmp/j ArrayIndexing.java && java -cp /tmp/j ArrayIndexing
+    ```
+
+    Beklenen çıktı (aynı değerler ve adresler; C'nin `*(p + k)` yazdığı yerde `a[k]`, ve aralık dışı offsetler
+    için UB yerine düz bir mesaj — çünkü Java donanımın ne yaparsa onu yapmak yerine istisna fırlatır):
+
+    ```text
+    -- normal: int array, 5 valid offsets (type = int, sizeof = 4) --
+    p + 0 = 1000, a[0] = 10
+    p + 1 = 1004, a[1] = 20
+    p + 2 = 1008, a[2] = 30
+    p + 4 = 1016, a[4] = 50
+    p + 9 = 1036, a[9] = 100
+
+    -- hard: double array (sizeof = 8), 7 offsets (type = double, sizeof = 8) --
+    p + 0 = 2000, a[0] = 1
+    p + 2 = 2016, a[2] = 3
+    p + 5 = 2040, a[5] = 6
+    p + 8 = 2064, a[8] = 9
+    p + 11 = 2088, a[11] = 12
+    p + 6 = 2048, a[6] = 7
+    p + 3 = 2024, a[3] = 4
+
+    -- edge: out-of-range offsets (negative and beyond N) (type = int, sizeof = 4) --
+    a[-1] -> out of range: throws ArrayIndexOutOfBoundsException in real Java
+    p + 0 = 1000, a[0] = 4
+    p + 5 = 1020, a[5] = 42
+    a[10] -> out of range: throws ArrayIndexOutOfBoundsException in real Java
+    a[15] -> out of range: throws ArrayIndexOutOfBoundsException in real Java
+
+    -- edge: char array (sizeof = 1) (type = char, sizeof = 1) --
+    p + 0 = 500, a[0] = 65
+    p + 1 = 501, a[1] = 66
+    p + 2 = 502, a[2] = 67
+    p + 3 = 503, a[3] = 68
+    p + 4 = 504, a[4] = 69
+    p + 5 = 505, a[5] = 70
+    p + 6 = 506, a[6] = 71
+    p + 7 = 507, a[7] = 72
+    p + 8 = 508, a[8] = 73
+    p + 9 = 509, a[9] = 74
+    ```
+
+`int` ve `double` senaryolarını karşılaştırın: aynı `0, 2, 5, ...` offsetleri tamamen farklı adreslere düşüyor,
+çünkü `sizeof(int) = 4` ama `sizeof(double) = 8` — *aynı* işaretçi aritmetiği formülü, farklı bir türe göre
+ölçeklenmiş. `char` senaryosu, `p + k`'nin düz baytlarda `base + k`'ye tam olarak eşit olduğu tek yer, çünkü
+`sizeof(char)` her zaman tam olarak `1`'dir; diğer her tür offseti ölçekler. Uç senaryonun negatif ve çok büyük
+offsetleri hiç dereferanslanmıyor — onları okumak C'de **tanımsız davranış (UB)** olurdu, bu yüzden program önce
+aralığı denetleyip bunu bildiriyor, tıpkı 3.5. bölümdeki `binary_search`'ün `lo <= hi` denetiminin dizinin
+dışına okumaya karşı korumasına benzer şekilde.
+
 !!! warning "Sık yapılan hatalar"
     - `int *p;` bildirip hiçbir şeyi göstermeden önce kullanmak. İlklendirilmemiş bir işaretçi çöp değer tutar —
       bir **başıboş işaretçi (wild pointer)** — ve onu dereferanslamak tanımsız davranıştır; bir işaretçiyi
@@ -1491,6 +2145,11 @@ Java'da `->` hiç yoktur ve olması da gerekmez: her nesne değişkeni zaten bir
     Çünkü Java'daki her nesne ya da dizi değişkeni zaten bir referanstır; `.` her zaman "önce referansı izle,
     sonra üyeye eriş" demektir — C'nin değerler için `.`, işaretçiler için `->` kullanması gibi çağrı noktasında
     yazılacak ayrı bir işaretçi-değer ayrımı yoktur.
+
+    **3. `int *p = a;` ve `sizeof(int) = 4` verildiğinde, `p`'nin kendisi `1000` ise `p + 3` hangi adresi hesaplar?**
+
+    `1012` — `p + 3`, `p + 3 * sizeof(int) = 1000 + 3 * 4 = 1012` demektir, asla `1000 + 3 = 1003` değil. `p`'nin
+    kendisi değişmez; `p + 3` yalnızca yeni bir adres hesaplar.
 
 ## 5. Bellek yerleşimi: yığın, öbek, ve kim temizler
 
@@ -1819,96 +2478,47 @@ Java, biraz denetim karşılığında (kesin bir geri kazanım anını zorlayama
 
 ### 5.7 Önizleme: dizi yerleşimi ile bağlı liste yerleşimi
 
-Gelecek haftayı önizleyen bir karşılaştırma daha. Bir dizi tek bir bitişik blok ayırır, o yüzden `arr[i]` tek bir
-hesaptır — O(1). Gelecek hafta kuracağınız bir bağlı liste ise her değeri kendi ayrı ayrı ayrılmış düğümünde tutar,
-yalnızca işaretçilerle bağlanır.
+Gelecek haftaya bir önizleme daha. Bir dizi tek bir bitişik blok ayırır, bu yüzden `arr[i]` tek bir hesaplamadır —
+O(1). Gelecek hafta kuracağınız bağlı liste ise her değeri kendi ayrı ayrı ayrılmış düğümünde saklar, yalnızca
+işaretçilerle bağlanır — `k`. elemana ulaşmak `k` sıçramaya mal olur.
 
 <iframe class="dsanim" src="../anim/array-vs-linked-preview.html" title="Preview: array layout vs linked layout" loading="lazy"></iframe>
 <div class="dsanim-baski" markdown>
 ![Preview: array layout vs linked layout — step by step](anim/array-vs-linked-preview.png)
 </div>
 
+Seçicide ayrıca **16 değer, k = 13 (sona yakın)** (zor) örneğini ve **k = 0: baştaki eleman**, **k = son indeks:
+en çok sıçrama** uç durumlarını deneyin — ya da dört zorluk seviyesinde rastgele veri için 🎲'a basın, ya da kendi
+değerlerinizi ve `k`'nizi yazın.
+
 === "C"
 
     ```c
-    /* Week 1 -- Introduction to Data Structures
-     * Preview of Week 2: five values laid out as a contiguous array
-     * versus the same five values as individually allocated linked nodes.
-     * CEN207 Data Structures (CS50-style lecture notes)
-     */
-    #include <stdio.h>
-    #include <stdlib.h>
+    int arr[N];                       /* filled with the input values */
 
-    typedef struct Node {
-        int data;
-        struct Node *next;
-    } Node;
-
-    int main(void) {
-        int arr[5] = {10, 20, 30, 40, 50};
-
-        printf("array (contiguous):\n");
-        for (int i = 0; i < 5; i++)
-            printf("  arr[%d] = %d at %p\n", i, arr[i], (void *) &arr[i]);
-
-        Node *head = NULL;
-        for (int i = 4; i >= 0; i--) {
-            Node *n = malloc(sizeof(Node));
-            n->data = arr[i];
-            n->next = head;
-            head = n;
-        }
-
-        printf("\nlinked list (scattered, connected by pointers):\n");
-        for (Node *n = head; n != NULL; n = n->next)
-            printf("  node at %p: data = %d, next = %p\n", (void *) n, n->data, (void *) n->next);
-
-        for (Node *n = head; n != NULL;) {
-            Node *tmp = n;
-            n = n->next;
-            free(tmp);
-        }
-
-        return 0;
+    Node *head = NULL;
+    for (int i = N - 1; i >= 0; i--) {
+        Node *node = malloc(sizeof(Node));
+        node->data = arr[i];
+        node->next = head;
+        head = node;
     }
     ```
 
 === "Java"
 
     ```java
-    /* Week 1 -- Introduction to Data Structures
-     * Preview of Week 2: the same five values as a contiguous array
-     * versus a chain of individually created linked nodes.
-     * CEN207 Data Structures (CS50-style lecture notes)
-     */
-    public class ArrayVsLinkedPreview {
-        static class Node {
-            int data;
-            Node next;
-            Node(int data, Node next) { this.data = data; this.next = next; }
-        }
+    int[] arr = new int[N];           // filled with the input values
 
-        public static void main(String[] args) {
-            int[] arr = {10, 20, 30, 40, 50};
-
-            System.out.println("array (one contiguous block, indexed access):");
-            for (int i = 0; i < arr.length; i++)
-                System.out.println("  arr[" + i + "] = " + arr[i]);
-
-            Node head = null;
-            for (int i = arr.length - 1; i >= 0; i--)
-                head = new Node(arr[i], head);
-
-            System.out.println();
-            System.out.println("linked list (separate objects, followed one .next at a time):");
-            for (Node n = head; n != null; n = n.next)
-                System.out.println("  node@" + Integer.toHexString(System.identityHashCode(n))
-                        + ": data = " + n.data);
-        }
-    }
+    Node head = null;
+    for (int i = N - 1; i >= 0; i--)
+        head = new Node(arr[i], head);
     ```
 
-??? example "Programın tamamı: `array_vs_linked_preview.c` / `ArrayVsLinkedPreview.java`"
+    Tam sınıf (`code/week-01/java/ArrayVsLinkedPreview.java`), C programının dört senaryosunu birebir aynı şekilde
+    çalıştırır.
+
+??? example "Tam program: `array_vs_linked_preview.c` / `ArrayVsLinkedPreview.java`"
 
     === "C"
 
@@ -2057,22 +2667,128 @@ yalnızca işaretçilerle bağlanır.
     gcc -std=c11 -Wall -Wextra -o /tmp/x array_vs_linked_preview.c && /tmp/x
     ```
 
-    Beklenen çıktı (sizin adresleriniz farklı olacaktır):
+    Beklenen çıktı (adresleriniz farklı olacaktır):
 
     ```text
+    -- normal: 10 values, k = 4 (in the middle) (k = 4) --
     array (contiguous):
-      arr[0] = 10 at 000000A8783FF8A0
-      arr[1] = 20 at 000000A8783FF8A4
-      arr[2] = 30 at 000000A8783FF8A8
-      arr[3] = 40 at 000000A8783FF8AC
-      arr[4] = 50 at 000000A8783FF8B0
-
+      arr[0] = 10 at 00000010D7DFF5E0
+      arr[1] = 20 at 00000010D7DFF5E4
+      arr[2] = 30 at 00000010D7DFF5E8
+      arr[3] = 40 at 00000010D7DFF5EC
+      arr[4] = 50 at 00000010D7DFF5F0
+      arr[5] = 60 at 00000010D7DFF5F4
+      arr[6] = 70 at 00000010D7DFF5F8
+      arr[7] = 80 at 00000010D7DFF5FC
+      arr[8] = 90 at 00000010D7DFF600
+      arr[9] = 100 at 00000010D7DFF604
+    array access: arr[4] = 50, ONE calculation (base + 4*4). O(1).
     linked list (scattered, connected by pointers):
-      node at 000001EEABFF34F0: data = 10, next = 000001EEABFF34D0
-      node at 000001EEABFF34D0: data = 20, next = 000001EEABFF34B0
-      node at 000001EEABFF34B0: data = 30, next = 000001EEABFF3490
-      node at 000001EEABFF3490: data = 40, next = 000001EEABFF3470
-      node at 000001EEABFF3470: data = 50, next = 0000000000000000
+      node at 0000018A35373610: data = 10, next = 0000018A353735F0
+      node at 0000018A353735F0: data = 20, next = 0000018A353735D0
+      node at 0000018A353735D0: data = 30, next = 0000018A353735B0
+      node at 0000018A353735B0: data = 40, next = 0000018A35373590
+      node at 0000018A35373590: data = 50, next = 0000018A35373570
+      node at 0000018A35373570: data = 60, next = 0000018A35373550
+      node at 0000018A35373550: data = 70, next = 0000018A35373530
+      node at 0000018A35373530: data = 80, next = 0000018A35373510
+      node at 0000018A35373510: data = 90, next = 0000018A353734F0
+      node at 0000018A353734F0: data = 100, next = 0000000000000000
+    linked access: reached node with data = 50 after 4 hops. O(n).
+
+    -- hard: 16 values, k = 13 (near the end) (k = 13) --
+    array (contiguous):
+      arr[0] = 11 at 00000010D7DFF5E0
+      arr[1] = 22 at 00000010D7DFF5E4
+      arr[2] = 33 at 00000010D7DFF5E8
+      arr[3] = 44 at 00000010D7DFF5EC
+      arr[4] = 55 at 00000010D7DFF5F0
+      arr[5] = 66 at 00000010D7DFF5F4
+      arr[6] = 77 at 00000010D7DFF5F8
+      arr[7] = 88 at 00000010D7DFF5FC
+      arr[8] = 99 at 00000010D7DFF600
+      arr[9] = 111 at 00000010D7DFF604
+      arr[10] = 122 at 00000010D7DFF608
+      arr[11] = 133 at 00000010D7DFF60C
+      arr[12] = 144 at 00000010D7DFF610
+      arr[13] = 155 at 00000010D7DFF614
+      arr[14] = 166 at 00000010D7DFF618
+      arr[15] = 177 at 00000010D7DFF61C
+    array access: arr[13] = 155, ONE calculation (base + 13*4). O(1).
+    linked list (scattered, connected by pointers):
+      node at 0000018A35373720: data = 11, next = 0000018A35373820
+      node at 0000018A35373820: data = 22, next = 0000018A35373690
+      node at 0000018A35373690: data = 33, next = 0000018A35373670
+      node at 0000018A35373670: data = 44, next = 0000018A35373650
+      node at 0000018A35373650: data = 55, next = 0000018A35373630
+      node at 0000018A35373630: data = 66, next = 0000018A35373610
+      node at 0000018A35373610: data = 77, next = 0000018A353735F0
+      node at 0000018A353735F0: data = 88, next = 0000018A353735D0
+      node at 0000018A353735D0: data = 99, next = 0000018A353735B0
+      node at 0000018A353735B0: data = 111, next = 0000018A35373590
+      node at 0000018A35373590: data = 122, next = 0000018A35373570
+      node at 0000018A35373570: data = 133, next = 0000018A35373550
+      node at 0000018A35373550: data = 144, next = 0000018A35373530
+      node at 0000018A35373530: data = 155, next = 0000018A35373510
+      node at 0000018A35373510: data = 166, next = 0000018A353734F0
+      node at 0000018A353734F0: data = 177, next = 0000000000000000
+    linked access: reached node with data = 155 after 13 hops. O(n).
+
+    -- edge: k = 0, the first element (k = 0) --
+    array (contiguous):
+      arr[0] = 7 at 00000010D7DFF5E0
+      arr[1] = 14 at 00000010D7DFF5E4
+      arr[2] = 21 at 00000010D7DFF5E8
+      arr[3] = 28 at 00000010D7DFF5EC
+      arr[4] = 35 at 00000010D7DFF5F0
+      arr[5] = 42 at 00000010D7DFF5F4
+      arr[6] = 49 at 00000010D7DFF5F8
+      arr[7] = 56 at 00000010D7DFF5FC
+      arr[8] = 63 at 00000010D7DFF600
+      arr[9] = 70 at 00000010D7DFF604
+    array access: arr[0] = 7, ONE calculation (base + 0*4). O(1).
+    linked list (scattered, connected by pointers):
+      node at 0000018A353738A0: data = 7, next = 0000018A35373980
+      node at 0000018A35373980: data = 14, next = 0000018A353737C0
+      node at 0000018A353737C0: data = 21, next = 0000018A35373700
+      node at 0000018A35373700: data = 28, next = 0000018A35373780
+      node at 0000018A35373780: data = 35, next = 0000018A35373740
+      node at 0000018A35373740: data = 42, next = 0000018A353739C0
+      node at 0000018A353739C0: data = 49, next = 0000018A35373840
+      node at 0000018A35373840: data = 56, next = 0000018A353737A0
+      node at 0000018A353737A0: data = 63, next = 0000018A353739A0
+      node at 0000018A353739A0: data = 70, next = 0000000000000000
+    linked access: reached node with data = 7 after 0 hops. O(n).
+
+    -- edge: k = the last index, the most hops (k = 11) --
+    array (contiguous):
+      arr[0] = 3 at 00000010D7DFF5E0
+      arr[1] = 6 at 00000010D7DFF5E4
+      arr[2] = 9 at 00000010D7DFF5E8
+      arr[3] = 12 at 00000010D7DFF5EC
+      arr[4] = 15 at 00000010D7DFF5F0
+      arr[5] = 18 at 00000010D7DFF5F4
+      arr[6] = 21 at 00000010D7DFF5F8
+      arr[7] = 24 at 00000010D7DFF5FC
+      arr[8] = 27 at 00000010D7DFF600
+      arr[9] = 30 at 00000010D7DFF604
+      arr[10] = 33 at 00000010D7DFF608
+      arr[11] = 36 at 00000010D7DFF60C
+    array access: arr[11] = 36, ONE calculation (base + 11*4). O(1).
+    linked list (scattered, connected by pointers):
+      node at 0000018A35373960: data = 3, next = 0000018A353738C0
+      node at 0000018A353738C0: data = 6, next = 0000018A353739C0
+      node at 0000018A353739C0: data = 9, next = 0000018A35373740
+      node at 0000018A35373740: data = 12, next = 0000018A35373A00
+      node at 0000018A35373A00: data = 15, next = 0000018A35373800
+      node at 0000018A35373800: data = 18, next = 0000018A35373A80
+      node at 0000018A35373A80: data = 21, next = 0000018A353737C0
+      node at 0000018A353737C0: data = 24, next = 0000018A35373A60
+      node at 0000018A35373A60: data = 27, next = 0000018A35373840
+      node at 0000018A35373840: data = 30, next = 0000018A353739A0
+      node at 0000018A353739A0: data = 33, next = 0000018A35373900
+      node at 0000018A35373900: data = 36, next = 0000000000000000
+    linked access: reached node with data = 36 after 11 hops. O(n).
     ```
 
 === "Java"
@@ -2081,30 +2797,137 @@ yalnızca işaretçilerle bağlanır.
     javac -d /tmp/j ArrayVsLinkedPreview.java && java -cp /tmp/j ArrayVsLinkedPreview
     ```
 
-    Beklenen çıktı (`node@...` tanımlayıcıları Java'nın her nesne için ürettiği kimlik özeti (identity hash)
-    değerleridir, gerçek adres değildir, ve makinenizde farklı olacaktır):
+    Beklenen çıktı (`node@...` kimlikleri Java'nın nesne-başına kimlik özetleridir, gerçek adres değildir, sizin
+    makinenizde farklı olacaktır):
 
     ```text
+    -- normal: 10 values, k = 4 (in the middle) (k = 4) --
     array (one contiguous block, indexed access):
       arr[0] = 10
       arr[1] = 20
       arr[2] = 30
       arr[3] = 40
       arr[4] = 50
-
+      arr[5] = 60
+      arr[6] = 70
+      arr[7] = 80
+      arr[8] = 90
+      arr[9] = 100
+    array access: arr[4] = 50, ONE index computation. O(1).
     linked list (separate objects, followed one .next at a time):
-      node@1be6f5c3: data = 10
-      node@13221655: data = 20
-      node@2f2c9b19: data = 30
-      node@31befd9f: data = 40
-      node@1c20c684: data = 50
+      node@13221655: data = 10
+      node@2f2c9b19: data = 20
+      node@31befd9f: data = 30
+      node@1c20c684: data = 40
+      node@1fb3ebeb: data = 50
+      node@548c4f57: data = 60
+      node@1218025c: data = 70
+      node@816f27d: data = 80
+      node@87aac27: data = 90
+      node@3e3abc88: data = 100
+    linked access: reached node with data = 50 after 4 hops. O(n).
+
+    -- hard: 16 values, k = 13 (near the end) (k = 13) --
+    array (one contiguous block, indexed access):
+      arr[0] = 11
+      arr[1] = 22
+      arr[2] = 33
+      arr[3] = 44
+      arr[4] = 55
+      arr[5] = 66
+      arr[6] = 77
+      arr[7] = 88
+      arr[8] = 99
+      arr[9] = 111
+      arr[10] = 122
+      arr[11] = 133
+      arr[12] = 144
+      arr[13] = 155
+      arr[14] = 166
+      arr[15] = 177
+    array access: arr[13] = 155, ONE index computation. O(1).
+    linked list (separate objects, followed one .next at a time):
+      node@6d311334: data = 11
+      node@682a0b20: data = 22
+      node@3d075dc0: data = 33
+      node@214c265e: data = 44
+      node@448139f0: data = 55
+      node@7cca494b: data = 66
+      node@7ba4f24f: data = 77
+      node@3b9a45b3: data = 88
+      node@7699a589: data = 99
+      node@58372a00: data = 111
+      node@4dd8dc3: data = 122
+      node@6d03e736: data = 133
+      node@568db2f2: data = 144
+      node@378bf509: data = 155
+      node@5fd0d5ae: data = 166
+      node@2d98a335: data = 177
+    linked access: reached node with data = 155 after 13 hops. O(n).
+
+    -- edge: k = 0, the first element (k = 0) --
+    array (one contiguous block, indexed access):
+      arr[0] = 7
+      arr[1] = 14
+      arr[2] = 21
+      arr[3] = 28
+      arr[4] = 35
+      arr[5] = 42
+      arr[6] = 49
+      arr[7] = 56
+      arr[8] = 63
+      arr[9] = 70
+    array access: arr[0] = 7, ONE index computation. O(1).
+    linked list (separate objects, followed one .next at a time):
+      node@16b98e56: data = 7
+      node@7ef20235: data = 14
+      node@27d6c5e0: data = 21
+      node@4f3f5b24: data = 28
+      node@15aeb7ab: data = 35
+      node@7b23ec81: data = 42
+      node@6acbcfc0: data = 49
+      node@5f184fc6: data = 56
+      node@3feba861: data = 63
+      node@5b480cf9: data = 70
+    linked access: reached node with data = 7 after 0 hops. O(n).
+
+    -- edge: k = the last index, the most hops (k = 11) --
+    array (one contiguous block, indexed access):
+      arr[0] = 3
+      arr[1] = 6
+      arr[2] = 9
+      arr[3] = 12
+      arr[4] = 15
+      arr[5] = 18
+      arr[6] = 21
+      arr[7] = 24
+      arr[8] = 27
+      arr[9] = 30
+      arr[10] = 33
+      arr[11] = 36
+    array access: arr[11] = 36, ONE index computation. O(1).
+    linked list (separate objects, followed one .next at a time):
+      node@6f496d9f: data = 3
+      node@723279cf: data = 6
+      node@10f87f48: data = 9
+      node@b4c966a: data = 12
+      node@2f4d3709: data = 15
+      node@4e50df2e: data = 18
+      node@1d81eb93: data = 21
+      node@7291c18f: data = 24
+      node@34a245ab: data = 27
+      node@7cc355be: data = 30
+      node@6e8cf4c6: data = 33
+      node@12edcd21: data = 36
+    linked access: reached node with data = 36 after 11 hops. O(n).
     ```
 
-Dizinin adreslerine dikkat edin: `...8A0`, `...8A4`, `...8A8`, ... — her biri bir öncekinden tam olarak 4 bayt
-sonra, her zaman, dilin kendisi tarafından garanti edilir. Bağlı listenin düğüm adreslerinde böyle bir garanti
-yoktur; bu belirli çalıştırmada birbirine yakın düştüler bile, ama hiçbir şey bunu vaat etmez — yukarıda ok olarak
-çizilen yalnızca `next` işaretçileri, doğru değerleri doğru sırayla bağladığını garanti eder. Gelecek hafta tam
-olarak bu yapıyı kuracak, içinde arayacak, araya ekleyecek ve ondan sileceksiniz.
+Normal senaryodaki dizi adreslerine bakın: `...5E0`, `...5E4`, `...5E8`, ... — her biri bir öncekinden tam 4 bayt
+sonra, her zaman, dil tarafından garanti edilir; 4.7. bölümün elle hesapladığı aynı sabit adım. Bağlı listenin
+düğüm adreslerinde böyle bir garanti yoktur — yukarıda ok olarak çizilen yalnızca `next` işaretçileri, doğru
+değerleri doğru sırayla bağladığını garanti eder. Her senaryo aynı hikâyeyi anlatıyor: dizi `k`. elemana tek bir
+hesaplamada ulaşıyor; bağlı liste oraya ulaşmak için `k` düğüm yürümek zorunda. Gelecek hafta tam olarak bu yapıyı
+kuracak, içinde arayacak, araya ekleyecek ve ondan sileceksiniz.
 
 ## 6. ASN.1, BER TLV ve PER TLV: veriyi hat için kodlamak
 
@@ -2305,8 +3128,300 @@ içinde, `0C 03 52 65 78` (3 uzunluğunda bir UTF8String, `"Rex"`) ve ardından 
 | Tipik kullanım | X.509 sertifikaları, LDAP, SNMP — birçok bağımsız gerçekleştirim arasında birlikte çalışabilirlik | Bant genişliğinin kritik olduğu protokoller (ör. hücresel sinyalleşme), teldeki her bayt önemliyken |
 
 İkisi de tam olarak aynı soyut bilgiyi kodlar (bir kez yazılmış bir ASN.1 şeması) — BER boyutu kendi kendini
-tanımlamayla takas eder, PER kendi kendini tanımlamayı boyutla takas eder. Bu dersteki yukarıdaki örnek BER'dir;
-PER'in var olduğunu bilmekte fayda var, ama tek tek bitleri elle paketlemek bu dersin kapsamı dışında.
+tanımlamayla takas eder, PER kendi kendini tanımlamayı boyutla takas eder. 6.5. bölüm yukarıda BER'i elle kodladı;
+aşağıdaki 6.7. bölüm aynı kaydın kuzenini, bit bit, PER'de yapıyor.
+
+### 6.7 PER: alanları minimum bit sayısına paketlemek
+
+BER, tek bir bitlik bir bayrak için bile, her alana en az iki tam bayt (bir etiket ve bir uzunluk) harcar. **PER**
+bunu tamamen atar: iki taraf zaten şema üzerinde anlaşmışsa — her alanın adı, ve `[min, max]` aralığı — bir alan
+yalnızca `genişlik = ⌈log₂(max - min + 1)⌉` bit gerektirir, ne bir bit fazla. Aralığında yalnızca bir olası değer
+olan bir alan (`min == max`) **sıfır** bit gerektirir: alıcı değeri zaten yalnızca şemadan bilir.
+
+<iframe class="dsanim" src="../anim/per-encoding.html" title="PER encoding: every field uses exactly as many bits as its range needs" loading="lazy"></iframe>
+<div class="dsanim-baski" markdown>
+![PER encoding: every field uses exactly as many bits as its range needs — step by step](anim/per-encoding.png)
+</div>
+
+Seçicide ayrıca **14 alan: geniş aralıklar, 16 bite kadar genişlik** (zor) örneğini ve **aralık büyüklüğü 1: 0
+bit**, **değerler aralığın en üstünde** uç durumlarını deneyin — ya da dört zorluk seviyesinde rastgele veri için
+🎲'a basın, ya da kendi alanlarınızı `ad:min..max:değer` olarak yazın.
+
+=== "C"
+
+    ```c
+    /* width = 0 when max == min: there is only one possible value, so NO bits are sent at all --
+       the receiver already knows it from the schema. */
+    int width = (max == min) ? 0 : (int) ceil(log2((double) (max - min + 1)));
+    pack_bits(per, &bitpos, (unsigned) (value - min), width);
+    ```
+
+=== "Java"
+
+    ```java
+    // width = 0 when max == min: only one possible value, so NO bits are sent -- the receiver
+    // already knows it from the schema.
+    int width = (max == min) ? 0 : (int) Math.ceil(Math.log(max - min + 1) / Math.log(2));
+    packBits(per, value - min, width);
+    ```
+
+    Tam sınıf (`code/week-01/java/PerEncoding.java`), C programının dört senaryosunu birebir aynı şekilde çalıştırır.
+
+??? example "Tam program: `per_encoding.c` / `PerEncoding.java`"
+
+    === "C"
+
+        ```c
+        /* Week 1 -- Introduction to Data Structures
+         * PER-style encoding: every field is packed into the MINIMUM number of bits its own
+         * [min, max] range needs -- no tags, no length bytes, byte-aligned only at the very end.
+         * Runs the same normal / hard / edge-case scenarios as the per-encoding animation.
+         * CEN207 Data Structures (CS50-style lecture notes)
+         */
+        #include <math.h>
+        #include <stdio.h>
+
+        typedef struct { const char *name; int min; int max; int value; } Field;
+
+        /* Pack the low `width` bits of `value` into buf, starting at bit offset *bitpos (MSB first). */
+        static void pack_bits(unsigned char *buf, int *bitpos, unsigned int value, int width) {
+            for (int i = width - 1; i >= 0; i--) {
+                int bit = (int) ((value >> i) & 1u);
+                int byte_index = *bitpos / 8;
+                int bit_index = 7 - (*bitpos % 8);
+                if (bit)
+                    buf[byte_index] |= (unsigned char) (1u << bit_index);
+                (*bitpos)++;
+            }
+        }
+
+        static void run_scenario(const char *label, const Field fields[], int count) {
+            printf("-- %s --\n", label);
+            unsigned char buf[64] = {0};
+            int bitpos = 0;
+            for (int i = 0; i < count; i++) {
+                const Field *f = &fields[i];
+                /* width = 0 when max == min: only one possible value, so NO bits are sent -- the
+                   receiver already knows it from the schema. */
+                int width = (f->max == f->min) ? 0 : (int) ceil(log2((double) (f->max - f->min + 1)));
+                pack_bits(buf, &bitpos, (unsigned) (f->value - f->min), width);
+                printf("  %-8s [%4d..%-4d] value=%-4d -> %d bit%s\n", f->name, f->min, f->max, f->value, width, width == 1 ? "" : "s");
+            }
+            int totalBits = bitpos;
+            int totalBytes = (bitpos + 7) / 8;
+            printf("total: %d significant bits, %d bytes:", totalBits, totalBytes);
+            for (int i = 0; i < totalBytes; i++)
+                printf(" %02X", buf[i]);
+            printf("\n\n");
+        }
+
+        int main(void) {
+            /* normal: 10 fields: name characters, an age, a few constrained numbers */
+            Field normal[] = {
+                {"name0", 0, 255, 82}, {"name1", 0, 255, 101}, {"name2", 0, 255, 120},
+                {"age", 0, 31, 5}, {"active", 0, 1, 1}, {"score", 0, 100, 87},
+                {"level", 0, 7, 3}, {"flag", 0, 1, 0}, {"code", 0, 15, 9}, {"temp", -20, 50, 22}
+            };
+            run_scenario("normal: 10 fields, name characters, an age, a few constrained numbers", normal, 10);
+
+            /* hard: 14 fields: wide ranges, widths up to 16 bits */
+            Field hard[] = {
+                {"id", 0, 65535, 4000}, {"name0", 0, 255, 82}, {"name1", 0, 255, 101}, {"name2", 0, 255, 120},
+                {"name3", 0, 255, 84}, {"age", 0, 31, 20}, {"active", 0, 1, 0}, {"score", 0, 1000, 999},
+                {"level", 0, 7, 7}, {"flag", 0, 1, 1}, {"code", 0, 15, 0}, {"temp", -50, 50, -30},
+                {"ratio", 0, 9, 4}, {"extra", 0, 3, 2}
+            };
+            run_scenario("hard: 14 fields, wide ranges, widths up to 16 bits", hard, 14);
+
+            /* edge: a range of size 1 needs 0 bits */
+            Field rangeSizeOne[] = {
+                {"version", 1, 1, 1}, {"name0", 0, 255, 82}, {"name1", 0, 255, 101}, {"name2", 0, 255, 120},
+                {"age", 0, 31, 5}, {"active", 0, 1, 1}, {"score", 0, 100, 50}, {"level", 0, 7, 3},
+                {"flag", 0, 1, 0}, {"code", 0, 15, 9}
+            };
+            run_scenario("edge: a range of size 1 (0 bits)", rangeSizeOne, 10);
+
+            /* edge: values sit at the very top of their range */
+            Field topOfRange[] = {
+                {"name0", 0, 255, 82}, {"name1", 0, 255, 101}, {"name2", 0, 255, 120},
+                {"age", 0, 31, 31}, {"active", 0, 1, 1}, {"score", 0, 100, 100}, {"level", 0, 7, 3},
+                {"flag", 0, 1, 0}, {"code", 0, 15, 9}, {"temp", -20, 50, 22}
+            };
+            run_scenario("edge: values sit at the very top of their range", topOfRange, 10);
+
+            return 0;
+        }
+        ```
+
+    === "Java"
+
+        ```java
+        /* Week 1 -- Introduction to Data Structures
+         * PER-style encoding: every field is packed into the MINIMUM number of bits its own
+         * [min, max] range needs -- no tags, no length bytes, byte-aligned only at the very end.
+         * Runs the same normal / hard / edge-case scenarios as the per-encoding animation.
+         * CEN207 Data Structures (CS50-style lecture notes)
+         */
+        public class PerEncoding {
+            static class Field {
+                String name; int min, max, value;
+                Field(String name, int min, int max, int value) { this.name = name; this.min = min; this.max = max; this.value = value; }
+            }
+
+            static int bitpos;
+
+            // Pack the low `width` bits of `value` into buf, starting at bit offset bitpos (MSB first).
+            static void packBits(byte[] buf, int value, int width) {
+                for (int i = width - 1; i >= 0; i--) {
+                    int bit = (value >> i) & 1;
+                    int byteIndex = bitpos / 8;
+                    int bitIndex = 7 - (bitpos % 8);
+                    if (bit != 0)
+                        buf[byteIndex] |= (byte) (1 << bitIndex);
+                    bitpos++;
+                }
+            }
+
+            static void runScenario(String label, Field[] fields) {
+                System.out.println("-- " + label + " --");
+                byte[] buf = new byte[64];
+                bitpos = 0;
+                for (Field f : fields) {
+                    // width = 0 when max == min: only one possible value, so NO bits are sent -- the
+                    // receiver already knows it from the schema.
+                    int width = (f.max == f.min) ? 0 : (int) Math.ceil(Math.log(f.max - f.min + 1) / Math.log(2));
+                    packBits(buf, f.value - f.min, width);
+                    System.out.printf("  %-8s [%4d..%-4d] value=%-4d -> %d bit%s%n", f.name, f.min, f.max, f.value, width, width == 1 ? "" : "s");
+                }
+                int totalBits = bitpos;
+                int totalBytes = (bitpos + 7) / 8;
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < totalBytes; i++) sb.append(String.format(" %02X", buf[i]));
+                System.out.println("total: " + totalBits + " significant bits, " + totalBytes + " bytes:" + sb);
+                System.out.println();
+            }
+
+            public static void main(String[] args) {
+                // normal: 10 fields: name characters, an age, a few constrained numbers
+                Field[] normal = {
+                    new Field("name0", 0, 255, 82), new Field("name1", 0, 255, 101), new Field("name2", 0, 255, 120),
+                    new Field("age", 0, 31, 5), new Field("active", 0, 1, 1), new Field("score", 0, 100, 87),
+                    new Field("level", 0, 7, 3), new Field("flag", 0, 1, 0), new Field("code", 0, 15, 9), new Field("temp", -20, 50, 22)
+                };
+                runScenario("normal: 10 fields, name characters, an age, a few constrained numbers", normal);
+
+                // hard: 14 fields: wide ranges, widths up to 16 bits
+                Field[] hard = {
+                    new Field("id", 0, 65535, 4000), new Field("name0", 0, 255, 82), new Field("name1", 0, 255, 101), new Field("name2", 0, 255, 120),
+                    new Field("name3", 0, 255, 84), new Field("age", 0, 31, 20), new Field("active", 0, 1, 0), new Field("score", 0, 1000, 999),
+                    new Field("level", 0, 7, 7), new Field("flag", 0, 1, 1), new Field("code", 0, 15, 0), new Field("temp", -50, 50, -30),
+                    new Field("ratio", 0, 9, 4), new Field("extra", 0, 3, 2)
+                };
+                runScenario("hard: 14 fields, wide ranges, widths up to 16 bits", hard);
+
+                // edge: a range of size 1 needs 0 bits
+                Field[] rangeSizeOne = {
+                    new Field("version", 1, 1, 1), new Field("name0", 0, 255, 82), new Field("name1", 0, 255, 101), new Field("name2", 0, 255, 120),
+                    new Field("age", 0, 31, 5), new Field("active", 0, 1, 1), new Field("score", 0, 100, 50), new Field("level", 0, 7, 3),
+                    new Field("flag", 0, 1, 0), new Field("code", 0, 15, 9)
+                };
+                runScenario("edge: a range of size 1 (0 bits)", rangeSizeOne);
+
+                // edge: values sit at the very top of their range
+                Field[] topOfRange = {
+                    new Field("name0", 0, 255, 82), new Field("name1", 0, 255, 101), new Field("name2", 0, 255, 120),
+                    new Field("age", 0, 31, 31), new Field("active", 0, 1, 1), new Field("score", 0, 100, 100), new Field("level", 0, 7, 3),
+                    new Field("flag", 0, 1, 0), new Field("code", 0, 15, 9), new Field("temp", -20, 50, 22)
+                };
+                runScenario("edge: values sit at the very top of their range", topOfRange);
+            }
+        }
+        ```
+
+**Deneyin**
+
+=== "C"
+
+    ```console
+    gcc -std=c11 -Wall -Wextra -o /tmp/x per_encoding.c -lm && /tmp/x
+    ```
+
+    Beklenen çıktı:
+
+    ```text
+    -- normal: 10 fields, name characters, an age, a few constrained numbers --
+      name0    [   0..255 ] value=82   -> 8 bits
+      name1    [   0..255 ] value=101  -> 8 bits
+      name2    [   0..255 ] value=120  -> 8 bits
+      age      [   0..31  ] value=5    -> 5 bits
+      active   [   0..1   ] value=1    -> 1 bit
+      score    [   0..100 ] value=87   -> 7 bits
+      level    [   0..7   ] value=3    -> 3 bits
+      flag     [   0..1   ] value=0    -> 1 bit
+      code     [   0..15  ] value=9    -> 4 bits
+      temp     [ -20..50  ] value=22   -> 7 bits
+    total: 52 significant bits, 7 bytes: 52 65 78 2E BB 4A A0
+
+    -- hard: 14 fields, wide ranges, widths up to 16 bits --
+      id       [   0..65535] value=4000 -> 16 bits
+      name0    [   0..255 ] value=82   -> 8 bits
+      name1    [   0..255 ] value=101  -> 8 bits
+      name2    [   0..255 ] value=120  -> 8 bits
+      name3    [   0..255 ] value=84   -> 8 bits
+      age      [   0..31  ] value=20   -> 5 bits
+      active   [   0..1   ] value=0    -> 1 bit
+      score    [   0..1000] value=999  -> 10 bits
+      level    [   0..7   ] value=7    -> 3 bits
+      flag     [   0..1   ] value=1    -> 1 bit
+      code     [   0..15  ] value=0    -> 4 bits
+      temp     [ -50..50  ] value=-30  -> 7 bits
+      ratio    [   0..9   ] value=4    -> 4 bits
+      extra    [   0..3   ] value=2    -> 2 bits
+    total: 85 significant bits, 11 bytes: 0F A0 52 65 78 54 A3 E7 F0 28 90
+
+    -- edge: a range of size 1 (0 bits) --
+      version  [   1..1   ] value=1    -> 0 bits
+      name0    [   0..255 ] value=82   -> 8 bits
+      name1    [   0..255 ] value=101  -> 8 bits
+      name2    [   0..255 ] value=120  -> 8 bits
+      age      [   0..31  ] value=5    -> 5 bits
+      active   [   0..1   ] value=1    -> 1 bit
+      score    [   0..100 ] value=50   -> 7 bits
+      level    [   0..7   ] value=3    -> 3 bits
+      flag     [   0..1   ] value=0    -> 1 bit
+      code     [   0..15  ] value=9    -> 4 bits
+    total: 45 significant bits, 6 bytes: 52 65 78 2D 93 48
+
+    -- edge: values sit at the very top of their range --
+      name0    [   0..255 ] value=82   -> 8 bits
+      name1    [   0..255 ] value=101  -> 8 bits
+      name2    [   0..255 ] value=120  -> 8 bits
+      age      [   0..31  ] value=31   -> 5 bits
+      active   [   0..1   ] value=1    -> 1 bit
+      score    [   0..100 ] value=100  -> 7 bits
+      level    [   0..7   ] value=3    -> 3 bits
+      flag     [   0..1   ] value=0    -> 1 bit
+      code     [   0..15  ] value=9    -> 4 bits
+      temp     [ -20..50  ] value=22   -> 7 bits
+    total: 52 significant bits, 7 bytes: 52 65 78 FF 23 4A A0
+    ```
+
+=== "Java"
+
+    ```console
+    javac -d /tmp/j PerEncoding.java && java -cp /tmp/j PerEncoding
+    ```
+
+    Beklenen çıktı: yukarıdaki C çıktısıyla birebir aynı (yalnızca alan-genişliği hesaplamasının dili farklı:
+    C'de `ceil(log2(...))`, Java'da `Math.ceil(Math.log(...) / Math.log(2))`, çünkü Java'nın yerleşik bir
+    `log2`'si yok).
+
+Normal senaryo, BER'in (6.5. bölüm) yalnızca etiket ve uzunluklara harcayacağı en az `10 * 2 = 20` bayta karşılık,
+10 alan için yalnızca **52 bit (7 bayt)** gerektiriyor. Uç senaryo `width = 0` kuralını somutlaştırıyor:
+`version`'ın `min == max == 1`, bu yüzden akışa **sıfır** bit katkıda bulunuyor, yine de iki taraf da değerinin
+`1` olduğunu biliyor — bu bilgiyi tel değil şema taşıyor. PER bunun bedelini BER'in kendi kendini tanımlamasını
+tamamen bırakarak ödüyor: şema elde olmadan, bir PER kod çözücü bir alanın bitlerinin nerede bittiğini, bir
+sonrakinin nerede başladığını bile söyleyemez.
 
 !!! warning "Sık yapılan hatalar"
     - Uzunluk önekini unutup karşı tarafta sabit boyutlu bir okumanın "işe yarayacağını" ummak. TLV, tam olarak
@@ -2408,88 +3523,258 @@ uyuşmadığını söyleyecek. Uyuşmazlığı devam etmeden önce her seferinde
 
 ### 7.5 Adım 3: gdb ile bir hata bulun
 
-İşte gerçek bir hatası olan küçük bir program: yazdırdığı ortalama yanlış.
+İşte gerçek bir hata içeren küçük bir program: yazdırdığı ortalama yanlış. Önce animasyonu oynatın, aynı
+soruşturmayı — kesme noktası, adım, izleme tablosu — kare kare anlatırken izleyin; sonra aşağıda gerçek bir `gdb`
+oturumunda kendiniz tekrarlayın.
+
+<iframe class="dsanim" src="../anim/debugger-stepping.html" title="Stepping through a debugger: breakpoints, step, next, and a watch table" loading="lazy"></iframe>
+<div class="dsanim-baski" markdown>
+![Stepping through a debugger: breakpoints, step, next, and a watch table — step by step](anim/debugger-stepping.png)
+</div>
+
+Seçicide ayrıca **16 eleman, negatif değerler** (zor) örneğini ve **boş dizi: sıfıra bölme koruması**, **tek
+eleman** uç durumlarını deneyin — ya da dört zorluk seviyesinde rastgele veri için 🎲'a basın, ya da kendi
+diziniz yazın.
 
 ```c
-/* Week 1 -- Introduction to Data Structures
- * A small bug hunt for the C workshop: why is the average wrong?
- * CEN207 Data Structures (CS50-style lecture notes)
- */
-#include <stdio.h>
-
 int average_buggy(const int arr[], int n) {
+    if (n == 0) return 0;            /* guard: avoid division by zero */
     int sum = 0;
     for (int i = 0; i < n; i++)
         sum = sum + arr[i];
-    return sum / n;               /* bug: integer division truncates */
+    return sum / n;                  /* bug: integer division truncates */
 }
 
 double average_fixed(const int arr[], int n) {
+    if (n == 0) return 0.0;
     int sum = 0;
     for (int i = 0; i < n; i++)
         sum = sum + arr[i];
-    return (double) sum / n;      /* fix: promote to double before dividing */
-}
-
-int main(void) {
-    int scores[] = {7, 8, 8};
-    int n = (int) (sizeof(scores) / sizeof(scores[0]));
-
-    printf("average_buggy  -> %d\n", average_buggy(scores, n));
-    printf("average_fixed  -> %.2f\n", average_fixed(scores, n));
-
-    return 0;
+    return (double) sum / n;         /* fix: promote to double before dividing */
 }
 ```
 
-Onu **hata ayıklama sembolleriyle** (`-g`) kurun, böylece gdb ham adresler yerine kaynak satırlarını ve değişken
-adlarını gösterebilsin:
+??? example "Tam program: `debug_average.c` / `DebugAverage.java`"
+
+    === "C"
+
+        ```c
+        /* Week 1 -- Introduction to Data Structures
+         * average_buggy() truncates because of integer division; average_fixed() casts to double first.
+         * Runs the same normal / hard / edge-case scenarios as the debugger-stepping animation, the way a
+         * gdb session (Section 7.5) narrates them one breakpoint at a time.
+         * CEN207 Data Structures (CS50-style lecture notes)
+         */
+        #include <stdio.h>
+
+        int average_buggy(const int arr[], int n) {
+            if (n == 0) return 0;            /* guard: avoid division by zero */
+            int sum = 0;
+            for (int i = 0; i < n; i++)
+                sum = sum + arr[i];
+            return sum / n;                  /* bug: integer division truncates */
+        }
+
+        double average_fixed(const int arr[], int n) {
+            if (n == 0) return 0.0;
+            int sum = 0;
+            for (int i = 0; i < n; i++)
+                sum = sum + arr[i];
+            return (double) sum / n;         /* fix: promote to double before dividing */
+        }
+
+        static void run_scenario(const char *label, const int arr[], int n) {
+            printf("-- %s --\n", label);
+            printf("arr:");
+            for (int i = 0; i < n; i++)
+                printf(" %d", arr[i]);
+            printf("  (n = %d)\n", n);
+            printf("average_buggy  -> %d\n", average_buggy(arr, n));
+            printf("average_fixed  -> %.2f\n\n", average_fixed(arr, n));
+        }
+
+        int main(void) {
+            /* normal: 10 elements, the bug shows */
+            int normal[] = {7, 8, 8, 9, 6, 10, 7, 8, 9, 9};
+            run_scenario("normal: 10 elements, the bug shows", normal, 10);
+
+            /* hard: 16 elements, negative values */
+            int hard[] = {-5, 3, -8, 12, -1, 7, -10, 4, 9, -6, 2, -3, 8, -7, 1, 5};
+            run_scenario("hard: 16 elements, negative values", hard, 16);
+
+            /* edge: empty array, the division-by-zero guard */
+            run_scenario("edge: empty array (division-by-zero guard)", NULL, 0);
+
+            /* edge: a single element */
+            int single[] = {7};
+            run_scenario("edge: a single element", single, 1);
+
+            return 0;
+        }
+        ```
+
+    === "Java"
+
+        ```java
+        /* Week 1 -- Introduction to Data Structures
+         * averageBuggy() truncates because of integer division; averageFixed() casts to double first.
+         * Runs the same normal / hard / edge-case scenarios as the debugger-stepping animation.
+         * CEN207 Data Structures (CS50-style lecture notes)
+         */
+        public class DebugAverage {
+            static int averageBuggy(int[] arr) {
+                if (arr.length == 0) return 0;
+                int sum = 0;
+                for (int x : arr) sum += x;
+                return sum / arr.length;          // bug: integer division truncates
+            }
+
+            static double averageFixed(int[] arr) {
+                if (arr.length == 0) return 0.0;
+                int sum = 0;
+                for (int x : arr) sum += x;
+                return (double) sum / arr.length; // fix: promote to double before dividing
+            }
+
+            static void runScenario(String label, int[] arr) {
+                System.out.println("-- " + label + " --");
+                StringBuilder sb = new StringBuilder("arr:");
+                for (int v : arr) sb.append(' ').append(v);
+                sb.append("  (n = ").append(arr.length).append(')');
+                System.out.println(sb);
+                System.out.println("averageBuggy  -> " + averageBuggy(arr));
+                System.out.printf("averageFixed  -> %.2f%n%n", averageFixed(arr));
+            }
+
+            public static void main(String[] args) {
+                // normal: 10 elements, the bug shows
+                int[] normal = {7, 8, 8, 9, 6, 10, 7, 8, 9, 9};
+                runScenario("normal: 10 elements, the bug shows", normal);
+
+                // hard: 16 elements, negative values
+                int[] hard = {-5, 3, -8, 12, -1, 7, -10, 4, 9, -6, 2, -3, 8, -7, 1, 5};
+                runScenario("hard: 16 elements, negative values", hard);
+
+                // edge: empty array, the division-by-zero guard
+                runScenario("edge: empty array (division-by-zero guard)", new int[0]);
+
+                // edge: a single element
+                int[] single = {7};
+                runScenario("edge: a single element", single);
+            }
+        }
+        ```
+
+**Deneyin**
+
+=== "C"
+
+    ```console
+    gcc -std=c11 -Wall -Wextra -o /tmp/x debug_average.c && /tmp/x
+    ```
+
+    Beklenen çıktı:
+
+    ```text
+    -- normal: 10 elements, the bug shows --
+    arr: 7 8 8 9 6 10 7 8 9 9  (n = 10)
+    average_buggy  -> 8
+    average_fixed  -> 8.10
+
+    -- hard: 16 elements, negative values --
+    arr: -5 3 -8 12 -1 7 -10 4 9 -6 2 -3 8 -7 1 5  (n = 16)
+    average_buggy  -> 0
+    average_fixed  -> 0.69
+
+    -- edge: empty array (division-by-zero guard) --
+    arr:  (n = 0)
+    average_buggy  -> 0
+    average_fixed  -> 0.00
+
+    -- edge: a single element --
+    arr: 7  (n = 1)
+    average_buggy  -> 7
+    average_fixed  -> 7.00
+    ```
+
+=== "Java"
+
+    ```console
+    javac -d /tmp/j DebugAverage.java && java -cp /tmp/j DebugAverage
+    ```
+
+    Beklenen çıktı: yukarıdaki C çıktısıyla aynı değerler (`averageBuggy`/`averageFixed` adlandırmasıyla).
+
+Şimdi hatayı, kaynağı gözle okumak yerine bir hata ayıklayıcıyla (debugger) bulun. **Hata ayıklama sembolleriyle**
+(`-g`) derleyin, böylece gdb ham adresler yerine kaynak satırlarını ve değişken adlarını gösterebilsin:
 
 ```console
 gcc -std=c11 -Wall -Wextra -g -o /tmp/dbg debug_average.c
 gdb /tmp/dbg
 ```
 
-`(gdb)` istemi içinde, bu komutları birer birer yazın (aşağıdaki her `(gdb)` satırı *sizin* yazdığınız bir şeydir;
+`(gdb)` isteminde, bu komutları birer birer yazın (aşağıdaki her `(gdb)` satırı *sizin* yazdığınız bir şeydir;
 geri kalan her şey gdb'nin yanıtıdır):
 
 ```console
-(gdb) break debug_average.c:11
+(gdb) break debug_average.c:14
 (gdb) run
 (gdb) print sum
 (gdb) print n
 (gdb) print sum / n
 (gdb) print (double) sum / n
+(gdb) delete 1
 (gdb) continue
 (gdb) quit
 ```
 
-Beklenen oturum (gdb'nin kendi iş parçacığı yaşam döngüsüne dair birkaç satırı netlik için kırpıldı; geri kalan
-her şey gdb'nin yazdırdığı ile birebir aynı):
+Beklenen oturum (bir iş parçacığı oluşturma satırı netlik için kısaltıldı; geri kalan her şey gdb'nin tam olarak
+yazdırdığıdır):
 
 ```text
-Breakpoint 1 at 0x140001768: file debug_average.c, line 11.
+Breakpoint 1 at 0x140001775: file debug_average.c, line 14.
 
-Thread 1 hit Breakpoint 1, average_buggy (arr=0x5ffe80, n=3) at debug_average.c:11
-11          return sum / n;               /* bug: integer division truncates */
-$1 = 23
-$2 = 3
-$3 = 7
-$4 = 7.666666666666667
+Thread 1 hit Breakpoint 1, average_buggy (arr=0x5ffe60, n=10) at debug_average.c:14
+14          return sum / n;                  /* bug: integer division truncates */
+$1 = 81
+$2 = 10
+$3 = 8
+$4 = 8.0999999999999996
+-- normal: 10 elements, the bug shows --
+arr: 7 8 8 9 6 10 7 8 9 9  (n = 10)
+average_buggy  -> 8
+average_fixed  -> 8.10
+
+-- hard: 16 elements, negative values --
+arr: -5 3 -8 12 -1 7 -10 4 9 -6 2 -3 8 -7 1 5  (n = 16)
+average_buggy  -> 0
+average_fixed  -> 0.69
+
+-- edge: empty array (division-by-zero guard) --
+arr:  (n = 0)
+average_buggy  -> 0
+average_fixed  -> 0.00
+
+-- edge: a single element --
+arr: 7  (n = 1)
 average_buggy  -> 7
-average_fixed  -> 7.67
+average_fixed  -> 7.00
+
+[Inferior 1 (process ...) exited normally]
 ```
 
-Az önce olanı adım adım geçin: `break debug_average.c:11`, `average_buggy` içindeki `return` satırına bir kesme
-noktası (breakpoint) koydu; `run` programı başlattı, program tam orada, o satır çalışmadan önce durdu. `print sum`
-ve `print n`, o noktadaki gerçek değerleri gösterdi (`23` ve `3` — şimdiye kadar doğru: 7 + 8 + 8 = 23).
-`print sum / n`, `7` gösterdi — **tam sayı bölmesi (integer division)**, ki `23 / 3 = 7.666...`'ü `7`'ye keser.
-`print (double) sum / n`, kayan noktalı bölmeyi zorlayarak *asıl istenen* sonucu, `7.666666666666667`'yi gösterdi.
-Hata hiçbir zaman döngüde ya da toplamda değildi — son bölmedeydi. `average_fixed` (yukarıdaki kodda görünür),
-tam olarak bu tür dönüşümüyle (cast) düzeltiyor, ve `%.2f` çıktısı, `7.67`, eşleşiyor. Bu — bir varsayım kur, bir
-değişkeni incele, doğrula ya da çürüt — bir hata ayıklayıcıyla (debugger) hata ayıklamanın tüm yöntemidir, ve
-bundan çok daha ince hatalara da ölçeklenir.
-
+Az önce ne olduğunu adım adım geçin: `break debug_average.c:14`, `average_buggy` içindeki `return sum / n;`
+satırına bir kesme noktası koydu; `run` programı başlattı, program *normal* senaryo için (10 eleman)
+`run_scenario`'yu ilk çağırdı ve tam orada, o satır çalışmadan önce durdu. `print sum` ve `print n`, o noktadaki
+gerçek değerleri gösterdi (`81` ve `10` — animasyonun izleme tablosuyla örtüşerek şimdiye kadar doğru:
+7+8+8+9+6+10+7+8+9+9 = 81). `print sum / n`, `8` gösterdi — **tam sayı bölmesi**, `81 / 10 = 8.1`'i `8`'e keser.
+`print (double) sum / n`, kayan noktalıya zorlanarak *istenen* sonucu gösterdi (`8.0999999999999996`, kayan
+noktanın `8.1`'i yazmanın her zamanki yaklaşık-ama-yakın yolu). Hata hiçbir zaman döngüde ya da toplamada
+değildi — son bölmedeydi. `delete 1`, kesme noktasını kaldırdı, böylece `continue` kalan üç senaryoyu bir daha
+durmadan sonuna kadar çalıştırabildi; çıktıları yukarıdaki düz "Deneyin" çalıştırmasıyla tam olarak örtüşüyor, ve
+`average_fixed` bunların hepsini tam olarak aynı `(double)` dönüşümüyle düzeltiyor. Bu — bir hipotez kur, bir
+değişkeni incele, doğrula ya da çürüt — bir hata ayıklayıcıyla hata ayıklamanın tüm yöntemidir, ve bundan çok daha
+incelikli hatalara da ölçeklenir.
 ### 7.6 Adım 4: CMake temelleri
 
 Dönem projesi şablonu ([proje rehberine](../project-guide/index.md) bakın) sade bir `gcc` komutuyla değil,

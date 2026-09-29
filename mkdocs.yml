@@ -163,7 +163,7 @@ plugins:
       hooks:
         on_env: "hooks:on_env"
         on_page_content: "hooks:on_page_content"
-  - external-markdown
+  # - external-markdown   # disabled: unused, and it renders every page as Jinja so C code like {{1, 2}} breaks the build
   - mkdocs-video
   - search:
       separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
@@ -230,7 +230,8 @@ plugins:
       docs_path: docs/
       branch: main
       token: !ENV MKDOCS_GIT_COMMITTERS_APIKEY
-  - macros
+  - macros:
+      render_by_default: false   # opt in per page with `render_macros: true`; C code like {{1, 2}} must not be parsed as Jinja
 
 extra_javascript:
   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
