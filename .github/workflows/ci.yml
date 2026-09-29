@@ -1,11 +1,9 @@
 # CEN207 course site: on every push to main, build the MkDocs site and publish it to GitHub Pages (gh-pages).
 # Course outputs (PDF, PPTX, DOCX, slide HTML) are committed ready-made; only the MkDocs site is built here.
 name: ci
+# For now the site is built and tested locally and pushed to gh-pages by hand (no Actions minutes used);
+# run this workflow manually from the Actions tab when an automatic build is wanted.
 on:
-  push:
-    branches:
-      - master
-      - main
   workflow_dispatch:
 permissions:
   contents: write
