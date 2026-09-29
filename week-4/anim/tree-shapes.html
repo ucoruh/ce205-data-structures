@@ -146,6 +146,28 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
 .dsa-slayt .dsa-jeton { font-size: 11.5px; padding: 2px 5px; flex: 0 0 auto; }
 .dsa-slayt .dsa-cap { flex: 0 0 auto; max-height: 4.4em; overflow-y: auto; }
 .dsa-slayt .dsa-sonraki { flex: 0 0 auto; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: .8rem; margin-top: 3px; }
+/* v2.2: program counter (▶ on the line being executed), branch notes (true/false, → call), skipped branch dimmed */
+.dsa-sat.pc { background: var(--dsa-vurgu); border-left-color: var(--dsa-ana); box-shadow: inset 3px 0 0 var(--dsa-ana); font-weight: 600; }
+.dsa-sat.pc .dsa-no::before { content: '\25B6'; color: var(--dsa-ana); font-size: .8em; margin-right: 2px; }
+.dsa-sat.atla { opacity: .38; text-decoration: line-through; text-decoration-color: var(--dsa-soluk); }
+.dsa-not { display: inline-block; margin-left: 10px; padding: 0 6px; border-radius: 4px; font-size: .85em; font-weight: 700;
+  background: var(--dsa-ana); color: #fff; font-family: 'Segoe UI', Arial, sans-serif; }
+.dsa-sat.atla .dsa-not { background: var(--dsa-soluk); }
+/* v2.3: zoom / pan / full screen on the scene */
+.dsa-sahne { position: relative; touch-action: pan-y; }
+.dsa-sahne.dsa-zoomed { cursor: grab; touch-action: none; }
+.dsa-sahne.dsa-drag { cursor: grabbing; }
+.dsa-zoom { position: absolute; top: 6px; right: 6px; display: flex; gap: 3px; opacity: .55; transition: opacity .2s; z-index: 2; }
+.dsa-sahne:hover .dsa-zoom, .dsa-zoom:focus-within { opacity: 1; }
+.dsa-zb { width: 28px; height: 26px; border-radius: 6px; border: 1px solid var(--dsa-cizgi); background: var(--dsa-zemin);
+  color: var(--dsa-yazi); cursor: pointer; font-size: 15px; line-height: 1; padding: 0; }
+.dsa-zb:hover { border-color: var(--dsa-ana); color: var(--dsa-ana); }
+.dsa:fullscreen { background: var(--dsa-zemin); max-width: none; height: 100vh; display: flex; flex-direction: column; overflow: auto; }
+.dsa:fullscreen .dsa-govde { flex: 1 1 auto; min-height: 0; }
+.dsa:fullscreen .dsa-sahne svg { max-height: none; height: 100%; }
+.dsa:fullscreen .dsa-pre { max-height: none; }
+@media print { .dsa-zoom { display: none; } }
+.dsa-statik .dsa-zoom { display: none; }
 </style>
 </head>
 <body>
@@ -636,11 +658,129 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
     '    return 1 + Math.max(hl, hr);',
     '}'
   ];
-  var LINES_FULL = { c: [2, 3, 4, 5, 6, 7], java: [2, 3, 4, 5, 6, 7] };
-  var LINES_COMPLETE = { c: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21], java: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] };
-  var LINES_PERFECT = { c: [24, 25, 26, 27, 28, 29, 30, 31, 32], java: [23, 24, 25, 26, 27, 28, 29, 30, 31] };
-  var LINES_DEGENERATE = { c: [35, 36, 37, 38, 39], java: [34, 35, 36, 37, 38] };
-  var LINES_BALANCED = { c: [42, 43, 44, 45, 46, 47, 48, 49, 50], java: [41, 42, 43, 44, 45, 46, 47, 48, 49] };
+  /* Every one of the five predicate functions below is line-for-line identical between C and Java (only
+   * the comment/keyword spelling differs, exactly like every other week-4 file), so one line array is
+   * reused for both languages throughout this file — verified by scratchpad/check_parallel.js. */
+
+  /** When several node visits (or recursive calls) are concatenated into one S.step, the same source line
+   *  can be "run" at one node and "the side not taken" (skip) at another — the player highlights by line
+   *  NUMBER for the whole step, so a line that really ran at least once must never also carry a skip
+   *  mark. Drop the conflicting skip entries; the run occurrence still shows it. */
+  function dedupeSkip(lines) {
+    var ran = {};
+    lines.forEach(function (x) {
+      var n = x && typeof x === 'object' ? x.n : x;
+      var isSkip = !!(x && typeof x === 'object' && x.skip);
+      if (!isSkip) ran[n] = true;
+    });
+    return lines.filter(function (x) {
+      var n = x && typeof x === 'object' ? x.n : x;
+      var isSkip = !!(x && typeof x === 'object' && x.skip);
+      return !(isSkip && ran[n]);
+    });
+  }
+  /** `is_full`'s real recursive trace: base case (3), the "exactly one child" guard (5, single-line
+   *  `if (...) return false;` — note only, nothing else to mark skip on ITS line), then either the guard
+   *  fires (6 never runs — skip) or it doesn't and (6) recurses into both children. */
+  function fullTrace(n) {
+    if (!n) return [{ n: 3, note: T('n == NULL? evet', 'n == NULL? yes') }];
+    var hasL = !!n.left, hasR = !!n.right, violated = hasL !== hasR;
+    var lines = [{ n: 3, note: T('n == NULL? hayır', 'n == NULL? no') }, 4,
+      { n: 5, note: violated ? T('hasL != hasR? evet', 'hasL != hasR? yes') : T('hasL != hasR? hayır', 'hasL != hasR? no') }];
+    if (violated) { lines.push({ n: 6, skip: true }); return lines; }
+    lines.push(6);
+    return lines.concat(fullTrace(n.left)).concat(fullTrace(n.right));
+  }
+  /** `is_complete`'s real BFS trace: the while check (14), one queue pop (15), the null check (16, single-
+   *  line `if (...) { ...; continue; }` — note only), then either a gap is recorded and 17-19 are skipped
+   *  (the `continue` jumps past them), or (for a real node) the gap check (17, single-line `if (...)
+   *  return false;`) decides whether we stop here or push both children (18, 19) and keep going. */
+  function completeTrace(root) {
+    var queue = [root], seenGap = false, lines = [11, 12, 13];
+    while (queue.length) {
+      lines.push({ n: 14, note: T('front < rear? evet', 'front < rear? yes') });
+      var cur = queue.shift();
+      lines.push(15);
+      if (cur === null) {
+        lines.push({ n: 16, note: T('n == NULL? evet', 'n == NULL? yes') });
+        if (!seenGap) seenGap = true;
+        lines.push({ n: 17, skip: true }, { n: 18, skip: true }, { n: 19, skip: true });
+        continue;
+      }
+      lines.push({ n: 16, note: T('n == NULL? hayır', 'n == NULL? no') });
+      if (seenGap) {
+        lines.push({ n: 17, note: T('seenGap? evet', 'seenGap? yes') });
+        return { lines: dedupeSkip(lines), offender: cur };
+      }
+      lines.push({ n: 17, note: T('seenGap? hayır', 'seenGap? no') }, 18, 19);
+      queue.push(cur.left); queue.push(cur.right);
+    }
+    lines.push({ n: 14, note: T('front < rear? hayır', 'front < rear? no') }, 21);
+    return { lines: dedupeSkip(lines), offender: null };
+  }
+  /** `is_perfect`'s real recursive trace: base case (26), the leaf check (27, single-line `if (...) {`),
+   *  and — only at a leaf — the "first leaf seen" check (28) and the depth-match check (29); a non-leaf
+   *  instead takes the "not full" guard (31, single-line `if (...) return false;`) and, if it survives,
+   *  recurses into both children (32). */
+  function perfectTrace(n, depth, leafDepthRef) {
+    if (!n) return [{ n: 26, note: T('n == NULL? evet', 'n == NULL? yes') }];
+    var isLeaf = !n.left && !n.right;
+    var lines = [{ n: 26, note: T('n == NULL? hayır', 'n == NULL? no') }];
+    if (isLeaf) {
+      lines.push({ n: 27, note: T('yaprak mı? evet', 'is a leaf? yes') });
+      var wasUnset = leafDepthRef.v === -1;
+      lines.push({ n: 28, note: wasUnset ? T('leafDepth == -1? evet', 'leafDepth == -1? yes') : T('leafDepth == -1? hayır', 'leafDepth == -1? no') });
+      if (wasUnset) leafDepthRef.v = depth;
+      var matches = depth === leafDepthRef.v;
+      lines.push({ n: 29, note: matches ? T('depth == leafDepth? evet', 'depth == leafDepth? yes') : T('depth == leafDepth? hayır', 'depth == leafDepth? no') });
+      lines.push({ n: 31, skip: true });
+      return lines;
+    }
+    lines.push({ n: 27, note: T('yaprak mı? hayır', 'is a leaf? no') });
+    var missing = !n.left || !n.right;
+    lines.push({ n: 31, note: missing ? T('tek çocuk eksik? evet', 'a child is missing? yes') : T('tek çocuk eksik? hayır', 'a child is missing? no') });
+    if (missing) return lines;
+    lines.push(32);
+    return lines.concat(perfectTrace(n.left, depth + 1, leafDepthRef)).concat(perfectTrace(n.right, depth + 1, leafDepthRef));
+  }
+  /** `is_degenerate`'s real recursive trace: base case (37), the "two children" guard (38, single-line
+   *  `if (...) return false;` — note only), then either it fires (39 never runs — skip) or it doesn't and
+   *  (39) recurses into both children. */
+  function degenerateTrace(n) {
+    if (!n) return [{ n: 37, note: T('n == NULL? evet', 'n == NULL? yes') }];
+    var hasL = !!n.left, hasR = !!n.right, twoKids = hasL && hasR;
+    var lines = [{ n: 37, note: T('n == NULL? hayır', 'n == NULL? no') },
+      { n: 38, note: twoKids ? T('2 çocuk var mı? evet', '2 children? yes') : T('2 çocuk var mı? hayır', '2 children? no') }];
+    if (twoKids) { lines.push({ n: 39, skip: true }); return lines; }
+    lines.push(39);
+    return lines.concat(degenerateTrace(n.left)).concat(degenerateTrace(n.right));
+  }
+  /** `check_balance`'s real recursive (post-order) trace: base case (44), then the left subtree's height
+   *  (45 calls in, its own trace follows), the "left already unbalanced" check (46, single-line `if (...)
+   *  return -1;` — note only, and if it fires the right subtree is never even visited: 47-50 skip), then
+   *  the same for the right subtree (47, 48), and finally the balance check itself (49) and the height
+   *  formula (50) — this mirrors the SHOWN code's early-exit recursion, independently of the iterative
+   *  bottom-up height map `build()` also keeps (for the on-tree "h=" annotations, a different technique). */
+  function balanceTrace(n) {
+    if (!n) return { lines: [{ n: 44, note: T('n == NULL? evet', 'n == NULL? yes') }], h: 0 };
+    var lines = [{ n: 44, note: T('n == NULL? hayır', 'n == NULL? no') }, 45];
+    var l = balanceTrace(n.left);
+    lines = lines.concat(l.lines);
+    var hlBad = l.h === -1;
+    lines.push({ n: 46, note: hlBad ? T('hl == -1? evet', 'hl == -1? yes') : T('hl == -1? hayır', 'hl == -1? no') });
+    if (hlBad) { lines.push({ n: 47, skip: true }, { n: 48, skip: true }, { n: 49, skip: true }, { n: 50, skip: true }); return { lines: dedupeSkip(lines), h: -1 }; }
+    lines.push(47);
+    var r = balanceTrace(n.right);
+    lines = lines.concat(r.lines);
+    var hrBad = r.h === -1;
+    lines.push({ n: 48, note: hrBad ? T('hr == -1? evet', 'hr == -1? yes') : T('hr == -1? hayır', 'hr == -1? no') });
+    if (hrBad) { lines.push({ n: 49, skip: true }, { n: 50, skip: true }); return { lines: dedupeSkip(lines), h: -1 }; }
+    var diffBad = Math.abs(l.h - r.h) > 1;
+    lines.push({ n: 49, note: diffBad ? T('|hl-hr| > 1? evet', '|hl-hr| > 1? yes') : T('|hl-hr| > 1? hayır', '|hl-hr| > 1? no') });
+    if (diffBad) { lines.push({ n: 50, skip: true }); return { lines: dedupeSkip(lines), h: -1 }; }
+    lines.push(50);
+    return { lines: dedupeSkip(lines), h: 1 + Math.max(l.h, r.h) };
+  }
 
   /* ---- helpers local to build(); reference() works only on the flat array, never calls these ---- */
   function buildTree(arr) {
@@ -952,34 +1092,30 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
         findFull(n.left); findFull(n.right);
       })(root);
       var full = fullViolator === null;
+      var fullLines = dedupeSkip(fullTrace(root));
       if (full) {
         for (var fi = 0; fi < arr.length; fi++) if (arr[fi] !== null) hi(fi, 'new');
         S.step(T('DOLU (full): her düğümün 0 ya da 2 çocuğu var, hiçbiri tam 1 çocuklu değil. FULL: EVET.',
-                 'FULL: every node has 0 or 2 children, none has exactly 1. FULL: YES.'), LINES_FULL);
+                 'FULL: every node has 0 or 2 children, none has exactly 1. FULL: YES.'), { c: fullLines, java: fullLines });
       } else {
         hi(fullViolator.idx, 'del');
         S.step(T('DOLU (full): `' + fullViolator.val + '` düğümünün tam olarak ' + (fullViolator.left ? '1 (sadece sol)' : '1 (sadece sağ)') + ' çocuğu var — bu yüzden ağaç FULL DEĞİL.',
-                 'FULL: node `' + fullViolator.val + '` has exactly ' + (fullViolator.left ? '1 child (left only)' : '1 child (right only)') + ' — so the tree is NOT full.'), LINES_FULL);
+                 'FULL: node `' + fullViolator.val + '` has exactly ' + (fullViolator.left ? '1 child (left only)' : '1 child (right only)') + ' — so the tree is NOT full.'), { c: fullLines, java: fullLines });
       }
       clearHi();
 
       /* ---- complete: real BFS with null placeholders, no real node may follow a gap ---- */
-      var queueC = [root], seenGap = false, gapAt = null, offenderAt = null;
-      while (queueC.length && offenderAt === null) {
-        var cur = queueC.shift();
-        if (cur === null) { if (!seenGap) { seenGap = true; } continue; }
-        if (seenGap) { offenderAt = cur; break; }
-        queueC.push(cur.left); queueC.push(cur.right);
-      }
+      var completeResult = completeTrace(root);
+      var offenderAt = completeResult.offender;
       var complete = offenderAt === null;
       if (complete) {
         for (var ci = 0; ci < arr.length; ci++) if (arr[ci] !== null) hi(ci, 'new');
         S.step(T('TAM (complete): seviye sıralı taramada bir BOŞLUKTAN SONRA hiçbir gerçek düğüm görünmüyor. COMPLETE: EVET.',
-                 'COMPLETE: scanning level by level, no real node ever appears after a gap. COMPLETE: YES.'), LINES_COMPLETE);
+                 'COMPLETE: scanning level by level, no real node ever appears after a gap. COMPLETE: YES.'), { c: completeResult.lines, java: completeResult.lines });
       } else {
         hi(offenderAt.idx, 'del');
         S.step(T('TAM (complete): seviye sıralı taramada bir boşluktan SONRA `' + offenderAt.val + '` gerçek düğümü görünüyor — COMPLETE DEĞİL.',
-                 'COMPLETE: scanning level by level, real node `' + offenderAt.val + '` appears AFTER a gap — NOT complete.'), LINES_COMPLETE);
+                 'COMPLETE: scanning level by level, real node `' + offenderAt.val + '` appears AFTER a gap — NOT complete.'), { c: completeResult.lines, java: completeResult.lines });
       }
       clearHi();
 
@@ -997,10 +1133,11 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
       var perfect = full && leavesSameLevel;
       var perfectCount = arr.filter(function (v) { return v !== null; }).length;
       var perfectHeight = leafDepth === null ? 0 : leafDepth;
+      var perfectLines = dedupeSkip(perfectTrace(root, 0, { v: -1 }));
       if (perfect) {
         for (var pi = 0; pi < arr.length; pi++) if (arr[pi] !== null) hi(pi, 'new');
         S.step(T('MÜKEMMEL (perfect): dolu VE her yaprak aynı seviyede (derinlik ' + perfectHeight + '). Sayım kontrolü: ' + perfectCount + ' == 2^(' + perfectHeight + '+1)-1. PERFECT: EVET.',
-                 'PERFECT: full AND every leaf is on the same level (depth ' + perfectHeight + '). Count check: ' + perfectCount + ' == 2^(' + perfectHeight + '+1)-1. PERFECT: YES.'), LINES_PERFECT);
+                 'PERFECT: full AND every leaf is on the same level (depth ' + perfectHeight + '). Count check: ' + perfectCount + ' == 2^(' + perfectHeight + '+1)-1. PERFECT: YES.'), { c: perfectLines, java: perfectLines });
       } else {
         var reasonsTr = [], reasonsEn = [];
         if (!full && fullViolator) {
@@ -1015,7 +1152,7 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
         }
         if (!reasonsTr.length) { reasonsTr.push('koşullar sağlanmıyor'); reasonsEn.push('the conditions do not hold'); }
         S.step(T('MÜKEMMEL (perfect): ' + reasonsTr.join(' ve ') + ' — bu yüzden mükemmel değil. PERFECT: HAYIR.',
-                 'PERFECT: ' + reasonsEn.join(' and ') + ' — so it cannot be perfect. PERFECT: NO.'), LINES_PERFECT);
+                 'PERFECT: ' + reasonsEn.join(' and ') + ' — so it cannot be perfect. PERFECT: NO.'), { c: perfectLines, java: perfectLines });
       }
       clearHi();
 
@@ -1023,14 +1160,15 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
       var twoChildNode = null;
       (function findTwo(n) { if (!n || twoChildNode) return; if (n.left && n.right) { twoChildNode = n; return; } findTwo(n.left); findTwo(n.right); })(root);
       var degenerate = twoChildNode === null;
+      var degenerateLines = dedupeSkip(degenerateTrace(root));
       if (degenerate) {
         for (var di = 0; di < arr.length; di++) if (arr[di] !== null) hi(di, 'new');
         S.step(T('DEJENERE: hiçbir düğümün 2 çocuğu yok, her düğüm zincirin bir halkası. DEGENERATE: EVET.',
-                 'DEGENERATE: no node has 2 children, every node is a single link in a chain. DEGENERATE: YES.'), LINES_DEGENERATE);
+                 'DEGENERATE: no node has 2 children, every node is a single link in a chain. DEGENERATE: YES.'), { c: degenerateLines, java: degenerateLines });
       } else {
         hi(twoChildNode.idx, 'del');
         S.step(T('DEJENERE: `' + twoChildNode.val + '` düğümünün 2 çocuğu var — ağaç bir zincir değil, DEGENERATE DEĞİL.',
-                 'DEGENERATE: node `' + twoChildNode.val + '` has 2 children — the tree is not a chain, NOT degenerate.'), LINES_DEGENERATE);
+                 'DEGENERATE: node `' + twoChildNode.val + '` has 2 children — the tree is not a chain, NOT degenerate.'), { c: degenerateLines, java: degenerateLines });
       }
       clearHi();
 
@@ -1048,17 +1186,22 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
         });
       }
       for (var hIdx = 0; hIdx < arr.length; hIdx++) if (arr[hIdx] !== null) annotate(S, hIdx, slots[hIdx], 'h=' + heightAt[hIdx]);
+      /* This first step's own bottom-up, level-by-level height pass is a different technique from the
+       * recursive `check_balance` shown in the code panel (same idea, computed the other way round, purely
+       * for the "h=" annotations) — so it references only the function signature for orientation; the
+       * verdict step below runs a REAL trace of the shown recursive code (see balanceTrace above). */
       S.step(T('DENGELİ (balanced) için önce her düğümün alt-ağaç yüksekliğini en alttan yukarı hesaplıyoruz (yapraklar h=0).',
-               'For BALANCED we first compute each node\'s subtree height bottom-up (leaves get h=0).'), LINES_BALANCED);
-      var balanced = firstUnbalanced === null;
+               'For BALANCED we first compute each node\'s subtree height bottom-up (leaves get h=0).'), { c: [43], java: [43] });
+      var balanceResult = balanceTrace(root);
+      var balanced = balanceResult.h !== -1;
       if (balanced) {
         S.step(T('Her düğümde |sol yükseklik - sağ yükseklik| <= 1. BALANCED: EVET.',
-                 'At every node, |left height - right height| <= 1. BALANCED: YES.'), LINES_BALANCED);
+                 'At every node, |left height - right height| <= 1. BALANCED: YES.'), { c: balanceResult.lines, java: balanceResult.lines });
       } else {
         hi(firstUnbalanced.idx, 'del');
         var hl2 = firstUnbalanced.left ? heightAt[firstUnbalanced.left.idx] : -1, hr2 = firstUnbalanced.right ? heightAt[firstUnbalanced.right.idx] : -1;
         S.step(T('`' + firstUnbalanced.val + '` düğümünde sol yükseklik ' + hl2 + ', sağ yükseklik ' + hr2 + ' — fark 1\'den büyük. BALANCED DEĞİL.',
-                 'At node `' + firstUnbalanced.val + '` the left height is ' + hl2 + ' and the right height is ' + hr2 + ' — the difference exceeds 1. NOT balanced.'), LINES_BALANCED);
+                 'At node `' + firstUnbalanced.val + '` the left height is ' + hl2 + ' and the right height is ' + hr2 + ' — the difference exceeds 1. NOT balanced.'), { c: balanceResult.lines, java: balanceResult.lines });
       }
       for (var hIdx2 = 0; hIdx2 < arr.length; hIdx2++) if (arr[hIdx2] !== null) { S.set('n' + hIdx2, { style: 'normal' }); clearAnnotate(S, hIdx2); }
 
@@ -1097,13 +1240,13 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
     tr: { play: 'Oynat', pause: 'Duraklat', next: 'Sonraki adım', prev: 'Önceki adım', first: 'Başa dön', last: 'Sona git',
           speed: 'Hız', voice: 'Sesli anlatım', step: 'Adım', example: 'Örnek', level: 'Zorluk', random: 'Rastgele',
           own: 'Kendi değerlerin', apply: 'Uygula', custom: 'Kendi değerleri', randomName: 'Rastgele',
-          input: 'Girdi', upNext: 'Sıradaki →', lastStep: 'Son adım.', faster: 'Hızlandır (+)', slower: 'Yavaşlat (−)',
+          zoomIn: 'Yakınlaştır (Ctrl+tekerlek)', zoomOut: 'Uzaklaştır', zoomFit: 'Sığdır (0)', full: 'Tam ekran (f)', input: 'Girdi', upNext: 'Sıradaki →', lastStep: 'Son adım.', faster: 'Hızlandır (+)', slower: 'Yavaşlat (−)',
           levels: { easy: 'kolay', normal: 'normal', hard: 'zor', extreme: 'uç' },
           groups: { normal: 'Normal', hard: 'Zor', edge: 'Uç ve anormal durumlar' } },
     en: { play: 'Play', pause: 'Pause', next: 'Next step', prev: 'Previous step', first: 'First step', last: 'Last step',
           speed: 'Speed', voice: 'Narration', step: 'Step', example: 'Example', level: 'Difficulty', random: 'Random',
           own: 'Your values', apply: 'Apply', custom: 'Your values', randomName: 'Random',
-          input: 'Input', upNext: 'Next →', lastStep: 'Last step.', faster: 'Faster (+)', slower: 'Slower (−)',
+          zoomIn: 'Zoom in (Ctrl+wheel)', zoomOut: 'Zoom out', zoomFit: 'Fit (0)', full: 'Full screen (f)', input: 'Input', upNext: 'Next →', lastStep: 'Last step.', faster: 'Faster (+)', slower: 'Slower (−)',
           levels: { easy: 'easy', normal: 'normal', hard: 'hard', extreme: 'extreme' },
           groups: { normal: 'Normal', hard: 'Hard', edge: 'Edge and abnormal cases' } }
   };
@@ -1111,7 +1254,7 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
   var SPEEDS = [0.5, 0.75, 1, 1.5, 2, 3, 4];
   function savedSpeed() { try { var v = +window.localStorage.getItem('dsanim-speed'); return SPEEDS.indexOf(v) >= 0 ? v : 1; } catch (e) { return 1; } }
   function saveSpeed(v) { try { window.localStorage.setItem('dsanim-speed', String(v)); } catch (e) { /* private mode */ } }
-  function plain(s) { return String(s || '').replace(/[`*]/g, ''); }
+  function plain(s) { return String(s || '').replace(/\*\*/g, '').replace(/`/g, ''); }   // drop bold markers and backticks, keep a lone * (it is an operator)
 
   function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
   function nums(s) { return (s || '').match(NUMS) || []; }
@@ -1262,6 +1405,17 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
     this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     this.svg.setAttribute('role', 'img');
     stage.appendChild(this.svg);
+    // zoom / pan / full screen: + − fit ⤢ ; Ctrl+wheel (or wheel when zoomed) zooms at the cursor, drag pans,
+    // double-click zooms in (or back to fit), two-finger pinch on touch screens
+    var zb = el('div', 'dsa-zoom');
+    [['+', y.zoomIn, function () { self.zoomBy(1.4); }], ['−', y.zoomOut, function () { self.zoomBy(1 / 1.4); }],
+     ['↺', y.zoomFit, function () { self.resetView(); }], ['⤢', y.full, function () { self.fullScreen(); }]].forEach(function (b) {
+      var x = el('button', 'dsa-zb', b[0]); x.type = 'button'; x.title = b[1]; x.setAttribute('aria-label', b[1]);
+      x.addEventListener('click', b[2]); zb.appendChild(x);
+    });
+    stage.appendChild(zb);
+    this.stage = stage;
+    this.bindZoom(stage);
     body.appendChild(stage);
     if (Object.keys(this.code).length) {
       var box = el('div', 'dsa-kod'), tabs = el('div', 'dsa-sekme');
@@ -1297,6 +1451,8 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
       else if (e.key === 'ArrowLeft' || e.key === 'j') { e.preventDefault(); self.stop(); self.go(self.i - 1, true); }
       else if (e.key === 'Home') { e.preventDefault(); self.stop(); self.go(0, true); }
       else if (e.key === 'End') { e.preventDefault(); self.stop(); self.go(self.frames.length - 1, true); }
+      else if (e.key === 'f') { e.preventDefault(); self.fullScreen(); }
+      else if (e.key === '0') { e.preventDefault(); self.resetView(); }
       else if (e.key === '+' || e.key === '=') { e.preventDefault(); var k1 = SPEEDS.indexOf(self.speed); if (k1 < SPEEDS.length - 1) self.setSpeed(SPEEDS[k1 + 1]); }
       else if (e.key === '-' || e.key === '_') { e.preventDefault(); var k2 = SPEEDS.indexOf(self.speed); if (k2 > 0) self.setSpeed(SPEEDS[k2 - 1]); }
     });
@@ -1312,7 +1468,7 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
     this.data = data;
     if (typeof this.spec.code === 'function') { this.code = this.codeOf(data); this.drawCode(); }
     this.vb = window.DSAnim.viewBox(this.frames);
-    this.svg.setAttribute('viewBox', this.vb.join(' '));
+    this.resetView();
     this.svg.innerHTML = window.DSAnim.defs() + '<g class="kat kat-arka"></g><g class="kat kat-ok"></g><g class="kat kat-sekil"></g><g class="kat kat-etiket"></g>';
     this.inner = this.frames.map(function (f) { return window.DSAnim.render(f.state, f.order, null); });
     if (this.sel && id && id.indexOf('__') !== 0) this.sel.value = id;
@@ -1332,6 +1488,71 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
     if (this.levelSel) this.levelSel.value = level;
   };
 
+  /** View = base view box scaled by zoom z around centre (cx, cy). */
+  Player.prototype.resetView = function () {
+    var b = this.vb; this.view = { z: 1, cx: b[0] + b[2] / 2, cy: b[1] + b[3] / 2 }; this.applyView();
+  };
+  Player.prototype.applyView = function () {
+    var b = this.vb, v = this.view, w = b[2] / v.z, h = b[3] / v.z;
+    this.svg.setAttribute('viewBox', [v.cx - w / 2, v.cy - h / 2, w, h].map(function (x) { return Math.round(x * 10) / 10; }).join(' '));
+    if (this.stage) this.stage.classList.toggle('dsa-zoomed', v.z > 1.001);
+  };
+  /** Zoom by factor f keeping the scene point under (px, py) (client coords) fixed; default: the centre. */
+  Player.prototype.zoomBy = function (f, px, py) {
+    var v = this.view, b = this.vb, z = Math.max(1, Math.min(8, v.z * f));
+    if (px !== undefined) {
+      var r = this.svg.getBoundingClientRect(), w = b[2] / v.z, h = b[3] / v.z;
+      var sx = v.cx - w / 2 + (px - r.left) / r.width * w, sy = v.cy - h / 2 + (py - r.top) / r.height * h, k = v.z / z;
+      v.cx = sx + (v.cx - sx) * k; v.cy = sy + (v.cy - sy) * k;
+    }
+    v.z = z; if (z === 1) { v.cx = b[0] + b[2] / 2; v.cy = b[1] + b[3] / 2; }
+    this.applyView();
+  };
+  Player.prototype.fullScreen = function () {
+    var r = this.root, d = document;
+    if (d.fullscreenElement) { d.exitFullscreen(); return; }
+    if (r.requestFullscreen) r.requestFullscreen().catch(function () { /* not allowed in this frame */ });
+  };
+  Player.prototype.bindZoom = function (stage) {
+    var self = this, drag = null, pinch = null;
+    stage.addEventListener('wheel', function (e) {
+      if (!e.ctrlKey && !(self.view && self.view.z > 1.001)) return;   // plain wheel keeps scrolling the page
+      e.preventDefault(); self.zoomBy(e.deltaY < 0 ? 1.15 : 1 / 1.15, e.clientX, e.clientY);
+    }, { passive: false });
+    stage.addEventListener('dblclick', function (e) {
+      if (e.target.closest && e.target.closest('.dsa-zoom')) return;
+      if (self.view.z > 1.001) self.resetView(); else self.zoomBy(2, e.clientX, e.clientY);
+    });
+    stage.addEventListener('pointerdown', function (e) {
+      if (e.target.closest && e.target.closest('.dsa-zoom')) return;
+      if (e.pointerType === 'touch') return;
+      if (self.view.z <= 1.001) return;
+      drag = { x: e.clientX, y: e.clientY, cx: self.view.cx, cy: self.view.cy };
+      stage.setPointerCapture(e.pointerId); stage.classList.add('dsa-drag');
+    });
+    stage.addEventListener('pointermove', function (e) {
+      if (!drag) return;
+      var r = self.svg.getBoundingClientRect(), k = (self.vb[2] / self.view.z) / r.width;
+      self.view.cx = drag.cx - (e.clientX - drag.x) * k; self.view.cy = drag.cy - (e.clientY - drag.y) * k; self.applyView();
+    });
+    ['pointerup', 'pointercancel'].forEach(function (t) { stage.addEventListener(t, function () { drag = null; stage.classList.remove('dsa-drag'); }); });
+    stage.addEventListener('touchstart', function (e) {
+      if (e.touches.length === 2) { pinch = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY); }
+      else if (e.touches.length === 1 && self.view.z > 1.001) { drag = { x: e.touches[0].clientX, y: e.touches[0].clientY, cx: self.view.cx, cy: self.view.cy }; }
+    }, { passive: true });
+    stage.addEventListener('touchmove', function (e) {
+      if (e.touches.length === 2 && pinch) {
+        e.preventDefault();
+        var d = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+        self.zoomBy(d / pinch, (e.touches[0].clientX + e.touches[1].clientX) / 2, (e.touches[0].clientY + e.touches[1].clientY) / 2); pinch = d;
+      } else if (e.touches.length === 1 && drag) {
+        e.preventDefault();
+        var r = self.svg.getBoundingClientRect(), k = (self.vb[2] / self.view.z) / r.width;
+        self.view.cx = drag.cx - (e.touches[0].clientX - drag.x) * k; self.view.cy = drag.cy - (e.touches[0].clientY - drag.y) * k; self.applyView();
+      }
+    }, { passive: false });
+    stage.addEventListener('touchend', function () { pinch = null; drag = null; });
+  };
   Player.prototype.drawTape = function (data) {
     if (!this.tape || !this.spec.input) return;
     var inp = this.spec.input, toks = inp.tokens ? inp.tokens(data) : String(inp.format(data)).split(/\s+/).filter(Boolean);
@@ -1359,20 +1580,45 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
     }).join('');
   };
 
-  Player.prototype.markCode = function () {
-    if (!this.pre) return;
-    var f = this.frames[this.i], hot = (f.lines && f.lines[this.codeLang]) || [], first = null;
-    Array.prototype.forEach.call(this.pre.children, function (s) {
-      var on = hot.indexOf(+s.getAttribute('data-n')) >= 0;
-      s.classList.toggle('vurgu', on);
-      if (on && !first) first = s;
+  /** Lines of the current step for the chosen language: run (in execution order), notes (branch results), skip. */
+  Player.prototype.hotLines = function () {
+    var f = this.frames[this.i], raw = (f && f.lines && f.lines[this.codeLang]) || [], h = { run: [], notes: {}, skip: {} };
+    raw.forEach(function (x) {
+      var n = x && typeof x === 'object' ? +x.n : +x;
+      if (x && typeof x === 'object' && x.note !== undefined) h.notes[n] = x.note;
+      if (x && typeof x === 'object' && x.skip) h.skip[n] = true; else h.run.push(n);
     });
-    if (first) {
-      var p = this.pre, top = first.offsetTop - p.offsetTop;
+    return h;
+  };
+  /** Highlight the step's lines; the program counter (▶) sits on run[pc] (default: the last line run). */
+  Player.prototype.markCode = function (pc) {
+    if (!this.pre) return;
+    var h = this.hotLines(), lang = this.lang, curEl = null;
+    var cur = h.run.length ? h.run[pc === undefined ? h.run.length - 1 : Math.min(pc, h.run.length - 1)] : null;
+    Array.prototype.forEach.call(this.pre.children, function (s) {
+      var n = +s.getAttribute('data-n'), old = s.querySelector('.dsa-not');
+      s.classList.toggle('vurgu', h.run.indexOf(n) >= 0);
+      s.classList.toggle('atla', !!h.skip[n]);
+      s.classList.toggle('pc', n === cur);
+      if (old) s.removeChild(old);
+      if (h.notes[n] !== undefined && (!h.run.length || h.run.indexOf(n) <= h.run.indexOf(cur) || h.skip[n])) {
+        var b = document.createElement('span'); b.className = 'dsa-not'; b.textContent = pick(h.notes[n], lang); s.appendChild(b);
+      }
+      if (n === cur) curEl = s;
+    });
+    if (curEl) {
+      var p = this.pre, top = curEl.offsetTop - p.offsetTop;
       if (top < p.scrollTop || top > p.scrollTop + p.clientHeight - 30) p.scrollTop = Math.max(0, top - 40);
     }
   };
-
+  /** Walk the program counter through the step's lines one by one within `total` ms. */
+  Player.prototype.walkPc = function (total) {
+    var self = this, n = this.hotLines().run.length, k = 0;
+    clearTimeout(this.pcTimer);
+    if (n <= 1) { this.markCode(); return; }
+    var dt = Math.max(110, Math.min(700, total / n));
+    (function tick() { self.markCode(k); k++; if (k < n) self.pcTimer = setTimeout(tick, dt); })();
+  };
   Player.prototype.go = function (target, animate) {
     var n = this.frames.length;
     if (target < 0 || target >= n) { if (target >= n) this.stop(); return; }
@@ -1390,7 +1636,8 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
       this.nextEl.innerHTML = '<span class="dsa-sonraki-etk">' + esc(y2.upNext) + '</span> ' + esc(nc);
     } else this.nextEl.innerHTML = '<span class="dsa-sonraki-etk">' + esc(y2.lastStep) + '</span>';
     this.slider.value = target + 1;
-    this.markCode();
+    if (animate && !this.o.static) this.walkPc(this.playing ? this.wait() * 0.75 : 160 * this.hotLines().run.length / this.speed);
+    else this.markCode();
     if (this.voice) this.say();
   };
 
@@ -1561,6 +1808,11 @@ html.dsa-slayt, html.dsa-slayt body { height: 100%; }
         if (!player.err.textContent) errors.push('bad own values were accepted');
       }
       player.go(0, false); player.go(1, true); player.go(2, true);   // animated transitions must not throw
+      var vbw = function () { return +player.svg.getAttribute('viewBox').split(' ')[2]; }, w0 = vbw();
+      player.zoomBy(2);
+      if (Math.abs(vbw() * 2 - w0) > 1) errors.push('zoom in did not halve the view width');
+      player.resetView();
+      if (Math.abs(vbw() - w0) > 1) errors.push('fit did not restore the view');
     } catch (e) { errors.push(String(e && e.stack || e)); }
     var out = document.createElement('pre');
     out.id = 'dsa-selftest';

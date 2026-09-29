@@ -64,39 +64,39 @@
         <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-1/cen207-week-1/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/week-10-advanced-tree-structures/ce205-week-10-advanced-tree-structures/</loc>
+        <loc>https://ucoruh.github.io/ce205-data-structures/week-10/cen207-week-10/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-10-advanced-tree-structures/ce205-week-10-advanced-tree-structures/"/>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-10-advanced-tree-structures/ce205-week-10-advanced-tree-structures/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-10/cen207-week-10/"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-10/cen207-week-10/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/week-11-string-structures/ce205-week-11-string-structures/</loc>
+        <loc>https://ucoruh.github.io/ce205-data-structures/week-11/cen207-week-11/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-11-string-structures/ce205-week-11-string-structures/"/>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-11-string-structures/ce205-week-11-string-structures/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-11/cen207-week-11/"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-11/cen207-week-11/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/week-12-string-algorithms/ce205-week-12-string-algorithms/</loc>
+        <loc>https://ucoruh.github.io/ce205-data-structures/week-12/cen207-week-12/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-12-string-algorithms/ce205-week-12-string-algorithms/"/>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-12-string-algorithms/ce205-week-12-string-algorithms/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-12/cen207-week-12/"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-12/cen207-week-12/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/week-13-direct-sequential-file/ce205-week-13-direct-sequential-file/</loc>
+        <loc>https://ucoruh.github.io/ce205-data-structures/week-13/cen207-week-13/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-13-direct-sequential-file/ce205-week-13-direct-sequential-file/"/>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-13-direct-sequential-file/ce205-week-13-direct-sequential-file/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-13/cen207-week-13/"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-13/cen207-week-13/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/week-14-direct-file-b-tree/ce205-week-14-direct-file-b-tree/</loc>
+        <loc>https://ucoruh.github.io/ce205-data-structures/week-14/cen207-week-14/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-14-direct-file-b-tree/ce205-week-14-direct-file-b-tree/"/>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-14-direct-file-b-tree/ce205-week-14-direct-file-b-tree/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-14/cen207-week-14/"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-14/cen207-week-14/"/>
     </url>
     <url>
         <loc>https://ucoruh.github.io/ce205-data-structures/week-15/cen207-week-15/</loc>
@@ -106,25 +106,11 @@
         <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-15/cen207-week-15/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/week-15-hashing-trie/ce205-week-15-hashing-trie/</loc>
-        <lastmod>2026-09-29</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-15-hashing-trie/ce205-week-15-hashing-trie/"/>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-15-hashing-trie/ce205-week-15-hashing-trie/"/>
-    </url>
-    <url>
         <loc>https://ucoruh.github.io/ce205-data-structures/week-16/cen207-week-16/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-16/cen207-week-16/"/>
         <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-16/cen207-week-16/"/>
-    </url>
-    <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/week-16-final/ce205-week-16-final/</loc>
-        <lastmod>2026-09-29</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-16-final/ce205-week-16-final/"/>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-16-final/ce205-week-16-final/"/>
     </url>
     <url>
         <loc>https://ucoruh.github.io/ce205-data-structures/week-2/cen207-week-2/</loc>
@@ -162,13 +148,6 @@
         <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-6/cen207-week-6/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/week-6-graph-algorithms/ce205-week-6-graph-algorithms/</loc>
-        <lastmod>2026-09-29</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-6-graph-algorithms/ce205-week-6-graph-algorithms/"/>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-6-graph-algorithms/ce205-week-6-graph-algorithms/"/>
-    </url>
-    <url>
         <loc>https://ucoruh.github.io/ce205-data-structures/week-7/cen207-week-7/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
@@ -183,18 +162,11 @@
         <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-8/cen207-week-8/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/week-8-midterm/ce205-week-8-midterm/</loc>
+        <loc>https://ucoruh.github.io/ce205-data-structures/week-9/cen207-week-9/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-8-midterm/ce205-week-8-midterm/"/>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-8-midterm/ce205-week-8-midterm/"/>
-    </url>
-    <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/week-9-sorting/ce205-week-9-sorting/</loc>
-        <lastmod>2026-09-29</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-9-sorting/ce205-week-9-sorting/"/>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-9-sorting/ce205-week-9-sorting/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-9/cen207-week-9/"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-9/cen207-week-9/"/>
     </url>
     <url>
         <loc>https://ucoruh.github.io/ce205-data-structures/tr/</loc>
@@ -260,39 +232,39 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-1/cen207-week-1/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-10-advanced-tree-structures/ce205-week-10-advanced-tree-structures/</loc>
+        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-10/cen207-week-10/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-10-advanced-tree-structures/ce205-week-10-advanced-tree-structures/"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-10-advanced-tree-structures/ce205-week-10-advanced-tree-structures/"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-10/cen207-week-10/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-10/cen207-week-10/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-11-string-structures/ce205-week-11-string-structures/</loc>
+        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-11/cen207-week-11/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-11-string-structures/ce205-week-11-string-structures/"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-11-string-structures/ce205-week-11-string-structures/"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-11/cen207-week-11/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-11/cen207-week-11/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-12-string-algorithms/ce205-week-12-string-algorithms/</loc>
+        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-12/cen207-week-12/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-12-string-algorithms/ce205-week-12-string-algorithms/"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-12-string-algorithms/ce205-week-12-string-algorithms/"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-12/cen207-week-12/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-12/cen207-week-12/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-13-direct-sequential-file/ce205-week-13-direct-sequential-file/</loc>
+        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-13/cen207-week-13/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-13-direct-sequential-file/ce205-week-13-direct-sequential-file/"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-13-direct-sequential-file/ce205-week-13-direct-sequential-file/"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-13/cen207-week-13/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-13/cen207-week-13/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-14-direct-file-b-tree/ce205-week-14-direct-file-b-tree/</loc>
+        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-14/cen207-week-14/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-14-direct-file-b-tree/ce205-week-14-direct-file-b-tree/"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-14-direct-file-b-tree/ce205-week-14-direct-file-b-tree/"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-14/cen207-week-14/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-14/cen207-week-14/"/>
     </url>
     <url>
         <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-15/cen207-week-15/</loc>
@@ -302,25 +274,11 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-15/cen207-week-15/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-15-hashing-trie/ce205-week-15-hashing-trie/</loc>
-        <lastmod>2026-09-29</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-15-hashing-trie/ce205-week-15-hashing-trie/"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-15-hashing-trie/ce205-week-15-hashing-trie/"/>
-    </url>
-    <url>
         <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-16/cen207-week-16/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
         <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-16/cen207-week-16/"/>
         <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-16/cen207-week-16/"/>
-    </url>
-    <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-16-final/ce205-week-16-final/</loc>
-        <lastmod>2026-09-29</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-16-final/ce205-week-16-final/"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-16-final/ce205-week-16-final/"/>
     </url>
     <url>
         <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-2/cen207-week-2/</loc>
@@ -358,13 +316,6 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-6/cen207-week-6/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-6-graph-algorithms/ce205-week-6-graph-algorithms/</loc>
-        <lastmod>2026-09-29</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-6-graph-algorithms/ce205-week-6-graph-algorithms/"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-6-graph-algorithms/ce205-week-6-graph-algorithms/"/>
-    </url>
-    <url>
         <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-7/cen207-week-7/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
@@ -379,17 +330,10 @@
         <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-8/cen207-week-8/"/>
     </url>
     <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-8-midterm/ce205-week-8-midterm/</loc>
+        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-9/cen207-week-9/</loc>
         <lastmod>2026-09-29</lastmod>
         <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-8-midterm/ce205-week-8-midterm/"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-8-midterm/ce205-week-8-midterm/"/>
-    </url>
-    <url>
-        <loc>https://ucoruh.github.io/ce205-data-structures/tr/week-9-sorting/ce205-week-9-sorting/</loc>
-        <lastmod>2026-09-29</lastmod>
-        <changefreq>daily</changefreq>
-        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-9-sorting/ce205-week-9-sorting/"/>
-        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-9-sorting/ce205-week-9-sorting/"/>
+        <xhtml:link rel="alternate" hreflang="tr" href="https://ucoruh.github.io/ce205-data-structures/tr/week-9/cen207-week-9/"/>
+        <xhtml:link rel="alternate" hreflang="en" href="https://ucoruh.github.io/ce205-data-structures/week-9/cen207-week-9/"/>
     </url>
 </urlset>
