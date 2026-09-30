@@ -160,12 +160,12 @@ $$
 
 ---
 
-# Fork, name, and share the templates
+# Create your repository from the template
 
-- **Fork** the template repository
-- Name it with the course code (see naming pattern next slide)
-- Make the repository **private**
-- Add the **instructor** and your **teammate** as collaborators
+- **Do not fork:** a fork of a public repository cannot be made private
+- Template page: **Use this template → Create a new repository**
+- Choose the owner, name it with the course code (pattern on the next slide), select **Private**
+- Add the **instructor** (`ucoruh`) and your **teammate** as collaborators
 
 <!-- Speaker note: A public repository during the term is itself an acceptance-condition problem, independent of code quality. -->
 
@@ -181,7 +181,33 @@ $$
 Both templates already provide building, unit testing, documentation
 generation, coverage measurement and packaging — you build **on** them.
 
-<!-- Speaker note: Both templates live under github.com/ucoruh — that is where "fork" points. -->
+<!-- Speaker note: Both templates live under github.com/ucoruh — use "Use this template" there. -->
+
+---
+
+# Showing your project locally
+
+A private repository on GitHub Free has no GitHub Pages site. You show everything **on your computer**:
+
+- `7-build-all-windows.bat` (Linux/WSL: `7-build-all-linux.sh`) builds, tests and makes every report
+- `9-open-site-windows.bat` (Linux: `9-open-site-linux.sh`) opens the full site on `http://localhost`: every report (tests, code coverage, documentation coverage, Windows and Linux) and the API docs
+- `release/` holds every output: app/exe, library, reports, API docs, `site.zip`, source, `ASSETS.md`, `SHA256SUMS.txt`
+- `10-release-windows.bat` (Linux: `10-release-linux.sh`) makes the GitHub Release; releases work on private repositories
+
+<!-- Speaker note: Each template's README and its docs/guide/ page "Showing your project without GitHub Pages" have the details. -->
+
+---
+
+# Demo checklist
+
+What you open and show, in this order:
+
+1. The **home page** of the local site (`9-open-site-...`, on `http://localhost`).
+2. **Each report page:** tests, code coverage, documentation coverage (Windows and Linux).
+3. The **API docs**.
+4. The **`release/` folder** listing.
+5. **Run the app** from the release archive.
+6. The **GitHub Release page** of your private repository (the instructor is a collaborator).
 
 ---
 
@@ -567,7 +593,7 @@ Points = (level ÷ 5) × criterion points.
 
 # Demo questions — Git/GitHub and setup
 
-- Fork named correctly? Both members have commits, branches used?
+- Repository created from the template with the correct name? Both members have commits, branches used?
 - How were merges and conflicts resolved? Is `.gitignore` correct?
 - Build and run on **Windows and WSL**; show `lib`/`app`/`test` and their dependencies
 

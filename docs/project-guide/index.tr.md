@@ -113,8 +113,7 @@ Not<sub>Vize</sub> = 0,6·RAP1 + 0,4·Quiz-1 · Not<sub>Final</sub> = 0,7·RAP2 
 | Git + GitHub | Sürüm kontrolü, iş birliği | Özel (private) depo | İki üyeden de anlamlı commit'ler, düzgün `.gitignore` |
 | GitHub Actions | Sürekli entegrasyon (CI, isteğe bağlı) | CI durumu | Etkinse, birleştirmeden önce derleme ve testler yeşil olmalı |
 
-Şablonları **fork** edip ders koduyla adlandırın ve depoyu **özel (private)** yapın; ders sorumlusunu ve takım
-arkadaşınızı **collaborator** olarak ekleyin.
+**Fork etmeyin.** Herkese açık bir deponun fork'u GitHub'da özel (private) yapılamaz; bu yüzden depoyu şablondan yeni bir depo olarak oluşturun: şablon sayfasında **Use this template → Create a new repository**'ye tıklayın, sahibi (owner) seçin, depo adı olarak aşağıdaki tablodaki adı yazın, **Private**'ı seçip oluşturun. Sonra ders sorumlusunu (`ucoruh`) ve takım arkadaşlarınızı **collaborator** olarak ekleyin (*Settings → Collaborators*).
 
 | Kontrol | Şablon | Depo adı |
 | --- | --- | --- |
@@ -127,6 +126,28 @@ arkadaşınızı **collaborator** olarak ekleyin.
     etkileşimi `app` içinde, birim testleri `test` içinde. `app` ve `test`, `lib`'i kullanır.
 
 Başlamadan önce geliştirme ortamınızın hazır olduğundan emin olun: [ön gereksinimler sayfasına](../prerequisites/index.md) bakın.
+
+### Projenizi yerelde gösterme
+
+GitHub Free'de özel (private) bir depoda GitHub Pages sitesi açılmaz; bu yüzden projenizi **kendi bilgisayarınızda** gösterirsiniz:
+
+1. `7-build-all-windows.bat` dosyasını çalıştırın (Linux/WSL'de `7-build-all-linux.sh`). Proje derlenir, testler koşar ve bütün raporlar üretilir.
+2. `9-open-site-windows.bat` dosyasını çalıştırın (Linux'ta `9-open-site-linux.sh`). Projenin tam sitesi `http://localhost` adresinde açılır: bütün raporlar (testler, kod kapsamı, dokümantasyon kapsamı; Windows ve Linux için ayrı ayrı) ve API belgeleri burada durur.
+3. `release/` klasörü bütün çıktıları tutar: uygulama/exe, kütüphane, bütün raporlar, API belgeleri, `site.zip`, kaynak kod, `ASSETS.md` ve `SHA256SUMS.txt`.
+4. GitHub Release'i `10-release-windows.bat` (Linux'ta `10-release-linux.sh`) ile oluşturun. Sürümler (release) özel depolarda da çalışır ve collaborator'lar görebilir.
+
+Ayrıntılar her şablonun README'sinde ve rehberinde; şablonun `docs/guide/` klasöründeki "Showing your project without GitHub Pages" (GitHub Pages olmadan projenizi gösterme) sayfasına bakın: [C/C++](https://github.com/ucoruh/cpp-cmake-ctest-template/tree/main/docs/guide), [Java](https://github.com/ucoruh/eclipse-java-maven-template/tree/main/docs/guide).
+
+### Gösterim kontrol listesi
+
+Gösterimde sırayla neyi açıp göstereceğiniz:
+
+1. Yerel sitenin **ana sayfası** (`9-open-site-...`, `http://localhost` adresinde).
+2. **Her rapor sayfası:** testler, kod kapsamı, dokümantasyon kapsamı (Windows ve Linux).
+3. **API belgeleri.**
+4. **`release/` klasörünün** içeriği.
+5. Uygulamayı **release arşivinden çalıştırma.**
+6. Özel deponuzun **GitHub Release sayfası** (ders sorumlusu collaborator olarak ekli).
 
 ## 4. Konu seçimi
 
@@ -317,7 +338,7 @@ Her kriter **1–5** ölçeğiyle puanlanır ve ağırlığıyla çarpılır: *p
 
 ## 10. Gösterimde sorulacaklar
 
-- **Git ve GitHub:** Şablonu doğru adla fork ettiniz mi? Takım üyeleri commit atmış mı, dal kullanılmış mı? Birleştirme
+- **Git ve GitHub:** Depoyu şablondan doğru adla oluşturdunuz mu? Takım üyeleri commit atmış mı, dal kullanılmış mı? Birleştirme
   (merge) ve çakışma (conflict) nasıl çözüldü? `.gitignore` doğru mu?
 - **Kurulum ve derleme:** Uygulamayı Windows'ta ve WSL'de derleyip çalıştırın; `lib`, `app`, `test` ayrımını ve
   bağımlılıklarını gösterin.

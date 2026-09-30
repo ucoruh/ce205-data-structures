@@ -28,3 +28,14 @@ Bu hafta yeni konu yok: her takım dönem projesinin **C gerçekleştirimini** g
 - **Kapsam:** V1–V6 gereksinimleri (1–6. haftalar) — [Proje Rehberi](../project-guide/index.md), 5. ve 8. bölümler.
 - **Gösterim:** takım başına yaklaşık 10 dakika: canlı çalıştırma, bir işlemin kutu-ok çizimiyle satır satır anlatımı, her üyeye soru.
 - **Gelecek hafta:** ara sınav haftasında Quiz-1 (1–6. haftalar).
+
+### Gösterim kontrol listesi (yerelde)
+
+Özel depoda GitHub Pages sitesi olmadığı için projeyi yerelde gösterirsiniz (ayrıntılar: [Proje Rehberi](../project-guide/index.md#projenizi-yerelde-gosterme)). Gösterimde sırayla neyi açıp göstereceğiniz:
+
+1. Yerel sitenin **ana sayfası** (`9-open-site-...`, `http://localhost` adresinde).
+2. **Her rapor sayfası:** testler, kod kapsamı, dokümantasyon kapsamı (Windows ve Linux).
+3. **API belgeleri.**
+4. **`release/` klasörünün** içeriği.
+5. Uygulamayı **release arşivinden çalıştırma.**
+6. Özel deponuzun **GitHub Release sayfası** (ders sorumlusu collaborator olarak ekli).

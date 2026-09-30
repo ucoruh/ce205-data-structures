@@ -113,8 +113,7 @@ Grade<sub>Midterm</sub> = 0.6·RAP1 + 0.4·Quiz-1 · Grade<sub>Final</sub> = 0.7
 | Git + GitHub | Version control, collaboration | Private repository | Meaningful commits from both members, proper `.gitignore` |
 | GitHub Actions | Continuous integration (optional) | CI status | If enabled, build and tests must be green before merging |
 
-**Fork** the templates, name them with the course code, make the repository **private** and add the instructor and
-your teammate as **collaborators**.
+**Do not fork.** A fork of a public repository cannot be made private on GitHub, so create your own repository from the template instead: on the template page click **Use this template → Create a new repository**, choose the owner, type the repository name from the table below, select **Private** and create it. Then add the instructor (`ucoruh`) and your teammates as **collaborators** (*Settings → Collaborators*).
 
 | Check | Template | Repository name |
 | --- | --- | --- |
@@ -127,6 +126,28 @@ your teammate as **collaborators**.
     algorithms live in `lib`, menus and user interaction in `app`, unit tests in `test`. Both `app` and `test` use `lib`.
 
 Before you start, make sure your development environment is ready: see the [prerequisites page](../prerequisites/index.md).
+
+### Showing your project locally
+
+A private repository on GitHub Free has no GitHub Pages site, so you show everything **on your own computer**:
+
+1. Run `7-build-all-windows.bat` (or `7-build-all-linux.sh` on Linux/WSL). It builds the project, runs the tests and produces every report.
+2. Run `9-open-site-windows.bat` (or `9-open-site-linux.sh`). The full project site opens on `http://localhost`: every report (tests, code coverage, documentation coverage, separately for Windows and Linux) and the API docs.
+3. The `release/` folder holds every output: the app/exe, the library, every report, the API docs, `site.zip`, the source, `ASSETS.md` and `SHA256SUMS.txt`.
+4. Make a GitHub Release with `10-release-windows.bat` (or `10-release-linux.sh`). Releases work on private repositories, and collaborators can see them.
+
+Each template's README and guide have the details; see the page "Showing your project without GitHub Pages" in the template's `docs/guide/` folder: [C/C++](https://github.com/ucoruh/cpp-cmake-ctest-template/tree/main/docs/guide), [Java](https://github.com/ucoruh/eclipse-java-maven-template/tree/main/docs/guide).
+
+### Demo checklist
+
+What you open and show, in this order:
+
+1. The **home page** of the local site (`9-open-site-...`, on `http://localhost`).
+2. **Each report page:** tests, code coverage, documentation coverage (Windows and Linux).
+3. The **API docs**.
+4. The **`release/` folder** listing.
+5. **Run the app** from the release archive.
+6. The **GitHub Release page** of your private repository (the instructor is a collaborator).
 
 ## 4. Choosing a topic
 
@@ -317,7 +338,7 @@ Each criterion is scored on a **1–5** scale and multiplied by its weight: *poi
 
 ## 10. Questions asked in the demo
 
-- **Git and GitHub:** Did you fork the template with the correct name? Do both members have commits, were branches
+- **Git and GitHub:** Did you create the repository from the template with the correct name? Do both members have commits, were branches
   used? How were merges and conflicts resolved? Is `.gitignore` correct?
 - **Setup and build:** Build and run the application on Windows and in WSL; show the `lib`, `app`, `test` split and
   their dependencies.

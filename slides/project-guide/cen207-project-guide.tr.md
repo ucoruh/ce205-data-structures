@@ -160,12 +160,12 @@ $$
 
 ---
 
-# Şablonu fork edin, adlandırın, paylaşın
+# Şablondan depo oluşturun, adlandırın, paylaşın
 
-- Şablon deposunu **fork** edin
-- Ders koduyla adlandırın (kalıp bir sonraki slaytta)
-- Depoyu **özel (private)** yapın
-- **Ders sorumlusunu** ve **takım arkadaşınızı** collaborator ekleyin
+- **Fork etmeyin:** herkese açık bir deponun fork'u özel yapılamaz
+- Şablon sayfasında: **Use this template → Create a new repository**
+- Sahibi seçin, ders koduyla adlandırın (kalıp bir sonraki slaytta), **Private**'ı seçin
+- **Ders sorumlusunu** (`ucoruh`) ve **takım arkadaşınızı** collaborator ekleyin
 
 <!-- Speaker note: Dönem boyunca açık (public) bir depo, kod kalitesinden bağımsız olarak kendi başına bir kabul koşulu sorunudur. -->
 
@@ -181,7 +181,33 @@ $$
 Her iki şablon da derleme, birim testi, dokümantasyon üretimi, kapsam
 ölçümü ve paketlemeyi hazır verir — bunların **üzerine** inşa edersiniz.
 
-<!-- Speaker note: İki şablon da github.com/ucoruh altında bulunur — "fork" burayı işaret eder. -->
+<!-- Speaker note: İki şablon da github.com/ucoruh altında bulunur — "Use this template" burada kullanılır. -->
+
+---
+
+# Projenizi yerelde gösterme
+
+GitHub Free'de özel (private) bir depoda GitHub Pages sitesi açılmaz. Her şeyi **kendi bilgisayarınızda** gösterirsiniz:
+
+- `7-build-all-windows.bat` (Linux/WSL: `7-build-all-linux.sh`) derler, test eder, bütün raporları üretir
+- `9-open-site-windows.bat` (Linux: `9-open-site-linux.sh`) tam siteyi `http://localhost` adresinde açar: bütün raporlar (testler, kod kapsamı, dokümantasyon kapsamı; Windows ve Linux) ve API belgeleri
+- `release/` bütün çıktıları tutar: uygulama/exe, kütüphane, raporlar, API belgeleri, `site.zip`, kaynak kod, `ASSETS.md`, `SHA256SUMS.txt`
+- `10-release-windows.bat` (Linux: `10-release-linux.sh`) GitHub Release'i oluşturur; sürümler özel depolarda da çalışır
+
+<!-- Speaker note: Ayrıntılar her şablonun README'sinde ve docs/guide/ klasöründeki "Showing your project without GitHub Pages" sayfasında. -->
+
+---
+
+# Gösterim kontrol listesi
+
+Gösterimde sırayla neyi açıp göstereceğiniz:
+
+1. Yerel sitenin **ana sayfası** (`9-open-site-...`, `http://localhost` adresinde).
+2. **Her rapor sayfası:** testler, kod kapsamı, dokümantasyon kapsamı (Windows ve Linux).
+3. **API belgeleri.**
+4. **`release/` klasörünün** içeriği.
+5. Uygulamayı **release arşivinden çalıştırma.**
+6. Özel deponuzun **GitHub Release sayfası** (ders sorumlusu collaborator olarak ekli).
 
 ---
 
@@ -565,7 +591,7 @@ Puan = (düzey ÷ 5) × kriter puanı.
 
 # Gösterim soruları — Git/GitHub ve kurulum
 
-- Fork doğru adla mı? İki üyenin de commit'i var mı, dal kullanılmış mı?
+- Depo şablondan doğru adla mı oluşturuldu? İki üyenin de commit'i var mı, dal kullanılmış mı?
 - Birleştirme ve çakışmalar nasıl çözüldü? `.gitignore` doğru mu?
 - **Windows ve WSL**'de derleyip çalıştırın; `lib`/`app`/`test` ve bağımlılıklarını gösterin
 

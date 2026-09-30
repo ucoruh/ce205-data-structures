@@ -28,3 +28,14 @@ This week there is no new topic: each team demonstrates the **C implementation**
 - **Scope:** requirements V1–V6 (weeks 1–6) — see the [Project Guide](../project-guide/index.md), sections 5 and 8.
 - **Demo:** about 10 minutes per team: live run, one operation explained line by line with a box-and-arrow drawing, questions to every member.
 - **Next week:** Quiz-1 (weeks 1–6) in the midterm exam week.
+
+### Demo checklist (local)
+
+A private repository has no GitHub Pages site, so you show the project locally (details: [Project Guide](../project-guide/index.md#showing-your-project-locally)). What you open and show, in this order:
+
+1. The **home page** of the local site (`9-open-site-...`, on `http://localhost`).
+2. **Each report page:** tests, code coverage, documentation coverage (Windows and Linux).
+3. The **API docs**.
+4. The **`release/` folder** listing.
+5. **Run the app** from the release archive.
+6. The **GitHub Release page** of your private repository (the instructor is a collaborator).
