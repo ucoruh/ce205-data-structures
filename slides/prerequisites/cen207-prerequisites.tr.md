@@ -70,7 +70,7 @@ kendi bilgisayarınızda çözün.
 
 - Depo oluşturma, `clone`, `commit`, dal (branch), `pull request`, `.gitignore`
 - Öğretildiği yer: **CEN107 Hafta 3 — Git ile sürüm yönetimi**
-- Burada kullanıldığı yer: proje rehberinin iş akışı (çatallama, plan, teslim) — her iki kontrol noktası için
+- Burada kullanıldığı yer: proje rehberinin iş akışı (şablondan depo, plan, teslim) — her iki kontrol noktası için
 
 <!-- Speaker note: Hem vize hem final kontrol noktası, kısmen Git'in gerçekten nasıl kullanıldığına göre notlandırılır, yalnızca son koda göre değil. -->
 
@@ -88,7 +88,7 @@ kendi bilgisayarınızda çözün.
 
 # Proje şablonlarının kullanımı
 
-- Bir şablonu çatallamak (fork), derlemek, testlerini ve dokümantasyonunu üretmek
+- Şablondan özel depo oluşturmak ("Use this template", fork değil), derlemek, testlerini ve dokümantasyonunu üretmek
 - Öğretildiği yer: **CEN107 Hafta 2–4**
 - Burada kullanıldığı yer: proje rehberindeki `cpp-cmake-ctest-template` (vize) ve `eclipse-java-maven-template` (final)
 

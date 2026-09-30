@@ -43,9 +43,9 @@ course.
 | Topic | Where is it taught? | Where is it used in this course? |
 | --- | --- | --- |
 | **Development environment:** compiler (GCC/Clang/MSVC), IDE, WSL on Windows, building with CMake | [CEN107 Week 2 — Development environments](https://ucoruh.github.io/ce103-algorithms-and-programming-I/week-2-setup/ce103-week-2-setup/) | Week 1's C workshop; setting up the midterm (C) project |
-| **Git and GitHub:** creating a repository, `clone`, `commit`, branches, `pull request`, `.gitignore` | [CEN107 Week 3 — Version management with Git](https://ucoruh.github.io/ce103-algorithms-and-programming-I/week-3-git/ce103-week-3-git/) | [Project guide](../project-guide/index.md) (fork, plan, submission) for both the midterm and the final checkpoint |
+| **Git and GitHub:** creating a repository, `clone`, `commit`, branches, `pull request`, `.gitignore` | [CEN107 Week 3 — Version management with Git](https://ucoruh.github.io/ce103-algorithms-and-programming-I/week-3-git/ce103-week-3-git/) | [Project guide](../project-guide/index.md) (repository from the template, plan, submission) for both the midterm and the final checkpoint |
 | **Unit testing and coverage tools:** writing tests, running them, reading a coverage report | [CEN107 Week 4 — Unit testing and libraries](https://ucoruh.github.io/ce103-algorithms-and-programming-I/week-4-test/ce103-week-4-test/) | Midterm rubric criteria (GoogleTest, gcov/lcov); final rubric criteria (JUnit 5, JaCoCo) |
-| **Using project templates:** forking a template, building it, producing its tests and documentation | CEN107 Weeks 2–4 | [Project guide](../project-guide/index.md) — `cpp-cmake-ctest-template` for the midterm, `eclipse-java-maven-template` for the final |
+| **Using project templates:** creating a private repository from a template ("Use this template", not fork), building it, producing its tests and documentation | CEN107 Weeks 2–4 | [Project guide](../project-guide/index.md) — `cpp-cmake-ctest-template` for the midterm, `eclipse-java-maven-template` for the final |
 | **Basic algorithm analysis and recursion:** counting operations, writing a simple recursive function | CEN108, early weeks | Big-O recap in Week 1; recursive solutions used from Week 3 onward (Towers of Hanoi, DFS, tree traversals, merge sort, quicksort) |
 
 ## 2. C and Java programming fundamentals (required)

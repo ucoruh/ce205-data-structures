@@ -35,7 +35,7 @@ Asst. Prof. Dr. Uğur CORUH
 
 # At a glance — team and checks
 
-- **Team:** at most 3 students (working alone is also allowed)
+- **Team:** at most 5 students (working alone is also allowed)
 - Each topic taken by **one team only**; no team changes after week 3
 - **Midterm check (RAP1):** C implementation, report, demo — week 7, 30.10.2026 — 60% of midterm
 - **Final check (RAP2):** Java implementation, report, demo — week 15, 25.12.2026 — 70% of final
@@ -246,7 +246,7 @@ Before you start: make sure your environment is ready — see the
 # How to choose
 
 1. Browse the list and pick a topic
-2. Write your choice in the **team and topic table** on Microsoft Teams
+2. Write your choice in the shared **team and topic list** (link in the Teams post)
    — one topic per team, first to write it gets it
 3. Get it approved together with your **project plan** — the topic cannot
    change after approval
@@ -665,7 +665,7 @@ Points = (level ÷ 5) × criterion points.
 
 # FAQ — team and topic
 
-**Work alone instead of a team of two?** Yes — at most 3, working alone
+**Work alone instead of a team?** Yes — at most 5, working alone
 is allowed. Teams are fixed at the end of week 3.
 
 **Two teams want the same topic?** First to write it in the Teams table gets it.

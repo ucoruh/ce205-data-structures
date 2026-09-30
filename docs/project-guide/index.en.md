@@ -46,7 +46,7 @@ structure?" with numbers: complexity and measurements, not opinions.
 
     ---
 
-    At most 3 students (working alone is also allowed). Each topic is taken by one team only. No team changes after week 3.
+    At most 5 students (working alone is also allowed). Each topic is taken by one team only. No team changes after week 3.
 
 -   **Midterm check**
 
@@ -63,7 +63,7 @@ structure?" with numbers: complexity and measurements, not opinions.
 </div>
 
 !!! abstract "At a glance"
-    - **Team:** at most 3 students (you may also work alone). Each topic can be taken by one team only. Teams cannot change after week 3 (04.10.2026).
+    - **Team:** at most 5 students (you may also work alone). Each topic can be taken by one team only. Teams cannot change after week 3 (04.10.2026).
     - **Midterm check (RAP1):** C implementation, report and demo — **week 7, 30.10.2026**. 60% of the midterm grade.
     - **Final check (RAP2):** Java implementation, report and demo — **week 15, 25.12.2026**. 70% of the final grade.
     - **Tools:** CMake + GoogleTest + Doxygen for C; JDK 21 + Maven + JUnit 5 for Java; Git and GitHub.
@@ -140,6 +140,8 @@ Each template's README and guide have the details; see the page "Showing your pr
 
 ### Demo checklist
 
+**Demo slots.** Each team has a **10-minute slot** (about 2 minutes per member) during the class hours of the demo day. After team selection closes, a slot list is published on Microsoft Teams; come to your slot with the project already built and the local site open. Every member answers at least one question.
+
 What you open and show, in this order:
 
 1. The **home page** of the local site (`9-open-site-...`, on `http://localhost`).
@@ -157,7 +159,7 @@ which operation it performs** in that application.
 
 !!! info "How to choose"
     1. Browse the list and pick a topic.
-    2. Write your choice in the **team and topic table** on Microsoft Teams. Each topic goes to one team only; the
+    2. Write your choice in the shared **team and topic list** (link in the Microsoft Teams post). Each topic goes to one team only; the
        first team to write it gets it.
     3. Get it approved together with your project plan; the topic cannot change after approval.
 
@@ -223,7 +225,7 @@ Upload **a single archive** to the Microsoft Teams assignment; put the repositor
 | Test coverage report (HTML folder inside the archive) | ✓ | ✓ |
 | Presentation (at most 10 slides) | — | ✓ |
 | Video (each member explains their own contribution; at most 4 min per person) | — | ✓ |
-| Live demo and questions (~10 min per team) | week 7 | week 15 |
+| Live demo and questions (10 min per team, slot list after team selection) | week 7 | week 15 |
 
 ### Archive structure
 
@@ -365,11 +367,11 @@ Each criterion is scored on a **1–5** scale and multiplied by its weight: *poi
 
 ## 12. Frequently asked questions
 
-??? question "Can I work alone instead of in a team of two?"
-    Yes. Team size is at most 3 students, and working alone is allowed. Teams are fixed at the end of week 3 (04.10.2026) and cannot change afterwards.
+??? question "Can I work alone instead of in a team?"
+    Yes. Team size is at most 5 students, and working alone is allowed. Teams are fixed at the end of week 3 (04.10.2026) and cannot change afterwards.
 
 ??? question "What happens if two teams want the same topic?"
-    The first team to write the topic in the Microsoft Teams table gets it; the other team chooses a different one.
+    The first team to write the topic in the team list gets it; the other team chooses a different one.
 
 ??? question "Can I change my topic after it has been approved?"
     No. The topic is approved together with your project plan and cannot change afterward.

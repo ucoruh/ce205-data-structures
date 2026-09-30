@@ -35,7 +35,7 @@ Dr. Öğr. Üyesi Uğur CORUH
 
 # Kısaca — takım ve kontroller
 
-- **Takım:** en çok 3 kişi (tek başınıza da olur)
+- **Takım:** en çok 5 kişi (tek başınıza da olur)
 - Bir konuyu **yalnız bir takım** alır; 3. haftadan sonra takım değişmez
 - **Vize kontrolü (RAP1):** C gerçekleştirimi, rapor, gösterim — 7. hafta, 30.10.2026 — vizenin %60'ı
 - **Final kontrolü (RAP2):** Java gerçekleştirimi, rapor, gösterim — 15. hafta, 25.12.2026 — finalin %70'i
@@ -246,7 +246,7 @@ Gereksinimler** sayfasına/sunumuna bakın.
 # Nasıl seçilir?
 
 1. Listeyi inceleyin, bir konu seçin
-2. Seçiminizi Microsoft Teams'teki **takım ve konu tablosuna** yazın —
+2. Seçiminizi paylaşılan **takım ve konu listesine** yazın (bağlantı Teams duyurusunda) —
    bir konuyu bir takım alır, ilk yazan alır
 3. **Proje planınızla** birlikte onaylatın — onaydan sonra konu değişmez
 
@@ -663,8 +663,8 @@ Puan = (düzey ÷ 5) × kriter puanı.
 
 # SSS — takım ve konu
 
-**İki kişilik takım yerine tek başıma çalışabilir miyim?** Evet — en çok
-3 kişi, tek başına çalışmaya izin var. Takımlar 3. hafta sonunda kesinleşir.
+**Takım yerine tek başıma çalışabilir miyim?** Evet — en çok
+5 kişi, tek başına çalışmaya izin var. Takımlar 3. hafta sonunda kesinleşir.
 
 **İki takım aynı konuyu isterse?** Teams tablosuna ilk yazan alır.
 

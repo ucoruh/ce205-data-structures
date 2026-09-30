@@ -70,7 +70,7 @@ end of this deck, on your own computer.
 
 - Creating a repository, `clone`, `commit`, branches, `pull request`, `.gitignore`
 - Taught in: **CEN107 Week 3 — Version management with Git**
-- Used here in: the project guide's workflow (fork, plan, submission) for both checkpoints
+- Used here in: the project guide's workflow (repository from the template, plan, submission) for both checkpoints
 
 <!-- Speaker note: Both the midterm and the final checkpoint are graded partly on how Git was actually used, not just the final code. -->
 
@@ -88,7 +88,7 @@ end of this deck, on your own computer.
 
 # Using project templates
 
-- Forking a template, building it, producing its tests and documentation
+- Creating a private repository from a template ("Use this template", not fork), building it, producing its tests and documentation
 - Taught in: **CEN107 weeks 2–4**
 - Used here in: the project guide's `cpp-cmake-ctest-template` (midterm) and `eclipse-java-maven-template` (final)
 

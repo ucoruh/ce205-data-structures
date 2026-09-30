@@ -75,7 +75,7 @@ Asst. Prof. Dr. Uğur CORUH · Fall 2026–2027
 
 # Course logistics: teams and resources
 
-- Team size: **up to 3** students per project team
+- Team size: **up to 5** students per project team
 - **No team changes after week 3**
 - Project guide: `docs/project-guide/`
 - Prerequisites: `docs/prerequisites/` (C toolchain, background)

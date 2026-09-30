@@ -75,7 +75,7 @@ Dr. Öğr. Üyesi Uğur CORUH · 2026-2027 Güz
 
 # Ders düzeni: takımlar ve kaynaklar
 
-- Takım büyüklüğü: proje takımı başına **en çok 3** öğrenci
+- Takım büyüklüğü: proje takımı başına **en çok 5** öğrenci
 - **3. haftadan sonra takım değişikliği yok**
 - Proje kılavuzu: `docs/project-guide/`
 - Ön koşullar: `docs/prerequisites/` (C araç zinciri, alt yapı)

@@ -46,7 +46,7 @@ seçtim?" sorusunu görüşle değil, sayılarla (karmaşıklık ve ölçüm) ya
 
     ---
 
-    En çok 3 kişi (tek başınıza da yapabilirsiniz). Bir konuyu yalnız bir takım alır. 3. haftadan sonra takım değişmez.
+    En çok 5 kişi (tek başınıza da yapabilirsiniz). Bir konuyu yalnız bir takım alır. 3. haftadan sonra takım değişmez.
 
 -   **Vize kontrolü**
 
@@ -63,7 +63,7 @@ seçtim?" sorusunu görüşle değil, sayılarla (karmaşıklık ve ölçüm) ya
 </div>
 
 !!! abstract "Kısaca"
-    - **Takım:** en çok 3 kişi (tek başınıza da yapabilirsiniz). Bir konuyu yalnız bir takım alır. 3. haftadan (04.10.2026) sonra takım değiştirilemez.
+    - **Takım:** en çok 5 kişi (tek başınıza da yapabilirsiniz). Bir konuyu yalnız bir takım alır. 3. haftadan (04.10.2026) sonra takım değiştirilemez.
     - **Vize kontrolü (RAP1):** C gerçekleştirimi, rapor ve gösterim — **7. hafta, 30.10.2026**. Vize notunun %60'ı.
     - **Final kontrolü (RAP2):** Java gerçekleştirimi, rapor ve gösterim — **15. hafta, 25.12.2026**. Final notunun %70'i.
     - **Araçlar:** C için CMake + GoogleTest + Doxygen; Java için JDK 21 + Maven + JUnit 5; Git ve GitHub.
@@ -140,6 +140,8 @@ Ayrıntılar her şablonun README'sinde ve rehberinde; şablonun `docs/guide/` k
 
 ### Gösterim kontrol listesi
 
+**Gösterim saatleri.** Her takımın gösterim günündeki ders saatinde **10 dakikalık** bir yeri vardır (üye başına yaklaşık 2 dakika). Takım seçimi kapanınca Microsoft Teams'te bir saat listesi yayımlanır; saatinize proje derlenmiş ve yerel site açık olarak gelin. Her üye en az bir soruyu yanıtlar.
+
 Gösterimde sırayla neyi açıp göstereceğiniz:
 
 1. Yerel sitenin **ana sayfası** (`9-open-site-...`, `http://localhost` adresinde).
@@ -157,7 +159,7 @@ yaptığını** tek cümleyle verir.
 
 !!! info "Nasıl seçilir?"
     1. Listeyi inceleyin ve bir konu seçin.
-    2. Seçiminizi Microsoft Teams'teki **takım ve konu tablosuna** yazın. Bir konuyu yalnız bir takım alabilir;
+    2. Seçiminizi paylaşılan **takım ve konu listesine** yazın (bağlantı Microsoft Teams duyurusunda). Bir konuyu yalnız bir takım alabilir;
        tabloya ilk yazan takım alır.
     3. Proje planınızla birlikte ders sorumlusuna onaylatın; onaydan sonra konu değiştirilmez.
 
@@ -223,7 +225,7 @@ Teslim Microsoft Teams'teki ödeve **tek bir arşiv** olarak yüklenir; depo ba�
 | Test kapsamı raporu (HTML klasörü, arşiv içinde) | ✓ | ✓ |
 | Sunum (en çok 10 slayt) | — | ✓ |
 | Video (her üye kendi katkısını anlatır; kişi başı en çok 4 dk) | — | ✓ |
-| Canlı gösterim ve sorular (takım başına ~10 dk) | 7. hafta | 15. hafta |
+| Canlı gösterim ve sorular (takım başına 10 dk, saat listesi takım seçiminden sonra) | 7. hafta | 15. hafta |
 
 ### Arşiv yapısı
 
@@ -364,10 +366,10 @@ Her kriter **1–5** ölçeğiyle puanlanır ve ağırlığıyla çarpılır: *p
 ## 12. Sık sorulan sorular
 
 ??? question "İki kişilik takım yerine tek başıma çalışabilir miyim?"
-    Evet. Takım en çok 3 kişidir ve tek başına çalışmaya izin verilir. Takımlar 3. haftanın sonunda (04.10.2026) kesinleşir ve sonra değiştirilemez.
+    Evet. Takım en çok 5 kişidir ve tek başına çalışmaya izin verilir. Takımlar 3. haftanın sonunda (04.10.2026) kesinleşir ve sonra değiştirilemez.
 
 ??? question "İki takım aynı konuyu isterse ne olur?"
-    Konuyu Microsoft Teams tablosuna ilk yazan takım alır; diğer takım başka bir konu seçer.
+    Konuyu takım listesine ilk yazan takım alır; diğer takım başka bir konu seçer.
 
 ??? question "Onaylanan konumu sonradan değiştirebilir miyim?"
     Hayır. Konu, proje planınızla birlikte onaylanır ve onaydan sonra değişmez.
