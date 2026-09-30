@@ -338,6 +338,7 @@ def run_cmd(cmd, **kw):
     # A subprocess's output goes through a pipe, Windows then defaults to cp1252, and a line containing a
     # Turkish character (course notes, titles) crashes the caller; force UTF-8 instead.
     kw.setdefault('env', {**os.environ, 'PYTHONUTF8': '1', 'PYTHONIOENCODING': 'utf-8'})
+    kw.setdefault('stdin', subprocess.DEVNULL)  # marp waits on an open stdin pipe forever when run in the background
     result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8', errors='replace', **kw)
     if result.returncode != 0:
         print('   ERROR:', ' '.join(map(str, cmd))[:200])
@@ -999,13 +1000,33 @@ def note_docx(week, site, lang):
 
 
 # ---------------------------------------------------------------- offline package (ZIP)
+# Secret patterns searched in every file that goes into a package (API keys, access tokens, private keys).
+# On a match the ZIP is deleted and the build stops: a published package never carries a secret.
+SECRET_PATTERNS = re.compile(rb'sk-ant-[A-Za-z0-9_-]{20}|sk-proj-[A-Za-z0-9_-]{20}|gh[pousr]_[A-Za-z0-9]{30}'
+                             rb'|github_pat_[A-Za-z0-9_]{30}|AKIA[0-9A-Z]{16}|xox[baprs]-[A-Za-z0-9-]{10}'
+                             rb'|AIza[0-9A-Za-z_-]{30}|-----BEGIN [A-Z ]*PRIVATE KEY-----'
+                             rb'|[A-Z][A-Z0-9_]{2,}_(?:TOKEN|API_KEY|SECRET)=[^\s\x00]{8}')
+
+
+def git_tracked(root, paths):
+    """Files git tracks under `paths` of `root` (generated or ignored files can never reach a package)."""
+    result = subprocess.run(['git', '-C', str(root), 'ls-files', '-z', '--', *paths], capture_output=True, check=True)
+    return [root / p for p in result.stdout.decode('utf-8').split('\0') if p]
+
+
+def scan_secrets(zip_path):
+    """Searches every file of a ZIP for secrets; returns the member names (never prints a value)."""
+    import zipfile
+    with zipfile.ZipFile(zip_path) as z:
+        return [n for n in z.namelist() if SECRET_PATTERNS.search(z.read(n))]
+
+
 def package(week, lang):
-    """Bundles every material for the week, plus its demo code, into one ZIP (build output excluded)."""
+    """Bundles every material for the week, plus its demo code, into one ZIP. Only files git tracks are taken
+    from the code tree: build output, memory dumps, work folders and other generated files never go in."""
     import zipfile
     target = week.output_path('package', lang)
     root_name = week.name
-    # Matches .gitignore: build/run output and anything a setup script downloads never goes into the ZIP.
-    skip = {'bin', 'dokum', 'build', '__pycache__', 'cikti', 'lib'}
     with zipfile.ZipFile(target, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as z:
         for kind in ('deck_html', 'deck_pdf', 'deck_pptx', 'note_pdf', 'note_docx'):
             file = week.output_path(kind, lang)
@@ -1016,16 +1037,16 @@ def package(week, lang):
             # The week's demos plus the shared build infrastructure (root CMake, scripts, cmake/, common/):
             # the ZIP's code/ folder builds on its own once extracted.
             code_root = code.parent
-            common = [code_root / n for n in ('CMakeLists.txt', 'CMakePresets.json', 'build.ps1', 'build.sh',
-                                               'README.md', 'README.en.md', '.gitattributes')]
-            for folder in (code_root / 'cmake', code_root / 'common', code):
-                common += sorted(folder.rglob('*'))
-            for path in common:
-                parts = set(path.relative_to(code_root).parts)
-                if (path.is_file() and not (parts & skip) and path.name.lower() != 'desktop.ini'
-                        and path.suffix.lower() != '.jar'):
+            paths = ['CMakeLists.txt', 'CMakePresets.json', 'build.ps1', 'build.sh', 'README.md', 'README.en.md',
+                     '.gitattributes', 'cmake', 'common', code.relative_to(code_root).as_posix()]
+            for path in git_tracked(code_root, paths):
+                if path.is_file() and path.name.lower() != 'desktop.ini':
                     z.write(path, f'{root_name}/code/{path.relative_to(code_root).as_posix()}')
-    print(f'   package: {target.relative_to(ROOT)} ({target.stat().st_size // 1024} KB)')
+    found = scan_secrets(target)
+    if found:
+        target.unlink()
+        raise SystemExit(f'   ERROR: {target.name} contains a secret, package deleted: {", ".join(found[:10])}')
+    print(f'   package: {target.relative_to(ROOT)} ({target.stat().st_size // 1024} KB, secret scan clean)')
 
 
 # ---------------------------------------------------------------- main flow
